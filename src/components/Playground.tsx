@@ -8,37 +8,49 @@ interface PlaygroundProps {
 
 const TEMPLATES = [
   {
-    title: 'Department Salary Windowing',
-    sql: `-- Window Functions: Top earner per department using DENSE_RANK()
+    title: 'Regional Revenue Aggregation',
+    sql: `-- Calculate revenue metrics grouped by region
+SELECT 
+    region,
+    COUNT(*) AS total_orders,
+    ROUND(SUM(sale_amount), 2) AS total_revenue,
+    ROUND(AVG(sale_amount), 2) AS avg_order_amount
+FROM sales
+GROUP BY region
+ORDER BY total_revenue DESC;`,
+  },
+  {
+    title: 'Window Function: Department Ranking',
+    sql: `-- Window Functions: Rank employees within each department
 SELECT 
     name,
     department_id,
     salary,
-    DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) as rank_in_dept
+    DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rank_in_dept
 FROM employees;`,
   },
   {
-    title: 'Customer Sales Summary CTE',
+    title: 'Multi-Step CTE Pipeline',
     sql: `-- Multi-stage aggregation with CTE
 WITH customer_spending AS (
     SELECT 
         customer_id,
-        COUNT(*) as order_count,
-        ROUND(SUM(sale_amount), 2) as total_spent
+        COUNT(*) AS order_count,
+        ROUND(SUM(sale_amount), 2) AS total_spent
     FROM sales
     GROUP BY customer_id
 )
 SELECT 
-    c.first_name || ' ' || c.last_name as full_name,
+    c.first_name || ' ' || c.last_name AS full_name,
     c.city,
-    COALESCE(cs.order_count, 0) as total_orders,
-    COALESCE(cs.total_spent, 0.00) as total_spent
+    COALESCE(cs.order_count, 0) AS total_orders,
+    COALESCE(cs.total_spent, 0.00) AS total_spent
 FROM customers c
 LEFT JOIN customer_spending cs ON c.customer_id = cs.customer_id
 ORDER BY total_spent DESC;`,
   },
   {
-    title: 'Data Cleaning: Finding Missing or Dirty Records',
+    title: 'Data Cleaning: Missing Emails Audit',
     sql: `-- Identify missing data and empty strings across customer contacts
 SELECT 
     customer_id,
@@ -47,33 +59,23 @@ SELECT
     CASE 
         WHEN email IS NULL THEN 'MISSING (NULL)'
         WHEN TRIM(email) = '' THEN 'BLANK STRING'
-        ELSE 'VALID'
-    END as email_status
+        ELSE 'VALID EMAIL'
+    END AS email_status
 FROM customers;`,
-  },
-  {
-    title: 'Facebook Anti-Join (Unliked Pages)',
-    sql: `-- Meta Interview: Unliked Pages
-SELECT 
-    p.page_id,
-    p.page_name
-FROM pages p
-LEFT JOIN page_likes l ON p.page_id = l.page_id
-WHERE l.page_id IS NULL;`,
   },
 ];
 
 export const Playground: React.FC<PlaygroundProps> = ({ initialSql }) => {
   const [sql, setSql] = useState<string>(
     initialSql ||
-      `-- Free SQL Playground (Connected to in-memory SQLite WASM)
+      `-- Free SQL Playground (Connected to SQLite 3 in WebAssembly)
 -- Write any query, JOIN, CTE, or Window function below:
 
 SELECT 
     region,
-    COUNT(*) as total_sales_count,
-    ROUND(SUM(sale_amount), 2) as total_revenue,
-    ROUND(AVG(sale_amount), 2) as avg_order_value
+    COUNT(*) AS total_orders,
+    ROUND(SUM(sale_amount), 2) AS total_revenue,
+    ROUND(AVG(sale_amount), 2) AS avg_sale
 FROM sales
 GROUP BY region
 ORDER BY total_revenue DESC;`
@@ -98,7 +100,7 @@ ORDER BY total_revenue DESC;`
   };
 
   const handleResetDb = async () => {
-    if (confirm('Are you sure you want to re-seed and reset the in-memory database?')) {
+    if (confirm('Are you sure you want to re-seed the in-memory database to default?')) {
       setIsResetting(true);
       await resetDatabase();
       setIsResetting(false);
@@ -130,22 +132,18 @@ ORDER BY total_revenue DESC;`
 
   return (
     <div className="space-y-6">
-      {/* Playground Header Card */}
-      <div className="bg-surface-card border border-surface-border rounded-2xl p-6 lg:p-8 shadow-xl">
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-surface-border">
+      <div className="bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-border-light">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono uppercase px-2 py-0.5 rounded-full bg-royal-violet/30 text-lilac-pale border border-royal-violet/40">
-                SQLite 3 WebAssembly
-              </span>
-              <span className="text-xs text-surface-muted font-mono">Real In-Browser Engine</span>
-            </div>
-            <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <Terminal className="w-5 h-5 text-electric-lavender" />
-              Interactive SQL Console
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+              Interactive Console
+            </span>
+            <h1 className="text-2xl font-bold text-slate-900 mt-2 tracking-tight flex items-center gap-2">
+              <Terminal className="w-5 h-5 text-brand-600" />
+              SQL Playground
             </h1>
-            <p className="text-xs text-surface-muted mt-1">
-              Experiment with complex joins, window functions, and CTEs with instant sub-millisecond execution.
+            <p className="text-sm text-slate-500 mt-1">
+              Write and execute custom SQL statements against the pre-seeded SQLite database.
             </p>
           </div>
 
@@ -153,8 +151,8 @@ ORDER BY total_revenue DESC;`
             <button
               onClick={handleResetDb}
               disabled={isResetting}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-elevated hover:bg-aubergine text-xs text-surface-muted hover:text-white border border-surface-border transition-colors"
-              title="Reset Database to default seed records"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-xs text-slate-600 hover:text-slate-900 border border-slate-300 shadow-xs transition-colors"
+              title="Reset in-memory database"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{isResetting ? 'Resetting...' : 'Reset Seed Data'}</span>
@@ -164,43 +162,43 @@ ORDER BY total_revenue DESC;`
 
         {/* Quick Query Templates */}
         <div className="my-4 flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-          <span className="text-surface-muted font-mono flex items-center gap-1 text-[11px] flex-shrink-0">
-            <Sparkles className="w-3 h-3 text-electric-lavender" />
-            Quick Presets:
+          <span className="text-slate-500 font-medium flex items-center gap-1 text-xs flex-shrink-0">
+            <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+            Presets:
           </span>
           {TEMPLATES.map((tmpl, idx) => (
             <button
               key={idx}
               onClick={() => setSql(tmpl.sql)}
-              className="px-2.5 py-1 rounded-lg bg-surface-elevated hover:bg-aubergine-light text-slate-300 hover:text-white border border-surface-border transition-colors whitespace-nowrap text-[11px]"
+              className="px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors whitespace-nowrap text-xs font-medium"
             >
               {tmpl.title}
             </button>
           ))}
         </div>
 
-        {/* Editor Box */}
+        {/* SQL Editor Area */}
         <div className="space-y-3">
-          <div className="relative rounded-xl border border-surface-border focus-within:border-royal-violet transition-all overflow-hidden bg-void shadow-inner">
+          <div className="relative rounded-xl border border-slate-300 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-900 shadow-inner">
             <textarea
               value={sql}
               onChange={(e) => setSql(e.target.value)}
               onKeyDown={handleKeyDown}
               rows={11}
-              className="code-editor w-full p-4 bg-transparent text-lilac-pale text-xs sm:text-sm outline-none resize-y leading-relaxed font-mono"
+              className="code-editor w-full p-4 bg-transparent text-emerald-400 text-xs sm:text-sm outline-none resize-y leading-relaxed font-mono"
               placeholder="-- Write your SQL query here..."
               spellCheck={false}
             />
           </div>
 
           <div className="flex items-center justify-between pt-1">
-            <span className="text-[11px] text-surface-muted font-mono">Tip: Press Ctrl + Enter to run</span>
+            <span className="text-xs text-slate-400 font-mono">Tip: Press Ctrl + Enter to run</span>
 
             <div className="flex items-center gap-3">
               {result && result.values.length > 0 && (
                 <button
                   onClick={exportAsCsv}
-                  className="flex items-center gap-1 text-xs text-surface-muted hover:text-white transition-colors"
+                  className="flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Export CSV</span>
@@ -210,7 +208,7 @@ ORDER BY total_revenue DESC;`
               <button
                 onClick={handleRunQuery}
                 disabled={isRunning}
-                className="flex items-center gap-2 px-6 py-2 rounded-xl bg-gradient-to-r from-royal-violet to-electric-lavender hover:opacity-95 text-white text-xs font-semibold shadow-lg shadow-royal-violet/25 transition-all"
+                className="flex items-center gap-2 px-6 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-xs transition-colors"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 <span>{isRunning ? 'Running...' : 'Execute Query'}</span>
@@ -219,45 +217,44 @@ ORDER BY total_revenue DESC;`
           </div>
         </div>
 
-        {/* Query Output View */}
+        {/* Output Table */}
         {result && (
-          <div className="mt-6 pt-5 border-t border-surface-border">
-            <div className="flex items-center justify-between pb-2 mb-2 text-xs">
-              <span className="text-surface-muted">
-                Execution Time:{' '}
-                <span className="text-neon-emerald font-mono font-medium">{result.executionTimeMs} ms</span>
-              </span>
-              <span className="text-surface-muted">
-                Rows: <span className="text-white font-mono font-medium">{result.values.length}</span>
-              </span>
+          <div className="mt-6 pt-5 border-t border-border-light space-y-2">
+            <div className="flex items-center justify-between text-xs text-slate-600 pb-1">
+              <span>Execution Time: <strong className="text-slate-900 font-mono">{result.executionTimeMs} ms</strong></span>
+              <span>Returned: <strong className="text-slate-900 font-mono">{result.values.length} rows</strong></span>
             </div>
 
             {result.error ? (
-              <div className="p-4 rounded-xl bg-neon-rose/10 border border-neon-rose/30 text-neon-rose text-xs font-mono">
+              <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-mono">
                 {result.error}
               </div>
             ) : result.values.length === 0 ? (
-              <div className="p-4 text-center text-xs text-surface-muted bg-surface-elevated rounded-xl">
+              <div className="p-4 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-slate-200">
                 Query executed successfully. 0 rows returned.
               </div>
             ) : (
-              <div className="max-h-96 overflow-auto rounded-xl border border-surface-border">
+              <div className="max-h-96 overflow-auto rounded-xl border border-border-light bg-white">
                 <table className="w-full text-left text-xs font-mono">
-                  <thead className="bg-void/90 text-lilac-pale sticky top-0">
+                  <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b border-border-light">
                     <tr>
                       {result.columns.map((col, i) => (
-                        <th key={i} className="p-3 border-b border-surface-border font-semibold">
+                        <th key={i} className="p-3 font-semibold">
                           {col}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-surface-border">
+                  <tbody className="divide-y divide-border-light">
                     {result.values.map((row, rIdx) => (
-                      <tr key={rIdx} className="hover:bg-aubergine/40 transition-colors">
+                      <tr key={rIdx} className="hover:bg-slate-50 transition-colors">
                         {row.map((val, cIdx) => (
-                          <td key={cIdx} className="p-3 text-slate-300">
-                            {val === null ? <span className="text-neon-amber italic">NULL</span> : String(val)}
+                          <td key={cIdx} className="p-3 text-slate-800">
+                            {val === null ? (
+                              <span className="text-amber-600 font-semibold italic">NULL</span>
+                            ) : (
+                              String(val)
+                            )}
                           </td>
                         ))}
                       </tr>

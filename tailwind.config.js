@@ -4,39 +4,39 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        void: '#0E0919',
-        canvas: '#130C22',
-        aubergine: {
-          light: '#2E1F47',
-          DEFAULT: '#231737',
-          dark: '#1A112B',
+        canvas: '#F8FAFC',       // Slate 50
+        panel: '#FFFFFF',        // Pure white
+        subtle: '#F1F5F9',       // Slate 100
+        border: {
+          light: '#E2E8F0',     // Slate 200
+          medium: '#CBD5E1',    // Slate 300
         },
-        surface: {
-          card: '#1B132B',
-          elevated: '#251A3B',
-          border: '#3A2A5B',
-          borderHover: '#5B428E',
-          muted: '#9E8EB8',
+        brand: {
+          50: '#EEF2FF',
+          100: '#E0E7FF',
+          500: '#6366F1',
+          600: '#4F46E5',
+          700: '#4338CA',
         },
-        royal: {
-          violet: '#7041A6',
-          glow: '#8C52CF',
+        emerald: {
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          600: '#059669',
+          700: '#047857',
         },
-        electric: {
-          lavender: '#A77BEB',
+        amber: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          600: '#D97706',
+          700: '#B45309',
         },
-        lilac: {
-          pale: '#D8C5FF',
-        },
-        neon: {
-          emerald: '#10B981',
-          amber: '#F59E0B',
-          rose: '#F43F5E',
-          cyan: '#06B6D4',
+        rose: {
+          50: '#FFF1F2',
+          100: '#FFE4E6',
+          600: '#E11D48',
         }
       },
       fontFamily: {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { LESSONS } from '../data/curriculum';
+import { LESSONS, MODULES } from '../data/curriculum';
 import { executeQuery, type QueryResult } from '../lib/sqliteEngine';
-import { BookOpen, CheckCircle, Clock, Play, ArrowRight, ArrowLeft, Sparkles, Terminal } from 'lucide-react';
+import { BookOpen, CheckCircle, Play, ArrowRight, ArrowLeft, AlertCircle, Terminal } from 'lucide-react';
 
 interface LessonViewerProps {
   reviewedLessons: string[];
@@ -24,7 +24,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   const handleRunExample = async () => {
     setIsRunning(true);
-    const result = await executeQuery(currentLesson.starterSql);
+    const result = await executeQuery(currentLesson.tryItSql);
     setLiveResult(result);
     setIsRunning(false);
   };
@@ -45,55 +45,63 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      {/* Sidebar List of Lessons */}
-      <div className="lg:col-span-4 bg-surface-card border border-surface-border rounded-2xl p-4 shadow-xl">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-surface-border">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-surface-muted flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-electric-lavender" />
+      {/* Sidebar: Curriculum Outline */}
+      <div className="lg:col-span-4 bg-white border border-border-light rounded-2xl p-5 shadow-sm">
+        <div className="pb-4 mb-4 border-b border-border-light">
+          <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-brand-600" />
             Curriculum Modules
           </h2>
-          <span className="text-xs font-mono text-electric-lavender font-medium">
-            {reviewedLessons.length} / {LESSONS.length} Done
-          </span>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Progress: {reviewedLessons.length} of {LESSONS.length} completed
+          </p>
         </div>
 
-        <div className="space-y-1.5 max-h-[calc(100vh-220px)] overflow-y-auto pr-1">
-          {LESSONS.map((lesson, idx) => {
-            const active = lesson.id === selectedLessonId;
-            const completed = reviewedLessons.includes(lesson.id);
+        <div className="space-y-5 max-h-[calc(100vh-230px)] overflow-y-auto pr-1">
+          {MODULES.map((mod) => {
+            const moduleLessons = LESSONS.filter((l) => l.moduleOrder === mod.id);
 
             return (
-              <button
-                key={lesson.id}
-                onClick={() => {
-                  setSelectedLessonId(lesson.id);
-                  setLiveResult(null);
-                }}
-                className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 border ${
-                  active
-                    ? 'bg-aubergine-light text-white border-royal-violet shadow-md'
-                    : 'bg-surface-elevated/40 text-surface-muted hover:bg-surface-elevated hover:text-white border-transparent'
-                }`}
-              >
-                <div className="mt-0.5">
-                  {completed ? (
-                    <CheckCircle className="w-4 h-4 text-neon-emerald flex-shrink-0" />
-                  ) : (
-                    <span className="w-4 h-4 rounded-full border border-surface-border flex items-center justify-center text-[10px] font-mono text-surface-muted">
-                      {idx + 1}
-                    </span>
-                  )}
+              <div key={mod.id} className="space-y-1.5">
+                <div className="px-2 py-1 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  {mod.title}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-1 mb-0.5">
-                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-void/60 text-lilac-pale">
-                      {lesson.category}
-                    </span>
-                    <span className="text-[11px] text-surface-muted font-mono">{lesson.readingTime}</span>
-                  </div>
-                  <h3 className="text-xs font-medium text-white truncate">{lesson.title}</h3>
+
+                <div className="space-y-1">
+                  {moduleLessons.map((lesson) => {
+                    const active = lesson.id === selectedLessonId;
+                    const completed = reviewedLessons.includes(lesson.id);
+
+                    return (
+                      <button
+                        key={lesson.id}
+                        onClick={() => {
+                          setSelectedLessonId(lesson.id);
+                          setLiveResult(null);
+                        }}
+                        className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-start gap-2.5 border text-xs ${
+                          active
+                            ? 'bg-brand-50 border-brand-200 text-brand-700 font-semibold shadow-xs'
+                            : 'bg-white text-slate-700 hover:bg-slate-50 border-transparent hover:border-slate-200'
+                        }`}
+                      >
+                        <div className="mt-0.5">
+                          {completed ? (
+                            <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                          ) : (
+                            <span className="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-slate-400 font-mono">
+                              {lesson.lessonOrder}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="truncate font-medium">{lesson.title}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -101,146 +109,162 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
       {/* Main Lesson Content */}
       <div className="lg:col-span-8 space-y-6">
-        <div className="bg-surface-card border border-surface-border rounded-2xl p-6 lg:p-8 shadow-xl">
+        <div className="bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm">
           {/* Header */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-surface-border">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border-light">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-royal-violet/30 text-lilac-pale border border-royal-violet/50">
-                  {currentLesson.category}
-                </span>
-                <span className="text-xs text-surface-muted flex items-center gap-1 font-mono">
-                  <Clock className="w-3 h-3" />
-                  {currentLesson.readingTime} read
-                </span>
-              </div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">{currentLesson.title}</h1>
-              <p className="text-sm text-surface-muted mt-1">{currentLesson.subtitle}</p>
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
+                {currentLesson.moduleTitle}
+              </span>
+              <h1 className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
+                {currentLesson.title}
+              </h1>
+              <p className="text-sm text-slate-500 mt-1">{currentLesson.description}</p>
             </div>
 
             <button
               onClick={() => onToggleReviewed(currentLesson.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border ${
                 isReviewed
-                  ? 'bg-neon-emerald/20 text-neon-emerald border border-neon-emerald/40 hover:bg-neon-emerald/30'
-                  : 'bg-surface-elevated text-surface-muted hover:text-white border border-surface-border hover:border-royal-violet'
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                  : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-300 hover:border-slate-400'
               }`}
             >
-              <CheckCircle className={`w-4 h-4 ${isReviewed ? 'text-neon-emerald' : 'text-surface-muted'}`} />
-              <span>{isReviewed ? 'Completed' : 'Mark as Reviewed'}</span>
+              <CheckCircle className={`w-4 h-4 ${isReviewed ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <span>{isReviewed ? 'Lesson Completed' : 'Mark as Completed'}</span>
             </button>
           </div>
 
-          {/* Key Takeaways Card */}
-          <div className="my-6 p-4 rounded-xl bg-aubergine/60 border border-royal-violet/30">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-lilac-pale flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-electric-lavender" />
-              Core Takeaways for Interviews
-            </h3>
-            <ul className="space-y-1.5 text-xs text-slate-200">
-              {currentLesson.keyTakeaways.map((takeaway, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-electric-lavender font-bold">›</span>
-                  <span>{takeaway}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Sections Breakdown */}
+          <div className="py-6 space-y-6">
+            {currentLesson.sections.map((sec, idx) => (
+              <div key={idx} className="space-y-3">
+                <h2 className="text-lg font-bold text-slate-900">{sec.title}</h2>
+                <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+                  {sec.body}
+                </div>
 
-          {/* Detailed Content / Notes */}
-          <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
-            {currentLesson.content.split('\n\n').map((paragraph, index) => {
-              if (paragraph.startsWith('### ')) {
-                return (
-                  <h3 key={index} className="text-base font-bold text-white pt-2 border-t border-surface-border/50">
-                    {paragraph.replace('### ', '')}
-                  </h3>
-                );
-              }
-              if (paragraph.startsWith('```')) {
-                const codeContent = paragraph.replace(/```[a-z]*\n?/g, '').trim();
-                return (
-                  <pre
-                    key={index}
-                    className="p-4 rounded-xl bg-void border border-surface-border font-mono text-xs text-electric-lavender overflow-x-auto"
-                  >
-                    <code>{codeContent}</code>
-                  </pre>
-                );
-              }
-              return (
-                <p key={index} className="text-slate-300">
-                  {paragraph}
+                {sec.exampleSql && (
+                  <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 text-xs font-mono text-slate-100 overflow-x-auto shadow-inner">
+                    <pre className="whitespace-pre">{sec.exampleSql}</pre>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Common Mistake to Avoid */}
+            {currentLesson.commonMistake && (
+              <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800 uppercase tracking-wider">
+                  <AlertCircle className="w-4 h-4 text-amber-600" />
+                  Common Mistake to Avoid
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono pt-1">
+                  <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800">
+                    <span className="font-bold block text-rose-900 mb-1">❌ Don't do this:</span>
+                    <code>{currentLesson.commonMistake.wrongSql}</code>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800">
+                    <span className="font-bold block text-emerald-900 mb-1">✅ Do this instead:</span>
+                    <code>{currentLesson.commonMistake.correctSql}</code>
+                  </div>
+                </div>
+                <p className="text-xs text-amber-900 pt-1 leading-relaxed">
+                  {currentLesson.commonMistake.explanation}
                 </p>
-              );
-            })}
+              </div>
+            )}
+
+            {/* Quick Reference Table */}
+            {currentLesson.quickReference && currentLesson.quickReference.length > 0 && (
+              <div className="space-y-2 pt-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                  Quick Syntax Reference
+                </h3>
+                <div className="overflow-x-auto rounded-xl border border-border-light bg-slate-50">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-border-light text-slate-600">
+                        <th className="p-3 font-semibold">What you want to do</th>
+                        <th className="p-3 font-semibold font-mono">SQL Syntax Example</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border-light bg-white font-mono">
+                      {currentLesson.quickReference.map((ref, i) => (
+                        <tr key={i}>
+                          <td className="p-3 text-slate-800 font-sans font-medium">{ref.goal}</td>
+                          <td className="p-3 text-brand-600">{ref.syntax}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Live Interactive SQL Code Box */}
-          <div className="mt-8 pt-6 border-t border-surface-border">
-            <div className="flex items-center justify-between mb-3">
+          {/* Interactive Try It Section */}
+          <div className="pt-6 border-t border-border-light space-y-3">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-electric-lavender" />
-                <span className="text-xs font-semibold text-white uppercase tracking-wider">Live SQL Code Example</span>
+                <Terminal className="w-4 h-4 text-brand-600" />
+                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Try It Yourself (Live SQL Sandbox)
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => onOpenPlaygroundWithSql(currentLesson.starterSql)}
-                  className="text-xs text-electric-lavender hover:underline flex items-center gap-1"
+                  onClick={() => onOpenPlaygroundWithSql(currentLesson.tryItSql)}
+                  className="text-xs text-brand-600 hover:text-brand-700 hover:underline"
                 >
-                  Edit in Playground
+                  Open in Playground
                 </button>
                 <button
                   onClick={handleRunExample}
                   disabled={isRunning}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-royal-violet hover:bg-royal-glow text-white text-xs font-medium transition-all shadow-md shadow-royal-violet/20"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold transition-colors shadow-xs"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>{isRunning ? 'Executing...' : 'Run Query Live'}</span>
+                  <span>{isRunning ? 'Running...' : 'Run Query'}</span>
                 </button>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-void border border-surface-border font-mono text-xs text-lilac-pale overflow-x-auto whitespace-pre">
-              {currentLesson.starterSql}
+            <div className="rounded-xl border border-slate-200 bg-slate-900 p-3.5 text-xs font-mono text-emerald-400 overflow-x-auto whitespace-pre">
+              {currentLesson.tryItSql}
             </div>
 
-            {/* Results Output */}
+            {/* Live Result Output */}
             {liveResult && (
-              <div className="mt-4 p-4 rounded-xl bg-surface-elevated border border-surface-border">
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-surface-border text-xs">
-                  <span className="text-surface-muted">
-                    Execution time:{' '}
-                    <span className="text-neon-emerald font-mono font-medium">{liveResult.executionTimeMs} ms</span>
-                  </span>
-                  <span className="text-surface-muted">
-                    Rows: <span className="text-white font-mono">{liveResult.values.length}</span>
-                  </span>
+              <div className="mt-3 p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between text-xs text-slate-600 pb-1">
+                  <span>Execution time: <strong className="text-slate-900 font-mono">{liveResult.executionTimeMs} ms</strong></span>
+                  <span>Returned: <strong className="text-slate-900 font-mono">{liveResult.values.length} rows</strong></span>
                 </div>
 
                 {liveResult.error ? (
-                  <div className="p-3 rounded-lg bg-neon-rose/10 border border-neon-rose/30 text-neon-rose text-xs font-mono">
+                  <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs font-mono">
                     {liveResult.error}
                   </div>
                 ) : (
-                  <div className="max-h-60 overflow-auto rounded-lg border border-surface-border">
+                  <div className="max-h-60 overflow-auto rounded-lg border border-border-light bg-white">
                     <table className="w-full text-left text-xs font-mono">
-                      <thead className="bg-void/80 text-lilac-pale sticky top-0">
+                      <thead className="bg-slate-100 text-slate-700 sticky top-0 border-b border-border-light">
                         <tr>
                           {liveResult.columns.map((col, i) => (
-                            <th key={i} className="p-2 border-b border-surface-border font-semibold">
+                            <th key={i} className="p-2.5 font-semibold">
                               {col}
                             </th>
                           ))}
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-surface-border">
+                      <tbody className="divide-y divide-border-light">
                         {liveResult.values.map((row, rIdx) => (
-                          <tr key={rIdx} className="hover:bg-aubergine/40 transition-colors">
+                          <tr key={rIdx} className="hover:bg-slate-50 transition-colors">
                             {row.map((val, cIdx) => (
-                              <td key={cIdx} className="p-2 text-slate-300">
+                              <td key={cIdx} className="p-2.5 text-slate-800">
                                 {val === null ? (
-                                  <span className="text-neon-amber italic">NULL</span>
+                                  <span className="text-amber-600 font-semibold italic">NULL</span>
                                 ) : (
                                   String(val)
                                 )}
@@ -257,14 +281,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           </div>
 
           {/* Navigation Footer */}
-          <div className="flex items-center justify-between pt-8 mt-8 border-t border-surface-border">
+          <div className="flex items-center justify-between pt-6 mt-6 border-t border-border-light">
             <button
               onClick={goToPrev}
               disabled={currentIndex === 0}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-all ${
                 currentIndex === 0
-                  ? 'opacity-40 cursor-not-allowed text-surface-muted'
-                  : 'bg-surface-elevated text-surface-muted hover:text-white hover:border-royal-violet border border-surface-border'
+                  ? 'opacity-40 cursor-not-allowed text-slate-400'
+                  : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-300 shadow-xs'
               }`}
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -274,10 +298,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             <button
               onClick={goToNext}
               disabled={currentIndex === LESSONS.length - 1}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 currentIndex === LESSONS.length - 1
-                  ? 'opacity-40 cursor-not-allowed text-surface-muted'
-                  : 'bg-royal-violet hover:bg-royal-glow text-white shadow-md shadow-royal-violet/20'
+                  ? 'opacity-40 cursor-not-allowed text-slate-400'
+                  : 'bg-brand-600 hover:bg-brand-700 text-white shadow-xs'
               }`}
             >
               <span>Next Lesson</span>

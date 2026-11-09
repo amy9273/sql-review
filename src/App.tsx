@@ -6,7 +6,7 @@ import { SchemaViewer } from './components/SchemaViewer';
 import { Playground } from './components/Playground';
 import { LESSONS, ACTIVITIES } from './data/curriculum';
 import { initDatabase } from './lib/sqliteEngine';
-import { Sparkles, Flame, BookOpen } from 'lucide-react';
+import { Sparkles, BookOpen, Flame } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'lessons' | 'activities' | 'schemas' | 'playground'>('lessons');
@@ -78,7 +78,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-void text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-canvas text-slate-900 flex flex-col font-sans">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -89,46 +89,42 @@ export default function App() {
         onResetProgress={handleResetProgress}
       />
 
-      {/* Main Container */}
+      {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Banner */}
-        <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-aubergine-dark via-surface-card to-aubergine border border-royal-violet/30 shadow-2xl relative overflow-hidden">
-          <div className="absolute -right-8 -top-8 w-48 h-48 bg-royal-violet/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-royal-violet/20 border border-royal-violet/40 text-electric-lavender text-xs font-mono mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Data Engineering Technical Interview Review</span>
+        <div className="mb-8 p-6 sm:p-8 rounded-2xl bg-white border border-border-light shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-semibold mb-2.5">
+              <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+              <span>Interactive SQL Learning Path</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Master SQL for Data Engineering
+            </h1>
+            <p className="text-sm text-slate-600 mt-2 max-w-2xl leading-relaxed">
+              Step-by-step lessons, visual explanations, and 10 practical hands-on drills powered by a real in-browser SQLite engine.
+            </p>
+          </div>
+
+          {/* Quick Metrics */}
+          <div className="flex items-center gap-3 self-start md:self-auto">
+            <div className="px-5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                <BookOpen className="w-3.5 h-3.5 text-brand-600" />
+                <span>Lessons</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Master Joins, CTEs, Window Functions & NULL Logic
-              </h1>
-              <p className="text-xs sm:text-sm text-surface-muted mt-1.5 max-w-2xl leading-relaxed">
-                Review the core principles from your notes, experiment with real in-browser SQLite WebAssembly, and test
-                your queries against 10 practical engineering exercises.
-              </p>
+              <div className="text-lg font-bold font-mono text-slate-900 mt-0.5">
+                {reviewedLessons.length} / {LESSONS.length}
+              </div>
             </div>
 
-            {/* Quick Stats Badges */}
-            <div className="flex items-center gap-3">
-              <div className="px-4 py-3 rounded-xl bg-surface-elevated/80 border border-surface-border text-center">
-                <div className="flex items-center justify-center gap-1.5 text-xs text-electric-lavender font-mono">
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>Modules</span>
-                </div>
-                <div className="text-lg font-bold font-mono text-white mt-0.5">
-                  {reviewedLessons.length}/{LESSONS.length}
-                </div>
+            <div className="px-5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                <Flame className="w-3.5 h-3.5 text-amber-600" />
+                <span>Exercises</span>
               </div>
-
-              <div className="px-4 py-3 rounded-xl bg-surface-elevated/80 border border-surface-border text-center">
-                <div className="flex items-center justify-center gap-1.5 text-xs text-neon-emerald font-mono">
-                  <Flame className="w-3.5 h-3.5 text-neon-amber" />
-                  <span>Drills</span>
-                </div>
-                <div className="text-lg font-bold font-mono text-neon-emerald mt-0.5">
-                  {completedActivities.length}/{ACTIVITIES.length}
-                </div>
+              <div className="text-lg font-bold font-mono text-emerald-700 mt-0.5">
+                {completedActivities.length} / {ACTIVITIES.length}
               </div>
             </div>
           </div>
@@ -157,28 +153,28 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-surface-border bg-canvas/60 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-surface-muted">
-          <div className="flex items-center gap-2">
-            <span>Built for Data Engineering review with React 19 + SQLite WASM</span>
+      <footer className="mt-auto border-t border-border-light bg-white py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <div>
+            <span>SQL Academy — Built with React, TypeScript & SQLite WebAssembly</span>
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={() => setActiveTab('lessons')} className="hover:text-white transition-colors">
+            <button onClick={() => setActiveTab('lessons')} className="hover:text-slate-900 transition-colors">
               Lessons
             </button>
-            <button onClick={() => setActiveTab('activities')} className="hover:text-white transition-colors">
-              Activities
+            <button onClick={() => setActiveTab('activities')} className="hover:text-slate-900 transition-colors">
+              Exercises
             </button>
-            <button onClick={() => setActiveTab('playground')} className="hover:text-white transition-colors">
+            <button onClick={() => setActiveTab('playground')} className="hover:text-slate-900 transition-colors">
               Playground
             </button>
             <a
               href="https://github.com/amy9273/sql-review"
               target="_blank"
               rel="noreferrer"
-              className="text-electric-lavender hover:underline"
+              className="text-brand-600 hover:underline"
             >
-              GitHub Repository
+              GitHub Repo
             </a>
           </div>
         </div>

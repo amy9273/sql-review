@@ -145,8 +145,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 </div>
 
                 {sec.exampleSql && (
-                  <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 text-xs font-mono text-slate-100 overflow-x-auto shadow-inner">
-                    <pre className="whitespace-pre">{sec.exampleSql}</pre>
+                  <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-sm font-mono text-slate-100 overflow-x-auto shadow-inner">
+                    <pre className="whitespace-pre leading-[1.85]">{sec.exampleSql}</pre>
                   </div>
                 )}
               </div>
@@ -230,8 +230,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-900 p-3.5 text-xs font-mono text-emerald-400 overflow-x-auto whitespace-pre">
-              {currentLesson.tryItSql}
+            <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-sm font-mono text-emerald-400 overflow-x-auto shadow-inner">
+              <pre className="whitespace-pre leading-[1.85]">{currentLesson.tryItSql}</pre>
             </div>
 
             {/* Live Result Output */}

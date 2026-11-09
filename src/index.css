@@ -35,8 +35,14 @@ html, body {
   background: #94A3B8;
 }
 
-/* Code editor styling */
-textarea.code-editor {
-  font-family: 'JetBrains Mono', monospace;
+/* Spacious, readable code styling with comfortable line height */
+pre,
+pre code,
+code,
+textarea.code-editor,
+.code-block {
+  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace !important;
+  line-height: 1.85 !important;
+  letter-spacing: 0.015em;
   tab-size: 2;
 }

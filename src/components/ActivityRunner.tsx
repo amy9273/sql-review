@@ -331,13 +331,13 @@ export const ActivityRunner: React.FC<ActivityRunnerProps> = ({
               </button>
             </div>
 
-            <div className="relative rounded-xl border border-slate-300 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-900 shadow-inner">
+            <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner">
               <textarea
                 value={userSql}
                 onChange={(e) => setUserSql(e.target.value)}
                 onKeyDown={handleKeyDown}
                 rows={9}
-                className="code-editor w-full p-4 bg-transparent text-emerald-400 text-xs sm:text-sm outline-none resize-y leading-relaxed font-mono"
+                className="code-editor w-full p-5 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
                 placeholder="-- Type your SQL query here..."
                 spellCheck={false}
               />
@@ -434,7 +434,7 @@ export const ActivityRunner: React.FC<ActivityRunnerProps> = ({
                   Copy to Editor
                 </button>
               </div>
-              <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre">
+              <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-sm text-emerald-400 overflow-x-auto whitespace-pre leading-[1.85] shadow-inner">
                 {currentActivity.expectedQuery}
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">{currentActivity.walkthrough}</p>

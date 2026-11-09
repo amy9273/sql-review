@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LESSONS, MODULES } from '../data/curriculum';
 import { executeQuery, type QueryResult } from '../lib/sqliteEngine';
-import { BookOpen, CheckCircle, Play, ArrowRight, ArrowLeft, AlertCircle, Terminal } from 'lucide-react';
+import { BookOpen, CheckCircle, Play, ArrowRight, ArrowLeft, AlertCircle, Terminal, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 interface LessonViewerProps {
   reviewedLessons: string[];
@@ -15,6 +15,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   onOpenPlaygroundWithSql,
 }) => {
   const [selectedLessonId, setSelectedLessonId] = useState<string>(LESSONS[0].id);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [liveResult, setLiveResult] = useState<QueryResult | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
@@ -44,82 +45,105 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       {/* Sidebar: Curriculum Outline */}
-      <div className="lg:col-span-4 bg-white border border-border-light rounded-2xl p-5 shadow-sm">
-        <div className="pb-4 mb-4 border-b border-border-light">
-          <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-brand-600" />
-            Curriculum Modules
-          </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+      {isSidebarOpen && (
+        <div className="lg:col-span-3 bg-white border border-border-light rounded-2xl p-4 sm:p-5 shadow-xs">
+          <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-border-light">
+            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-brand-600" />
+              <span>Curriculum Modules</span>
+            </h2>
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+              title="Collapse Modules Sidebar"
+            >
+              <PanelLeftClose className="w-4 h-4" />
+            </button>
+          </div>
+
+          <p className="text-[11px] text-slate-500 mb-3 font-medium">
             Progress: {reviewedLessons.length} of {LESSONS.length} completed
           </p>
-        </div>
 
-        <div className="space-y-5 max-h-[calc(100vh-230px)] overflow-y-auto pr-1">
-          {MODULES.map((mod) => {
-            const moduleLessons = LESSONS.filter((l) => l.moduleOrder === mod.id);
+          <div className="space-y-4 max-h-[calc(100vh-230px)] overflow-y-auto pr-1">
+            {MODULES.map((mod) => {
+              const moduleLessons = LESSONS.filter((l) => l.moduleOrder === mod.id);
 
-            return (
-              <div key={mod.id} className="space-y-1.5">
-                <div className="px-2 py-1 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  {mod.title}
+              return (
+                <div key={mod.id} className="space-y-1">
+                  <div className="px-2 py-1 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    {mod.title}
+                  </div>
+
+                  <div className="space-y-1">
+                    {moduleLessons.map((lesson) => {
+                      const active = lesson.id === selectedLessonId;
+                      const completed = reviewedLessons.includes(lesson.id);
+
+                      return (
+                        <button
+                          key={lesson.id}
+                          onClick={() => {
+                            setSelectedLessonId(lesson.id);
+                            setLiveResult(null);
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded-xl transition-all flex items-start gap-2.5 border text-xs ${
+                            active
+                              ? 'bg-brand-50 border-brand-200 text-brand-700 font-semibold shadow-xs'
+                              : 'bg-white text-slate-700 hover:bg-slate-50 border-transparent hover:border-slate-200'
+                          }`}
+                        >
+                          <div className="mt-0.5">
+                            {completed ? (
+                              <CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                            ) : (
+                              <span className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center text-[9px] text-slate-400 font-mono">
+                                {lesson.lessonOrder}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="truncate font-medium">{lesson.title}</p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-
-                <div className="space-y-1">
-                  {moduleLessons.map((lesson) => {
-                    const active = lesson.id === selectedLessonId;
-                    const completed = reviewedLessons.includes(lesson.id);
-
-                    return (
-                      <button
-                        key={lesson.id}
-                        onClick={() => {
-                          setSelectedLessonId(lesson.id);
-                          setLiveResult(null);
-                        }}
-                        className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-start gap-2.5 border text-xs ${
-                          active
-                            ? 'bg-brand-50 border-brand-200 text-brand-700 font-semibold shadow-xs'
-                            : 'bg-white text-slate-700 hover:bg-slate-50 border-transparent hover:border-slate-200'
-                        }`}
-                      >
-                        <div className="mt-0.5">
-                          {completed ? (
-                            <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                          ) : (
-                            <span className="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-slate-400 font-mono">
-                              {lesson.lessonOrder}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="truncate font-medium">{lesson.title}</p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Lesson Content */}
-      <div className="lg:col-span-8 space-y-6">
-        <div className="bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div className={`${isSidebarOpen ? 'lg:col-span-9' : 'lg:col-span-12'} space-y-6 transition-all duration-200`}>
+        <div className="bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-xs">
           {/* Header */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border-light">
-            <div>
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
-                {currentLesson.moduleTitle}
-              </span>
-              <h1 className="text-2xl font-bold text-slate-900 mt-2 tracking-tight">
-                {currentLesson.title}
-              </h1>
-              <p className="text-sm text-slate-500 mt-1">{currentLesson.description}</p>
+            <div className="flex items-start gap-3">
+              {!isSidebarOpen && (
+                <button
+                  onClick={() => setIsSidebarOpen(true)}
+                  className="mt-1 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
+                  title="Expand Modules Sidebar"
+                >
+                  <PanelLeftOpen className="w-4 h-4 text-brand-600" />
+                  <span>Modules</span>
+                </button>
+              )}
+
+              <div>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
+                  {currentLesson.moduleTitle}
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+                  {currentLesson.title}
+                </h1>
+                <p className="text-sm text-slate-500 mt-1">{currentLesson.description}</p>
+              </div>
             </div>
 
             <button
@@ -154,17 +178,17 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
             {/* Common Mistake to Avoid */}
             {currentLesson.commonMistake && (
-              <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
+              <div className="p-4 sm:p-5 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800 uppercase tracking-wider">
                   <AlertCircle className="w-4 h-4 text-amber-600" />
                   Common Mistake to Avoid
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono pt-1">
-                  <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-800">
+                  <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 leading-relaxed">
                     <span className="font-bold block text-rose-900 mb-1">❌ Don't do this:</span>
                     <code>{currentLesson.commonMistake.wrongSql}</code>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800">
+                  <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 leading-relaxed">
                     <span className="font-bold block text-emerald-900 mb-1">✅ Do this instead:</span>
                     <code>{currentLesson.commonMistake.correctSql}</code>
                   </div>

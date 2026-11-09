@@ -88,8 +88,8 @@ export default function App() {
         onResetProgress={handleResetProgress}
       />
 
-      {/* Main Learning Space - Direct into the content without banner bloat */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Main Learning Space - Wide layout so side-by-side panels have ample space */}
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
         {activeTab === 'lessons' && (
           <LessonViewer
             reviewedLessons={reviewedLessons}
@@ -112,8 +112,8 @@ export default function App() {
       </main>
 
       {/* Minimal Footer */}
-      <footer className="mt-auto border-t border-slate-200 bg-white py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <footer className="mt-auto border-t border-slate-200 bg-white py-3.5">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <div>
             <span>SQL Academy — Interactive Data Engineering Review</span>
           </div>

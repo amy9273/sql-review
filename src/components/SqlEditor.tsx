@@ -240,8 +240,15 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
   className = ''
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const gutterRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [isSuggestionsEnabled, setIsSuggestionsEnabled] = useState(true);
+
+  const handleScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+    if (gutterRef.current) {
+      gutterRef.current.scrollTop = e.currentTarget.scrollTop;
+    }
+  };
 
   // Autocomplete state
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -599,9 +606,14 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
         {/* Main Code Editing Area (Line numbers + Textarea) */}
         <div className="flex flex-1 min-h-[170px]">
           {/* Line Numbers Gutter */}
-          <div className="w-9 select-none py-3 text-right pr-2 text-slate-600 font-mono text-xs border-r border-slate-800/80 bg-slate-950 flex-shrink-0 leading-[1.85]">
+          <div
+            ref={gutterRef}
+            className="w-10 select-none py-3 pr-2.5 text-right text-slate-600 font-mono text-sm border-r border-slate-800/80 bg-slate-950 flex-shrink-0 overflow-hidden leading-6"
+          >
             {Array.from({ length: lineCount }).map((_, i) => (
-              <div key={i}>{i + 1}</div>
+              <div key={i} className="h-6 leading-6 text-right">
+                {i + 1}
+              </div>
             ))}
           </div>
 
@@ -612,8 +624,10 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
               value={value}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
+              onScroll={handleScroll}
               rows={rows || 9}
-              className="code-editor w-full p-3 bg-transparent text-emerald-400 text-sm outline-none resize-none leading-[1.85] font-mono min-h-[170px]"
+              wrap="off"
+              className="code-editor w-full py-3 px-3 bg-transparent text-emerald-400 text-sm outline-none resize-none font-mono leading-6 whitespace-pre overflow-x-auto min-h-[170px]"
               placeholder={placeholder}
               spellCheck={false}
             />

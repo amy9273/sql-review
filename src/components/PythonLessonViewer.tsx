@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PYTHON_LESSONS, PYTHON_MODULES } from '../data/pythonCurriculum';
 import { executePythonCode, validatePythonSubmission, type PythonExecutionResult } from '../lib/pythonEngine';
 import { PythonEditor } from './PythonEditor';
+import { FormattedGoal } from './FormattedGoal';
 import confetti from 'canvas-confetti';
 import {
   BookOpen,
@@ -667,10 +668,10 @@ export const PythonLessonViewer: React.FC<PythonLessonViewerProps> = ({
                   <p className="text-slate-600 leading-relaxed">{currentLesson.challenge.scenario}</p>
                 </div>
                 <div className="pt-2 border-t border-slate-200">
-                  <strong className="text-emerald-700 block font-semibold mb-0.5">Your Goal:</strong>
-                  <p className="text-slate-800 leading-relaxed font-medium">
-                    {currentLesson.challenge.instructions}
-                  </p>
+                  <strong className="text-emerald-700 block font-semibold mb-1.5 text-xs">
+                    Your Goal:
+                  </strong>
+                  <FormattedGoal goalText={currentLesson.challenge.instructions} theme="emerald" />
                 </div>
               </div>
 

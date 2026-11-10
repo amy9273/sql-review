@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LESSONS, MODULES } from '../data/curriculum';
 import { executeQuery, validateAnswer, type QueryResult } from '../lib/sqliteEngine';
 import { SqlEditor } from './SqlEditor';
+import { FormattedGoal } from './FormattedGoal';
 import confetti from 'canvas-confetti';
 import {
   BookOpen,
@@ -530,8 +531,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   <p className="text-slate-600 leading-relaxed">{currentLesson.challenge.scenario}</p>
                 </div>
                 <div className="pt-2 border-t border-slate-200">
-                  <strong className="text-brand-700 block font-semibold mb-0.5">Your Goal:</strong>
-                  <p className="text-slate-800 leading-relaxed font-medium">{currentLesson.challenge.instructions}</p>
+                  <strong className="text-brand-700 block font-semibold mb-1.5 text-xs">Your Goal:</strong>
+                  <FormattedGoal goalText={currentLesson.challenge.instructions} theme="indigo" />
                 </div>
               </div>
 

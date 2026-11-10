@@ -691,7 +691,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Vectorized Price Inflation Calculator",
       "scenario": "The pricing operations team wants to simulate a 10% inflation increase across product prices without using slow Python loops.",
-      "instructions": "Given a NumPy array of product prices `prices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])`, calculate `inflated_prices` by multiplying the array by 1.10 and round to 2 decimal places using `np.round()`. Print `inflated_prices`.",
+      "instructions": "1. Given product prices array `prices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])`.\n2. Calculate `inflated_prices = np.round(prices * 1.10, 2)` to apply a 10% inflation increase rounded to `2` decimal places.\n3. Print `inflated_prices`.",
       "starterCode": "import numpy as np\n\nprices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])\n\n# Calculate 10% inflated prices using vectorization and round to 2 decimal places\ninflated_prices = None\n\nprint(inflated_prices)\n",
       "expectedCode": "import numpy as np\n\nprices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])\ninflated_prices = np.round(prices * 1.10, 2)\nprint(inflated_prices)\n",
       "validationScript": "assert 'inflated_prices' in locals(), \"Variable 'inflated_prices' must be defined\"\nassert np.allclose(inflated_prices, np.round(prices * 1.10, 2)), \"inflated_prices values are incorrect\"\n",
@@ -771,7 +771,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Vectorized Price Inflation Calculator",
       "scenario": "The pricing operations team wants to simulate a 10% inflation increase across product prices without using slow Python loops.",
-      "instructions": "Given a NumPy array of product prices `prices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])`, calculate `inflated_prices` by multiplying the array by 1.10 and round to 2 decimal places using `np.round()`. Print `inflated_prices`.",
+      "instructions": "1. Given product prices array `prices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])`.\n2. Calculate `inflated_prices = np.round(prices * 1.10, 2)` to apply a 10% inflation increase rounded to `2` decimal places.\n3. Print `inflated_prices`.",
       "starterCode": "import numpy as np\n\nprices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])\n\n# Calculate 10% inflated prices using vectorization and round to 2 decimal places\ninflated_prices = None\n\nprint(inflated_prices)\n",
       "expectedCode": "import numpy as np\n\nprices = np.array([149.99, 499.99, 299.50, 199.00, 179.99])\ninflated_prices = np.round(prices * 1.10, 2)\nprint(inflated_prices)\n",
       "validationScript": "assert 'inflated_prices' in locals(), \"Variable 'inflated_prices' must be defined\"\nassert np.allclose(inflated_prices, np.round(prices * 1.10, 2)), \"inflated_prices values are incorrect\"\n",
@@ -920,7 +920,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Visualize Sales Distribution",
       "scenario": "The marketing analytics team needs a histogram visualization of order amounts to understand customer spending buckets.",
-      "instructions": "Using pandas and matplotlib, read `sales.csv`. Plot a histogram of the `sale_amount` column with `bins=5`. Set the title to \"Sales Distribution\" and xlabel to \"Order Amount ($)\". Display the plot using `plt.show()`.",
+      "instructions": "1. Read `sales.csv` using `pd.read_csv(\"sales.csv\")`.\n2. Plot a histogram of the `sale_amount` column with `bins = 5` and `edgecolor = \"black\"` using `plt.hist()`.\n3. Set the title to `\"Sales Distribution\"` and xlabel to `\"Order Amount ($)\"`.\n4. Call `plt.show()` to render the plot.",
       "starterCode": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ndf = pd.read_csv('sales.csv')\n\n# Plot a histogram of sale_amount with 5 bins\n# Add title and xlabel, then call plt.show()\n",
       "expectedCode": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ndf = pd.read_csv('sales.csv')\nplt.hist(df['sale_amount'], bins=5, edgecolor='black')\nplt.title('Sales Distribution')\nplt.xlabel('Order Amount ($)')\nplt.show()\n",
       "validationScript": "assert 'df' in locals(), \"DataFrame 'df' must be loaded\"\nassert len(df) == 14, \"sales.csv should contain 14 rows\"\n",
@@ -989,7 +989,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Visualize Sales Distribution",
       "scenario": "The marketing analytics team needs a histogram visualization of order amounts to understand customer spending buckets.",
-      "instructions": "Using pandas and matplotlib, read `sales.csv`. Plot a histogram of the `sale_amount` column with `bins=5`. Set the title to \"Sales Distribution\" and xlabel to \"Order Amount ($)\". Display the plot using `plt.show()`.",
+      "instructions": "1. Read `sales.csv` using `pd.read_csv(\"sales.csv\")`.\n2. Plot a histogram of the `sale_amount` column with `bins = 5` and `edgecolor = \"black\"` using `plt.hist()`.\n3. Set the title to `\"Sales Distribution\"` and xlabel to `\"Order Amount ($)\"`.\n4. Call `plt.show()` to render the plot.",
       "starterCode": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ndf = pd.read_csv('sales.csv')\n\n# Plot a histogram of sale_amount with 5 bins\n# Add title and xlabel, then call plt.show()\n",
       "expectedCode": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ndf = pd.read_csv('sales.csv')\nplt.hist(df['sale_amount'], bins=5, edgecolor='black')\nplt.title('Sales Distribution')\nplt.xlabel('Order Amount ($)')\nplt.show()\n",
       "validationScript": "assert 'df' in locals(), \"DataFrame 'df' must be loaded\"\nassert len(df) == 14, \"sales.csv should contain 14 rows\"\n",
@@ -1401,7 +1401,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Targeted Country Subsetting with loc",
       "scenario": "The trade strategy department needs to inspect the capital and population for Brazil (BR) and China (CH) from the BRICS dataset.",
-      "instructions": "Load `brics.csv` with `index_col='country_code'`. Use `.loc` to select the rows for `['BR', 'CH']` and the columns `['capital', 'population']`. Assign to `subset_df` and print it.",
+      "instructions": "1. Load `brics.csv` with `index_col = \"country_code\"`.\n2. Use `.loc` to select the rows for `[\"BR\", \"CH\"]` and columns `[\"capital\", \"population\"]`.\n3. Assign to `subset_df`.\n4. Print `subset_df`.",
       "starterCode": "import pandas as pd\n\nbrics = pd.read_csv('brics.csv', index_col='country_code')\n\n# Select BR and CH with columns capital and population using .loc\nsubset_df = None\n\nprint(subset_df)\n",
       "expectedCode": "import pandas as pd\n\nbrics = pd.read_csv('brics.csv', index_col='country_code')\nsubset_df = brics.loc[['BR', 'CH'], ['capital', 'population']]\nprint(subset_df)\n",
       "validationScript": "assert 'subset_df' in locals(), \"Variable 'subset_df' must be defined\"\nassert list(subset_df.index) == ['BR', 'CH'], \"Index must be BR and CH\"\nassert list(subset_df.columns) == ['capital', 'population'], \"Columns must be capital and population\"\n",
@@ -2875,7 +2875,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Regional Revenue Aggregation",
       "scenario": "The CFO needs to review total revenue and order volume broken down by sales region.",
-      "instructions": "Read `sales.csv`. Group by `region` and calculate total revenue `sum` and order count `count` on `sale_amount`. Assign the grouped result to `regional_summary` and print it.",
+      "instructions": "1. Read `sales.csv` into a DataFrame.\n2. Group by `region` and calculate total revenue `sum` and order count `count` on `sale_amount` using `.agg([\"sum\", \"count\"])`.\n3. Round values to `2` decimal places using `.round(2)`.\n4. Assign to `regional_summary` and print it.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\n\n# Group by region and aggregate sale_amount with sum and count\nregional_summary = None\n\nprint(regional_summary)\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nregional_summary = sales.groupby('region')['sale_amount'].agg(['sum', 'count']).round(2)\nprint(regional_summary)\n",
       "validationScript": "assert 'regional_summary' in locals(), \"Variable 'regional_summary' must be defined\"\nassert len(regional_summary) == 4, \"Should have 4 regions (East, Midwest, South, West)\"\n",
@@ -3262,7 +3262,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Targeted Country Subsetting with loc",
       "scenario": "The trade strategy department needs to inspect the capital and population for Brazil (BR) and China (CH) from the BRICS dataset.",
-      "instructions": "Load `brics.csv` with `index_col='country_code'`. Use `.loc` to select the rows for `['BR', 'CH']` and the columns `['capital', 'population']`. Assign to `subset_df` and print it.",
+      "instructions": "1. Load `brics.csv` with `index_col = \"country_code\"`.\n2. Use `.loc` to select the rows for `[\"BR\", \"CH\"]` and columns `[\"capital\", \"population\"]`.\n3. Assign to `subset_df`.\n4. Print `subset_df`.",
       "starterCode": "import pandas as pd\n\nbrics = pd.read_csv('brics.csv', index_col='country_code')\n\n# Select BR and CH with columns capital and population using .loc\nsubset_df = None\n\nprint(subset_df)\n",
       "expectedCode": "import pandas as pd\n\nbrics = pd.read_csv('brics.csv', index_col='country_code')\nsubset_df = brics.loc[['BR', 'CH'], ['capital', 'population']]\nprint(subset_df)\n",
       "validationScript": "assert 'subset_df' in locals(), \"Variable 'subset_df' must be defined\"\nassert list(subset_df.index) == ['BR', 'CH'], \"Index must be BR and CH\"\nassert list(subset_df.columns) == ['capital', 'population'], \"Columns must be capital and population\"\n",
@@ -3613,7 +3613,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Clean Incomplete Customer Emails",
       "scenario": "The CRM sync job fails when customer emails are null or missing. Impute missing emails with a placeholder.",
-      "instructions": "Read `customers.csv`. Count missing emails with `.isna().sum()`. Replace all missing values in the `email` column with `'support@company.com'`. Assign to `clean_customers`.",
+      "instructions": "1. Read `customers.csv`.\n2. Count missing emails using `.isna().sum()`.\n3. Replace all missing values in the `email` column with `\"support@company.com\"` using `.fillna()`.\n4. Assign the cleaned DataFrame to `clean_customers`.",
       "starterCode": "import pandas as pd\n\ncustomers = pd.read_csv('customers.csv')\n\n# Replace missing emails with 'support@company.com'\nclean_customers = customers.copy()\n# your code here\n\nprint(clean_customers[['customer_id', 'first_name', 'email']])\n",
       "expectedCode": "import pandas as pd\n\ncustomers = pd.read_csv('customers.csv')\nclean_customers = customers.copy()\nclean_customers['email'] = clean_customers['email'].fillna('support@company.com')\nprint(clean_customers[['customer_id', 'first_name', 'email']])\n",
       "validationScript": "assert 'clean_customers' in locals(), \"Variable 'clean_customers' must be defined\"\nassert clean_customers['email'].isna().sum() == 0, \"No missing emails should remain\"\n",
@@ -4042,7 +4042,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -4354,7 +4354,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -4496,7 +4496,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -4611,7 +4611,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -4857,7 +4857,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -5138,7 +5138,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -5225,7 +5225,7 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "Read `sales.csv` and `customers.csv`. Perform an inner join on `customer_id` using `pd.merge()`. Return the merged DataFrame with `sale_id`, `customer_id`, `first_name`, and `sale_amount` as `enriched_sales`.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
       "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
       "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
       "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
@@ -5466,7 +5466,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Beginner",
     "category": "File Handling",
     "context": "Data engineers frequently ingest raw CSV files deposited into cloud storage buckets or local staging disks.",
-    "goal": "Read 'sales.csv' into a DataFrame named `df`. Print the first 5 rows with `.head()`, the total shape (rows and columns), and the column data types.",
+    "goal": "1. Read `sales.csv` into a DataFrame named `df` using `pd.read_csv()`.\n2. Print the first `5` rows with `df.head(5)`.\n3. Inspect total dimensions with `df.shape`.\n4. Print column names using `list(df.columns)`.",
     "csvsUsed": [
       "sales.csv"
     ],
@@ -5487,7 +5487,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Beginner",
     "category": "Data Cleaning",
     "context": "Upstream CRM webhooks accidentally double-fire, creating duplicate customer records with identical names and emails.",
-    "goal": "Read 'customers.csv'. Identify how many duplicate rows exist using `df.duplicated().sum()`. Drop duplicate records using `df.drop_duplicates()`. Save the deduplicated dataset to `cleaned_customers`.",
+    "goal": "1. Read `customers.csv` into `customers`.\n2. Count duplicate records across `['first_name', 'last_name', 'email']` with `.duplicated().sum()` into `dup_count`.\n3. Drop duplicate records using `customers.drop_duplicates()` into `cleaned_customers`.\n4. Print `dup_count` and final customer count.",
     "csvsUsed": [
       "customers.csv"
     ],
@@ -5508,7 +5508,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Beginner",
     "category": "Data Cleaning",
     "context": "Missing data causes arithmetic failures and incorrect downstream report generation. Identify and impute missing values.",
-    "goal": "Read 'customers.csv'. Count missing values in the `email` column using `.isna().sum()`. Impute missing emails with the placeholder `'unspecified@customer.internal'`. Save to `filled_customers`.",
+    "goal": "1. Read `customers.csv`.\n2. Count missing values in the `email` column using `.isna().sum()` into `missing_count`.\n3. Impute missing emails with `'unspecified@customer.internal'` using `.fillna()`.\n4. Assign to `filled_customers` and verify no nulls remain.",
     "csvsUsed": [
       "customers.csv"
     ],
@@ -5528,7 +5528,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Intermediate",
     "category": "Data Transformation",
     "context": "The executive team wants regional performance metrics to guide territory marketing budget allocations.",
-    "goal": "Read 'sales.csv'. Group by the `region` column and calculate both the average (`mean`) and total (`sum`) `sale_amount`. Round results to 2 decimal places. Assign to `regional_metrics`.",
+    "goal": "1. Read `sales.csv`.\n2. Group by `region` and calculate both average (`mean`) and total (`sum`) `sale_amount`.\n3. Round results to `2` decimal places using `.round(2)`.\n4. Assign to `regional_metrics`.",
     "csvsUsed": [
       "sales.csv"
     ],
@@ -5548,7 +5548,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Intermediate",
     "category": "Data Merging",
     "context": "In data warehousing, transactional purchase orders must be enriched with customer demographic profiles.",
-    "goal": "Read 'sales.csv' and 'customers.csv'. Merge them on `customer_id` using an `inner` join. Store the result in `sales_with_customers`. Verify that the merged result has the customer's `first_name` and `city`.",
+    "goal": "1. Read `sales.csv` and `customers.csv`.\n2. Merge on `customer_id` using an `inner` join with `pd.merge()`.\n3. Store in `sales_with_customers`.\n4. Verify merged DataFrame has customer `first_name` and `city`.",
     "csvsUsed": [
       "sales.csv",
       "customers.csv"
@@ -5568,7 +5568,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Intermediate",
     "category": "Data Validation",
     "context": "Transaction dates exported from legacy systems often arrive as raw strings, preventing time-series math.",
-    "goal": "Read 'sales.csv'. Convert the `sale_date` column to datetime objects using `pd.to_datetime()`. Extract the year and month into a new column named `year_month` formatted as 'YYYY-MM'. Assign to `sales_dated`.",
+    "goal": "1. Read `sales.csv`.\n2. Convert `sale_date` column to datetime objects with `pd.to_datetime()`.\n3. Extract year and month into `year_month` formatted as `'YYYY-MM'` with `.dt.strftime('%Y-%m')`.\n4. Assign to `sales_dated` and print the top `5` records.",
     "csvsUsed": [
       "sales.csv"
     ],
@@ -5588,7 +5588,7 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "difficulty": "Beginner",
     "category": "Automation",
     "context": "After completing data cleansing pipelines, data engineers export artifacts to S3 or downstream consumers without raw index noise.",
-    "goal": "Filter 'sales.csv' to include only transactions with `sale_amount >= 200`. Save the filtered records to a file named `'high_value_sales.csv'` using `.to_csv(index=False)`. Confirm the exported file exists by reading it back into `exported_df`.",
+    "goal": "1. Filter `sales.csv` for transactions with `sale_amount >= 200` into `high_value`.\n2. Export to `'high_value_sales.csv'` using `.to_csv(index=False)`.\n3. Read the file back into `exported_df` to verify the export.",
     "csvsUsed": [
       "sales.csv"
     ],

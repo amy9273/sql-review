@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PYTHON_EXERCISES } from '../data/pythonCurriculum';
 import { executePythonCode, validatePythonSubmission, SEED_CSVS, type PythonExecutionResult } from '../lib/pythonEngine';
 import { PythonEditor } from './PythonEditor';
+import { FormattedGoal } from './FormattedGoal';
 import confetti from 'canvas-confetti';
 import {
   Flame,
@@ -297,8 +298,8 @@ export const PythonActivityRunner: React.FC<PythonActivityRunnerProps> = ({
                 <p className="text-slate-600 leading-relaxed">{currentExercise.context}</p>
               </div>
               <div className="pt-2 border-t border-slate-200">
-                <strong className="text-emerald-700 block font-semibold mb-0.5">Your Goal:</strong>
-                <p className="text-slate-800 leading-relaxed font-medium">{currentExercise.goal}</p>
+                <strong className="text-emerald-700 block font-semibold mb-1.5 text-xs">Your Goal:</strong>
+                <FormattedGoal goalText={currentExercise.goal} theme="emerald" />
               </div>
             </div>
 

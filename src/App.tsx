@@ -95,6 +95,7 @@ export default function App() {
             reviewedLessons={reviewedLessons}
             onToggleReviewed={handleToggleReviewedLesson}
             onOpenPlaygroundWithSql={handleOpenPlaygroundWithSql}
+            onOpenSchemaForTable={handleOpenSchemaForTable}
           />
         )}
 

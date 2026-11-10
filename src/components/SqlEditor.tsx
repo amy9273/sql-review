@@ -534,31 +534,30 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
 
   return (
     <div className={`space-y-1.5 ${className}`}>
-      {/* Editor Top Toolbar */}
-      <div className="flex items-center justify-between text-xs px-1">
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-[11px] text-slate-400 flex items-center gap-1.5">
-            <Code2 className="w-3.5 h-3.5 text-brand-600" />
+      {/* Editor Top Toolbar - Clean, single-line, zero wrap */}
+      <div className="flex items-center justify-between text-xs px-1 pb-0.5">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="font-mono text-xs font-bold text-slate-700 flex items-center gap-1.5 whitespace-nowrap">
+            <Code2 className="w-3.5 h-3.5 text-indigo-600" />
             <span>SQL Editor</span>
           </span>
-          <span className="text-[10px] text-slate-400 hidden sm:inline">
-            (Tab to indent • Select &apos; to quote • Ctrl+Enter to run)
+          <span className="text-[10px] text-slate-400 font-mono hidden xl:inline whitespace-nowrap">
+            • Tab to indent • Ctrl+Enter to run
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
           <button
             type="button"
             onClick={() => setIsSuggestionsEnabled(!isSuggestionsEnabled)}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors border ${
+            className={`p-1.5 rounded-lg text-xs transition-colors border ${
               isSuggestionsEnabled
-                ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
-                : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
+                ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100'
             }`}
-            title="Toggle autocomplete suggestions"
+            title={isSuggestionsEnabled ? 'Suggestions are enabled (click to mute)' : 'Suggestions are muted (click to enable)'}
           >
-            <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
-            <span>{isSuggestionsEnabled ? 'Suggestions On' : 'Suggestions Off'}</span>
+            <Lightbulb className="w-3.5 h-3.5" />
           </button>
 
           <button
@@ -585,7 +584,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
             <button
               type="button"
               onClick={onReset}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
               title="Reset query template"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -595,12 +594,12 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
         </div>
       </div>
 
-      {/* Editor Frame with Line Numbers & NON-OVERLAPPING Bottom Suggestions Dock */}
+      {/* Editor Frame with Line Numbers & Bottom Suggestions Dock */}
       <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner flex flex-col">
         {/* Main Code Editing Area (Line numbers + Textarea) */}
-        <div className="flex flex-1 min-h-[160px]">
+        <div className="flex flex-1 min-h-[170px]">
           {/* Line Numbers Gutter */}
-          <div className="w-10 select-none py-4 text-right pr-2.5 text-slate-600 font-mono text-xs border-r border-slate-800/80 bg-slate-950/80 flex-shrink-0 leading-[1.85]">
+          <div className="w-9 select-none py-3 text-right pr-2 text-slate-600 font-mono text-xs border-r border-slate-800/80 bg-slate-950 flex-shrink-0 leading-[1.85]">
             {Array.from({ length: lineCount }).map((_, i) => (
               <div key={i}>{i + 1}</div>
             ))}
@@ -613,8 +612,8 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
               value={value}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
-              rows={rows}
-              className="code-editor w-full p-4 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
+              rows={rows || 9}
+              className="code-editor w-full p-3 bg-transparent text-emerald-400 text-sm outline-none resize-none leading-[1.85] font-mono min-h-[170px]"
               placeholder={placeholder}
               spellCheck={false}
             />

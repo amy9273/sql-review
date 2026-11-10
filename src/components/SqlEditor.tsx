@@ -5,9 +5,9 @@ import {
   Check,
   RotateCcw,
   Sparkles,
-  Database,
-  Columns,
-  Code2
+  Code2,
+  Lightbulb,
+  X
 } from 'lucide-react';
 
 export interface SqlEditorProps {
@@ -62,18 +62,18 @@ const SQL_KEYWORDS = [
 ];
 
 const SQL_FUNCTIONS = [
-  { label: 'COUNT(*)', snippet: 'COUNT(*)', desc: 'Count all rows' },
+  { label: 'COUNT(*)', snippet: 'COUNT(*)', desc: 'Count all records' },
   { label: 'COUNT(col)', snippet: 'COUNT()', desc: 'Count non-null values' },
   { label: 'SUM()', snippet: 'SUM()', desc: 'Total sum of numeric column' },
   { label: 'AVG()', snippet: 'AVG()', desc: 'Mathematical average' },
-  { label: 'ROUND()', snippet: 'ROUND(, 2)', desc: 'Round to decimal places' },
-  { label: 'MIN()', snippet: 'MIN()', desc: 'Smallest value' },
-  { label: 'MAX()', snippet: 'MAX()', desc: 'Largest value' },
-  { label: 'COALESCE()', snippet: 'COALESCE(, )', desc: 'Fallback for NULLs' },
+  { label: 'ROUND()', snippet: 'ROUND(, 2)', desc: 'Round to 2 decimal places' },
+  { label: 'MIN()', snippet: 'MIN()', desc: 'Smallest value in column' },
+  { label: 'MAX()', snippet: 'MAX()', desc: 'Largest value in column' },
+  { label: 'COALESCE()', snippet: 'COALESCE(, )', desc: 'Return first non-null value' },
   { label: 'TRIM()', snippet: 'TRIM()', desc: 'Strip whitespace' },
-  { label: 'strftime()', snippet: "strftime('%Y-%m', )", desc: 'Extract date parts' },
-  { label: 'ROW_NUMBER() OVER ()', snippet: 'ROW_NUMBER() OVER (PARTITION BY  ORDER BY )', desc: 'Sequential row numbers' },
-  { label: 'DENSE_RANK() OVER ()', snippet: 'DENSE_RANK() OVER (ORDER BY )', desc: 'Rank without gaps' },
+  { label: 'strftime()', snippet: "strftime('%Y-%m', )", desc: 'Extract year and month string' },
+  { label: 'ROW_NUMBER() OVER ()', snippet: 'ROW_NUMBER() OVER (PARTITION BY  ORDER BY )', desc: 'Sequential row number per partition' },
+  { label: 'DENSE_RANK() OVER ()', snippet: 'DENSE_RANK() OVER (ORDER BY )', desc: 'Rank without gaps on ties' },
   { label: 'RANK() OVER ()', snippet: 'RANK() OVER (ORDER BY )', desc: 'Rank with gaps on ties' }
 ];
 
@@ -241,6 +241,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copied, setCopied] = useState(false);
+  const [isSuggestionsEnabled, setIsSuggestionsEnabled] = useState(true);
 
   // Autocomplete state
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -278,7 +279,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
 
   // Filtered suggestions based on typed token
   const filteredSuggestions = useMemo(() => {
-    if (!suggestionFilter || suggestionFilter.length < 1) return [];
+    if (!isSuggestionsEnabled || !suggestionFilter || suggestionFilter.length < 1) return [];
 
     const lower = suggestionFilter.toLowerCase();
     const matches = allSuggestions.filter((item) => item.label.toLowerCase().includes(lower));
@@ -292,8 +293,8 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
       return a.label.localeCompare(b.label);
     });
 
-    return matches.slice(0, 8); // Top 8 suggestions
-  }, [allSuggestions, suggestionFilter]);
+    return matches.slice(0, 7); // Show top 7 non-overlapping items
+  }, [allSuggestions, suggestionFilter, isSuggestionsEnabled]);
 
   // Keep index within bounds
   useEffect(() => {
@@ -302,6 +303,11 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
 
   // Check cursor position for autocomplete triggers
   const checkAutocomplete = (text: string, cursorPos: number) => {
+    if (!isSuggestionsEnabled) {
+      setShowSuggestions(false);
+      return;
+    }
+
     const textBefore = text.substring(0, cursorPos);
     const match = textBefore.match(/[a-zA-Z0-9_]+$/);
 
@@ -361,7 +367,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
       return;
     }
 
-    // 3. Autocomplete popup keyboard navigation
+    // 3. Autocomplete popup keyboard navigation (ArrowDown / ArrowUp / Enter / Tab / Esc)
     if (showSuggestions && filteredSuggestions.length > 0) {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -373,7 +379,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
         setSelectedSuggestionIndex((prev) => (prev - 1 + filteredSuggestions.length) % filteredSuggestions.length);
         return;
       }
-      if (e.key === 'Enter' || e.key === 'Tab') {
+      if (e.key === 'Tab' || (e.key === 'Enter' && !e.shiftKey)) {
         e.preventDefault();
         applySuggestion(filteredSuggestions[selectedSuggestionIndex]);
         return;
@@ -543,6 +549,20 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
         <div className="flex items-center gap-1.5">
           <button
             type="button"
+            onClick={() => setIsSuggestionsEnabled(!isSuggestionsEnabled)}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors border ${
+              isSuggestionsEnabled
+                ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
+                : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
+            }`}
+            title="Toggle autocomplete suggestions"
+          >
+            <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
+            <span>{isSuggestionsEnabled ? 'Suggestions On' : 'Suggestions Off'}</span>
+          </button>
+
+          <button
+            type="button"
             onClick={handleFormatSql}
             className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors"
             title="Prettify and format SQL (Alt + Shift + F)"
@@ -575,83 +595,111 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
         </div>
       </div>
 
-      {/* Editor Frame with Line Numbers & Autocomplete */}
-      <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner flex">
-        {/* Line Numbers Gutter */}
-        <div className="w-10 select-none py-4 text-right pr-2.5 text-slate-600 font-mono text-xs border-r border-slate-800/80 bg-slate-950/80 flex-shrink-0 leading-[1.85]">
-          {Array.from({ length: lineCount }).map((_, i) => (
-            <div key={i}>{i + 1}</div>
-          ))}
+      {/* Editor Frame with Line Numbers & NON-OVERLAPPING Bottom Suggestions Dock */}
+      <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner flex flex-col">
+        {/* Main Code Editing Area (Line numbers + Textarea) */}
+        <div className="flex flex-1 min-h-[160px]">
+          {/* Line Numbers Gutter */}
+          <div className="w-10 select-none py-4 text-right pr-2.5 text-slate-600 font-mono text-xs border-r border-slate-800/80 bg-slate-950/80 flex-shrink-0 leading-[1.85]">
+            {Array.from({ length: lineCount }).map((_, i) => (
+              <div key={i}>{i + 1}</div>
+            ))}
+          </div>
+
+          {/* SQL Textarea */}
+          <div className="flex-1 relative min-w-0">
+            <textarea
+              ref={textareaRef}
+              value={value}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              rows={rows}
+              className="code-editor w-full p-4 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
+              placeholder={placeholder}
+              spellCheck={false}
+            />
+          </div>
         </div>
 
-        {/* SQL Textarea */}
-        <div className="flex-1 relative min-w-0">
-          <textarea
-            ref={textareaRef}
-            value={value}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            onBlur={() => {
-              // Delay hide to allow clicks on dropdown
-              setTimeout(() => setShowSuggestions(false), 200);
-            }}
-            rows={rows}
-            className="code-editor w-full p-4 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
-            placeholder={placeholder}
-            spellCheck={false}
-          />
+        {/* DEDICATED SUGGESTIONS DOCK (DOCKED AT BOTTOM - NEVER BLOCKS CODE!) */}
+        {showSuggestions && filteredSuggestions.length > 0 && (
+          <div className="border-t border-slate-800 bg-slate-900/95 px-3 py-2.5 flex flex-col gap-2 transition-all">
+            <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium">
+              <span className="flex items-center gap-1.5 text-amber-400">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Suggestions for &quot;{suggestionFilter}&quot;:</span>
+              </span>
 
-          {/* Autocomplete Suggestions Dropdown */}
-          {showSuggestions && filteredSuggestions.length > 0 && (
-            <div className="absolute left-6 top-12 z-50 w-72 rounded-xl bg-slate-900 border border-slate-700 shadow-xl overflow-hidden divide-y divide-slate-800">
-              <div className="px-3 py-1.5 bg-slate-950/80 text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center justify-between">
-                <span>SQL Suggestions</span>
-                <span className="font-mono text-[9px] text-slate-500">Tab or Enter</span>
-              </div>
-              <div className="max-h-56 overflow-y-auto">
-                {filteredSuggestions.map((item, idx) => {
-                  const isSelected = idx === selectedSuggestionIndex;
-
-                  return (
-                    <button
-                      key={item.label}
-                      type="button"
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        applySuggestion(item);
-                      }}
-                      className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between gap-2 transition-colors ${
-                        isSelected ? 'bg-brand-600/30 text-white' : 'text-slate-300 hover:bg-slate-800'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 min-w-0">
-                        {item.type === 'KEYWORD' && <Sparkles className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />}
-                        {item.type === 'FUNCTION' && <Code2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />}
-                        {item.type === 'TABLE' && <Database className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />}
-                        {item.type === 'COLUMN' && <Columns className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />}
-                        <span className="font-mono font-medium truncate">{item.label}</span>
-                      </div>
-
-                      <span
-                        className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase font-mono tracking-wider ${
-                          item.type === 'KEYWORD'
-                            ? 'bg-indigo-900/50 text-indigo-300 border border-indigo-700/50'
-                            : item.type === 'FUNCTION'
-                            ? 'bg-emerald-900/50 text-emerald-300 border border-emerald-700/50'
-                            : item.type === 'TABLE'
-                            ? 'bg-sky-900/50 text-sky-300 border border-sky-700/50'
-                            : 'bg-amber-900/50 text-amber-300 border border-amber-700/50'
-                        }`}
-                      >
-                        {item.type}
-                      </span>
-                    </button>
-                  );
-                })}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">
+                  ↑ ↓ to navigate • Tab or Enter to insert
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowSuggestions(false)}
+                  className="p-0.5 text-slate-500 hover:text-slate-300 rounded transition-colors"
+                  title="Close suggestions dock"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
-          )}
-        </div>
+
+            {/* Suggestions Chips - Visible alongside the query without blocking text */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {filteredSuggestions.map((item, idx) => {
+                const isSelected = idx === selectedSuggestionIndex;
+
+                return (
+                  <button
+                    key={item.label}
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      applySuggestion(item);
+                    }}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all border ${
+                      isSelected
+                        ? 'bg-brand-600 text-white border-brand-400 shadow-xs ring-2 ring-brand-400/40'
+                        : 'bg-slate-800/90 hover:bg-slate-700 text-slate-200 border-slate-700/80 hover:border-slate-600'
+                    }`}
+                  >
+                    <span
+                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded uppercase ${
+                        item.type === 'KEYWORD'
+                          ? 'bg-indigo-950 text-indigo-300 border border-indigo-700/40'
+                          : item.type === 'FUNCTION'
+                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-700/40'
+                          : item.type === 'TABLE'
+                          ? 'bg-sky-950 text-sky-300 border border-sky-700/40'
+                          : 'bg-amber-950 text-amber-300 border border-amber-700/40'
+                      }`}
+                    >
+                      {item.type === 'FUNCTION'
+                        ? 'FN'
+                        : item.type === 'KEYWORD'
+                        ? 'KW'
+                        : item.type === 'TABLE'
+                        ? 'TBL'
+                        : 'COL'}
+                    </span>
+                    <span className="font-semibold">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Active suggestion preview / description */}
+            {filteredSuggestions[selectedSuggestionIndex]?.description && (
+              <div className="text-[11px] text-slate-400 pt-1 flex items-center gap-1.5 border-t border-slate-800/80">
+                <span className="text-slate-300 font-mono font-medium">
+                  {filteredSuggestions[selectedSuggestionIndex].label}:
+                </span>
+                <span>{filteredSuggestions[selectedSuggestionIndex].description}</span>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

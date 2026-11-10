@@ -7,18 +7,19 @@ export interface FormattedLessonBodyProps {
   className?: string;
 }
 
-interface KVItem {
-  key: string;
-  val: string;
-}
-
 type ParsedBlock =
   | { type: 'subtitle'; title: string }
-  | { type: 'definition_list'; items: KVItem[] }
+  | { type: 'indented_list'; items: string[] }
   | { type: 'code_block'; snippets: string[] }
   | { type: 'bullet_list'; items: string[] }
   | { type: 'tip'; label: string; content: string }
   | { type: 'paragraph'; text: string };
+
+function isConclusion(text: string): boolean {
+  return /^(this (allows|difference|demonstrates|shows|means|approach|is)|in conclusion|by combining|as you can see|for clarity|mastering this)\b/i.test(
+    text.trim()
+  );
+}
 
 function parseBlocks(rawText: string): ParsedBlock[] {
   if (!rawText) return [];
@@ -26,7 +27,7 @@ function parseBlocks(rawText: string): ParsedBlock[] {
   const rawParagraphs = rawText.split('\n\n').filter(Boolean);
   const tempBlocks: (
     | { type: 'subtitle'; title: string }
-    | { type: 'key_value'; key: string; val: string }
+    | { type: 'indented_list'; items: string[] }
     | { type: 'bullet_list'; items: string[] }
     | { type: 'code_snippet'; code: string }
     | { type: 'tip'; label: string; content: string }
@@ -56,19 +57,13 @@ function parseBlocks(rawText: string): ParsedBlock[] {
     // 2. Multi-line chunk where all lines are Key: Value pairs
     const isAllKv =
       lines.length > 1 &&
-      lines.every((l) => /^([A-Za-z0-9_`* /&-]{2,35}):\s+([A-Z0-9`"'].+)/.test(l.trim()));
+      lines.every((l) => /^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s+(.+)/.test(l.trim()));
 
     if (isAllKv) {
-      for (const line of lines) {
-        const kvMatch = line.trim().match(/^([A-Za-z0-9_`* /&-]{2,35}):\s+([A-Z0-9`"'].+)/);
-        if (kvMatch) {
-          tempBlocks.push({
-            type: 'key_value',
-            key: kvMatch[1],
-            val: kvMatch[2]
-          });
-        }
-      }
+      tempBlocks.push({
+        type: 'indented_list',
+        items: lines.map((l) => l.trim())
+      });
       continue;
     }
 
@@ -85,19 +80,7 @@ function parseBlocks(rawText: string): ParsedBlock[] {
       continue;
     }
 
-    // 5. Key: Value definition item (e.g. "NumPy: Efficiently works with arrays.")
-    const kvMatch = chunk.match(/^([A-Za-z0-9_`* /&-]{2,35}):\s+([A-Z0-9`"'].+)/s);
-    if (
-      kvMatch &&
-      !kvMatch[1].toLowerCase().startsWith('for example') &&
-      !kvMatch[1].toLowerCase().startsWith('for instance') &&
-      !kvMatch[1].toLowerCase().startsWith('the general workflow is')
-    ) {
-      tempBlocks.push({ type: 'key_value', key: kvMatch[1], val: kvMatch[2] });
-      continue;
-    }
-
-    // 6. Subtitle / Heading
+    // 5. Subtitle / Heading
     // Standalone single line <= 65 chars that:
     // - Ends in a colon (e.g. "Import the whole package:")
     // - OR does not end in standard sentence punctuation (. ? ! , ;) and is a heading-like phrase
@@ -113,50 +96,112 @@ function parseBlocks(rawText: string): ParsedBlock[] {
 
     if (isSubtitle) {
       tempBlocks.push({ type: 'subtitle', title: chunk });
+
+      // Lookahead: group subsequent items introduced by this subtitle
+      const listItems: string[] = [];
+      let j = i + 1;
+      while (j < rawParagraphs.length) {
+        const next = rawParagraphs[j].trim();
+        if (next.endsWith(':') || /^`[^`]+`$/.test(next) || isConclusion(next)) break;
+        if (next.length < 180 && !next.includes('\n\n')) {
+          listItems.push(next);
+          j++;
+        } else {
+          break;
+        }
+      }
+      if (listItems.length >= 2) {
+        tempBlocks.push({ type: 'indented_list', items: listItems });
+        i = j - 1;
+      }
       continue;
     }
 
-    // 7. Regular paragraph
+    // 6. Paragraph ending in a colon that introduces items/steps (e.g. "...boolean subsetting:")
+    if (chunk.endsWith(':')) {
+      tempBlocks.push({ type: 'paragraph', text: chunk });
+
+      // Lookahead: group subsequent items introduced by this colon
+      const listItems: string[] = [];
+      let j = i + 1;
+      while (j < rawParagraphs.length) {
+        const next = rawParagraphs[j].trim();
+        if (next.endsWith(':') || /^`[^`]+`$/.test(next) || isConclusion(next)) break;
+        if (next.length < 180 && !next.includes('\n\n')) {
+          listItems.push(next);
+          j++;
+        } else {
+          break;
+        }
+      }
+      if (listItems.length >= 2) {
+        tempBlocks.push({ type: 'indented_list', items: listItems });
+        i = j - 1;
+      }
+      continue;
+    }
+
+    // 7. Standalone Key: Value / Key – Value item
+    const kvMatch = chunk.match(/^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s+(.+)/s);
+    if (
+      kvMatch &&
+      !kvMatch[1].toLowerCase().startsWith('for example') &&
+      !kvMatch[1].toLowerCase().startsWith('for instance')
+    ) {
+      tempBlocks.push({ type: 'indented_list', items: [chunk] });
+      continue;
+    }
+
+    // 8. Regular paragraph
     tempBlocks.push({ type: 'paragraph', text: chunk });
   }
 
-  // Group consecutive key_value blocks into definition_list,
-  // and group consecutive code_snippet blocks into code_block
-  const groupedBlocks: ParsedBlock[] = [];
-  let currentKvGroup: KVItem[] = [];
-  let currentCodeGroup: string[] = [];
-
-  const flushKv = () => {
-    if (currentKvGroup.length > 0) {
-      groupedBlocks.push({ type: 'definition_list', items: currentKvGroup });
-      currentKvGroup = [];
-    }
-  };
-
-  const flushCode = () => {
-    if (currentCodeGroup.length > 0) {
-      groupedBlocks.push({ type: 'code_block', snippets: currentCodeGroup });
-      currentCodeGroup = [];
-    }
-  };
+  // Merge consecutive indented_list blocks
+  const mergedBlocks: (
+    | { type: 'subtitle'; title: string }
+    | { type: 'indented_list'; items: string[] }
+    | { type: 'bullet_list'; items: string[] }
+    | { type: 'code_snippet'; code: string }
+    | { type: 'tip'; label: string; content: string }
+    | { type: 'paragraph'; text: string }
+  )[] = [];
+  let currentList: string[] = [];
 
   for (const block of tempBlocks) {
-    if (block.type === 'key_value') {
-      flushCode();
-      currentKvGroup.push({ key: block.key, val: block.val });
-    } else if (block.type === 'code_snippet') {
-      flushKv();
-      currentCodeGroup.push(block.code);
+    if (block.type === 'indented_list') {
+      currentList.push(...block.items);
     } else {
-      flushKv();
-      flushCode();
-      groupedBlocks.push(block);
+      if (currentList.length > 0) {
+        mergedBlocks.push({ type: 'indented_list', items: currentList });
+        currentList = [];
+      }
+      mergedBlocks.push(block);
     }
   }
-  flushKv();
-  flushCode();
+  if (currentList.length > 0) {
+    mergedBlocks.push({ type: 'indented_list', items: currentList });
+  }
 
-  return groupedBlocks;
+  // Group consecutive code_snippet blocks into a single code_block
+  const finalBlocks: ParsedBlock[] = [];
+  let currentCode: string[] = [];
+
+  for (const block of mergedBlocks) {
+    if (block.type === 'code_snippet') {
+      currentCode.push(block.code);
+    } else {
+      if (currentCode.length > 0) {
+        finalBlocks.push({ type: 'code_block', snippets: currentCode });
+        currentCode = [];
+      }
+      finalBlocks.push(block);
+    }
+  }
+  if (currentCode.length > 0) {
+    finalBlocks.push({ type: 'code_block', snippets: currentCode });
+  }
+
+  return finalBlocks;
 }
 
 export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
@@ -215,24 +260,33 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
           );
         }
 
-        // Definition list with a colon (Indented & Bold items)
-        if (block.type === 'definition_list') {
+        // Indented list (cards, steps, and Key: Value pairs)
+        if (block.type === 'indented_list') {
           return (
             <div
               key={bIdx}
               className={`space-y-2.5 my-3 ml-4 pl-3.5 border-l-2 ${borderAccent} bg-slate-50/80 py-3 px-3.5 rounded-r-xl shadow-2xs`}
             >
-              {block.items.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 text-sm text-slate-800 leading-relaxed">
-                  <span className={`w-1.5 h-1.5 rounded-full ${bulletDot} mt-2 flex-shrink-0`} />
-                  <div>
-                    <strong className="font-bold text-slate-900 font-mono text-[13px]">
-                      {renderInline(item.key)}:
-                    </strong>{' '}
-                    <span className="text-slate-700">{renderInline(item.val)}</span>
+              {block.items.map((item, idx) => {
+                const kvMatch = item.match(/^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s*(.+)/);
+                return (
+                  <div key={idx} className="flex items-start gap-2.5 text-sm text-slate-800 leading-relaxed">
+                    <span className={`w-1.5 h-1.5 rounded-full ${bulletDot} mt-2 flex-shrink-0`} />
+                    <div>
+                      {kvMatch ? (
+                        <>
+                          <strong className="font-bold text-slate-900 font-mono text-[13px]">
+                            {renderInline(kvMatch[1])}:
+                          </strong>{' '}
+                          <span className="text-slate-700">{renderInline(kvMatch[2])}</span>
+                        </>
+                      ) : (
+                        <span className="text-slate-700">{renderInline(item)}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           );
         }
@@ -242,7 +296,7 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
           return (
             <ul key={bIdx} className="space-y-2 my-2.5 ml-4 pl-1">
               {block.items.map((line, idx) => {
-                const kv = line.match(/^([A-Za-z0-9_`* /&-]{2,35}):\s*(.+)/);
+                const kv = line.match(/^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s*(.+)/);
                 return (
                   <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
                     <span className={`w-1.5 h-1.5 rounded-full ${bulletDot} mt-2 flex-shrink-0`} />

@@ -279,12 +279,12 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         /* ========================================================= */
         <div className="flex-1 h-full min-w-0 bg-white border border-border-light rounded-2xl shadow-xs p-6 sm:p-8 flex flex-col overflow-y-auto">
           {/* Header Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-5 border-b border-border-light flex-shrink-0">
-            <div className="flex items-start gap-3">
+          <div className="flex items-center justify-between gap-4 pb-4 mb-5 border-b border-border-light flex-shrink-0">
+            <div className="flex items-center gap-3 min-w-0">
               {!isSidebarOpen && (
                 <button
                   onClick={() => setIsSidebarOpen(true)}
-                  className="mt-1 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex-shrink-0"
                   title="Expand Modules Sidebar"
                 >
                   <PanelLeftOpen className="w-4 h-4 text-brand-600" />
@@ -292,18 +292,22 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 </button>
               )}
 
-              <div>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-600 border border-brand-100">
-                  {currentLesson.moduleTitle}
-                </span>
-                <h1 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-brand-50 text-brand-600 border border-brand-200">
+                    Lesson {currentLesson.lessonOrder} Guide
+                  </span>
+                  <span className="text-xs text-slate-500 font-medium truncate">
+                    {currentLesson.moduleTitle.split(':')[0]}
+                  </span>
+                </div>
+                <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight mt-0.5 truncate">
                   {currentLesson.title}
                 </h1>
-                <p className="text-sm text-slate-500 mt-1">{currentLesson.description}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 flex-shrink-0">
               {/* Mode Toggle Tabs */}
               <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
                 <button
@@ -319,7 +323,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   <span>Practice Challenge</span>
-                  {isReviewed && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
                 </button>
               </div>
 
@@ -332,13 +335,16 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 }`}
               >
                 <CheckCircle className={`w-4 h-4 ${isReviewed ? 'text-emerald-600' : 'text-slate-400'}`} />
-                <span>{isReviewed ? 'Lesson Completed' : 'Mark as Completed'}</span>
+                <span>{isReviewed ? 'Completed' : 'Mark Completed'}</span>
               </button>
             </div>
           </div>
 
           {/* Lesson Guide Reading Body */}
           <div className="space-y-6">
+            <p className="text-sm text-slate-600 leading-relaxed pb-3 border-b border-slate-100">
+              {currentLesson.description}
+            </p>
             {currentLesson.sections.map((sec, idx) => (
               <div key={idx} className="space-y-3">
                 <h2 className="text-lg font-bold text-slate-900">{sec.title}</h2>
@@ -471,14 +477,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         /* ========================================================= */
         /* MODE 2: CHALLENGE STUDIO (Exact same layout as Exercise)  */
         /* ========================================================= */
-        <div className="flex-1 h-full min-w-0 bg-white border border-border-light rounded-2xl shadow-xs p-5 flex flex-col overflow-hidden">
+        <div className="flex-1 h-full min-w-0 bg-white border border-border-light rounded-2xl shadow-xs p-6 sm:p-8 flex flex-col overflow-hidden">
           {/* Top Header Bar */}
-          <div className="flex items-center justify-between gap-3 pb-3 mb-3 border-b border-border-light flex-shrink-0">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-4 pb-4 mb-5 border-b border-border-light flex-shrink-0">
+            <div className="flex items-center gap-3 min-w-0">
               {!isSidebarOpen && (
                 <button
                   onClick={() => setIsSidebarOpen(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex-shrink-0"
                   title="Expand Modules Sidebar"
                 >
                   <PanelLeftOpen className="w-4 h-4 text-brand-600" />
@@ -486,22 +492,22 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 </button>
               )}
 
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
                     Lesson {currentLesson.lessonOrder} Challenge
                   </span>
-                  <span className="text-xs text-slate-500 font-medium">
+                  <span className="text-xs text-slate-500 font-medium truncate">
                     {currentLesson.moduleTitle.split(':')[0]}
                   </span>
                 </div>
-                <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight mt-0.5">
+                <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight mt-0.5 truncate">
                   {currentLesson.challenge.title}
                 </h1>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-shrink-0">
               {/* Mode Toggle Tabs */}
               <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
                 <button
@@ -516,16 +522,21 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-indigo-700 shadow-xs"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Challenge Studio</span>
+                  <span>Practice Challenge</span>
                 </button>
               </div>
 
-              {isReviewed && (
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Solved</span>
-                </div>
-              )}
+              <button
+                onClick={() => onToggleReviewed(currentLesson.id)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border ${
+                  isReviewed
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                    : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-300 hover:border-slate-400'
+                }`}
+              >
+                <CheckCircle className={`w-4 h-4 ${isReviewed ? 'text-emerald-600' : 'text-slate-400'}`} />
+                <span>{isReviewed ? 'Completed' : 'Mark Completed'}</span>
+              </button>
             </div>
           </div>
 

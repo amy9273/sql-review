@@ -19,6 +19,8 @@ import {
   EyeOff,
   CheckCircle2,
   XCircle,
+  Briefcase,
+  Target,
 } from 'lucide-react';
 
 interface LessonViewerProps {
@@ -347,9 +349,24 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-brand-50/60 border border-brand-100 text-xs sm:text-sm text-slate-800 leading-relaxed">
-            <strong className="block text-brand-800 font-semibold mb-1">Your Challenge:</strong>
-            <p>{currentLesson.challenge.instructions}</p>
+          {/* Problem-Solving Business Scenario & Objective */}
+          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 leading-relaxed space-y-2.5 shadow-2xs">
+            {currentLesson.challenge.scenario && (
+              <div>
+                <strong className="text-slate-900 font-semibold flex items-center gap-1.5 mb-1">
+                  <Briefcase className="w-4 h-4 text-brand-600 flex-shrink-0" />
+                  <span>Business Scenario:</span>
+                </strong>
+                <p className="text-slate-600 leading-relaxed pl-5.5">{currentLesson.challenge.scenario}</p>
+              </div>
+            )}
+            <div className={currentLesson.challenge.scenario ? 'pt-2.5 border-t border-slate-200' : ''}>
+              <strong className="text-brand-700 font-semibold flex items-center gap-1.5 mb-1">
+                <Target className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>Your Objective:</span>
+              </strong>
+              <p className="text-slate-800 font-medium leading-relaxed pl-5.5">{currentLesson.challenge.instructions}</p>
+            </div>
           </div>
 
           {/* Interactive Code Editor for Challenge */}

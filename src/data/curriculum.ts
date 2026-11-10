@@ -6,6 +6,7 @@ export interface LessonSection {
 
 export interface LessonChallenge {
   title: string;
+  scenario: string;
   instructions: string;
   starterCode: string;
   expectedQuery: string;
@@ -112,21 +113,21 @@ SELECT * FROM products;`
       { goal: 'View every column in a table', syntax: 'SELECT * FROM table_name;' }
     ],
     challenge: {
-      title: 'Practice: Inspect the Products Table',
-      instructions: 'Write a query to view all columns from the products table. Limit the result to the first 5 rows.',
-      starterCode: `-- Challenge 1: View all columns from products
--- 1. SELECT *
--- 2. FROM products
--- 3. LIMIT 5;
+      title: 'Audit New Customer Signups',
+      scenario: 'The customer operations team is doing a quick audit of the CRM database to see what customer information is recorded when new accounts sign up.',
+      instructions: 'Write a query to retrieve all columns from the customers table for the first 5 customers in the system.',
+      starterCode: `-- Challenge 1: Inspect customer records for the CRM team
+-- 1. Select all columns from customers
+-- 2. Limit the result to 5 rows
 
 `,
-      expectedQuery: 'SELECT * FROM products LIMIT 5;',
+      expectedQuery: 'SELECT * FROM customers LIMIT 5;',
       hints: [
         'Use SELECT * to pick all columns.',
-        'Specify FROM products.',
+        'Query the customers table (FROM customers).',
         'Add LIMIT 5 at the end.'
       ],
-      solutionExplanation: 'SELECT * retrieves every column available in the products table, and LIMIT 5 returns the first 5 records.'
+      solutionExplanation: 'SELECT * FROM customers retrieves every column from the customers table, and LIMIT 5 returns the first 5 customer records.'
     }
   },
   {
@@ -144,35 +145,34 @@ SELECT * FROM products;`
       {
         title: 'Syntax and Example',
         body: 'List the column names after SELECT in any order you want:',
-        exampleSql: `-- Retrieve only product name and price
-SELECT product_name, price
-FROM products;`
+        exampleSql: `-- Retrieve only customer name and city
+SELECT first_name, last_name, city
+FROM customers;`
       }
     ],
     quickReference: [
       { goal: 'Pick specific columns', syntax: 'SELECT col1, col2 FROM table;' }
     ],
     commonMistake: {
-      wrongSql: 'SELECT product_name price FROM products;',
-      correctSql: 'SELECT product_name, price FROM products;',
+      wrongSql: 'SELECT first_name last_name FROM customers;',
+      correctSql: 'SELECT first_name, last_name FROM customers;',
       explanation: 'Always separate multiple column names with a comma.'
     },
     challenge: {
-      title: 'Practice: Select Product Names and Prices',
-      instructions: 'Write a query to select product_name, category, and price from the products table. Limit to 5 rows.',
-      starterCode: `-- Challenge 2: Select specific columns
+      title: 'Warehouse Catalog Price Sheet',
+      scenario: 'The warehouse logistics department is printing out an updated product catalog list. They need the item name, its category, and unit price, without exposing internal database IDs.',
+      instructions: 'Write a query to retrieve only product_name, category, and price from the products table.',
+      starterCode: `-- Challenge 2: Catalog list for warehouse logistics
 -- Select product_name, category, price
--- From products
--- Limit 5;
+-- From products;
 
 `,
-      expectedQuery: 'SELECT product_name, category, price FROM products LIMIT 5;',
+      expectedQuery: 'SELECT product_name, category, price FROM products;',
       hints: [
         'Separate the columns with commas: product_name, category, price.',
-        'Query the products table.',
-        'Add LIMIT 5.'
+        'Specify FROM products.'
       ],
-      solutionExplanation: 'We selected only the 3 columns we care about, keeping the query lightweight and readable.'
+      solutionExplanation: 'We selected only the 3 specific columns needed for the warehouse price sheet, avoiding unnecessary data transfer.'
     }
   },
   {
@@ -190,9 +190,9 @@ FROM products;`
       {
         title: 'Renaming Columns with AS',
         body: 'You can give any column a temporary label in the output using AS. This is called aliasing:',
-        exampleSql: `-- Rename first_name to customer_name
-SELECT first_name AS customer_name, city
-FROM customers
+        exampleSql: `-- Rename product_name to item_name
+SELECT product_name AS item_name, price
+FROM products
 LIMIT 3;`
       }
     ],
@@ -201,21 +201,22 @@ LIMIT 3;`
       { goal: 'Rename column in output', syntax: 'SELECT col AS new_label FROM table;' }
     ],
     challenge: {
-      title: 'Practice: Rename Customer Names',
-      instructions: 'Write a query to select first_name aliased as customer_name and city from the customers table. Limit the result to 3 rows.',
-      starterCode: `-- Challenge 3: Aliasing with AS and limiting rows
--- Select first_name AS customer_name, city
--- From customers
+      title: 'Executive Headcount Dashboard Preview',
+      scenario: "The leadership dashboard needs a preview of employee compensation. To match the executive dashboard's design, the employee's name must appear as employee_name and their salary as annual_compensation.",
+      instructions: 'Select name aliased as employee_name and salary aliased as annual_compensation from the employees table. Limit the result to 3 rows.',
+      starterCode: `-- Challenge 3: Headcount preview widget for leadership
+-- Select name AS employee_name, salary AS annual_compensation
+-- From employees
 -- Limit 3;
 
 `,
-      expectedQuery: 'SELECT first_name AS customer_name, city FROM customers LIMIT 3;',
+      expectedQuery: 'SELECT name AS employee_name, salary AS annual_compensation FROM employees LIMIT 3;',
       hints: [
-        'Use first_name AS customer_name.',
-        'Include city as the second column.',
-        'Limit to 3 rows.'
+        'Use name AS employee_name to rename the name column.',
+        'Use salary AS annual_compensation.',
+        'Add LIMIT 3 at the bottom.'
       ],
-      solutionExplanation: 'AS customer_name renames the header in the output table, making the report intuitive.'
+      solutionExplanation: 'The AS keyword temporarily labels the columns with business-friendly names without modifying the database schema.'
     }
   },
   {
@@ -244,20 +245,21 @@ WHERE price < 100;`
       { goal: 'Filter text (wrap in quotes)', syntax: "WHERE status = 'active'" }
     ],
     challenge: {
-      title: 'Practice: Filter Affordable Products',
-      instructions: 'Write a query to retrieve product_name and price from the products table for all items where price < 100.',
-      starterCode: `-- Challenge 4: Filter products priced under 100
--- Select product_name, price
--- From products
--- Where price < 100;
+      title: 'Six-Figure Payroll Compliance Audit',
+      scenario: 'Finance is conducting an executive payroll audit and needs to review all team members whose compensation is at or above the $100,000 threshold.',
+      instructions: 'Retrieve name, department_id, and salary from the employees table for all staff earning at least 100,000 (salary >= 100000).',
+      starterCode: `-- Challenge 4: Six-figure payroll audit
+-- Select name, department_id, salary
+-- From employees
+-- Where salary >= 100000;
 
 `,
-      expectedQuery: 'SELECT product_name, price FROM products WHERE price < 100;',
+      expectedQuery: 'SELECT name, department_id, salary FROM employees WHERE salary >= 100000;',
       hints: [
-        'Select product_name, price from products.',
-        'Add WHERE price < 100.'
+        'Select name, department_id, salary from employees.',
+        'Use WHERE salary >= 100000.'
       ],
-      solutionExplanation: 'The WHERE clause checks every row and keeps only items with price strictly under 100.'
+      solutionExplanation: 'The condition salary >= 100000 filters out lower compensation bands and retains only senior six-figure earners.'
     }
   },
   {
@@ -283,20 +285,21 @@ WHERE region = 'East' AND sale_amount > 140;`
       { goal: 'Invert', syntax: 'WHERE NOT cond' }
     ],
     challenge: {
-      title: 'Practice: High-Value East Coast Sales',
-      instructions: "Write a query to select sale_id, region, and sale_amount from the sales table where region = 'East' AND sale_amount > 140.",
-      starterCode: `-- Challenge 5: Multiple conditions with AND
--- Select sale_id, region, sale_amount
--- From sales
--- Where region = 'East' AND sale_amount > 140;
+      title: 'Find Senior Engineering Mentors',
+      scenario: 'HR is launching a technical mentorship program in Department 10. They want to identify experienced team members in Department 10 who joined the company before 2023.',
+      instructions: "Find employees in Department 10 (department_id = 10) who were hired before 2023 (hire_date < '2023-01-01'). Return name, department_id, and hire_date.",
+      starterCode: `-- Challenge 5: Find tenured mentors in Department 10
+-- Select name, department_id, hire_date
+-- From employees
+-- Where department_id = 10 AND hire_date < '2023-01-01';
 
 `,
-      expectedQuery: "SELECT sale_id, region, sale_amount FROM sales WHERE region = 'East' AND sale_amount > 140;",
+      expectedQuery: "SELECT name, department_id, hire_date FROM employees WHERE department_id = 10 AND hire_date < '2023-01-01';",
       hints: [
-        'Select sale_id, region, sale_amount from sales.',
-        "Use WHERE region = 'East' AND sale_amount > 140."
+        'Select name, department_id, hire_date from employees.',
+        "Use WHERE department_id = 10 AND hire_date < '2023-01-01'."
       ],
-      solutionExplanation: 'AND ensures only records that satisfy BOTH region is East and sale amount is greater than 140 appear in the result.'
+      solutionExplanation: 'The AND operator requires both criteria to be satisfied: working in Department 10 and possessing a hire date before 2023.'
     }
   },
   {
@@ -320,20 +323,21 @@ WHERE price BETWEEN 50 AND 200;`
       { goal: 'Filter inclusive range', syntax: 'WHERE price BETWEEN 50 AND 200' }
     ],
     challenge: {
-      title: 'Practice: Products in Price Range',
-      instructions: 'Write a query to select product_name and price from products for all items where price is BETWEEN 50 AND 200.',
-      starterCode: `-- Challenge 6: Range filtering with BETWEEN
--- Select product_name, price
--- From products
--- Where price BETWEEN 50 AND 200;
+      title: 'Medium-Value Payment Verification',
+      scenario: 'The payments risk team conducts routine verification on mid-sized charges between $50 and $150 to check for automated card-testing scripts.',
+      instructions: 'Find all payment records in the transactions table with an amount between 50 and 150 (inclusive). Return transaction_id, customer_id, and amount.',
+      starterCode: `-- Challenge 6: Medium-value transaction verification
+-- Select transaction_id, customer_id, amount
+-- From transactions
+-- Where amount BETWEEN 50 AND 150;
 
 `,
-      expectedQuery: 'SELECT product_name, price FROM products WHERE price BETWEEN 50 AND 200;',
+      expectedQuery: 'SELECT transaction_id, customer_id, amount FROM transactions WHERE amount BETWEEN 50 AND 150;',
       hints: [
-        'Select product_name, price from products.',
-        'Use WHERE price BETWEEN 50 AND 200.'
+        'Select transaction_id, customer_id, amount from transactions.',
+        'Use WHERE amount BETWEEN 50 AND 150.'
       ],
-      solutionExplanation: 'BETWEEN 50 AND 200 cleanly checks both the lower and upper bounds inclusively.'
+      solutionExplanation: 'BETWEEN 50 AND 150 captures all charges falling within the specified risk audit boundary.'
     }
   },
   {
@@ -358,20 +362,21 @@ WHERE category IN ('Electronics', 'Furniture');`
       { goal: 'Exclude list', syntax: "WHERE col NOT IN ('A', 'B')" }
     ],
     challenge: {
-      title: 'Practice: Match Specific Categories',
-      instructions: "Write a query to select product_name and category from products where category is in ('Electronics', 'Furniture').",
-      starterCode: `-- Challenge 7: Filter with IN
--- Select product_name, category
--- From products
--- Where category IN ('Electronics', 'Furniture');
+      title: 'Targeted Metropolitan Event Invites',
+      scenario: 'The customer marketing team is hosting VIP networking events in major tech hubs: New York, Chicago, and San Francisco.',
+      instructions: "Retrieve first_name, last_name, and city from the customers table for all customers living in either 'New York', 'Chicago', or 'San Francisco'.",
+      starterCode: `-- Challenge 7: Invite customers in target event cities
+-- Select first_name, last_name, city
+-- From customers
+-- Where city IN ('New York', 'Chicago', 'San Francisco');
 
 `,
-      expectedQuery: "SELECT product_name, category FROM products WHERE category IN ('Electronics', 'Furniture');",
+      expectedQuery: "SELECT first_name, last_name, city FROM customers WHERE city IN ('New York', 'Chicago', 'San Francisco');",
       hints: [
-        'Select product_name, category from products.',
-        "Use WHERE category IN ('Electronics', 'Furniture')."
+        'Select first_name, last_name, city from customers.',
+        "Use WHERE city IN ('New York', 'Chicago', 'San Francisco')."
       ],
-      solutionExplanation: 'IN checks if the category matches any element in the specified list.'
+      solutionExplanation: 'The IN operator checks whether the customer city matches any of the three target event locations.'
     }
   },
   {
@@ -397,20 +402,21 @@ WHERE email LIKE '%@gmail.com';`
       { goal: 'Contains', syntax: "WHERE col LIKE '%Word%'" }
     ],
     challenge: {
-      title: 'Practice: Find Gmail Users',
-      instructions: "Write a query to select customer_id, first_name, and email from customers where email LIKE '%@gmail.com'.",
-      starterCode: `-- Challenge 8: Text pattern matching with LIKE
--- Select customer_id, first_name, email
--- From customers
--- Where email LIKE '%@gmail.com';
+      title: 'Identify Desk Accessories for Promotion',
+      scenario: 'Our merchandising lead wants to bundle all desk-related equipment for an upcoming work-from-home campaign. Identify all items in the catalog that contain the word "Desk" in their name.',
+      instructions: "Select product_id, product_name, and price from the products table for any item whose product_name contains 'Desk'.",
+      starterCode: `-- Challenge 8: Find all desk-related products
+-- Select product_id, product_name, price
+-- From products
+-- Where product_name LIKE '%Desk%';
 
 `,
-      expectedQuery: "SELECT customer_id, first_name, email FROM customers WHERE email LIKE '%@gmail.com';",
+      expectedQuery: "SELECT product_id, product_name, price FROM products WHERE product_name LIKE '%Desk%';",
       hints: [
-        'Select customer_id, first_name, email from customers.',
-        "Add WHERE email LIKE '%@gmail.com'."
+        'Select product_id, product_name, price from products.',
+        "Add WHERE product_name LIKE '%Desk%'."
       ],
-      solutionExplanation: 'The wildcard % matches any username preceding @gmail.com.'
+      solutionExplanation: "The pattern '%Desk%' matches any product name where 'Desk' appears at the beginning, middle, or end."
     }
   },
   {
@@ -437,22 +443,23 @@ LIMIT 3;`
       { goal: 'Multi-column sort', syntax: 'ORDER BY col1 ASC, col2 DESC' }
     ],
     challenge: {
-      title: 'Practice: Top 3 Most Expensive Products',
-      instructions: 'Write a query to select product_name and price from products, sorted by price in descending order (DESC), limited to the top 3 items.',
-      starterCode: `-- Challenge 9: Sort by price descending
--- Select product_name, price
--- From products
--- Order by price DESC
--- Limit 3;
+      title: 'Top 5 Largest Wire Transfers',
+      scenario: 'The finance controller needs an immediate look at our largest wire transfers to ensure liquidity reserves for daily settlement.',
+      instructions: 'Select all columns from the transactions table, sorted from highest amount to lowest amount. Limit the output to the top 5 largest transactions.',
+      starterCode: `-- Challenge 9: Top 5 largest financial transfers
+-- Select *
+-- From transactions
+-- Order by amount DESC
+-- Limit 5;
 
 `,
-      expectedQuery: 'SELECT product_name, price FROM products ORDER BY price DESC LIMIT 3;',
+      expectedQuery: 'SELECT * FROM transactions ORDER BY amount DESC LIMIT 5;',
       hints: [
-        'Select product_name, price from products.',
-        'Use ORDER BY price DESC.',
-        'Add LIMIT 3.'
+        'Use SELECT * FROM transactions.',
+        'Sort with ORDER BY amount DESC.',
+        'Limit to 5 rows.'
       ],
-      solutionExplanation: 'ORDER BY price DESC puts the most expensive items first, and LIMIT 3 isolates the top 3.'
+      solutionExplanation: 'ORDER BY amount DESC puts the highest wire amounts first, and LIMIT 5 extracts the top 5 entries.'
     }
   },
 
@@ -480,20 +487,21 @@ ORDER BY category ASC;`
       { goal: 'Unique values only', syntax: 'SELECT DISTINCT col FROM table;' }
     ],
     challenge: {
-      title: 'Practice: Unique Product Categories',
-      instructions: 'Write a query to retrieve the unique list of categories from the products table using DISTINCT. Sort the categories alphabetically (ASC).',
-      starterCode: `-- Challenge 10: Unique categories with DISTINCT
--- Select DISTINCT category
--- From products
--- Order by category ASC;
+      title: 'Master List of Active Sales Territories',
+      scenario: 'The VP of Sales needs a clean master list of all distinct geographic regions where customer orders have been booked.',
+      instructions: 'Retrieve the unique list of region names from the sales table using DISTINCT. Sort the regions alphabetically in ascending order.',
+      starterCode: `-- Challenge 10: Master list of active sales regions
+-- Select DISTINCT region
+-- From sales
+-- Order by region ASC;
 
 `,
-      expectedQuery: 'SELECT DISTINCT category FROM products ORDER BY category ASC;',
+      expectedQuery: 'SELECT DISTINCT region FROM sales ORDER BY region ASC;',
       hints: [
-        'Write SELECT DISTINCT category FROM products.',
-        'Add ORDER BY category ASC.'
+        'Write SELECT DISTINCT region FROM sales.',
+        'Add ORDER BY region ASC.'
       ],
-      solutionExplanation: 'DISTINCT removes duplicate categories, giving a clean list of all unique categories in the catalog.'
+      solutionExplanation: 'DISTINCT removes duplicate occurrences of regions in the transaction log, producing a unique list.'
     }
   },
   {
@@ -513,7 +521,7 @@ ORDER BY category ASC;`
         body: 'Wrap calculations in ROUND(number, 2) to format numbers cleanly for reports:',
         exampleSql: `-- Overall sales metrics
 SELECT 
-    COUNT(*) AS total_sales_count,
+    COUNT(*) AS total_orders,
     ROUND(SUM(sale_amount), 2) AS total_revenue,
     ROUND(AVG(sale_amount), 2) AS avg_sale
 FROM sales;`
@@ -524,22 +532,23 @@ FROM sales;`
       { goal: 'Sum and round', syntax: 'SELECT ROUND(SUM(col), 2) FROM table;' }
     ],
     challenge: {
-      title: 'Practice: Overall Sales Metrics',
-      instructions: 'Write a query to calculate COUNT(*) AS total_sales_count, ROUND(SUM(sale_amount), 2) AS total_revenue, and ROUND(AVG(sale_amount), 2) AS avg_sale from sales.',
-      starterCode: `-- Challenge 11: Sales summary metrics
--- Select COUNT(*) AS total_sales_count,
---        ROUND(SUM(sale_amount), 2) AS total_revenue,
---        ROUND(AVG(sale_amount), 2) AS avg_sale
--- From sales;
+      title: 'Executive Compensation Benchmark',
+      scenario: 'Leadership is preparing next fiscal year payroll budget. They need an executive summary of total head count, the average annual salary across the company (rounded to 2 decimal places), and the maximum salary currently paid to any employee.',
+      instructions: 'Write a query against the employees table to calculate: total_employees (count of all staff), average_salary (mean salary rounded to 2 decimals), and highest_salary (maximum salary).',
+      starterCode: `-- Challenge 11: Executive compensation benchmark
+-- Select COUNT(*) AS total_employees,
+--        ROUND(AVG(salary), 2) AS average_salary,
+--        MAX(salary) AS highest_salary
+-- From employees;
 
 `,
-      expectedQuery: 'SELECT COUNT(*) AS total_sales_count, ROUND(SUM(sale_amount), 2) AS total_revenue, ROUND(AVG(sale_amount), 2) AS avg_sale FROM sales;',
+      expectedQuery: 'SELECT COUNT(*) AS total_employees, ROUND(AVG(salary), 2) AS average_salary, MAX(salary) AS highest_salary FROM employees;',
       hints: [
-        'Use COUNT(*) AS total_sales_count.',
-        'Use ROUND(SUM(sale_amount), 2) AS total_revenue.',
-        'Use ROUND(AVG(sale_amount), 2) AS avg_sale.'
+        'Use COUNT(*) AS total_employees.',
+        'Use ROUND(AVG(salary), 2) AS average_salary.',
+        'Use MAX(salary) AS highest_salary.'
       ],
-      solutionExplanation: 'These aggregates summarize all individual transactions into a single executive KPI row.'
+      solutionExplanation: 'These aggregate metrics summarize the entire payroll dataset into three essential executive KPIs.'
     }
   },
   {
@@ -570,22 +579,25 @@ ORDER BY total_sales DESC;`
       { goal: 'Group by column', syntax: 'SELECT col, SUM(val) FROM table GROUP BY col;' }
     ],
     challenge: {
-      title: 'Practice: Total Sales per Region',
-      instructions: 'Write a query to calculate region and ROUND(SUM(sale_amount), 2) AS total_sales from sales. Group by region and order by total_sales DESC.',
-      starterCode: `-- Challenge 12: Sales grouped by region
--- Select region, ROUND(SUM(sale_amount), 2) AS total_sales
--- From sales
--- Group by region
--- Order by total_sales DESC;
+      title: 'Catalog Product Depth and Average Price',
+      scenario: 'The catalog operations manager wants to assess product depth across our inventory. For each product category, they need to know the total number of distinct items we sell and the average retail price within that category.',
+      instructions: 'Group the products table by category. Return category, item_count (total items), and avg_price (average price rounded to 2 decimal places). Sort the output by item_count descending.',
+      starterCode: `-- Challenge 12: Product depth and average pricing by category
+-- Select category,
+--        COUNT(*) AS item_count,
+--        ROUND(AVG(price), 2) AS avg_price
+-- From products
+-- Group by category
+-- Order by item_count DESC;
 
 `,
-      expectedQuery: 'SELECT region, ROUND(SUM(sale_amount), 2) AS total_sales FROM sales GROUP BY region ORDER BY total_sales DESC;',
+      expectedQuery: 'SELECT category, COUNT(*) AS item_count, ROUND(AVG(price), 2) AS avg_price FROM products GROUP BY category ORDER BY item_count DESC;',
       hints: [
-        'Select region and ROUND(SUM(sale_amount), 2) AS total_sales.',
-        'Add GROUP BY region.',
-        'Add ORDER BY total_sales DESC.'
+        'Select category, COUNT(*) AS item_count, and ROUND(AVG(price), 2) AS avg_price.',
+        'Group by category.',
+        'Order by item_count DESC.'
       ],
-      solutionExplanation: 'GROUP BY region bundles sales into regional buckets and calculates total revenue for each.'
+      solutionExplanation: 'GROUP BY category aggregates items per category, providing department counts and mean prices.'
     }
   },
   {
@@ -622,23 +634,24 @@ ORDER BY total_spent DESC;`
       { goal: 'Filter on aggregate', syntax: 'GROUP BY col HAVING SUM(val) > 500' }
     ],
     challenge: {
-      title: 'Practice: Find Customers Spending Over 500',
-      instructions: 'Write a query to select customer_id and ROUND(SUM(sale_amount), 2) AS total_spent from sales. Group by customer_id and use HAVING SUM(sale_amount) > 500. Order by total_spent DESC.',
-      starterCode: `-- Challenge 13: Filter grouped data with HAVING
--- Select customer_id, ROUND(SUM(sale_amount), 2) AS total_spent
+      title: 'High-Frequency Delivery Territories',
+      scenario: 'The logistics operations team only wants to route dedicated delivery trucks to high-frequency territories. Filter out small-volume regions and only return sales regions that have recorded at least 3 completed orders.',
+      instructions: 'Group the sales table by region to compute region and order_count (total orders). Use HAVING to keep only regions with order_count >= 3. Sort by order_count descending.',
+      starterCode: `-- Challenge 13: High-frequency territories with >= 3 orders
+-- Select region, COUNT(*) AS order_count
 -- From sales
--- Group by customer_id
--- Having SUM(sale_amount) > 500
--- Order by total_spent DESC;
+-- Group by region
+-- Having COUNT(*) >= 3
+-- Order by order_count DESC;
 
 `,
-      expectedQuery: 'SELECT customer_id, ROUND(SUM(sale_amount), 2) AS total_spent FROM sales GROUP BY customer_id HAVING SUM(sale_amount) > 500 ORDER BY total_spent DESC;',
+      expectedQuery: 'SELECT region, COUNT(*) AS order_count FROM sales GROUP BY region HAVING COUNT(*) >= 3 ORDER BY order_count DESC;',
       hints: [
-        'Group by customer_id.',
-        'Filter with HAVING SUM(sale_amount) > 500.',
-        'Order by total_spent DESC.'
+        'Group by region.',
+        'Use HAVING COUNT(*) >= 3.',
+        'Order by order_count DESC.'
       ],
-      solutionExplanation: 'HAVING inspects the total spending for each customer and only retains those exceeding 500.'
+      solutionExplanation: 'HAVING filters post-aggregation, isolating territories that satisfy the minimum 3-order logistical threshold.'
     }
   },
   {
@@ -668,20 +681,22 @@ WHERE email IS NULL OR TRIM(email) = '';`
       { goal: 'Thorough cleaning', syntax: "WHERE col IS NULL OR TRIM(col) = ''" }
     ],
     challenge: {
-      title: 'Practice: Identify Incomplete Profiles',
-      instructions: "Write a query to select customer_id, first_name, and email from customers where email IS NULL OR TRIM(email) = ''.",
-      starterCode: `-- Challenge 14: Data cleaning for missing emails
--- Select customer_id, first_name, email
+      title: 'Clean Customer Email Delivery List',
+      scenario: 'The digital marketing team is launching an email newsletter. To protect sender reputation and prevent bounce-backs, they strictly need customers who have a confirmed, non-empty email address on file.',
+      instructions: "Select customer_id, first_name, last_name, and email from customers for all accounts where email is NOT NULL and is not an empty blank string (TRIM(email) != ''). Sort by customer_id ascending.",
+      starterCode: `-- Challenge 14: Clean customer email delivery list
+-- Select customer_id, first_name, last_name, email
 -- From customers
--- Where email IS NULL OR TRIM(email) = '';
+-- Where email IS NOT NULL AND TRIM(email) != ''
+-- Order by customer_id ASC;
 
 `,
-      expectedQuery: "SELECT customer_id, first_name, email FROM customers WHERE email IS NULL OR TRIM(email) = '';",
+      expectedQuery: "SELECT customer_id, first_name, last_name, email FROM customers WHERE email IS NOT NULL AND TRIM(email) != '' ORDER BY customer_id ASC;",
       hints: [
-        'Select customer_id, first_name, email from customers.',
-        "Use WHERE email IS NULL OR TRIM(email) = ''."
+        'Select customer_id, first_name, last_name, email from customers.',
+        "Use WHERE email IS NOT NULL AND TRIM(email) != ''."
       ],
-      solutionExplanation: 'Checking both IS NULL and TRIM catches both true database NULLs and dirty whitespace strings.'
+      solutionExplanation: 'This dual filter guarantees that only valid, non-null, non-blank email destinations are selected.'
     }
   },
   {
@@ -695,37 +710,40 @@ WHERE email IS NULL OR TRIM(email) = '';`
       {
         title: 'Conditional Branching with CASE',
         body: 'CASE WHEN works like an IF-ELSE block in programming. It evaluates conditions in order and returns a corresponding value when a condition is met.',
-        exampleSql: `-- Pricing tiers
+        exampleSql: `-- Employee salary tiering
 SELECT 
-    product_name,
-    price,
+    name,
+    salary,
     CASE 
-        WHEN price >= 150 THEN 'Premium'
-        ELSE 'Standard'
-    END AS price_tier
-FROM products
-ORDER BY price DESC;`
+        WHEN salary >= 130000 THEN 'High Earner'
+        WHEN salary >= 100000 THEN 'Mid Earner'
+        ELSE 'Standard Earner'
+    END AS compensation_tier
+FROM employees;`
       }
     ],
     quickReference: [
       { goal: 'CASE WHEN syntax', syntax: "CASE WHEN col > 10 THEN 'High' ELSE 'Low' END AS label" }
     ],
     challenge: {
-      title: 'Practice: Classify Product Pricing Tiers',
-      instructions: "Write a query to select product_name, price, and price_tier using CASE WHEN: if price >= 150 then 'Premium', otherwise 'Standard'. Order by price DESC.",
-      starterCode: `-- Challenge 15: Product tier classification
--- Select product_name, price,
--- CASE WHEN price >= 150 THEN 'Premium' ELSE 'Standard' END AS price_tier
--- From products
--- Order by price DESC;
+      title: 'Segment Order Shipment Packaging Tiers',
+      scenario: 'Our shipping department assigns packing workflows based on invoice totals. An order of $300 or more is tagged "Freight". Orders between $150 and $299.99 are tagged "Priority". All other orders are tagged "Standard".',
+      instructions: "Select sale_id, sale_amount, and assign shipping_tier using a CASE statement based on these order thresholds from sales. Sort by sale_amount descending and limit to 6 rows.",
+      starterCode: `-- Challenge 15: Categorize shipment packaging tiers
+-- Select sale_id, sale_amount,
+-- CASE WHEN sale_amount >= 300 THEN 'Freight'
+--      WHEN sale_amount >= 150 THEN 'Priority'
+--      ELSE 'Standard' END AS shipping_tier
+-- From sales
+-- Order by sale_amount DESC LIMIT 6;
 
 `,
-      expectedQuery: "SELECT product_name, price, CASE WHEN price >= 150 THEN 'Premium' ELSE 'Standard' END AS price_tier FROM products ORDER BY price DESC;",
+      expectedQuery: "SELECT sale_id, sale_amount, CASE WHEN sale_amount >= 300 THEN 'Freight' WHEN sale_amount >= 150 THEN 'Priority' ELSE 'Standard' END AS shipping_tier FROM sales ORDER BY sale_amount DESC LIMIT 6;",
       hints: [
-        "Use CASE WHEN price >= 150 THEN 'Premium' ELSE 'Standard' END AS price_tier.",
-        'Query products and order by price DESC.'
+        "Use CASE WHEN sale_amount >= 300 THEN 'Freight' WHEN sale_amount >= 150 THEN 'Priority' ELSE 'Standard' END AS shipping_tier.",
+        'Order by sale_amount DESC LIMIT 6.'
       ],
-      solutionExplanation: 'CASE WHEN assigns categories on the fly based on price thresholds without altering the source table.'
+      solutionExplanation: 'CASE WHEN dynamically labels each order with the correct logistics handling tier based on amount.'
     }
   },
   {
@@ -739,7 +757,7 @@ ORDER BY price DESC;`
       {
         title: 'Extracting Dates with strftime',
         body: 'SQLite stores dates as text (YYYY-MM-DD). Use strftime() to extract parts of the date:\n- strftime(\'%Y\', col): 4-digit year (e.g. 2024)\n- strftime(\'%m\', col): 2-digit month (e.g. 01)\n- strftime(\'%Y-%m\', col): Year and month together',
-        exampleSql: `-- Monthly sales
+        exampleSql: `-- Monthly sales totals
 SELECT 
     sale_id,
     strftime('%Y-%m', sale_date) AS sale_month,
@@ -753,22 +771,22 @@ LIMIT 5;`
       { goal: 'Extract year and month', syntax: "strftime('%Y-%m', date_col)" }
     ],
     challenge: {
-      title: 'Practice: Extract Monthly Sales',
-      instructions: "Write a query to select sale_id, strftime('%Y-%m', sale_date) AS sale_month, and sale_amount from sales where strftime('%Y', sale_date) = '2024'. Limit to 5 rows.",
-      starterCode: `-- Challenge 16: Date extraction with strftime
--- Select sale_id, strftime('%Y-%m', sale_date) AS sale_month, sale_amount
--- From sales
--- Where strftime('%Y', sale_date) = '2024'
+      title: 'Analyze Customer Signup Cohorts',
+      scenario: 'Product growth is examining which cohort month new users registered. They want to see the signup month for our earliest users.',
+      instructions: "Retrieve customer_id, first_name, and signup_month (formatted as 'YYYY-MM' using strftime('%Y-%m', signup_date)) from customers. Order by customer_id ascending and limit to 5 rows.",
+      starterCode: `-- Challenge 16: Extract customer signup cohort month
+-- Select customer_id, first_name, strftime('%Y-%m', signup_date) AS signup_month
+-- From customers
+-- Order by customer_id ASC
 -- Limit 5;
 
 `,
-      expectedQuery: "SELECT sale_id, strftime('%Y-%m', sale_date) AS sale_month, sale_amount FROM sales WHERE strftime('%Y', sale_date) = '2024' LIMIT 5;",
+      expectedQuery: "SELECT customer_id, first_name, strftime('%Y-%m', signup_date) AS signup_month FROM customers ORDER BY customer_id ASC LIMIT 5;",
       hints: [
-        "Use strftime('%Y-%m', sale_date) AS sale_month.",
-        "Filter with WHERE strftime('%Y', sale_date) = '2024'.",
-        'Add LIMIT 5.'
+        "Use strftime('%Y-%m', signup_date) AS signup_month.",
+        'Order by customer_id ASC LIMIT 5.'
       ],
-      solutionExplanation: 'strftime extracts the year-month format, which is the foundational building block for cohort and trend analysis.'
+      solutionExplanation: 'strftime converts ISO timestamps into monthly cohort tags for retention and churn analysis.'
     }
   },
 
@@ -805,22 +823,23 @@ LIMIT 5;`
       { goal: 'INNER JOIN', syntax: 'FROM tableA a INNER JOIN tableB b ON a.id = b.a_id' }
     ],
     challenge: {
-      title: 'Practice: Join Sales with Customers',
-      instructions: 'Write a query using an INNER JOIN between sales (s) and customers (c) on customer_id. Return s.sale_id, c.first_name, c.last_name, and s.sale_amount. Limit to 5 rows.',
-      starterCode: `-- Challenge 17: INNER JOIN on customer_id
--- Select s.sale_id, c.first_name, c.last_name, s.sale_amount
--- From sales s
--- Inner join customers c on s.customer_id = c.customer_id
--- Limit 5;
+      title: 'Build Employee Department Directory',
+      scenario: 'People Operations is compiling an official company directory. They need to pair every staff member with the official title of their department.',
+      instructions: 'Perform an INNER JOIN between employees (e) and departments (d) on department_id. Return e.employee_id, e.name, d.department_name, and e.salary. Order by e.employee_id ascending.',
+      starterCode: `-- Challenge 17: Build employee department directory
+-- Select e.employee_id, e.name, d.department_name, e.salary
+-- From employees e
+-- Inner join departments d on e.department_id = d.department_id
+-- Order by e.employee_id ASC;
 
 `,
-      expectedQuery: 'SELECT s.sale_id, c.first_name, c.last_name, s.sale_amount FROM sales s INNER JOIN customers c ON s.customer_id = c.customer_id LIMIT 5;',
+      expectedQuery: 'SELECT e.employee_id, e.name, d.department_name, e.salary FROM employees e INNER JOIN departments d ON e.department_id = d.department_id ORDER BY e.employee_id ASC;',
       hints: [
-        'Alias sales as s and customers as c.',
-        'Join condition is ON s.customer_id = c.customer_id.',
-        'Limit to 5 rows.'
+        'Alias employees as e and departments as d.',
+        'Join condition is ON e.department_id = d.department_id.',
+        'Order by e.employee_id ASC.'
       ],
-      solutionExplanation: 'INNER JOIN pairs each sale with its corresponding customer name using the customer_id foreign key.'
+      solutionExplanation: 'INNER JOIN combines employee records with their respective department metadata using department_id.'
     }
   },
   {
@@ -848,23 +867,24 @@ LIMIT 6;`
       { goal: 'Preserve all left rows', syntax: 'FROM tableA a LEFT JOIN tableB b ON a.id = b.a_id' }
     ],
     challenge: {
-      title: 'Practice: LEFT JOIN Products with Sales',
-      instructions: 'Write a query to perform a LEFT JOIN from products (p) to sales (s) on product_id. Return p.product_name and s.sale_amount. Order by p.product_id ASC and limit to 6 rows.',
-      starterCode: `-- Challenge 18: LEFT JOIN to keep all products
--- Select p.product_name, s.sale_amount
--- From products p
--- Left join sales s on p.product_id = s.product_id
--- Order by p.product_id ASC
--- Limit 6;
+      title: 'Complete Customer Purchase History Audit',
+      scenario: 'Account managers need a complete master audit of all registered customers and any purchases they have completed. Crucially, they need to see EVERY customer—even those who signed up and have not placed an order yet.',
+      instructions: 'Perform a LEFT JOIN from customers (c) to sales (s) on customer_id. Return c.customer_id, c.first_name, s.sale_id, and s.sale_amount. Order by c.customer_id ASC, s.sale_id ASC and limit to 8 rows.',
+      starterCode: `-- Challenge 18: Complete customer purchase audit
+-- Select c.customer_id, c.first_name, s.sale_id, s.sale_amount
+-- From customers c
+-- Left join sales s on c.customer_id = s.customer_id
+-- Order by c.customer_id ASC, s.sale_id ASC
+-- Limit 8;
 
 `,
-      expectedQuery: 'SELECT p.product_name, s.sale_amount FROM products p LEFT JOIN sales s ON p.product_id = s.product_id ORDER BY p.product_id ASC LIMIT 6;',
+      expectedQuery: 'SELECT c.customer_id, c.first_name, s.sale_id, s.sale_amount FROM customers c LEFT JOIN sales s ON c.customer_id = s.customer_id ORDER BY c.customer_id ASC, s.sale_id ASC LIMIT 8;',
       hints: [
-        'Use LEFT JOIN sales s ON p.product_id = s.product_id.',
-        'Order by p.product_id ASC.',
-        'Add LIMIT 6.'
+        'LEFT JOIN sales s ON c.customer_id = s.customer_id.',
+        'Order by c.customer_id ASC, s.sale_id ASC.',
+        'Limit to 8 rows.'
       ],
-      solutionExplanation: 'The LEFT JOIN keeps all products; items that were never purchased display NULL for sale_amount.'
+      solutionExplanation: 'LEFT JOIN retains all customer accounts; customers without sales show NULL for sale_id and sale_amount.'
     }
   },
   {
@@ -895,23 +915,24 @@ WHERE l.page_id IS NULL;`
       { goal: 'Anti-Join pattern', syntax: 'FROM parent p LEFT JOIN child c ON p.id = c.p_id WHERE c.id IS NULL' }
     ],
     challenge: {
-      title: 'Practice: Find Unliked Facebook Pages',
-      instructions: 'Write a query using a LEFT JOIN between pages (p) and page_likes (l) to find pages with zero likes. Return p.page_id and p.page_name. Order by p.page_id ASC.',
-      starterCode: `-- Challenge 19: Find pages with 0 likes
--- Select p.page_id, p.page_name
--- From pages p
--- Left join page_likes l on p.page_id = l.page_id
--- Where l.page_id IS NULL
--- Order by p.page_id ASC;
+      title: 'Identify Unsold Inventory Items (Anti-Join)',
+      scenario: 'Unsold items in our catalog sit on warehouse shelves and incur storage fees. The warehouse manager needs to identify products in the catalog that have NEVER generated a single sale so they can be liquidated.',
+      instructions: 'Find all products from the products table that do NOT exist in the sales table. Use a LEFT JOIN from products (p) to sales (s) on product_id and filter for unsold items. Return p.product_id and p.product_name. Sort by p.product_id ascending.',
+      starterCode: `-- Challenge 19: Identify unsold inventory items (Anti-Join)
+-- Select p.product_id, p.product_name
+-- From products p
+-- Left join sales s on p.product_id = s.product_id
+-- Where s.sale_id IS NULL
+-- Order by p.product_id ASC;
 
 `,
-      expectedQuery: 'SELECT p.page_id, p.page_name FROM pages p LEFT JOIN page_likes l ON p.page_id = l.page_id WHERE l.page_id IS NULL ORDER BY p.page_id ASC;',
+      expectedQuery: 'SELECT p.product_id, p.product_name FROM products p LEFT JOIN sales s ON p.product_id = s.product_id WHERE s.sale_id IS NULL ORDER BY p.product_id ASC;',
       hints: [
-        'LEFT JOIN pages p with page_likes l on p.page_id = l.page_id.',
-        'Add WHERE l.page_id IS NULL.',
-        'Order by p.page_id ASC.'
+        'Perform a LEFT JOIN from products p to sales s on product_id.',
+        'Add WHERE s.sale_id IS NULL.',
+        'Order by p.product_id ASC.'
       ],
-      solutionExplanation: 'LEFT JOIN retains all pages, and filtering WHERE l.page_id IS NULL strips away pages that had likes, leaving only zero-like pages.'
+      solutionExplanation: 'Products with no recorded sales have NULL in sales.sale_id; filtering for IS NULL isolates unsold inventory.'
     }
   },
 
@@ -944,21 +965,22 @@ ORDER BY salary DESC;`
       { goal: 'Subquery in WHERE', syntax: 'WHERE col > (SELECT AVG(col) FROM table)' }
     ],
     challenge: {
-      title: 'Practice: Employees Above Company Average',
-      instructions: 'Write a query to select name and salary from employees where salary is strictly greater than the overall average salary (SELECT AVG(salary) FROM employees). Order by salary DESC.',
-      starterCode: `-- Challenge 20: Subquery in WHERE
--- Select name, salary
--- From employees
--- Where salary > (SELECT AVG(salary) FROM employees)
--- Order by salary DESC;
+      title: 'Detect Outlier High-Value Sales Transactions',
+      scenario: 'The revenue operations team wants to identify unusually large sales transactions that beat company-wide benchmarks. Find all individual sales where the order amount exceeds the overall average sale amount across the entire company.',
+      instructions: 'Select sale_id, customer_id, and sale_amount from sales where sale_amount is greater than a subquery calculating (SELECT AVG(sale_amount) FROM sales). Order by sale_amount descending.',
+      starterCode: `-- Challenge 20: Find above-average sales transactions
+-- Select sale_id, customer_id, sale_amount
+-- From sales
+-- Where sale_amount > (SELECT AVG(sale_amount) FROM sales)
+-- Order by sale_amount DESC;
 
 `,
-      expectedQuery: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees) ORDER BY salary DESC;',
+      expectedQuery: 'SELECT sale_id, customer_id, sale_amount FROM sales WHERE sale_amount > (SELECT AVG(sale_amount) FROM sales) ORDER BY sale_amount DESC;',
       hints: [
-        'Write WHERE salary > (SELECT AVG(salary) FROM employees).',
-        'Order by salary DESC.'
+        'Use WHERE sale_amount > (SELECT AVG(sale_amount) FROM sales).',
+        'Order by sale_amount DESC.'
       ],
-      solutionExplanation: 'The inner subquery calculates company-wide average salary, and the outer query filters employees earning more than that benchmark.'
+      solutionExplanation: 'The subquery dynamically computes the company-wide average sale value, allowing the outer query to filter for outperforming orders.'
     }
   },
   {
@@ -998,26 +1020,26 @@ ORDER BY e.salary DESC;`
       { goal: 'Define CTE', syntax: 'WITH cte AS (SELECT col FROM table) SELECT * FROM cte;' }
     ],
     challenge: {
-      title: 'Practice: Department Benchmark CTE',
-      instructions: 'Write a query using a CTE named dept_averages to calculate department_id and AVG(salary) AS avg_sal from employees grouped by department_id. Then join employees (e) to dept_averages (d) on department_id to select e.name, e.salary, and ROUND(d.avg_sal, 2) AS dept_avg where e.salary > d.avg_sal. Order by e.salary DESC.',
-      starterCode: `-- Challenge 21: Multi-stage CTE calculation
-WITH dept_averages AS (
-    -- calculate department_id and AVG(salary) AS avg_sal
-    -- group by department_id
+      title: 'VIP Spender Staging Pipeline (CTE)',
+      scenario: 'In production ETL pipelines, we aggregate transaction metrics in a clean CTE before applying downstream business thresholds. Build a CTE called customer_totals that calculates total spend per customer. Then query this CTE to extract customers who spent strictly more than $400.',
+      instructions: 'Write a query with a CTE named customer_totals calculating customer_id and SUM(sale_amount) AS total_spent from sales grouped by customer_id. In the outer query, select customer_id and ROUND(total_spent, 2) AS total_spent where total_spent > 400 ordered by total_spent descending.',
+      starterCode: `-- Challenge 21: Customer spending CTE pipeline
+WITH customer_totals AS (
+    -- calculate customer_id and SUM(sale_amount) AS total_spent
+    -- group by customer_id
 )
--- Select e.name, e.salary, ROUND(d.avg_sal, 2) AS dept_avg
--- Join employees e to dept_averages d on department_id
--- Filter e.salary > d.avg_sal
--- Order by e.salary DESC;
+-- Select customer_id, ROUND(total_spent, 2) AS total_spent
+-- from customer_totals where total_spent > 400
+-- order by total_spent DESC;
 
 `,
-      expectedQuery: 'WITH dept_averages AS (SELECT department_id, AVG(salary) AS avg_sal FROM employees GROUP BY department_id) SELECT e.name, e.salary, ROUND(d.avg_sal, 2) AS dept_avg FROM employees e JOIN dept_averages d ON e.department_id = d.department_id WHERE e.salary > d.avg_sal ORDER BY e.salary DESC;',
+      expectedQuery: 'WITH customer_totals AS (SELECT customer_id, SUM(sale_amount) AS total_spent FROM sales GROUP BY customer_id) SELECT customer_id, ROUND(total_spent, 2) AS total_spent FROM customer_totals WHERE total_spent > 400 ORDER BY total_spent DESC;',
       hints: [
-        'Calculate department_id and AVG(salary) AS avg_sal inside the CTE.',
-        'Join on department_id in the main query.',
-        'Filter e.salary > d.avg_sal.'
+        'Inside WITH customer_totals AS (...), calculate customer_id and SUM(sale_amount) AS total_spent.',
+        'In the outer query, filter with WHERE total_spent > 400.',
+        'Order by total_spent DESC.'
       ],
-      solutionExplanation: 'The CTE pre-calculates the department benchmark, allowing the outer query to cleanly join and filter in a readable manner.'
+      solutionExplanation: 'The CTE encapsulates customer aggregation cleanly, leaving the outer query concise and easy to audit.'
     }
   },
   {
@@ -1052,20 +1074,21 @@ FROM transactions;`
       { goal: 'Number rows per partition', syntax: 'ROW_NUMBER() OVER (PARTITION BY col ORDER BY sort_col DESC)' }
     ],
     challenge: {
-      title: 'Practice: Number Transactions per Customer',
-      instructions: 'Write a query to select transaction_id, customer_id, amount, transaction_date, and ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn from transactions.',
-      starterCode: `-- Challenge 22: Window function row numbering
--- Select transaction_id, customer_id, amount, transaction_date,
---        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn
--- From transactions;
+      title: 'Rank Products by Price Inside Category',
+      scenario: 'Merchandising wants to identify the highest priced items inside each product category. Number the products sequentially (1, 2, 3...) within each category, ordered from most expensive to least expensive.',
+      instructions: 'Select product_id, product_name, category, price, and assign category_price_rank using ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) from the products table.',
+      starterCode: `-- Challenge 22: Number products by price within each category
+-- Select product_id, product_name, category, price,
+--        ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS category_price_rank
+-- From products;
 
 `,
-      expectedQuery: 'SELECT transaction_id, customer_id, amount, transaction_date, ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn FROM transactions;',
+      expectedQuery: 'SELECT product_id, product_name, category, price, ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS category_price_rank FROM products;',
       hints: [
-        'Use ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn.',
-        'Query the transactions table.'
+        'Use ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS category_price_rank.',
+        'Query the products table.'
       ],
-      solutionExplanation: 'PARTITION BY customer_id groups by customer, and ORDER BY transaction_date DESC assigns rn = 1 to the newest event.'
+      solutionExplanation: 'PARTITION BY category partitions rows by department, and ORDER BY price DESC assigns rank 1 to the most expensive item in each group.'
     }
   },
   {
@@ -1098,24 +1121,22 @@ ORDER BY revenue_rank ASC, product_id ASC;`
       { goal: 'Standard rank with gaps', syntax: 'RANK() OVER (ORDER BY col DESC)' }
     ],
     challenge: {
-      title: 'Practice: Rank Products with DENSE_RANK',
-      instructions: 'Write a query to calculate product_id, ROUND(SUM(sale_amount), 2) AS total_revenue, and DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank from sales. Group by product_id and order by revenue_rank ASC, product_id ASC.',
-      starterCode: `-- Challenge 23: DENSE_RANK for product revenue
--- Select product_id,
---        ROUND(SUM(sale_amount), 2) AS total_revenue,
---        DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank
--- From sales
--- Group by product_id
--- Order by revenue_rank ASC, product_id ASC;
+      title: 'Departmental Salary Hierarchy (DENSE_RANK)',
+      scenario: 'HR is building an executive compensation report. They want to rank employees within each department based on salary from highest to lowest. Because some colleagues in the same department earn equal pay, use DENSE_RANK() so that ties receive the same rank and no rank numbers are skipped.',
+      instructions: 'Select name, department_id, salary, and compute dept_salary_rank using DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) from the employees table. Order by department_id ASC, dept_salary_rank ASC.',
+      starterCode: `-- Challenge 23: Rank employees within department with DENSE_RANK()
+-- Select name, department_id, salary,
+--        DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS dept_salary_rank
+-- From employees
+-- Order by department_id ASC, dept_salary_rank ASC;
 
 `,
-      expectedQuery: 'SELECT product_id, ROUND(SUM(sale_amount), 2) AS total_revenue, DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank FROM sales GROUP BY product_id ORDER BY revenue_rank ASC, product_id ASC;',
+      expectedQuery: 'SELECT name, department_id, salary, DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS dept_salary_rank FROM employees ORDER BY department_id ASC, dept_salary_rank ASC;',
       hints: [
-        'Use DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank.',
-        'Group by product_id.',
-        'Order by revenue_rank ASC, product_id ASC.'
+        'Use DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS dept_salary_rank.',
+        'Order by department_id ASC, dept_salary_rank ASC.'
       ],
-      solutionExplanation: 'DENSE_RANK assigns consecutive rank positions to all products based on their total sales revenue.'
+      solutionExplanation: 'DENSE_RANK ensures consecutive tier numbering within each department without missing ranks when salaries tie.'
     }
   }
 ];

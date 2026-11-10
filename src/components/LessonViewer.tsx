@@ -36,9 +36,19 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   onOpenPlaygroundWithSql,
   onOpenSchemaForTable,
 }) => {
-  const [selectedLessonId, setSelectedLessonId] = useState<string>(LESSONS[0].id);
+  const [selectedLessonId, setSelectedLessonId] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paramId = params.get('lesson');
+    if (paramId && LESSONS.some((l) => l.id === paramId)) {
+      return paramId;
+    }
+    return LESSONS[0].id;
+  });
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
-  const [viewMode, setViewMode] = useState<'guide' | 'challenge'>('guide');
+  const [viewMode, setViewMode] = useState<'guide' | 'challenge'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') === 'challenge' ? 'challenge' : 'guide';
+  });
 
   // Persistent drafts per lesson challenge so student work is NEVER lost on tab or lesson switch!
   const [lessonDrafts, setLessonDrafts] = useState<Record<string, string>>(() => {

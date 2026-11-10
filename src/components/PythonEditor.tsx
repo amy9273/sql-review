@@ -227,10 +227,10 @@ export const PythonEditor: React.FC<PythonEditorProps> = ({
           {/* Line Numbers Gutter */}
           <div
             ref={gutterRef}
-            className="w-10 select-none py-3 pr-2.5 text-right text-slate-600 font-mono text-sm border-r border-slate-800/80 bg-slate-950 flex-shrink-0 overflow-hidden leading-6"
+            className="code-editor-gutter w-10 select-none border-r border-slate-800/80 bg-slate-950 flex-shrink-0 overflow-hidden"
           >
             {Array.from({ length: lineCount }).map((_, i) => (
-              <div key={i} className="h-6 leading-6 text-right">
+              <div key={i} className="code-editor-gutter-num text-slate-600">
                 {i + 1}
               </div>
             ))}
@@ -244,9 +244,9 @@ export const PythonEditor: React.FC<PythonEditorProps> = ({
               onChange={(e) => onChange(e.target.value)}
               onKeyDown={handleKeyDown}
               onScroll={handleScroll}
-              rows={rows}
+              rows={lineCount}
               wrap="off"
-              className="code-editor w-full py-3 px-3 bg-transparent text-emerald-400 text-sm outline-none resize-none font-mono leading-6 whitespace-pre overflow-x-auto min-h-[170px]"
+              className="code-editor w-full bg-transparent text-emerald-400 outline-none resize-none font-mono min-h-[170px]"
               placeholder={placeholder}
               spellCheck={false}
             />

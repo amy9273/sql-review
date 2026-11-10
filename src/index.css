@@ -35,14 +35,64 @@ html, body {
   background: #94A3B8;
 }
 
-/* Spacious, readable code styling with comfortable line height */
+/* Preformatted code blocks in lesson guides */
 pre,
 pre code,
-code,
-textarea.code-editor,
 .code-block {
-  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace !important;
-  line-height: 1.85 !important;
+  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  line-height: 1.85;
   letter-spacing: 0.015em;
   tab-size: 2;
+}
+
+/* Inline code tags default */
+code {
+  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+}
+
+/* Synchronized pixel-perfect line-height for code editors */
+.code-editor-gutter,
+.code-editor-gutter-num,
+textarea.code-editor {
+  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace !important;
+  font-size: 13px !important;
+  line-height: 24px !important;
+  letter-spacing: 0px !important;
+  font-feature-settings: normal !important;
+  font-variation-settings: normal !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  box-sizing: border-box !important;
+}
+
+textarea.code-editor {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  border: 0 !important;
+  outline: none !important;
+  resize: none !important;
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+  overflow-x: auto !important;
+  box-sizing: border-box !important;
+}
+
+.code-editor-gutter {
+  margin: 0 !important;
+  padding: 12px 10px 12px 6px !important;
+  border: 0 !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+}
+
+.code-editor-gutter-num {
+  height: 24px !important;
+  line-height: 24px !important;
+  font-size: 13px !important;
+  text-align: right !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }

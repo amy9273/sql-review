@@ -9,6 +9,7 @@ interface FormattedGoalProps {
 interface Token {
   type: 'text' | 'number' | 'formula' | 'code';
   value: string;
+  punctuation?: string;
 }
 
 function splitIntoSteps(text: string): string[] {
@@ -72,20 +73,36 @@ function tokenizeStep(stepText: string): Token[] {
     }
 
     const val = match[0];
+    let type: Token['type'] = 'text';
+    let innerVal = val;
+
     if (val.startsWith('`') && val.endsWith('`')) {
-      const inner = val.slice(1, -1);
-      if (isFormula(inner)) {
-        tokens.push({ type: 'formula', value: inner });
-      } else if (/^\d+(?:\.\d+)?%?$/.test(inner)) {
-        tokens.push({ type: 'number', value: inner });
+      innerVal = val.slice(1, -1);
+      if (isFormula(innerVal)) {
+        type = 'formula';
+      } else if (/^\d+(?:\.\d+)?%?$/.test(innerVal)) {
+        type = 'number';
       } else {
-        tokens.push({ type: 'code', value: inner });
+        type = 'code';
       }
     } else if (/^\d+(?:\.\d+)?%?$/.test(val)) {
-      tokens.push({ type: 'number', value: val });
+      type = 'number';
+      innerVal = val;
     }
 
-    lastIndex = match.index + match[0].length;
+    // Capture immediately trailing punctuation (.,;:?!)
+    const afterMatchIndex = match.index + val.length;
+    const remaining = stepText.slice(afterMatchIndex);
+    const punctMatch = remaining.match(/^[.,;:?!)]+/);
+    const punctuation = punctMatch ? punctMatch[0] : '';
+
+    tokens.push({
+      type,
+      value: innerVal,
+      punctuation: punctuation || undefined
+    });
+
+    lastIndex = afterMatchIndex + punctuation.length;
   }
 
   if (lastIndex < stepText.length) {
@@ -115,20 +132,24 @@ export const FormattedGoal: React.FC<FormattedGoalProps> = ({
     }
   }
 
-  const badgeBg = theme === 'emerald' ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800';
-  const codeBg =
+  const badgeBg =
     theme === 'emerald'
-      ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-      : 'bg-indigo-50 text-indigo-800 border-indigo-200';
+      ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+      : 'bg-indigo-100 text-indigo-800 border-indigo-200';
+
+  const codeBadgeStyle =
+    theme === 'emerald'
+      ? 'text-emerald-800 bg-emerald-50 border-emerald-200/90'
+      : 'text-indigo-800 bg-indigo-50 border-indigo-200/90';
 
   return (
-    <div className="space-y-3.5 pt-1">
+    <div className="space-y-3 pt-0.5">
       {/* Prominent Formula Callout Banner */}
       {detectedFormula && (
-        <div className="p-3 rounded-xl bg-gradient-to-r from-indigo-50/90 via-white to-blue-50/90 border border-indigo-200 shadow-2xs flex items-center justify-between gap-3">
+        <div className="p-2.5 rounded-xl bg-indigo-50/70 border border-indigo-200/90 shadow-2xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs font-bold text-indigo-900">
             <Calculator className="w-4 h-4 text-indigo-600 flex-shrink-0" />
-            <span className="uppercase tracking-wider text-[11px]">Formula Definition:</span>
+            <span className="uppercase tracking-wider text-[11px]">Formula:</span>
           </div>
           <code className="font-mono text-xs font-bold text-indigo-800 bg-white px-2.5 py-1 rounded-lg border border-indigo-200 shadow-2xs">
             {detectedFormula}
@@ -136,74 +157,45 @@ export const FormattedGoal: React.FC<FormattedGoalProps> = ({
         </div>
       )}
 
-      {/* Render each step on its own line in a styled step card with generous vertical clearance */}
-      <div className="space-y-3">
+      {/* Render each step on its own line in a cleanly spaced step card */}
+      <div className="space-y-2.5">
         {steps.map((stepText, idx) => {
           const tokens = tokenizeStep(stepText);
 
           return (
             <div
               key={idx}
-              className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-2xs text-[13px] text-slate-800 leading-[2.1] hover:border-slate-300 transition-colors"
+              className="flex items-start gap-2.5 p-3 rounded-xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-colors"
             >
+              {/* Compact Step Number */}
               <span
-                className={`flex-shrink-0 w-6 h-6 rounded-lg ${badgeBg} text-xs font-bold flex items-center justify-center font-mono mt-0.5 shadow-2xs`}
+                className={`flex-shrink-0 w-5 h-5 rounded-md ${badgeBg} border text-[11px] font-bold flex items-center justify-center font-mono mt-0.5 shadow-2xs`}
               >
                 {idx + 1}
               </span>
-              <div className="flex-1 min-w-0">
+
+              {/* Natural line height without ballooning - badges are low-profile and compact */}
+              <div className="flex-1 min-w-0 text-[13px] text-slate-800 leading-relaxed font-normal">
                 {tokens.map((token, tIdx) => {
-                  const nextToken = tokens[tIdx + 1];
-                  const isFollowedByPunctuation =
-                    nextToken &&
-                    nextToken.type === 'text' &&
-                    /^[.,;:?!)]/.test(nextToken.value.trimStart());
-
-                  const rightMargin = isFollowedByPunctuation ? 'mr-0' : 'mr-1';
-
                   if (token.type === 'number') {
                     return (
-                      <span
-                        key={tIdx}
-                        className={`inline-block px-1.5 py-0.5 rounded-md font-mono text-[12px] font-bold text-amber-900 bg-amber-100/70 border border-amber-300/80 shadow-2xs ml-1 ${rightMargin} align-baseline`}
-                        title="Numeric Quantity / Parameter"
-                      >
-                        {token.value}
-                      </span>
+                      <React.Fragment key={tIdx}><span className="inline px-1.5 py-[1px] rounded font-mono text-[11.5px] font-semibold text-amber-900 bg-amber-50 border border-amber-200/90 shadow-2xs" title="Numeric Quantity / Parameter">{token.value}</span>{token.punctuation}</React.Fragment>
                     );
                   }
 
                   if (token.type === 'formula') {
                     return (
-                      <code
-                        key={tIdx}
-                        className={`inline-block px-2 py-0.5 rounded-md font-mono text-[12px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 shadow-2xs ml-1 ${rightMargin} align-baseline`}
-                        title="Formula Expression"
-                      >
-                        {token.value}
-                      </code>
+                      <React.Fragment key={tIdx}><code className="inline px-1.5 py-[1px] rounded font-mono text-[11.5px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 shadow-2xs" title="Formula Expression">{token.value}</code>{token.punctuation}</React.Fragment>
                     );
                   }
 
                   if (token.type === 'code') {
                     return (
-                      <code
-                        key={tIdx}
-                        className={`inline-block px-1.5 py-0.5 rounded-md font-mono text-[12px] font-semibold ${codeBg} border shadow-2xs ml-1 ${rightMargin} align-baseline`}
-                      >
-                        {token.value}
-                      </code>
+                      <React.Fragment key={tIdx}><code className={`inline px-1.5 py-[1px] rounded font-mono text-[11.5px] font-semibold ${codeBadgeStyle} border shadow-2xs`}>{token.value}</code>{token.punctuation}</React.Fragment>
                     );
                   }
 
-                  // If this text token starts with punctuation following a badge, attach it cleanly without space
-                  let textVal = token.value;
-                  const prevToken = tokens[tIdx - 1];
-                  if (prevToken && prevToken.type !== 'text' && /^[.,;:?!)]/.test(textVal.trimStart())) {
-                    textVal = textVal.trimStart();
-                  }
-
-                  return <span key={tIdx}>{textVal}</span>;
+                  return <span key={tIdx}>{token.value}</span>;
                 })}
               </div>
             </div>

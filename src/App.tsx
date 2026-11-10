@@ -15,10 +15,20 @@ import { initPyodide } from './lib/pythonEngine';
 
 export default function App() {
   const [track, setTrack] = useState<TrackType>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const trackParam = params.get('track');
+    if (trackParam === 'python' || trackParam === 'sql') return trackParam;
     return (localStorage.getItem('de_academy_active_track') as TrackType) || 'sql';
   });
 
-  const [activeTab, setActiveTab] = useState<'lessons' | 'activities' | 'schemas' | 'playground'>('lessons');
+  const [activeTab, setActiveTab] = useState<'lessons' | 'activities' | 'schemas' | 'playground'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    if (tabParam === 'lessons' || tabParam === 'activities' || tabParam === 'schemas' || tabParam === 'playground') {
+      return tabParam;
+    }
+    return 'lessons';
+  });
   const [playgroundSql, setPlaygroundSql] = useState<string | undefined>(undefined);
   const [playgroundPythonCode, setPlaygroundPythonCode] = useState<string | undefined>(undefined);
   const [schemaTargetTable, setSchemaTargetTable] = useState<string | undefined>(undefined);

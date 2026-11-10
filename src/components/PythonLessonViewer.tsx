@@ -35,9 +35,19 @@ export const PythonLessonViewer: React.FC<PythonLessonViewerProps> = ({
   onToggleReviewed,
   onOpenPlaygroundWithCode
 }) => {
-  const [selectedLessonId, setSelectedLessonId] = useState<string>(PYTHON_LESSONS[0].id);
+  const [selectedLessonId, setSelectedLessonId] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paramId = params.get('lesson');
+    if (paramId && PYTHON_LESSONS.some((l) => l.id === paramId)) {
+      return paramId;
+    }
+    return PYTHON_LESSONS[0].id;
+  });
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
-  const [viewMode, setViewMode] = useState<'guide' | 'challenge'>('guide');
+  const [viewMode, setViewMode] = useState<'guide' | 'challenge'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') === 'challenge' ? 'challenge' : 'guide';
+  });
 
   // Persistent drafts per lesson challenge
   const [lessonDrafts, setLessonDrafts] = useState<Record<string, string>>(() => {

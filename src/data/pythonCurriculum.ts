@@ -1,7 +1,15 @@
+export interface PythonLessonFormula {
+  title: string;
+  expression: string;
+  explanation?: string;
+  variables?: { name: string; meaning: string }[];
+}
+
 export interface PythonLessonSection {
   title: string;
   body: string;
   exampleCode?: string;
+  formula?: PythonLessonFormula;
 }
 
 export interface PythonChallenge {
@@ -15,6 +23,17 @@ export interface PythonChallenge {
   solutionExplanation: string;
 }
 
+export interface PythonCommonMistake {
+  wrongCode: string;
+  correctCode: string;
+  explanation: string;
+}
+
+export interface PythonQuickReference {
+  goal: string;
+  syntax: string;
+}
+
 export interface PythonLesson {
   id: string;
   tabId: string;
@@ -24,6 +43,8 @@ export interface PythonLesson {
   title: string;
   description: string;
   sections: PythonLessonSection[];
+  quickReference?: PythonQuickReference[];
+  commonMistake?: PythonCommonMistake;
   challenge: PythonChallenge;
 }
 
@@ -74,17 +95,52 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 1,
     "title": "Introduction to Python for Data Science",
-    "description": "Introduction to Python for Data Science  The course is hosted by Hugo, a data scientist and educator at DataCamp. It is designed to teach Python for Data Scienc...",
+    "description": "The course is hosted by Hugo, a data scientist and educator at DataCamp. It is designed to teach Python for Data Science through a combination of video lessons ...",
     "sections": [
       {
-        "title": "Introduction to Python for Data Science",
-        "body": "Introduction to Python for Data Science\n\nThe course is hosted by Hugo, a data scientist and educator at DataCamp. It is designed to teach Python for Data Science through a combination of video lessons and interactive exercises. You will have access to your own Python session where you can experiment with code, try to solve exercises, and receive instant feedback. This “learning by doing” approach ensures that you build your coding skills gradually and effectively.\n\nAbout Python\n\nPython was created by Guido van Rossum and began as a hobby project that eventually evolved into a widely used general-purpose programming language. There are a few reasons why Python has become so popular:\n\nOpen Source: Python is free to use and share.\n\nPackage Ecosystem: Python allows developers to build and share packages—prewritten code that solves specific problems. Over time, many data science–specific packages have been created."
+        "title": "1. Concept Overview",
+        "body": "The course is hosted by Hugo, a data scientist and educator at DataCamp. It is designed to teach Python for Data Science through a combination of video lessons and interactive exercises. You will have access to your own Python session where you can experiment with code, try to solve exercises, and receive instant feedback. This “learning by doing” approach ensures that you build your coding skills gradually and effectively."
       },
       {
-        "title": "For example, if you want to",
-        "body": "Make visualizations of sales data, there’s a package for that.\n\nConnect to a database to analyze sensor measurements, there’s a package for that too.\n\nBecause of its flexibility, Python is often referred to as the Swiss Army knife of programming languages, capable of handling almost any programming task. In this course, you will gradually develop your data science coding skills to harness the power of Python.\n\nExperimenting with Python: IPython Shell\n\nThe course introduces the IPython Shell, an enhanced interactive Python environment. Unlike a standard Python shell, IPython provides additional features that make coding and testing snippets of Python easier.\n\nYou can type Python code and immediately see the result.\n\nFor example, typing 4 + 5 and pressing Enter outputs 9.\n\nIPython is part of the broader Jupyter ecosystem and was created by Fernando Pérez.\n\nUsing the IPython Shell is ideal for experimentation and testing ideas before turning them into structured scripts.\n\nPython Scripts\n\nA Python script is simply a text file with a .py extension that contains a series of Python commands. Scripts allow you to:\n\nOrganize code systematically.\n\nAvoid retyping commands repeatedly—just modify the script and rerun it.\n\nWhen executing scripts, output does not automatically appear unless you use print() statements. For example, wrapping the calculation 4 + 5 in a print() call will display the result in the output pane.\n\nUsing the DataCamp Interface\n\nIn the DataCamp environment, you have two main ways to work with Python:\n\nIPython Shell: Best for experimenting and testing code snippets.\n\nPython Script Editor: Use this to write structured code that will be executed and checked for correctness.\n\nBy combining both, you can explore Python interactively and then formalize your solutions in scripts for submission."
+        "title": "2. About Python",
+        "body": "Python was created by Guido van Rossum and began as a hobby project that eventually evolved into a widely used general-purpose programming language. There are a few reasons why Python has become so popular:\n\nOpen Source: Python is free to use and share.\n\nPackage Ecosystem: Python allows developers to build and share packages—prewritten code that solves specific problems. Over time, many data science–specific packages have been created.\n\nFor example, if you want to:\n\nMake visualizations of sales data, there’s a package for that.\n\nConnect to a database to analyze sensor measurements, there’s a package for that too.\n\nBecause of its flexibility, Python is often referred to as the Swiss Army knife of programming languages, capable of handling almost any programming task. In this course, you will gradually develop your data science coding skills to harness the power of Python."
+      },
+      {
+        "title": "3. Experimenting with Python: IPython Shell",
+        "body": "The course introduces the IPython Shell, an enhanced interactive Python environment. Unlike a standard Python shell, IPython provides additional features that make coding and testing snippets of Python easier.\n\nYou can type Python code and immediately see the result.\n\nFor example, typing 4 + 5 and pressing Enter outputs 9.\n\nIPython is part of the broader Jupyter ecosystem and was created by Fernando Pérez.\n\nUsing the IPython Shell is ideal for experimentation and testing ideas before turning them into structured scripts."
+      },
+      {
+        "title": "4. Python Scripts",
+        "body": "A Python script is simply a text file with a .py extension that contains a series of Python commands. Scripts allow you to:\n\nOrganize code systematically.\n\nAvoid retyping commands repeatedly—just modify the script and rerun it.\n\nWhen executing scripts, output does not automatically appear unless you use print() statements. For example, wrapping the calculation 4 + 5 in a print() call will display the result in the output pane."
+      },
+      {
+        "title": "5. Using the DataCamp Interface",
+        "body": "In the DataCamp environment, you have two main ways to work with Python:\n\nIPython Shell: Best for experimenting and testing code snippets.\n\nPython Script Editor: Use this to write structured code that will be executed and checked for correctness.\n\nBy combining both, you can explore Python interactively and then formalize your solutions in scripts for submission."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Introduction to Python for Data Science",
       "scenario": "Apply the concepts learned in Introduction to Python for Data Science to process sample tabular data.",
@@ -106,26 +162,100 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 2,
     "title": "Variables and Types in Python",
-    "description": "Variables and Types in Python  Python allows you to store values in variables, which is essential when performing more complex calculations. A variable is a nam...",
+    "description": "Python allows you to store values in variables, which is essential when performing multi-step calculations. A variable is a named storage container for a value ...",
     "sections": [
       {
-        "title": "Variables and Types in Python",
-        "body": "Variables and Types in Python\n\nPython allows you to store values in variables, which is essential when performing more complex calculations. A variable is a named storage for a value, and Python variables are case-sensitive. Once you define a variable, you can retrieve its value simply by typing its name. For example, if your height is 1.79 meters and your weight is 68.7 kilograms, you can assign these values to variables height and weight using the equals sign. Typing height or weight later will print their respective values.\n\nCalculating BMI\n\nVariables make calculations reproducible. For instance, the Body Mass Index (BMI) can be calculated using the formula:\n\n`BMI=weight (kg)height (m)2\\text{BMI} = \\frac{\\text{weight (kg)}}{\\text{height (m)}^2}BMI=height (m)2weight (kg)​`\n\nYou can either input the numerical values directly or use the variables height and weight. Python will substitute the variable names with their stored values. By storing the result in a new variable, bmi, you create a reusable value. This approach ensures that your code is flexible and reproducible.\n\nReproducibility with Variables\n\nIf your BMI calculation is in a script, you can easily update it for a new weight by simply changing the weight variable and rerunning the script. The bmi will automatically reflect the new calculation. This demonstrates the power of using variables in Python—they make your code dynamic and adaptable without rewriting formulas.\n\nPython Data Types\n\nEvery value in Python has a specific type. You can check a value’s type using the type() function. For example:\n\nbmi is a float, which represents a real number with a fractional part.\n\nWhole numbers are of type int.\n\nIn addition to numbers, Python offers several other data types commonly used in data science:\n\nStrings (str): Represent text and can be enclosed in either single or double quotes.\u000bBooleans (bool): Represent truth values—either True or False—and are useful for conditional operations and data filtering.\n\nBehavior Depends on Type\n\nPython operators can behave differently depending on the type of data. For example:\n\nAdding two integers sums them mathematically.\n\nAdding two strings concatenates them, effectively pasting the text together.\n\nThis principle, known as type-dependent behavior, is fundamental in Python. Understanding and experimenting with data types will help you avoid unexpected results and make your code more robust.\n\nIn the exercises that follow, you will create your first variables and explore Python’s data types interactively, preparing you to work with more complex structures like lists in the next video.",
-        "exampleCode": "BMI=weight (kg)height (m)2\\text{BMI} = \\frac{\\text{weight (kg)}}{\\text{height (m)}^2}BMI=height (m)2weight (kg)​"
+        "title": "1. What are Variables?",
+        "body": "Python allows you to store values in variables, which is essential when performing multi-step calculations. A variable is a named storage container for a value in memory.\n\n• **Case-Sensitive**: Python variable names are case-sensitive (`Height` and `height` are two different variables).\n• **Assignment**: Use the equals sign (`=`) to assign a value to a variable.\n• **Retrieval**: Once defined, simply reference the variable name to fetch its stored value.",
+        "exampleCode": "# Storing values in variables\nheight = 1.79   # Height in meters\nweight = 68.7   # Weight in kilograms\n\n# Inspecting assigned variables\nprint(\"Height:\", height)\nprint(\"Weight:\", weight)"
+      },
+      {
+        "title": "2. Calculating Body Mass Index (BMI)",
+        "body": "Variables make complex calculations reusable and readable. For example, Body Mass Index (BMI) is calculated by dividing body weight in kilograms by the square of body height in meters.\n\nIn Python, you can calculate BMI directly using your assigned variables. Storing the result in a new variable, `bmi`, creates a reusable metric across your analytical scripts.",
+        "formula": {
+          "title": "Body Mass Index (BMI) Formula",
+          "expression": "BMI = weight / (height ** 2)",
+          "variables": [
+            {
+              "name": "weight",
+              "meaning": "Body weight measured in kilograms (kg)"
+            },
+            {
+              "name": "height",
+              "meaning": "Height measured in meters (m)"
+            },
+            {
+              "name": "** 2",
+              "meaning": "Python exponentiation operator (squared)"
+            }
+          ]
+        },
+        "exampleCode": "# Calculate BMI using variables\nheight = 1.79\nweight = 68.7\n\n# BMI = weight / (height ** 2)\nbmi = weight / (height ** 2)\nprint(\"Calculated BMI:\", round(bmi, 2))  # Output: 21.44"
+      },
+      {
+        "title": "3. Reproducibility with Variables",
+        "body": "If your BMI calculation is written in a script, updating calculations for a different person or timestamp is effortless.\n\nSimply change the `weight` variable and re-run the script. The `bmi` variable automatically recalculates with the new value—without needing to rewrite any formulas. This demonstrates why variables are fundamental: they make code dynamic and adaptable.",
+        "exampleCode": "# Easily update weight without rewriting the formula\nheight = 1.79\nweight = 75.0  # Updated weight\n\nbmi = weight / (height ** 2)\nprint(\"Updated BMI:\", round(bmi, 2))  # Output: 23.41"
+      },
+      {
+        "title": "4. Core Python Data Types",
+        "body": "Every value in Python belongs to a specific data type that defines what operations can be performed on it. You can inspect any variable's type using the built-in `type()` function:\n\n• **`int` (Integer)**: Whole numbers without fractional parts (e.g. `21`, `100`, `-5`).\n• **`float` (Floating Point)**: Real numbers with fractional decimal points (e.g. `1.79`, `21.44`).\n• **`str` (String)**: Text sequences enclosed in either single (`'...'`) or double (`\"...\"`) quotes.\n• **`bool` (Boolean)**: Logical truth values—either `True` or `False`—vital for filtering and conditional logic.",
+        "exampleCode": "# Checking Python data types\nage = 21\nbmi = 21.44\ncity = \"New York\"\nis_active = True\n\nprint(type(age))        # <class 'int'>\nprint(type(bmi))        # <class 'float'>\nprint(type(city))       # <class 'str'>\nprint(type(is_active))  # <class 'bool'>"
+      },
+      {
+        "title": "5. Type-Dependent Behavior",
+        "body": "Python operators behave differently depending on the operand data types. This principle is called **type-dependent behavior**:\n\n• **Integers & Floats (`+`)**: Performs mathematical addition (`5 + 5` = `10`).\n• **Strings (`+`)**: Performs concatenation, joining texts together (`\"data\" + \"frame\"` = `\"dataframe\"`).\n• **Mismatched Types**: Adding a string and a number (`\"age: \" + 21`) raises a `TypeError`. You must explicitly convert numbers using `str()`.",
+        "exampleCode": "# Math addition\nprint(5 + 5)                # 10\n\n# String concatenation\nprint(\"data\" + \"frame\")     # 'dataframe'\n\n# Explicit casting when combining types\nprint(\"My age is \" + str(21))  # 'My age is 21'"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Assign integer variable",
+        "syntax": "x = 42"
+      },
+      {
+        "goal": "Assign float (decimal)",
+        "syntax": "price = 19.99"
+      },
+      {
+        "goal": "Assign text string",
+        "syntax": "city = \"Chicago\""
+      },
+      {
+        "goal": "Assign boolean literal",
+        "syntax": "is_active = True"
+      },
+      {
+        "goal": "Inspect data type",
+        "syntax": "type(variable)"
+      },
+      {
+        "goal": "Exponentiation (power of 2)",
+        "syntax": "height ** 2"
+      },
+      {
+        "goal": "Convert integer/float to string",
+        "syntax": "str(42)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Mistake 1: Exponentiation syntax confusion or lack of parentheses\nbmi = weight / height ** 2\n\n# Mistake 2: Concatenating string and integer without casting\nprint(\"Total: \" + 100)  # Raises TypeError!",
+      "correctCode": "# Parentheses ensure clear mathematical precedence:\nbmi = weight / (height ** 2)\n\n# Explicitly cast numbers using str():\nprint(\"Total: \" + str(100))",
+      "explanation": "In Python, ** has higher precedence than /, but using parentheses (height ** 2) eliminates any ambiguity. Also, Python will not automatically coerce numbers to strings when using +; you must call str(number)."
+    },
     "challenge": {
-      "title": "Practice Drill: Variables and Types in Python",
-      "scenario": "Apply the concepts learned in Variables and Types in Python to process sample tabular data.",
-      "instructions": "Write Python code using pandas or standard Python to explore and verify data behavior for Variables and Types in Python.",
-      "starterCode": "# Practice Challenge: Variables and Types in Python\nimport pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(\"Loaded sales records:\", len(df))\nprint(df.head(3))\n",
-      "expectedCode": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(df.describe())\n",
-      "validationScript": "assert 'df' in locals(), \"DataFrame df must be loaded\"\n",
+      "title": "Calculate Patient BMI and Verify Data Types",
+      "scenario": "The hospital analytics unit needs to calculate the Body Mass Index (BMI) for incoming patients and verify that the calculated metric is stored as a floating-point number.",
+      "instructions": "1. Given patient height of `1.82` meters and weight of `78.4` kilograms, calculate `bmi = weight / (height ** 2)` and round to 2 decimal places using `round()`.\n2. Assign the result to `bmi`.\n3. Inspect the data type of `bmi` using `type(bmi)` and assign the type to `bmi_type`.\n4. Print `bmi` and `bmi_type`.",
+      "starterCode": "# Patient vitals\nheight = 1.82  # meters\nweight = 78.4  # kg\n\n# 1. Calculate BMI and round to 2 decimal places\nbmi = None\n\n# 2. Inspect type using type()\nbmi_type = None\n\nprint(\"BMI:\", bmi)\nprint(\"Type:\", bmi_type)\n",
+      "expectedCode": "height = 1.82\nweight = 78.4\nbmi = round(weight / (height ** 2), 2)\nbmi_type = type(bmi)\nprint(\"BMI:\", bmi)\nprint(\"Type:\", bmi_type)\n",
+      "validationScript": "assert 'bmi' in locals(), \"Variable 'bmi' must be defined\"\nassert 'bmi_type' in locals(), \"Variable 'bmi_type' must be defined\"\nassert abs(bmi - 23.67) < 0.05, f\"Expected BMI to be ~23.67, got {bmi}\"\nassert bmi_type == float, \"bmi_type should be float\"\n",
       "hints": [
-        "Inspect the DataFrame using .head() or .info().",
-        "Follow the examples demonstrated in the lesson guide."
+        "Use weight / (height ** 2) to compute BMI.",
+        "Use round(val, 2) to round to two decimal places.",
+        "Assign type(bmi) to bmi_type."
       ],
-      "solutionExplanation": "Mastering this operation ensures consistent data pipeline quality when manipulating structured data."
+      "solutionExplanation": "Storing calculations in variables enables reproducible downstream analysis, while type() ensures data validation before pipeline ingestion."
     }
   },
   {
@@ -135,25 +265,63 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 3,
     "title": "Python Lists",
-    "description": "Python Lists  After learning about Python’s basic data types—int, float, str, and bool—you’ve seen how individual variables can store single values. However, as...",
+    "description": "Basic data types like `int`, `float`, `str`, and `bool` store individual scalar values. However, data analysis requires handling collections of data points—such...",
     "sections": [
       {
-        "title": "Python Lists",
-        "body": "Python Lists\n\nAfter learning about Python’s basic data types—int, float, str, and bool—you’ve seen how individual variables can store single values. However, as a data scientist, you will often need to handle many data points. For example, if you want to record the heights of everyone in your family, it would be inconvenient to create a separate variable for each person.\n\nThis is where Python lists come in. A list is a data structure that allows you to store multiple values under a single name. Lists are created using square brackets [ ], and can be assigned to a variable just like other data types. The elements inside a list can be of any type:\n\nNumbers (integers or floats)\n\nStrings (text)\n\nBooleans\n\nEven other lists\n\nFor instance, you could store the heights of your family members in a list called fam. If you want to keep track of both names and heights, you can create sublists for each family member, containing their name and height together. These sublists can then be collected into a larger list, such as fam2. Printing fam2 shows a list of lists, where the main list contains multiple sublists.\n\nLike other Python types, lists have their own behaviors and functionality. They are not just containers—they provide tools to access, subset, and modify elements. Understanding lists is crucial for organizing and manipulating collections of data efficiently."
+        "title": "1. Introduction to Python Lists",
+        "body": "Basic data types like `int`, `float`, `str`, and `bool` store individual scalar values. However, data analysis requires handling collections of data points—such as sensor temperatures, employee salaries, or customer IDs.\n\nA **list** is a compound data structure that stores multiple items in an ordered sequence under a single variable name. Lists are created using square brackets `[ ]` with elements separated by commas.",
+        "exampleCode": "# Creating a list of family heights (in meters)\nfam = [1.73, 1.68, 1.71, 1.89]\nprint(\"Family heights:\", fam)\nprint(\"Total family members:\", len(fam))"
+      },
+      {
+        "title": "2. Storing Heterogeneous & Mixed Types",
+        "body": "Unlike arrays in some other programming languages, Python lists can store elements of **any** data type together in the same list:\n\n• **Numbers**: Integers and floats\n• **Strings**: Text sequences\n• **Booleans**: Logical flags\n• **Nested Lists**: Lists containing other lists",
+        "exampleCode": "# Mixed-type list containing names and heights\nfam_mixed = [\"liz\", 1.73, \"emma\", 1.68, \"mom\", 1.71, \"dad\", 1.89]\nprint(fam_mixed)"
+      },
+      {
+        "title": "3. Nested Sublists (2D Collections)",
+        "body": "To organize paired data more cleanly, you can group related items into sublists. For instance, pairing each person's name and height into a 2-element sublist creates a list of lists.\n\nThis nested structure is the foundational conceptual model for tabular data (rows and columns) before moving to NumPy matrices and pandas DataFrames.",
+        "exampleCode": "# List of sublists (each sublist represents one record)\nfam_nested = [\n    [\"liz\", 1.73],\n    [\"emma\", 1.68],\n    [\"mom\", 1.71],\n    [\"dad\", 1.89]\n]\nprint(\"Nested list:\", fam_nested)\nprint(\"First record:\", fam_nested[0])"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Create an empty list",
+        "syntax": "my_list = []"
+      },
+      {
+        "goal": "Create a numeric list",
+        "syntax": "prices = [19.99, 49.50, 9.99]"
+      },
+      {
+        "goal": "Get list length (count)",
+        "syntax": "len(prices)"
+      },
+      {
+        "goal": "Create nested 2D list",
+        "syntax": "matrix = [[1, 2], [3, 4]]"
+      },
+      {
+        "goal": "Check list type",
+        "syntax": "type(prices) # <class 'list'>"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Using parentheses () instead of square brackets []:\nmy_list = (1, 2, 3)  # This creates an immutable tuple, NOT a list!",
+      "correctCode": "# Always use square brackets [] for lists:\nmy_list = [1, 2, 3]",
+      "explanation": "Parentheses (1, 2, 3) create a tuple, which cannot be modified in-place. Square brackets [1, 2, 3] create a mutable list."
+    },
     "challenge": {
-      "title": "Practice Drill: Python Lists",
-      "scenario": "Apply the concepts learned in Python Lists to process sample tabular data.",
-      "instructions": "Write Python code using pandas or standard Python to explore and verify data behavior for Python Lists.",
-      "starterCode": "# Practice Challenge: Python Lists\nimport pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(\"Loaded sales records:\", len(df))\nprint(df.head(3))\n",
-      "expectedCode": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(df.describe())\n",
-      "validationScript": "assert 'df' in locals(), \"DataFrame df must be loaded\"\n",
+      "title": "Assemble a Multi-Metric Warehouse Inventory List",
+      "scenario": "The logistics warehouse needs to bundle product SKU tags, quantities on hand, and replenishment status into an organized Python list structure.",
+      "instructions": "1. Create a list named `inventory` containing 4 items: SKU string `\"SKU-902\"`, stock integer `450`, unit price float `19.95`, and in-stock boolean `True`.\n2. Compute the total item count using `len(inventory)` and assign to `item_count`.\n3. Print `inventory` and `item_count`.",
+      "starterCode": "# Build warehouse inventory record\n# 1. Create list with SKU, stock, price, and status\ninventory = None\n\n# 2. Get length\nitem_count = None\n\nprint(\"Inventory:\", inventory)\nprint(\"Item count:\", item_count)\n",
+      "expectedCode": "inventory = [\"SKU-902\", 450, 19.95, True]\nitem_count = len(inventory)\nprint(\"Inventory:\", inventory)\nprint(\"Item count:\", item_count)\n",
+      "validationScript": "assert 'inventory' in locals(), \"inventory must be defined\"\nassert isinstance(inventory, list), \"inventory must be a list\"\nassert len(inventory) == 4, \"inventory should contain 4 items\"\nassert inventory[0] == \"SKU-902\", \"First item should be 'SKU-902'\"\nassert item_count == 4, \"item_count must equal 4\"\n",
       "hints": [
-        "Inspect the DataFrame using .head() or .info().",
-        "Follow the examples demonstrated in the lesson guide."
+        "Use square brackets: inventory = [\"SKU-902\", 450, 19.95, True].",
+        "Use len(inventory) to calculate item_count."
       ],
-      "solutionExplanation": "Mastering this operation ensures consistent data pipeline quality when manipulating structured data."
+      "solutionExplanation": "Lists allow data pipelines to bundle heterogeneous attributes into unified records for batch serialization."
     }
   },
   {
@@ -163,25 +331,67 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 4,
     "title": "Subsetting and Slicing Python Lists",
-    "description": "Subsetting and Slicing Python Lists  Once you have created a Python list, the next step is learning how to access the information stored in it. Python uses inde...",
+    "description": "Python uses **zero-based indexing**, meaning the first element in a list is at index `0`, the second is at index `1`, and so on.  To access a specific element, ...",
     "sections": [
       {
-        "title": "Subsetting and Slicing Python Lists",
-        "body": "Subsetting and Slicing Python Lists\n\nOnce you have created a Python list, the next step is learning how to access the information stored in it. Python uses indexes to locate elements in a list. Indexing starts at 0, so the first element has index 0, the second has index 1, and so on. For example, in a list fam, the fourth element (Emma’s height, 1.68) can be accessed using fam[3]. Similarly, to select the string \"dad\", which is the seventh element, you would use fam[6].\n\nPython also supports negative indexing, which is useful for accessing elements from the end of a list. The last element has index -1, the second-to-last has -2, and so on. This means that fam[6] and fam[-1] can return the same element when referencing the last item in a list.\n\nBeyond single-element indexing, Python allows slicing, which lets you select a range of elements and return them as a new list. The general syntax is list[start:end], where:\n\nstart is the index where the slice begins (included)\n\nend is the index where the slice stops (not included)\n\nFor example, fam[3:5] returns a list containing the elements at index 3 and 4. The element at index 5 is excluded. If you leave out the starting index, Python assumes you want to start from index 0. If you leave out the ending index, Python includes all elements through the last element in the list. This flexibility makes slicing a powerful tool to extract sublists efficiently without modifying the original list.\n\nOnce you’re comfortable with indexing and slicing, you can combine these techniques to navigate and manipulate lists for more advanced data operations in Python."
+        "title": "1. Zero-Based Indexing",
+        "body": "Python uses **zero-based indexing**, meaning the first element in a list is at index `0`, the second is at index `1`, and so on.\n\nTo access a specific element, write the list name followed by the index in square brackets: `list[index]`.",
+        "exampleCode": "fam = [\"liz\", 1.73, \"emma\", 1.68, \"mom\", 1.71, \"dad\", 1.89]\n\nprint(\"First element (index 0):\", fam[0])   # 'liz'\nprint(\"Second element (index 1):\", fam[1])  # 1.73"
+      },
+      {
+        "title": "2. Negative Indexing (From the End)",
+        "body": "Python also supports negative indexing to count backwards from the end of the list:\n\n• `list[-1]`: The very last element\n• `list[-2]`: The second-to-last element\n\nThis is extremely convenient when you don't know or don't want to calculate the length of the list.",
+        "exampleCode": "fam = [\"liz\", 1.73, \"emma\", 1.68, \"mom\", 1.71, \"dad\", 1.89]\n\nprint(\"Last element (-1):\", fam[-1])            # 1.89\nprint(\"Second to last element (-2):\", fam[-2])  # 'dad'"
+      },
+      {
+        "title": "3. List Slicing (`start:end`)",
+        "body": "Slicing extracts a contiguous sub-range of elements using the syntax `list[start:end]`.\n\n• **Start is Inclusive**: The element at index `start` is included.\n• **End is Exclusive**: The slice stops *before* reaching index `end`.\n• **Omitting bounds**: `list[:3]` starts from the beginning; `list[4:]` slices through the very end.",
+        "exampleCode": "fam = [\"liz\", 1.73, \"emma\", 1.68, \"mom\", 1.71, \"dad\", 1.89]\n\n# Slice elements at index 3 and 4 (stops before 5)\nmiddle = fam[3:5]\nprint(\"Middle slice [3:5]:\", middle)  # [1.68, 'mom']\n\n# Slice first 4 elements\nfirst_four = fam[:4]\nprint(\"First 4 elements [:4]:\", first_four)\n\n# Slice from index 5 to end\ntail = fam[5:]\nprint(\"From index 5 to end [5:]:\", tail)"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Get first element",
+        "syntax": "lst[0]"
+      },
+      {
+        "goal": "Get last element",
+        "syntax": "lst[-1]"
+      },
+      {
+        "goal": "Slice from index 1 to 3 (exclusive)",
+        "syntax": "lst[1:3]"
+      },
+      {
+        "goal": "Slice first N elements",
+        "syntax": "lst[:N]"
+      },
+      {
+        "goal": "Slice from index N to end",
+        "syntax": "lst[N:]"
+      },
+      {
+        "goal": "Full shallow copy slice",
+        "syntax": "lst[:]"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Expecting lst[1:3] to include index 3:\nsub = fam[1:3]  # Only contains indices 1 and 2!\n\n# Out-of-bounds index:\nlast = fam[len(fam)]  # Raises IndexError!",
+      "correctCode": "# To include index 3, set end to 4:\nsub = fam[1:4]\n\n# Use -1 or len(fam) - 1 for last element:\nlast = fam[-1]",
+      "explanation": "Slices are half-open intervals [start, end), where the end index is excluded. Python lists are 0-indexed, so index len(list) is out of bounds."
+    },
     "challenge": {
-      "title": "Practice Drill: Subsetting and Slicing Python Lists",
-      "scenario": "Apply the concepts learned in Subsetting and Slicing Python Lists to process sample tabular data.",
-      "instructions": "Write Python code using pandas or standard Python to explore and verify data behavior for Subsetting and Slicing Python Lists.",
-      "starterCode": "# Practice Challenge: Subsetting and Slicing Python Lists\nimport pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(\"Loaded sales records:\", len(df))\nprint(df.head(3))\n",
-      "expectedCode": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(df.describe())\n",
-      "validationScript": "assert 'df' in locals(), \"DataFrame df must be loaded\"\n",
+      "title": "Extract Regional Store Sales via Indexing & Slicing",
+      "scenario": "The regional retail manager wants to isolate the top-performing stores and the baseline stores from a quarterly sales report list.",
+      "instructions": "Given `sales = [12000, 18500, 24000, 31000, 42000, 56000]`:\n1. Extract the last store's sales using negative indexing into `top_store`.\n2. Slice the middle stores (index `2` through `4` inclusive) into `mid_stores`.\n3. Print `top_store` and `mid_stores`.",
+      "starterCode": "sales = [12000, 18500, 24000, 31000, 42000, 56000]\n\n# 1. Last element using negative index\ntop_store = None\n\n# 2. Slice index 2 through 4 (remember end index is exclusive)\nmid_stores = None\n\nprint(\"Top store:\", top_store)\nprint(\"Mid stores:\", mid_stores)\n",
+      "expectedCode": "sales = [12000, 18500, 24000, 31000, 42000, 56000]\ntop_store = sales[-1]\nmid_stores = sales[2:5]\nprint(\"Top store:\", top_store)\nprint(\"Mid stores:\", mid_stores)\n",
+      "validationScript": "assert top_store == 56000, \"top_store must be 56000\"\nassert mid_stores == [24000, 31000, 42000], f\"Expected [24000, 31000, 42000], got {mid_stores}\"\n",
       "hints": [
-        "Inspect the DataFrame using .head() or .info().",
-        "Follow the examples demonstrated in the lesson guide."
+        "Use sales[-1] for the last store.",
+        "To include index 4, use slice sales[2:5]."
       ],
-      "solutionExplanation": "Mastering this operation ensures consistent data pipeline quality when manipulating structured data."
+      "solutionExplanation": "Zero-based indexing and half-open slicing are universal paradigms across Python, NumPy arrays, and pandas Series."
     }
   },
   {
@@ -191,30 +401,59 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 5,
     "title": "Manipulating Python Lists",
-    "description": "Manipulating Python Lists  After learning how to create and subset lists, the next step is list manipulation, which includes changing elements, adding new eleme...",
+    "description": "Python lists are **mutable**, which means you can update their elements in-place without creating a brand new list.  To update an element, select it using index...",
     "sections": [
       {
-        "title": "Manipulating Python Lists",
-        "body": "Manipulating Python Lists\n\nAfter learning how to create and subset lists, the next step is list manipulation, which includes changing elements, adding new elements, and removing elements from a list.\n\nChanging List Elements\n\nUpdating an element in a list is straightforward. You use the index in square brackets to select the element, then assign a new value with the equals sign. For example, if your dad’s height in a list fam is outdated at 1.89 meters and should be 1.86, you can simply assign the new value to the correct index. You can also change multiple elements at once by using slices. For instance, to update the first two elements in a list, select the slice 0:2 and assign a new list to it.\n\nAdding and Removing Elements"
+        "title": "1. Changing List Elements",
+        "body": "Python lists are **mutable**, which means you can update their elements in-place without creating a brand new list.\n\nTo update an element, select it using index notation and assign a new value with `=`.",
+        "exampleCode": "fam = [\"liz\", 1.73, \"emma\", 1.68, \"mom\", 1.71, \"dad\", 1.89]\n\n# Update Emma's height at index 3\nfam[3] = 1.69\nprint(\"Updated list:\", fam)"
       },
       {
-        "title": "Python makes it easy to expand or reduce lists",
-        "body": "Adding elements: Use the plus operator + to combine lists. For example, you can add your own name and height to the fam list and store the result in a new variable, e.g., fam_ext.\n\nRemoving elements: Use the del statement with the element’s index. Removing an element shifts all subsequent elements one position earlier in the list. For example, del fam[2] removes the third element, and if repeated, removes what is now at that index.\n\nBehind the Scenes: List References\n\nUnderstanding how lists work in memory is important, especially when copying lists. When you create a list variable, Python stores a reference to the list in memory, not the actual elements.\n\n`If you assign a list x to a new variable y with y = x, both variables point to the same list. Changing an element in y also updates x.`\n\nTo create a new independent copy of the list, you can either:\n\nUse the list() function\n\n`Use slicing, e.g., y = x[:]`\n\nWith these methods, updates to y do not affect x, giving you two separate lists in memory. Understanding this behavior helps prevent unexpected changes when working with multiple lists in Python.",
-        "exampleCode": "If you assign a list x to a new variable y with y = x, both variables point to the same list. Changing an element in y also updates x.\nUse slicing, e.g., y = x[:]"
+        "title": "2. Adding and Removing Elements",
+        "body": "You can concatenate lists together using the `+` operator, or delete specific items using the `del` keyword:\n\n• **Concatenation (`+`)**: Joins two lists together into a new expanded list.\n• **Deletion (`del`)**: Removes an element at a specified index in-place.",
+        "exampleCode": "fam = [\"liz\", 1.73, \"emma\", 1.68, \"mom\", 1.71, \"dad\", 1.89]\n\n# Append new family member using +\nfam_ext = fam + [\"me\", 1.79]\nprint(\"Extended list:\", fam_ext)\n\n# Delete 'dad' and his height\ndel fam_ext[6:8]\nprint(\"After deletion:\", fam_ext)"
+      },
+      {
+        "title": "3. Behind the Scenes: Memory References vs Copies",
+        "body": "When you assign `y = x`, Python does **not** make a copy of the list. Instead, it copies the reference pointing to the same list in memory! Any modification to `y` will immediately change `x` as well.\n\nTo create a completely independent copy, use `list(x)` or slice `x[:]`.",
+        "exampleCode": "# The copy trap:\nx = [\"a\", \"b\", \"c\"]\ny = x          # Copies REFERENCE, not list!\ny[1] = \"z\"\nprint(\"x is also modified:\", x)  # ['a', 'z', 'c']\n\n# Safe independent copy:\nx = [\"a\", \"b\", \"c\"]\ny = list(x)    # or y = x[:]\ny[1] = \"z\"\nprint(\"x remains intact:\", x)   # ['a', 'b', 'c']"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Update element in-place",
+        "syntax": "lst[i] = new_val"
+      },
+      {
+        "goal": "Concatenate two lists",
+        "syntax": "combined = lst1 + lst2"
+      },
+      {
+        "goal": "Delete element by index",
+        "syntax": "del lst[i]"
+      },
+      {
+        "goal": "Create independent shallow copy",
+        "syntax": "copied = list(lst) # or lst[:]"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Shallow reference alias bug:\nx = [1, 2, 3]\ny = x\ny[0] = 99  # Modifies x as well!",
+      "correctCode": "# Create a true independent copy:\nx = [1, 2, 3]\ny = list(x) # or x[:]\ny[0] = 99  # x remains [1, 2, 3]",
+      "explanation": "In Python, variables store references to compound objects in memory. Simple assignment (y = x) binds a new name to the exact same list."
+    },
     "challenge": {
-      "title": "Practice Drill: Manipulating Python Lists",
-      "scenario": "Apply the concepts learned in Manipulating Python Lists to process sample tabular data.",
-      "instructions": "Write Python code using pandas or standard Python to explore and verify data behavior for Manipulating Python Lists.",
-      "starterCode": "# Practice Challenge: Manipulating Python Lists\nimport pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(\"Loaded sales records:\", len(df))\nprint(df.head(3))\n",
-      "expectedCode": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('sales.csv')\nprint(df.describe())\n",
-      "validationScript": "assert 'df' in locals(), \"DataFrame df must be loaded\"\n",
+      "title": "Safely Clone and Modify Server Cluster Nodes",
+      "scenario": "The infrastructure automation pipeline needs to duplicate a base server cluster list and add standby backup nodes without mutating the production configuration.",
+      "instructions": "Given `base_cluster = [\"node-1\", \"node-2\", \"node-3\"]`:\n1. Make an independent copy of `base_cluster` into `backup_cluster` using `list()` or `[:]`.\n2. Append `[\"standby-1\", \"standby-2\"]` to `backup_cluster` using the `+` operator.\n3. Modify the first element of `backup_cluster` to `\"primary-backup\"`.\n4. Print `base_cluster` and `backup_cluster` (verify `base_cluster` did not change).",
+      "starterCode": "base_cluster = [\"node-1\", \"node-2\", \"node-3\"]\n\n# 1. Independent copy\nbackup_cluster = None\n\n# 2. Append standby nodes\n# 3. Modify first node\n\nprint(\"Base cluster:\", base_cluster)\nprint(\"Backup cluster:\", backup_cluster)\n",
+      "expectedCode": "base_cluster = [\"node-1\", \"node-2\", \"node-3\"]\nbackup_cluster = list(base_cluster) + [\"standby-1\", \"standby-2\"]\nbackup_cluster[0] = \"primary-backup\"\nprint(\"Base cluster:\", base_cluster)\nprint(\"Backup cluster:\", backup_cluster)\n",
+      "validationScript": "assert base_cluster == [\"node-1\", \"node-2\", \"node-3\"], \"base_cluster must not be mutated\"\nassert backup_cluster == [\"primary-backup\", \"node-2\", \"node-3\", \"standby-1\", \"standby-2\"], f\"Incorrect backup_cluster: {backup_cluster}\"\n",
       "hints": [
-        "Inspect the DataFrame using .head() or .info().",
-        "Follow the examples demonstrated in the lesson guide."
+        "Use backup_cluster = list(base_cluster) to avoid reference aliasing.",
+        "Add standby nodes with + [\"standby-1\", \"standby-2\"]."
       ],
-      "solutionExplanation": "Mastering this operation ensures consistent data pipeline quality when manipulating structured data."
+      "solutionExplanation": "Explicitly cloning lists protects against mutation side-effects across asynchronous data transformation pipelines."
     }
   },
   {
@@ -224,14 +463,44 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 6,
     "title": "Functions in Python",
-    "description": "Functions in Python  Functions are reusable pieces of code designed to perform a specific task. You’ve already used functions in Python without realizing it—for...",
+    "description": "Functions are reusable pieces of code designed to perform a specific task. You’ve already used functions in Python without realizing it—for example, the type() ...",
     "sections": [
       {
-        "title": "Functions in Python",
-        "body": "Functions in Python\n\nFunctions are reusable pieces of code designed to perform a specific task. You’ve already used functions in Python without realizing it—for example, the type() function returns the type of a value. Instead of writing code manually every time you want to perform a task, functions allow you to call them with input values and get results automatically.\n\nUsing Functions: Examples\n\nConsider a list of family members’ heights stored in fam. To find the tallest height, instead of manually comparing each number, you can use Python’s built-in max() function:\n\nYou pass the list fam as an argument to max() inside parentheses.\n\nThe function then computes the maximum value and returns it.\n\n`You can assign the result to a new variable, e.g., tallest = max(fam), and use it like any other variable in further calculations.`\n\nThe max() function acts like a black box: you don’t need to know its internal implementation—just that it works.\n\nAnother commonly used function is round(), which rounds numbers:\n\nround(number, ndigits) takes two arguments:\n\nnumber – the value to round\n\nndigits – how many decimal places to keep\n\nFor example, round(1.68, 1) rounds 1.68 to one decimal place, giving 1.7. If you call round() with only one argument, Python automatically rounds to the nearest integer because ndigits is an optional argument. Internally, the function uses these arguments like variables to perform the calculation and return a result.\n\nFinding and Using Functions\n\nMany common tasks in Python already have functions built in, or available through packages. You don’t need to reinvent the wheel—just search online or use resources like DataCamp to discover functions that solve your problem. Using built-in or well-documented functions will save time, reduce errors, and make your code more readable.",
-        "exampleCode": "You can assign the result to a new variable, e.g., tallest = max(fam), and use it like any other variable in further calculations."
+        "title": "1. Concept Overview",
+        "body": "Functions are reusable pieces of code designed to perform a specific task. You’ve already used functions in Python without realizing it—for example, the type() function returns the type of a value. Instead of writing code manually every time you want to perform a task, functions allow you to call them with input values and get results automatically."
+      },
+      {
+        "title": "2. Using Functions: Examples",
+        "body": "Consider a list of family members’ heights stored in fam. To find the tallest height, instead of manually comparing each number, you can use Python’s built-in max() function:\n\nYou pass the list fam as an argument to max() inside parentheses.\n\nThe function then computes the maximum value and returns it.\n\nYou can assign the result to a new variable, e.g., tallest = max(fam), and use it like any other variable in further calculations.\n\nThe max() function acts like a black box: you don’t need to know its internal implementation—just that it works.\n\nAnother commonly used function is round(), which rounds numbers:\n\nround(number, ndigits) takes two arguments:\n\nnumber – the value to round\n\nndigits – how many decimal places to keep\n\nFor example, round(1.68, 1) rounds 1.68 to one decimal place, giving 1.7. If you call round() with only one argument, Python automatically rounds to the nearest integer because ndigits is an optional argument. Internally, the function uses these arguments like variables to perform the calculation and return a result."
+      },
+      {
+        "title": "3. Finding and Using Functions",
+        "body": "Many common tasks in Python already have functions built in, or available through packages. You don’t need to reinvent the wheel—just search online or use resources like DataCamp to discover functions that solve your problem. Using built-in or well-documented functions will save time, reduce errors, and make your code more readable."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Functions in Python",
       "scenario": "Apply the concepts learned in Functions in Python to process sample tabular data.",
@@ -253,21 +522,48 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 7,
     "title": "Methods in Python",
-    "description": "Methods in Python  In Python, functions like max(), len(), and round() are just one part of the story. Sometimes, tasks such as finding the index of an element ...",
+    "description": "In Python, functions like max(), len(), and round() are just one part of the story. Sometimes, tasks such as finding the index of an element in a list or revers...",
     "sections": [
       {
-        "title": "Methods in Python",
-        "body": "Methods in Python\n\nIn Python, functions like max(), len(), and round() are just one part of the story. Sometimes, tasks such as finding the index of an element in a list or reversing a list are not covered by built-in functions. This is where methods come into play.\n\nPython Objects and Methods\n\nEverything in Python is an object. Numbers, strings, lists, booleans—all of these are objects with a specific type, such as int, float, str, or list. In addition to representing values, Python objects come with methods, which are functions that “belong” to the object and are specific to its type."
+        "title": "1. Concept Overview",
+        "body": "In Python, functions like max(), len(), and round() are just one part of the story. Sometimes, tasks such as finding the index of an element in a list or reversing a list are not covered by built-in functions. This is where methods come into play."
       },
       {
-        "title": "Examples of methods",
-        "body": "Strings have methods like capitalize() and replace().\n\nLists have methods like index() and count().\n\nFloats, integers, and booleans also have their own specific methods.\n\nYou call a method using dot notation, for example, fam.index(\"mom\") returns the index of \"mom\" in the list fam. Similarly, fam.count(1.73) counts how many times 1.73 occurs in the list. For strings, sister.capitalize() returns the string with the first letter capitalized, and sister.replace(\"z\", \"sa\") replaces occurrences of \"z\" with \"sa\".\n\nKey Principles About Methods\n\nMethods depend on object type: The available methods vary depending on whether the object is a list, string, float, etc.\n\nSame method name, different behavior: Some methods exist on multiple types but behave differently. For instance, index() on a string returns the position of a character, while on a list it returns the position of an element.\n\nMethods can modify objects: Some methods, like append() on a list, modify the object in place. For example, fam.append(\"me\") adds \"me\" to the fam list. Others may return a new object without changing the original.\n\nSummary"
+        "title": "2. Python Objects and Methods",
+        "body": "Everything in Python is an object. Numbers, strings, lists, booleans—all of these are objects with a specific type, such as int, float, str, or list. In addition to representing values, Python objects come with methods, which are functions that “belong” to the object and are specific to its type.\n\nExamples of methods:\n\nStrings have methods like capitalize() and replace().\n\nLists have methods like index() and count().\n\nFloats, integers, and booleans also have their own specific methods.\n\nYou call a method using dot notation, for example, fam.index(\"mom\") returns the index of \"mom\" in the list fam. Similarly, fam.count(1.73) counts how many times 1.73 occurs in the list. For strings, sister.capitalize() returns the string with the first letter capitalized, and sister.replace(\"z\", \"sa\") replaces occurrences of \"z\" with \"sa\"."
       },
       {
-        "title": "In Python, you have",
-        "body": "Functions: General-purpose reusable code, such as max(), type(), and round().\n\nMethods: Functions that are specific to objects. Methods behave differently depending on the object type and can sometimes modify the object directly. They are accessed using dot notation and allow you to work efficiently with Python objects.\n\nUnderstanding the difference between functions and methods, and how methods depend on object types, is key to working effectively with Python data structures."
+        "title": "3. Key Principles About Methods",
+        "body": "Methods depend on object type: The available methods vary depending on whether the object is a list, string, float, etc.\n\nSame method name, different behavior: Some methods exist on multiple types but behave differently. For instance, index() on a string returns the position of a character, while on a list it returns the position of an element.\n\nMethods can modify objects: Some methods, like append() on a list, modify the object in place. For example, fam.append(\"me\") adds \"me\" to the fam list. Others may return a new object without changing the original."
+      },
+      {
+        "title": "4. Summary",
+        "body": "In Python, you have:\n\nFunctions: General-purpose reusable code, such as max(), type(), and round().\n\nMethods: Functions that are specific to objects. Methods behave differently depending on the object type and can sometimes modify the object directly. They are accessed using dot notation and allow you to work efficiently with Python objects.\n\nUnderstanding the difference between functions and methods, and how methods depend on object types, is key to working effectively with Python data structures."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Methods in Python",
       "scenario": "Apply the concepts learned in Methods in Python to process sample tabular data.",
@@ -292,10 +588,34 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Python Packages  Python functions and methods are powerful, but including all available functions in the core Python distribution would be overwhelming and inef...",
     "sections": [
       {
-        "title": "Packages",
-        "body": "Python Packages\n\nPython functions and methods are powerful, but including all available functions in the core Python distribution would be overwhelming and inefficient. Most of the code would never be used, and maintaining it would be a huge challenge. This is where packages come in.\n\nA package is essentially a directory of Python scripts, where each script is called a module. Modules contain functions, methods, and new Python types aimed at solving specific problems. There are thousands of Python packages available online, many tailored for data science:\n\nNumPy: Efficiently works with arrays.\n\nMatplotlib: Used for data visualization.\n\nscikit-learn: Used for machine learning.\n\nNot all packages are included with Python by default, so you often need to install them before use. On your own system, this is usually done with pip, Python’s package management tool. The general workflow is:\n\nDownload get-pip.py and run it using python3 get-pip.py.\n\nInstall a package, e.g., pip3 install numpy.\n\nOnce installed, you need to import packages in your script to use them. There are several ways to do this:\n\nImport the whole package:\u000b\u000b import numpy\u000b\u000b To use the array function, you call numpy.array(list).\n\nImport with an alias:\u000b\u000b import numpy as np\u000b\u000b This allows you to write np.array(list) instead of numpy.array(list), making code shorter.\n\nImport specific functions:\u000b\u000b from numpy import array\u000b\u000b This lets you call array(list) directly. While concise, it can make your code less clear for someone reading it later, because it’s not obvious that array comes from NumPy.\n\nFor clarity and readability, importing the full package is generally preferred, as numpy.array clearly shows that the function belongs to the NumPy package."
+        "title": "1. Concept Overview",
+        "body": "Python Packages\n\nPython functions and methods are powerful, but including all available functions in the core Python distribution would be overwhelming and inefficient. Most of the code would never be used, and maintaining it would be a huge challenge. This is where packages come in.\n\nA package is essentially a directory of Python scripts, where each script is called a module. Modules contain functions, methods, and new Python types aimed at solving specific problems. There are thousands of Python packages available online, many tailored for data science:\n\nNumPy: Efficiently works with arrays.\n\nMatplotlib: Used for data visualization.\n\nscikit-learn: Used for machine learning.\n\nNot all packages are included with Python by default, so you often need to install them before use. On your own system, this is usually done with pip, Python’s package management tool. The general workflow is:\n\nDownload get-pip.py and run it using python3 get-pip.py.\n\nInstall a package, e.g., pip3 install numpy.\n\nOnce installed, you need to import packages in your script to use them. There are several ways to do this:\n\nImport the whole package:\n\n`import numpy`\n\nTo use the array function, you call numpy.array(list).\n\nImport with an alias:\n\n`import numpy as np`\n\nThis allows you to write np.array(list) instead of numpy.array(list), making code shorter.\n\nImport specific functions:\n\n`from numpy import array`\n\nThis lets you call array(list) directly. While concise, it can make your code less clear for someone reading it later, because it’s not obvious that array comes from NumPy.\n\nFor clarity and readability, importing the full package is generally preferred, as numpy.array clearly shows that the function belongs to the NumPy package.",
+        "exampleCode": "import numpy\nimport numpy as np\nfrom numpy import array"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Packages",
       "scenario": "Apply the concepts learned in Packages to process sample tabular data.",
@@ -317,14 +637,57 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 1,
     "lessonOrder": 9,
     "title": "NumPy Overview",
-    "description": "NumPy Overview  Python lists are powerful—they can hold different types, and you can change, add, or remove elements. However, when performing calculations over...",
+    "description": "Python lists are powerful—they can hold different types, and you can change, add, or remove elements. However, when performing calculations over entire collecti...",
     "sections": [
       {
-        "title": "NumPy Overview",
-        "body": "NumPy Overview\n\nPython lists are powerful—they can hold different types, and you can change, add, or remove elements. However, when performing calculations over entire collections of values, such as calculating BMIs for a family, lists become inefficient. Python cannot perform operations element-wise on lists, so trying to divide weights by squared heights directly results in an error. Doing it manually for each element is possible but tedious and slow.\n\nThe Solution: NumPy\n\nNumPy, short for Numeric Python, provides an elegant solution. It introduces NumPy arrays, which are similar to lists but come with a key advantage: you can perform operations across entire arrays element-wise. NumPy arrays are fast and efficient, making them ideal for data science tasks. To use NumPy, you install it via pip (pip3 install numpy) and then import it in your Python script:\n\n`import numpy as np`\n\nYou can then create arrays from regular Python lists:\n\n`np_height = np.array(height)`\n\n`np_weight = np.array(weight)`\n\nNow, calculating BMI for all family members can be done in a single, elegant line:\n\n`bmi = np_weight / np_height**2`\n\nWhy NumPy Works\n\nNumPy arrays are designed to contain values of a single type. If you try mixing types, NumPy will convert all elements to a compatible type, often to strings. They are a new kind of Python type, similar to float, str, or list, with their own methods and behavior. One key difference to note:\n\nPython lists: python_list + python_list → elements are concatenated.\n\nNumPy arrays: np_array + np_array → element-wise addition.\n\nThis difference can be subtle but is important when switching between types.\n\nSubsetting NumPy Arrays\n\nWorking with NumPy arrays is similar to lists, but there are additional features. You can subset arrays using square brackets, just like lists, e.g., bmi[1] retrieves the BMI of the second person. A more advanced feature is boolean subsetting:\n\nCreate a boolean array using a comparison, e.g., bmi > 23.\n\nUse this boolean array to select elements: bmi[bmi > 23].\n\nThis allows you to quickly filter data and extract meaningful insights, such as identifying family members with BMI above a certain threshold.",
+        "title": "1. Concept Overview",
+        "body": "Python lists are powerful—they can hold different types, and you can change, add, or remove elements. However, when performing calculations over entire collections of values, such as calculating BMIs for a family, lists become inefficient. Python cannot perform operations element-wise on lists, so trying to divide weights by squared heights directly results in an error. Doing it manually for each element is possible but tedious and slow."
+      },
+      {
+        "title": "2. The Solution: NumPy",
+        "body": "NumPy, short for Numeric Python, provides an elegant solution. It introduces NumPy arrays, which are similar to lists but come with a key advantage: you can perform operations across entire arrays element-wise. NumPy arrays are fast and efficient, making them ideal for data science tasks. To use NumPy, you install it via pip (pip3 install numpy) and then import it in your Python script:\n\n`import numpy as np`\n\nYou can then create arrays from regular Python lists:\n\n`np_height = np.array(height)`\n\n`np_weight = np.array(weight)`\n\nNow, calculating BMI for all family members can be done in a single, elegant line:\n\n`bmi = np_weight / np_height**2`",
         "exampleCode": "import numpy as np\nnp_height = np.array(height)\nnp_weight = np.array(weight)\nbmi = np_weight / np_height**2"
+      },
+      {
+        "title": "3. Why NumPy Works",
+        "body": "NumPy arrays are designed to contain values of a single type. If you try mixing types, NumPy will convert all elements to a compatible type, often to strings. They are a new kind of Python type, similar to float, str, or list, with their own methods and behavior. One key difference to note:\n\nPython lists: python_list + python_list → elements are concatenated.\n\nNumPy arrays: np_array + np_array → element-wise addition.\n\nThis difference can be subtle but is important when switching between types."
+      },
+      {
+        "title": "4. Subsetting NumPy Arrays",
+        "body": "Working with NumPy arrays is similar to lists, but there are additional features. You can subset arrays using square brackets, just like lists, e.g., bmi[1] retrieves the BMI of the second person. A more advanced feature is boolean subsetting:\n\nCreate a boolean array using a comparison, e.g., bmi > 23.\n\nUse this boolean array to select elements: bmi[bmi > 23].\n\nThis allows you to quickly filter data and extract meaningful insights, such as identifying family members with BMI above a certain threshold."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Import NumPy",
+        "syntax": "import numpy as np"
+      },
+      {
+        "goal": "Create 1D array",
+        "syntax": "arr = np.array([1, 2, 3])"
+      },
+      {
+        "goal": "Element-wise multiplication",
+        "syntax": "doubled = arr * 2"
+      },
+      {
+        "goal": "Inspect 2D array shape",
+        "syntax": "arr_2d.shape # (rows, cols)"
+      },
+      {
+        "goal": "Select 2D row 0, col 1",
+        "syntax": "arr_2d[0, 1]"
+      },
+      {
+        "goal": "Select entire column",
+        "syntax": "arr_2d[:, 0]"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Multiplying standard Python list duplicates elements:\n[1, 2, 3] * 2  # Returns [1, 2, 3, 1, 2, 3]!",
+      "correctCode": "# Convert to NumPy array for element-wise calculation:\nnp.array([1, 2, 3]) * 2  # array([2, 4, 6])",
+      "explanation": "Python lists repeat when multiplied. NumPy arrays execute element-wise operations across high-performance C vector buffers."
+    },
     "challenge": {
       "title": "Vectorized Price Inflation Calculator",
       "scenario": "The pricing operations team wants to simulate a 10% inflation increase across product prices without using slow Python loops.",
@@ -350,22 +713,61 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "2D NumPy Arrays  In the previous lesson, you worked with one-dimensional NumPy arrays. When you check their type using type(), Python tells you they are numpy.n...",
     "sections": [
       {
-        "title": "NumPy Arrays",
-        "body": "2D NumPy Arrays\n\nIn the previous lesson, you worked with one-dimensional NumPy arrays. When you check their type using type(), Python tells you they are numpy.ndarray. The numpy. prefix means the type comes from the NumPy package, and ndarray stands for n-dimensional array.\n\nAlthough earlier examples used 1D arrays, NumPy can handle arrays with many dimensions — 2D, 3D, and even higher. In this lesson, the focus is on 2D arrays, which are extremely common in data science because they resemble tables of data (rows and columns).\n\nCreating a 2D NumPy Array\n\nA 2D NumPy array can be created from a list of lists in Python. Each inner list represents a row in the array. For example, if you combine height and weight data into one structure, each sublist becomes a row of the 2D array.\n\nWhen you print the array, you’ll see a rectangular structure. You can inspect its dimensions using the .shape attribute:\n\n.shape returns a tuple showing the number of rows and columns.\n\nFor example, (2, 5) means 2 rows and 5 columns.\n\nIt’s important to understand that .shape is an attribute, not a method. The difference is:\n\nAttributes do not use parentheses → array.shape\n\nMethods use parentheses → array.mean()\n\nLike 1D arrays, 2D NumPy arrays must contain elements of a single data type. If one element is changed to a string, NumPy will convert all elements to strings to maintain consistency.\n\nSubsetting 2D NumPy Arrays\n\nYou can think of a 2D NumPy array as an improved list of lists. However, NumPy offers more powerful and intuitive ways to subset data.\n\nIf you want to access a specific element, such as the first row and third column, there are two approaches."
+        "title": "1. Concept Overview",
+        "body": "2D NumPy Arrays\n\nIn the previous lesson, you worked with one-dimensional NumPy arrays. When you check their type using type(), Python tells you they are numpy.ndarray. The numpy. prefix means the type comes from the NumPy package, and ndarray stands for n-dimensional array.\n\nAlthough earlier examples used 1D arrays, NumPy can handle arrays with many dimensions — 2D, 3D, and even higher. In this lesson, the focus is on 2D arrays, which are extremely common in data science because they resemble tables of data (rows and columns)."
       },
       {
-        "title": "The first approach is step-by-step indexing",
-        "body": "Select the row using square brackets.\n\nThen select the column from that row using another pair of brackets.\n\nThe second approach is more common and cleaner. You use a single pair of square brackets with a comma:\n\nThe value before the comma represents the row.\n\nThe value after the comma represents the column.\n\nThe result is the intersection of that row and column.\n\nThis second method is preferred because it is more readable and flexible.\n\nSlicing Rows and Columns\n\nNumPy slicing becomes especially powerful in 2D arrays.\n\nIf you want to select multiple rows or columns, you can use colons (:):\n\nA colon before the comma selects all rows.\n\nA colon after the comma selects all columns.\n\nYou can specify ranges using start:end, where the end index is not included."
+        "title": "2. Creating a 2D NumPy Array",
+        "body": "A 2D NumPy array can be created from a list of lists in Python. Each inner list represents a row in the array. For example, if you combine height and weight data into one structure, each sublist becomes a row of the 2D array.\n\nWhen you print the array, you’ll see a rectangular structure. You can inspect its dimensions using the .shape attribute:\n\n.shape returns a tuple showing the number of rows and columns.\n\nFor example, (2, 5) means 2 rows and 5 columns.\n\nIt’s important to understand that .shape is an attribute, not a method. The difference is:\n\nAttributes do not use parentheses → array.shape\n\nMethods use parentheses → array.mean()\n\nLike 1D arrays, 2D NumPy arrays must contain elements of a single data type. If one element is changed to a string, NumPy will convert all elements to strings to maintain consistency."
       },
       {
-        "title": "For example",
-        "body": "Selecting both rows but only columns 1 and 2 returns a smaller 2D array.\n\nSelecting only row 1 but all columns returns that entire row.\n\nSelecting all rows but only column 1 returns a column of values.\n\nThe key idea is that slicing works as:\u000b array[row_selection, column_selection]\n\nElement-wise Calculations in 2D Arrays\n\nJust like with 1D arrays, 2D NumPy arrays support element-wise operations. This means you can perform calculations across entire arrays without loops."
+        "title": "3. Subsetting 2D NumPy Arrays",
+        "body": "You can think of a 2D NumPy array as an improved list of lists. However, NumPy offers more powerful and intuitive ways to subset data.\n\nIf you want to access a specific element, such as the first row and third column, there are two approaches.\n\nThe first approach is step-by-step indexing:\n\nSelect the row using square brackets.\n\nThen select the column from that row using another pair of brackets.\n\nThe second approach is more common and cleaner. You use a single pair of square brackets with a comma:\n\nThe value before the comma represents the row.\n\nThe value after the comma represents the column.\n\nThe result is the intersection of that row and column.\n\nThis second method is preferred because it is more readable and flexible."
       },
       {
-        "title": "For example, you can",
-        "body": "Multiply all elements by a number.\n\nAdd two arrays of the same shape together.\u000bApply mathematical operations across the entire dataset.\n\nThis is one of the biggest advantages of NumPy over regular Python lists. It makes mathematical computations cleaner, faster, and more efficient.\n\nKey Takeaways\n\nnumpy.ndarray means n-dimensional array.\n\n2D arrays are created from lists of lists.\n\nUse .shape to check dimensions.\n\nArrays must contain only one data type.\n\nSubsetting uses the format: array[row, column].\n\nSlicing with : allows selecting ranges.\n\nElement-wise calculations work across the entire array."
+        "title": "4. Slicing Rows and Columns",
+        "body": "NumPy slicing becomes especially powerful in 2D arrays.\n\nIf you want to select multiple rows or columns, you can use colons (:):\n\nA colon before the comma selects all rows.\n\nA colon after the comma selects all columns.\n\nYou can specify ranges using start:end, where the end index is not included.\n\nFor example:\n\nSelecting both rows but only columns 1 and 2 returns a smaller 2D array.\n\nSelecting only row 1 but all columns returns that entire row.\n\nSelecting all rows but only column 1 returns a column of values.\n\nThe key idea is that slicing works as:\n\narray[row_selection, column_selection]"
+      },
+      {
+        "title": "5. Element-wise Calculations in 2D Arrays",
+        "body": "Just like with 1D arrays, 2D NumPy arrays support element-wise operations. This means you can perform calculations across entire arrays without loops.\n\nFor example, you can:\n\nMultiply all elements by a number.\n\nAdd two arrays of the same shape together.\n\nApply mathematical operations across the entire dataset.\n\nThis is one of the biggest advantages of NumPy over regular Python lists. It makes mathematical computations cleaner, faster, and more efficient."
+      },
+      {
+        "title": "6. Key Takeaways",
+        "body": "numpy.ndarray means n-dimensional array.\n\n2D arrays are created from lists of lists.\n\nUse .shape to check dimensions.\n\nArrays must contain only one data type.\n\nSubsetting uses the format: array[row, column].\n\nSlicing with : allows selecting ranges.\n\nElement-wise calculations work across the entire array."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Import NumPy",
+        "syntax": "import numpy as np"
+      },
+      {
+        "goal": "Create 1D array",
+        "syntax": "arr = np.array([1, 2, 3])"
+      },
+      {
+        "goal": "Element-wise multiplication",
+        "syntax": "doubled = arr * 2"
+      },
+      {
+        "goal": "Inspect 2D array shape",
+        "syntax": "arr_2d.shape # (rows, cols)"
+      },
+      {
+        "goal": "Select 2D row 0, col 1",
+        "syntax": "arr_2d[0, 1]"
+      },
+      {
+        "goal": "Select entire column",
+        "syntax": "arr_2d[:, 0]"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Multiplying standard Python list duplicates elements:\n[1, 2, 3] * 2  # Returns [1, 2, 3, 1, 2, 3]!",
+      "correctCode": "# Convert to NumPy array for element-wise calculation:\nnp.array([1, 2, 3]) * 2  # array([2, 4, 6])",
+      "explanation": "Python lists repeat when multiplied. NumPy arrays execute element-wise operations across high-performance C vector buffers."
+    },
     "challenge": {
       "title": "Vectorized Price Inflation Calculator",
       "scenario": "The pricing operations team wants to simulate a 10% inflation increase across product prices without using slow Python loops.",
@@ -391,14 +793,56 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Data Analysis with NumPy  Data analysis starts with understanding your data. When you’re working with small datasets, it’s easy to inspect values manually. Howe...",
     "sections": [
       {
-        "title": "Data Analysis",
-        "body": "Data Analysis with NumPy\n\nData analysis starts with understanding your data. When you’re working with small datasets, it’s easy to inspect values manually. However, in real-world data science, you often deal with thousands, millions, or even billions of numbers. In those cases, simply looking at raw data is not helpful. Instead, you rely on summary statistics to extract meaningful insights.\n\nExample: City-Wide Survey\n\nImagine conducting a survey of 5000 adults in a city, collecting their height and weight. The data is stored in a 2D NumPy array called np_city:\n\n5000 rows → each row represents one person\n\n2 columns → height and weight\n\nJust staring at this massive table of numbers won’t reveal patterns. To understand the dataset, you generate summarizing statistics.\n\nSummary Statistics with NumPy\n\nNumPy is not only efficient for storing numerical data, but it also provides powerful statistical functions.\n\nTo calculate the average (mean) height:\n\nnp.mean(np_city[:, 0])"
+        "title": "1. Concept Overview",
+        "body": "Data Analysis with NumPy\n\nData analysis starts with understanding your data. When you’re working with small datasets, it’s easy to inspect values manually. However, in real-world data science, you often deal with thousands, millions, or even billions of numbers. In those cases, simply looking at raw data is not helpful. Instead, you rely on summary statistics to extract meaningful insights."
       },
       {
-        "title": "Here",
-        "body": "np_city[:, 0] selects all rows from the first column (height).\n\nnp.mean() calculates the average.\n\nIf the result is 1.75 meters, that gives a reasonable estimate of average height.\n\nTo calculate the median (the middle value when sorted):\n\nnp.median(np_city[:, 0])\n\nThis avoids writing complex sorting logic yourself.\n\nYou can perform the same operations on the weight column.\n\nThese summary statistics act as a sanity check. For example:\n\nIf the average weight turns out to be 2000 kg, something is clearly wrong with the data.\n\nOther Useful NumPy Functions\n\nNumPy provides many additional functions for analysis, including:\n\nnp.corrcoef() → checks correlation between variables (e.g., height and weight)\n\nnp.std() → calculates standard deviation\n\nnp.sum() → sums elements\n\nnp.sort() → sorts values\n\nSome of these functions also exist in basic Python. However, NumPy is much faster, because it enforces a single data type inside arrays, allowing optimized numerical computations.\n\nGenerating Data with NumPy\n\nIn the example, the height and weight data were simulated using NumPy itself. Random distributions were sampled 5000 times to create arrays, and then combined using:\n\nnp.column_stack() → combines separate arrays into columns of a 2D array\n\nThis shows that NumPy is not only useful for analyzing data but also for generating and manipulating datasets.\n\nFinal Insight\n\nSummary statistics help you understand and validate your data quickly. Another powerful way to explore data is through visualization, which builds intuition and reveals patterns that numbers alone might hide. That typically involves tools like Matplotlib, which comes next in the learning journey."
+        "title": "2. Example: City-Wide Survey",
+        "body": "Imagine conducting a survey of 5000 adults in a city, collecting their height and weight. The data is stored in a 2D NumPy array called np_city:\n\n5000 rows → each row represents one person\n\n2 columns → height and weight\n\nJust staring at this massive table of numbers won’t reveal patterns. To understand the dataset, you generate summarizing statistics."
+      },
+      {
+        "title": "3. Summary Statistics with NumPy",
+        "body": "NumPy is not only efficient for storing numerical data, but it also provides powerful statistical functions.\n\nTo calculate the average (mean) height:\n\n`np.mean(np_city[:, 0])`\n\nHere:\n\nnp_city[:, 0] selects all rows from the first column (height).\n\n`np.mean() calculates the average.`\n\nIf the result is 1.75 meters, that gives a reasonable estimate of average height.\n\nTo calculate the median (the middle value when sorted):\n\n`np.median(np_city[:, 0])`\n\nThis avoids writing complex sorting logic yourself.\n\nYou can perform the same operations on the weight column.\n\nThese summary statistics act as a sanity check. For example:\n\nIf the average weight turns out to be 2000 kg, something is clearly wrong with the data.",
+        "exampleCode": "np.mean(np_city[:, 0])\nnp.mean() calculates the average.\nnp.median(np_city[:, 0])"
+      },
+      {
+        "title": "4. Other Useful NumPy Functions",
+        "body": "NumPy provides many additional functions for analysis, including:\n\n`np.corrcoef() → checks correlation between variables (e.g., height and weight)`\n\n`np.std() → calculates standard deviation`\n\n`np.sum() → sums elements`\n\n`np.sort() → sorts values`\n\nSome of these functions also exist in basic Python. However, NumPy is much faster, because it enforces a single data type inside arrays, allowing optimized numerical computations.",
+        "exampleCode": "np.corrcoef() → checks correlation between variables (e.g., height and weight)\nnp.std() → calculates standard deviation\nnp.sum() → sums elements\nnp.sort() → sorts values"
+      },
+      {
+        "title": "5. Generating Data with NumPy",
+        "body": "In the example, the height and weight data were simulated using NumPy itself. Random distributions were sampled 5000 times to create arrays, and then combined using:\n\n`np.column_stack() → combines separate arrays into columns of a 2D array`\n\nThis shows that NumPy is not only useful for analyzing data but also for generating and manipulating datasets.",
+        "exampleCode": "np.column_stack() → combines separate arrays into columns of a 2D array"
+      },
+      {
+        "title": "6. Final Insight",
+        "body": "Summary statistics help you understand and validate your data quickly. Another powerful way to explore data is through visualization, which builds intuition and reveals patterns that numbers alone might hide. That typically involves tools like Matplotlib, which comes next in the learning journey."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Data Analysis",
       "scenario": "Apply the concepts learned in Data Analysis to process sample tabular data.",
@@ -420,19 +864,59 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 2,
     "lessonOrder": 12,
     "title": "Basic Plots with Matplotlib",
-    "description": "Basic Plots with Matplotlib  Data visualization is an essential part of data analysis. It allows you to explore your dataset to uncover patterns and insights, a...",
+    "description": "Data visualization is an essential part of data analysis. It allows you to explore your dataset to uncover patterns and insights, and it also helps you communic...",
     "sections": [
       {
-        "title": "Basic Plots with Matplotlib",
-        "body": "Basic Plots with Matplotlib\n\nData visualization is an essential part of data analysis. It allows you to explore your dataset to uncover patterns and insights, and it also helps you communicate findings effectively to others. Beautiful visualizations can make your data tell a story by themselves. For example, Hans Rosling’s bubble charts illustrate global development in an intuitive way: each bubble represents a country, its size reflects population, the horizontal axis shows GDP per capita, and the vertical axis shows life expectancy. From such a plot, you can quickly see trends, like the correlation between higher GDP and longer life expectancy, and differences between countries with similar income levels.\n\nMatplotlib Overview\n\n`import matplotlib.pyplot as plt`\n\nPython has many visualization packages, but the most fundamental is Matplotlib, specifically its subpackage pyplot, which is conventionally imported as plt. To create a plot, you first prepare your data in lists or arrays. For example, you might have a list of years (year) and a list of corresponding world populations (pop) in billions.",
-        "exampleCode": "import matplotlib.pyplot as plt"
+        "title": "1. Concept Overview",
+        "body": "Data visualization is an essential part of data analysis. It allows you to explore your dataset to uncover patterns and insights, and it also helps you communicate findings effectively to others. Beautiful visualizations can make your data tell a story by themselves. For example, Hans Rosling’s bubble charts illustrate global development in an intuitive way: each bubble represents a country, its size reflects population, the horizontal axis shows GDP per capita, and the vertical axis shows life expectancy. From such a plot, you can quickly see trends, like the correlation between higher GDP and longer life expectancy, and differences between countries with similar income levels."
       },
       {
-        "title": "To visualize this as a line chart, you use",
-        "body": "`plt.plot(year, pop)`\n\n`plt.show()`\n\n`plt.plot() tells Python what to plot and how, mapping the first argument to the horizontal axis and the second to the vertical axis.`\n\n`plt.show() actually displays the plot, allowing you to add customizations before rendering, like titles, labels, or colors.`\n\nLooking at the line chart, the horizontal axis shows years, the vertical axis shows population, and Python draws lines connecting the points. For example, in 1950 the population was around 2.5 billion, and in 2010 it was around 7 billion—nearly tripling in sixty years.\n\nScatter Plots\n\nAnother useful plot type is the scatter plot. Unlike a line chart, a scatter plot shows each data point individually without connecting them. You create it by replacing plot with scatter in your code:\n\n`plt.scatter(year, pop)`\n\n`plt.show()`\n\nScatter plots are often preferred when you want a more honest representation of your data, especially when there are few data points. They make it clear that the plot is based on individual observations rather than a continuous line.\n\nKey Takeaways\n\nVisualization helps both exploration and communication of data.\n\nMatplotlib is the fundamental Python package for plotting; pyplot is its most-used subpackage.\n\nLine plots connect points to show trends over time.\n\nScatter plots show individual points, offering a clear view of the raw data.\n\n`plt.plot() / plt.scatter() define the plot, and plt.show() displays it.`",
-        "exampleCode": "plt.plot(year, pop)\nplt.show()\nplt.plot() tells Python what to plot and how, mapping the first argument to the horizontal axis and the second to the vertical axis.\nplt.show() actually displays the plot, allowing you to add customizations before rendering, like titles, labels, or colors.\nplt.scatter(year, pop)\nplt.show()\nplt.plot() / plt.scatter() define the plot, and plt.show() displays it."
+        "title": "2. Matplotlib Overview",
+        "body": "`import matplotlib.pyplot as plt`\n\nPython has many visualization packages, but the most fundamental is Matplotlib, specifically its subpackage pyplot, which is conventionally imported as plt. To create a plot, you first prepare your data in lists or arrays. For example, you might have a list of years (year) and a list of corresponding world populations (pop) in billions.\n\nTo visualize this as a line chart, you use:\n\n`plt.plot(year, pop)`\n\n`plt.show()`\n\n`plt.plot() tells Python what to plot and how, mapping the first argument to the horizontal axis and the second to the vertical axis.`\n\n`plt.show() actually displays the plot, allowing you to add customizations before rendering, like titles, labels, or colors.`\n\nLooking at the line chart, the horizontal axis shows years, the vertical axis shows population, and Python draws lines connecting the points. For example, in 1950 the population was around 2.5 billion, and in 2010 it was around 7 billion—nearly tripling in sixty years.",
+        "exampleCode": "import matplotlib.pyplot as plt\nplt.plot(year, pop)\nplt.show()\nplt.plot() tells Python what to plot and how, mapping the first argument to the horizontal axis and the second to the vertical axis.\nplt.show() actually displays the plot, allowing you to add customizations before rendering, like titles, labels, or colors."
+      },
+      {
+        "title": "3. Scatter Plots",
+        "body": "Another useful plot type is the scatter plot. Unlike a line chart, a scatter plot shows each data point individually without connecting them. You create it by replacing plot with scatter in your code:\n\n`plt.scatter(year, pop)`\n\n`plt.show()`\n\nScatter plots are often preferred when you want a more honest representation of your data, especially when there are few data points. They make it clear that the plot is based on individual observations rather than a continuous line.",
+        "exampleCode": "plt.scatter(year, pop)\nplt.show()"
+      },
+      {
+        "title": "4. Key Takeaways",
+        "body": "Visualization helps both exploration and communication of data.\n\nMatplotlib is the fundamental Python package for plotting; pyplot is its most-used subpackage.\n\nLine plots connect points to show trends over time.\n\nScatter plots show individual points, offering a clear view of the raw data.\n\n`plt.plot() / plt.scatter() define the plot, and plt.show() displays it.`",
+        "exampleCode": "plt.plot() / plt.scatter() define the plot, and plt.show() displays it."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Import PyPlot",
+        "syntax": "import matplotlib.pyplot as plt"
+      },
+      {
+        "goal": "Line plot",
+        "syntax": "plt.plot(x, y)"
+      },
+      {
+        "goal": "Scatter plot",
+        "syntax": "plt.scatter(x, y)"
+      },
+      {
+        "goal": "Histogram with bins",
+        "syntax": "plt.hist(data, bins=5)"
+      },
+      {
+        "goal": "Set title and labels",
+        "syntax": "plt.title(\"Title\"); plt.xlabel(\"X\")"
+      },
+      {
+        "goal": "Show chart canvas",
+        "syntax": "plt.show()"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Creating new plot without clearing previous canvas:\nplt.hist(data1)\nplt.show()\nplt.plot(data2)  # Overlays on previous figure!",
+      "correctCode": "# Clear figure buffer between separate charts:\nplt.hist(data1)\nplt.show()\nplt.clf()  # Clear canvas\nplt.plot(data2)",
+      "explanation": "Matplotlib keeps internal plot state active until plt.clf() is called, causing subsequent charts to overlap unintentionally."
+    },
     "challenge": {
       "title": "Visualize Sales Distribution",
       "scenario": "The marketing analytics team needs a histogram visualization of order amounts to understand customer spending buckets.",
@@ -458,11 +942,50 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Histograms  A histogram is a type of visualization that is very useful for exploring data distributions. It helps you understand how values are spread across a ...",
     "sections": [
       {
-        "title": "Histogram",
-        "body": "Histograms\n\nA histogram is a type of visualization that is very useful for exploring data distributions. It helps you understand how values are spread across a range. To visualize this, imagine you have 12 values between 0 and 6 placed along a number line.\n\nTo create a histogram, you divide the number line into equal chunks called bins. For example, if you choose 3 bins, each with a width of 2, you then count how many data points fall into each bin:\n\nThe first bin contains 4 data points.\n\nThe second bin contains 6 data points.\n\nThe third bin contains 2 data points.\n\nNext, you draw a bar for each bin, where the height of the bar corresponds to the number of data points in that bin. The resulting histogram gives a clear visual overview of the distribution. In this example, most values are clustered in the middle, but there are more values below 2 than above 4.\n\nCreating Histograms with Matplotlib\n\nTo create histograms in Python, you can use Matplotlib. Start by importing the pyplot subpackage:\n\n`import matplotlib.pyplot as plt`\n\nThe main function to build histograms is hist. Its two most important arguments are:\n\nx – the list of values to create a histogram for.\n\nbins – the number of bins to divide your data into. If not specified, it defaults to 10.\n\nExample: Suppose you have a list of 12 values and you want to divide them into 3 bins:\n\n`values = [1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6]`\n\n`plt.hist(values, bins=3)`\n\n`plt.show()`\n\nThis generates a histogram with three bars corresponding to the bin counts. Histograms are powerful because they allow you to see patterns and trends in the data at a glance.\n\nExample: Population Pyramid\n\nA more advanced application of histograms is the population pyramid, which shows age distributions for males and females. In the European Union in 2010, the bins were horizontal, with the largest bins corresponding to ages 40–44, representing the baby boom generation. By 2050, the distribution becomes flatter, illustrating how the population ages over time. This demonstrates how histograms can quickly reveal demographic changes and trends.",
+        "title": "1. Concept Overview",
+        "body": "Histograms\n\nA histogram is a type of visualization that is very useful for exploring data distributions. It helps you understand how values are spread across a range. To visualize this, imagine you have 12 values between 0 and 6 placed along a number line.\n\nTo create a histogram, you divide the number line into equal chunks called bins. For example, if you choose 3 bins, each with a width of 2, you then count how many data points fall into each bin:\n\nThe first bin contains 4 data points.\n\nThe second bin contains 6 data points.\n\nThe third bin contains 2 data points.\n\nNext, you draw a bar for each bin, where the height of the bar corresponds to the number of data points in that bin. The resulting histogram gives a clear visual overview of the distribution. In this example, most values are clustered in the middle, but there are more values below 2 than above 4."
+      },
+      {
+        "title": "2. Creating Histograms with Matplotlib",
+        "body": "To create histograms in Python, you can use Matplotlib. Start by importing the pyplot subpackage:\n\n`import matplotlib.pyplot as plt`\n\nThe main function to build histograms is hist. Its two most important arguments are:\n\nx – the list of values to create a histogram for.\n\nbins – the number of bins to divide your data into. If not specified, it defaults to 10.\n\nExample: Suppose you have a list of 12 values and you want to divide them into 3 bins:\n\n`values = [1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6]`\n\n`plt.hist(values, bins=3)`\n\n`plt.show()`\n\nThis generates a histogram with three bars corresponding to the bin counts. Histograms are powerful because they allow you to see patterns and trends in the data at a glance.",
         "exampleCode": "import matplotlib.pyplot as plt\nvalues = [1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6]\nplt.hist(values, bins=3)\nplt.show()"
+      },
+      {
+        "title": "3. Example: Population Pyramid",
+        "body": "A more advanced application of histograms is the population pyramid, which shows age distributions for males and females. In the European Union in 2010, the bins were horizontal, with the largest bins corresponding to ages 40–44, representing the baby boom generation. By 2050, the distribution becomes flatter, illustrating how the population ages over time. This demonstrates how histograms can quickly reveal demographic changes and trends."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Import PyPlot",
+        "syntax": "import matplotlib.pyplot as plt"
+      },
+      {
+        "goal": "Line plot",
+        "syntax": "plt.plot(x, y)"
+      },
+      {
+        "goal": "Scatter plot",
+        "syntax": "plt.scatter(x, y)"
+      },
+      {
+        "goal": "Histogram with bins",
+        "syntax": "plt.hist(data, bins=5)"
+      },
+      {
+        "goal": "Set title and labels",
+        "syntax": "plt.title(\"Title\"); plt.xlabel(\"X\")"
+      },
+      {
+        "goal": "Show chart canvas",
+        "syntax": "plt.show()"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Creating new plot without clearing previous canvas:\nplt.hist(data1)\nplt.show()\nplt.plot(data2)  # Overlays on previous figure!",
+      "correctCode": "# Clear figure buffer between separate charts:\nplt.hist(data1)\nplt.show()\nplt.clf()  # Clear canvas\nplt.plot(data2)",
+      "explanation": "Matplotlib keeps internal plot state active until plt.clf() is called, causing subsequent charts to overlap unintentionally."
+    },
     "challenge": {
       "title": "Visualize Sales Distribution",
       "scenario": "The marketing analytics team needs a histogram visualization of order amounts to understand customer spending buckets.",
@@ -488,32 +1011,67 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Customizing Plots in Matplotlib  Creating a plot is only the first step in data visualization. The real challenge is making a plot that clearly communicates the...",
     "sections": [
       {
-        "title": "Customization",
-        "body": "Customizing Plots in Matplotlib\n\nCreating a plot is only the first step in data visualization. The real challenge is making a plot that clearly communicates the intended message. Every visualization offers many customization options, and the choices you make should depend on:\n\nThe data you are working with\n\nThe story you want to tell\n\nYou can modify colors, markers, labels, axes, titles, ticks, and much more. Because there are so many possibilities, the best way to understand customization is through practical examples.\n\nImproving a Basic Line Plot\n\nSuppose you already created a line plot showing world population growth, including projections up to the year 2100. The graph already shows an important trend: population growth is expected to slow down by the end of the century."
+        "title": "1. Concept Overview",
+        "body": "Customizing Plots in Matplotlib\n\nCreating a plot is only the first step in data visualization. The real challenge is making a plot that clearly communicates the intended message. Every visualization offers many customization options, and the choices you make should depend on:\n\nThe data you are working with"
       },
       {
-        "title": "However, two improvements are necessary",
-        "body": "It should clearly explain what data is being shown.\n\nIt should better highlight the population explosion.\n\nCustomization helps achieve both goals.\n\nAdding Axis Labels\n\nThe first essential step in improving any plot is labeling the axes. Without labels, viewers cannot properly interpret the data."
+        "title": "2. The story you want to tell",
+        "body": "You can modify colors, markers, labels, axes, titles, ticks, and much more. Because there are so many possibilities, the best way to understand customization is through practical examples."
       },
       {
-        "title": "You can use",
-        "body": "`plt.xlabel(\"Year\")`\n\n`plt.ylabel(\"Population\")`\n\nThese functions add descriptive text to the horizontal and vertical axes. They must be called before plt.show(); otherwise, the customizations will not appear.\n\nAxis labels immediately make the plot more understandable, especially for someone seeing it for the first time.\n\nAdding a Title",
+        "title": "3. Improving a Basic Line Plot",
+        "body": "Suppose you already created a line plot showing world population growth, including projections up to the year 2100. The graph already shows an important trend: population growth is expected to slow down by the end of the century.\n\nHowever, two improvements are necessary:\n\nIt should clearly explain what data is being shown.\n\nIt should better highlight the population explosion.\n\nCustomization helps achieve both goals."
+      },
+      {
+        "title": "4. Adding Axis Labels",
+        "body": "The first essential step in improving any plot is labeling the axes. Without labels, viewers cannot properly interpret the data.\n\nYou can use:\n\n`plt.xlabel(\"Year\")`\n\n`plt.ylabel(\"Population\")`\n\nThese functions add descriptive text to the horizontal and vertical axes. They must be called before plt.show(); otherwise, the customizations will not appear.\n\nAxis labels immediately make the plot more understandable, especially for someone seeing it for the first time.",
         "exampleCode": "plt.xlabel(\"Year\")\nplt.ylabel(\"Population\")"
       },
       {
-        "title": "To give even more context, you can add a title",
-        "body": "`plt.title(\"World Population Projections\")`\n\nA title summarizes what the plot represents and strengthens the overall message. With axis labels and a title, the visualization becomes much more informative.\n\nCustomizing the Y-Axis (Ticks)\n\nTo better emphasize growth, you might want the y-axis to start from zero. You can adjust the tick marks using:\n\n`plt.yticks([0, 2, 4, 6, 8, 10])`\n\nThis makes it clearer that the world already had about 2.5 billion people in 1950. The visual perspective changes when the axis scale is adjusted properly.\n\nYou can also customize how tick labels appear. For example, to show that values represent billions:\n\n`plt.yticks([0, 2, 4, 6, 8, 10],`\n\n[\"0\", \"2B\", \"4B\", \"6B\", \"8B\", \"10B\"])",
+        "title": "5. Adding a Title",
+        "body": "To give even more context, you can add a title:\n\n`plt.title(\"World Population Projections\")`\n\nA title summarizes what the plot represents and strengthens the overall message. With axis labels and a title, the visualization becomes much more informative.\n\nCustomizing the Y-Axis (Ticks)\n\nTo better emphasize growth, you might want the y-axis to start from zero. You can adjust the tick marks using:\n\n`plt.yticks([0, 2, 4, 6, 8, 10])`\n\nThis makes it clearer that the world already had about 2.5 billion people in 1950. The visual perspective changes when the axis scale is adjusted properly.\n\nYou can also customize how tick labels appear. For example, to show that values represent billions:\n\n`plt.yticks([0, 2, 4, 6, 8, 10],`\n\n[\"0\", \"2B\", \"4B\", \"6B\", \"8B\", \"10B\"])\n\nHere:\n\nThe first list defines tick positions.\n\nThe second list defines how those ticks are displayed.\n\nThe “B” stands for billions, making the units explicit and avoiding confusion.",
         "exampleCode": "plt.title(\"World Population Projections\")\nplt.yticks([0, 2, 4, 6, 8, 10])\nplt.yticks([0, 2, 4, 6, 8, 10],"
       },
       {
-        "title": "Here",
-        "body": "The first list defines tick positions.\n\nThe second list defines how those ticks are displayed.\n\nThe “B” stands for billions, making the units explicit and avoiding confusion.\n\nAdding Historical Data\n\nTo better illustrate the population explosion, you can add earlier historical data points, such as population figures from 1800, 1850, and 1900. By extending your year and pop lists, the plot gains more context.\n\nAdding these extra data points shows that population growth dramatically accelerated in the last 60 years compared to previous centuries. This strengthens the narrative of the visualization.\n\nBefore vs After\n\nA simple line plot shows data.\u000b A customized line plot tells a story."
+        "title": "6. Adding Historical Data",
+        "body": "To better illustrate the population explosion, you can add earlier historical data points, such as population figures from 1800, 1850, and 1900. By extending your year and pop lists, the plot gains more context.\n\nAdding these extra data points shows that population growth dramatically accelerated in the last 60 years compared to previous centuries. This strengthens the narrative of the visualization."
       },
       {
-        "title": "By adding",
-        "body": "Axis labels\n\nA descriptive title\n\nProperly formatted ticks\n\nAdditional historical context\n\nyou transform an average graph into a clear, compelling visualization."
+        "title": "7. Before vs After",
+        "body": "A simple line plot shows data.\n\nA customized line plot tells a story.\n\nBy adding:"
+      },
+      {
+        "title": "8. Axis labels",
+        "body": "A descriptive title"
+      },
+      {
+        "title": "9. Properly formatted ticks",
+        "body": "Additional historical context\n\nyou transform an average graph into a clear, compelling visualization."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Customization",
       "scenario": "Apply the concepts learned in Customization to process sample tabular data.",
@@ -538,36 +1096,63 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Dictionaries (Part 1)  A dictionary is a powerful Python data type that allows you to store data in a way that directly connects related pieces of information. ...",
     "sections": [
       {
-        "title": "Dictionaries - 1",
-        "body": "Dictionaries (Part 1)\n\nA dictionary is a powerful Python data type that allows you to store data in a way that directly connects related pieces of information. It is especially useful in data science, where you often need to map one thing to another — for example, a country to its population.\n\nThe Problem with Lists\n\nImagine you work for the World Bank and want to store the population of different countries. One approach is to create a list of populations:\n\n`pop = [30.55, 2.77, 40.0]`\n\nThen, to know which population belongs to which country, you create a second list:\n\n`countries = [\"Afghanistan\", \"Albania\", \"Algeria\"]`\n\nThe idea is that both lists share the same order, so the index connects them. If you want the population of Albania, you would:\n\nUse countries.index(\"Albania\") to find its position.\n\nUse that index to retrieve the value from pop.",
+        "title": "1. Concept Overview",
+        "body": "Dictionaries (Part 1)\n\nA dictionary is a powerful Python data type that allows you to store data in a way that directly connects related pieces of information. It is especially useful in data science, where you often need to map one thing to another — for example, a country to its population."
+      },
+      {
+        "title": "2. The Problem with Lists",
+        "body": "Imagine you work for the World Bank and want to store the population of different countries. One approach is to create a list of populations:\n\n`pop = [30.55, 2.77, 40.0]`\n\nThen, to know which population belongs to which country, you create a second list:\n\n`countries = [\"Afghanistan\", \"Albania\", \"Algeria\"]`\n\nThe idea is that both lists share the same order, so the index connects them. If you want the population of Albania, you would:\n\nUse countries.index(\"Albania\") to find its position.\n\nUse that index to retrieve the value from pop.\n\nAlthough this works, it has major drawbacks:\n\nIt’s not intuitive.\n\nIt requires extra steps.\n\nIt becomes messy and inefficient for large datasets.\n\nThere should be a more direct way to connect a country to its population. That’s where dictionaries come in.",
         "exampleCode": "pop = [30.55, 2.77, 40.0]\ncountries = [\"Afghanistan\", \"Albania\", \"Algeria\"]"
       },
       {
-        "title": "Although this works, it has major drawbacks",
-        "body": "It’s not intuitive.\n\nIt requires extra steps.\n\nIt becomes messy and inefficient for large datasets.\n\nThere should be a more direct way to connect a country to its population. That’s where dictionaries come in.\n\nIntroducing Dictionaries\n\nA dictionary stores data using key–value pairs. Instead of relying on positions (like lists do), dictionaries allow you to directly associate a key with a value.\n\nYou create a dictionary using curly brackets {}. Inside, each key and value are separated by a colon :."
-      },
-      {
-        "title": "Example",
-        "body": "`world = {`\n\n\"Afghanistan\": 30.55,\n\n\"Albania\": 2.77,\n\n\"Algeria\": 40.0\n\n}",
+        "title": "3. Introducing Dictionaries",
+        "body": "A dictionary stores data using key–value pairs. Instead of relying on positions (like lists do), dictionaries allow you to directly associate a key with a value.\n\nYou create a dictionary using curly brackets {}. Inside, each key and value are separated by a colon :.\n\nExample:\n\n`world = {`\n\n\"Afghanistan\": 30.55,\n\n\"Albania\": 2.77,\n\n\"Algeria\": 40.0\n\n}\n\nHere:\n\nThe keys are country names.\n\nThe values are the corresponding populations (in millions).\n\nEach key-value pair follows this format:\n\nkey : value",
         "exampleCode": "world = {"
       },
       {
-        "title": "Here",
-        "body": "The keys are country names.\n\nThe values are the corresponding populations (in millions)."
+        "title": "4. Accessing Values in a Dictionary",
+        "body": "To retrieve a value, you use the key inside square brackets:\n\nworld[\"Albania\"]\n\nThis directly returns:\n\n2.77\n\nThere is no need to search for an index first. The key immediately gives access to its value.\n\nThis approach is:"
       },
       {
-        "title": "Each key-value pair follows this format",
-        "body": "key : value\n\nAccessing Values in a Dictionary\n\nTo retrieve a value, you use the key inside square brackets:\n\nworld[\"Albania\"]"
+        "title": "5. More intuitive",
+        "body": "Cleaner to read"
       },
       {
-        "title": "This directly returns",
-        "body": "2.77\n\nThere is no need to search for an index first. The key immediately gives access to its value."
+        "title": "6. More efficient",
+        "body": "Python is optimized to look up dictionary keys very quickly, even when the dictionary contains a huge amount of data."
       },
       {
-        "title": "This approach is",
-        "body": "More intuitive\n\nCleaner to read\n\nMore efficient\n\nPython is optimized to look up dictionary keys very quickly, even when the dictionary contains a huge amount of data.\n\nKey Insight\n\nLists connect elements by position (index).\u000b Dictionaries connect elements by meaning (key).\n\nThat difference makes dictionaries one of the most important data structures in Python, especially in data science."
+        "title": "7. Key Insight",
+        "body": "Lists connect elements by position (index).\n\nDictionaries connect elements by meaning (key).\n\nThat difference makes dictionaries one of the most important data structures in Python, especially in data science."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Define dictionary",
+        "syntax": "d = {\"a\": 1, \"b\": 2}"
+      },
+      {
+        "goal": "Lookup by key",
+        "syntax": "val = d[\"a\"]"
+      },
+      {
+        "goal": "Add/update key",
+        "syntax": "d[\"c\"] = 3"
+      },
+      {
+        "goal": "Check membership",
+        "syntax": "\"a\" in d"
+      },
+      {
+        "goal": "Iterate pairs",
+        "syntax": "for k, v in d.items():"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Direct square bracket lookup on missing key:\nval = my_dict[\"missing_key\"]  # Raises KeyError!",
+      "correctCode": "# Use .get() method with a fallback default:\nval = my_dict.get(\"missing_key\", None)",
+      "explanation": "Accessing a non-existent key with square brackets raises KeyError. Using dict.get(key, default) avoids pipeline crashes."
+    },
     "challenge": {
       "title": "Practice Drill: Dictionaries - 1",
       "scenario": "Apply the concepts learned in Dictionaries - 1 to process sample tabular data.",
@@ -592,27 +1177,75 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Dictionaries (Part 2)  In the previous lesson, you created a dictionary called world, which stores country populations as key–value pairs. You accessed values b...",
     "sections": [
       {
-        "title": "Dictionaries - 2",
-        "body": "Dictionaries (Part 2)\n\nIn the previous lesson, you created a dictionary called world, which stores country populations as key–value pairs. You accessed values by passing a key inside square brackets, such as:\n\nworld[\"Albania\"]\n\nThis works because dictionaries are designed for fast lookups based on unique keys.\n\nImportant Rules About Dictionary Keys\n\nFor dictionaries to function properly, their keys must follow two important rules:\n\nKeys must be unique.\n\nKeys must be immutable objects.\n\nIf you try to define the same key twice when creating a dictionary, Python will keep only the last value assigned to that key. There cannot be duplicate keys.\n\nKeys must also be immutable, meaning their contents cannot change after creation. Examples of immutable types include:\n\nStrings\n\nIntegers\n\nFloats\n\nBooleans\n\nLists, however, are mutable (their contents can change), so they cannot be used as dictionary keys. Attempting to use a list as a key will result in an error.\n\nAdding New Key–Value Pairs\n\nYou can add new data to an existing dictionary by assigning a value to a new key using square brackets.\n\nFor example, suppose you want to add “Sealand” with a population of 27 (in millions format):\n\n`world[\"Sealand\"] = 0.000027`\n\nIf you print world afterward, Sealand will appear in the dictionary.\n\nTo check whether a key exists in a dictionary, you can use the in keyword:\n\n\"Sealand\" in world\n\nThis returns True if the key exists.\n\nUpdating Values\n\nIf you assign a new value to an existing key, Python will update the value rather than create a new pair:\n\n`world[\"Sealand\"] = 0.000028`\n\nBecause dictionary keys are unique, Python knows you want to modify the existing entry.\n\nRemoving Key–Value Pairs\n\nTo delete a key–value pair, you use the del keyword:\n\ndel world[\"Sealand\"]\n\nAfter this operation, Sealand will no longer exist in the dictionary.\n\nLists vs Dictionaries\n\nLists and dictionaries may look similar because both allow you to:\n\nSelect elements\n\nUpdate elements\n\nRemove elements\u000b using square bracket notation.\n\nHowever, they are fundamentally different.",
-        "exampleCode": "world[\"Sealand\"] = 0.000027\nworld[\"Sealand\"] = 0.000028"
+        "title": "1. Concept Overview",
+        "body": "Dictionaries (Part 2)\n\nIn the previous lesson, you created a dictionary called world, which stores country populations as key–value pairs. You accessed values by passing a key inside square brackets, such as:\n\nworld[\"Albania\"]\n\nThis works because dictionaries are designed for fast lookups based on unique keys."
       },
       {
-        "title": "A list",
-        "body": "Is an ordered sequence of values\n\nIs indexed by numbers (positions)\n\nIs best when order matters or when you need slicing and subsets"
+        "title": "2. Important Rules About Dictionary Keys",
+        "body": "For dictionaries to function properly, their keys must follow two important rules:\n\nKeys must be unique.\n\nKeys must be immutable objects.\n\nIf you try to define the same key twice when creating a dictionary, Python will keep only the last value assigned to that key. There cannot be duplicate keys.\n\nKeys must also be immutable, meaning their contents cannot change after creation. Examples of immutable types include:\n\nStrings\n\nIntegers\n\nFloats\n\nBooleans\n\nLists, however, are mutable (their contents can change), so they cannot be used as dictionary keys. Attempting to use a list as a key will result in an error."
       },
       {
-        "title": "A dictionary",
-        "body": "Is a collection of key–value pairs\n\nIs indexed by unique, immutable keys\n\nIs best when you need fast lookups (like a lookup table)\n\nWhen to Use Which"
+        "title": "3. Adding New Key–Value Pairs",
+        "body": "You can add new data to an existing dictionary by assigning a value to a new key using square brackets.\n\nFor example, suppose you want to add “Sealand” with a population of 27 (in millions format):\n\n`world[\"Sealand\"] = 0.000027`\n\nIf you print world afterward, Sealand will appear in the dictionary.\n\nTo check whether a key exists in a dictionary, you can use the in keyword:\n\n\"Sealand\" in world\n\nThis returns True if the key exists.",
+        "exampleCode": "world[\"Sealand\"] = 0.000027"
       },
       {
-        "title": "Use a list when",
-        "body": "The order of elements matters\n\nYou frequently work with subsets or slices"
+        "title": "4. Updating Values",
+        "body": "If you assign a new value to an existing key, Python will update the value rather than create a new pair:\n\n`world[\"Sealand\"] = 0.000028`\n\nBecause dictionary keys are unique, Python knows you want to modify the existing entry.",
+        "exampleCode": "world[\"Sealand\"] = 0.000028"
       },
       {
-        "title": "Use a dictionary when",
-        "body": "You need fast access to values\n\nYou want to map unique identifiers (keys) to data\n\nYou are building a lookup table"
+        "title": "5. Removing Key–Value Pairs",
+        "body": "To delete a key–value pair, you use the del keyword:\n\ndel world[\"Sealand\"]\n\nAfter this operation, Sealand will no longer exist in the dictionary."
+      },
+      {
+        "title": "6. Lists vs Dictionaries",
+        "body": "Lists and dictionaries may look similar because both allow you to:"
+      },
+      {
+        "title": "7. Select elements",
+        "body": "Update elements"
+      },
+      {
+        "title": "8. Remove elements",
+        "body": "using square bracket notation.\n\nHowever, they are fundamentally different.\n\nA list:\n\nIs an ordered sequence of values\n\nIs indexed by numbers (positions)\n\nIs best when order matters or when you need slicing and subsets\n\nA dictionary:\n\nIs a collection of key–value pairs\n\nIs indexed by unique, immutable keys\n\nIs best when you need fast lookups (like a lookup table)\n\nWhen to Use Which\n\nUse a list when:"
+      },
+      {
+        "title": "9. The order of elements matters",
+        "body": "You frequently work with subsets or slices\n\nUse a dictionary when:"
+      },
+      {
+        "title": "10. You need fast access to values",
+        "body": "You want to map unique identifiers (keys) to data\n\nYou are building a lookup table"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Define dictionary",
+        "syntax": "d = {\"a\": 1, \"b\": 2}"
+      },
+      {
+        "goal": "Lookup by key",
+        "syntax": "val = d[\"a\"]"
+      },
+      {
+        "goal": "Add/update key",
+        "syntax": "d[\"c\"] = 3"
+      },
+      {
+        "goal": "Check membership",
+        "syntax": "\"a\" in d"
+      },
+      {
+        "goal": "Iterate pairs",
+        "syntax": "for k, v in d.items():"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Direct square bracket lookup on missing key:\nval = my_dict[\"missing_key\"]  # Raises KeyError!",
+      "correctCode": "# Use .get() method with a fallback default:\nval = my_dict.get(\"missing_key\", None)",
+      "explanation": "Accessing a non-existent key with square brackets raises KeyError. Using dict.get(key, default) avoids pipeline crashes."
+    },
     "challenge": {
       "title": "Practice Drill: Dictionaries - 2",
       "scenario": "Apply the concepts learned in Dictionaries - 2 to process sample tabular data.",
@@ -637,36 +1270,79 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Pandas (Part 1) – Working with Tabular Data  As a data scientist, you’ll often work with large amounts of data. Very frequently, this data can be structured in ...",
     "sections": [
       {
-        "title": "Pandas - 1",
-        "body": "Pandas (Part 1) – Working with Tabular Data\n\nAs a data scientist, you’ll often work with large amounts of data. Very frequently, this data can be structured in a tabular format — meaning rows and columns, like a spreadsheet. Each row represents an observation, and each column represents a variable describing that observation.\n\nFor example, imagine temperature measurements in a chemical plant. Each row could represent one measurement, and the columns might include temperature, date, time, and location. Another example is data about the BRICS countries (Brazil, Russia, India, China, and South Africa), where each row represents a country and columns include the capital, area, and population.\n\nWhy Not Just Use NumPy?\n\nYou already know that a 2D NumPy array can represent tabular data. However, NumPy arrays are not ideal when your dataset contains different data types."
+        "title": "1. Concept Overview",
+        "body": "Pandas (Part 1) – Working with Tabular Data\n\nAs a data scientist, you’ll often work with large amounts of data. Very frequently, this data can be structured in a tabular format — meaning rows and columns, like a spreadsheet. Each row represents an observation, and each column represents a variable describing that observation.\n\nFor example, imagine temperature measurements in a chemical plant. Each row could represent one measurement, and the columns might include temperature, date, time, and location. Another example is data about the BRICS countries (Brazil, Russia, India, China, and South Africa), where each row represents a country and columns include the capital, area, and population.\n\nWhy Not Just Use NumPy?\n\nYou already know that a 2D NumPy array can represent tabular data. However, NumPy arrays are not ideal when your dataset contains different data types.\n\nIn the BRICS example:\n\nCountry and capital are strings\n\nArea and population are floats\n\nNumPy prefers arrays with a single data type, so it’s not the best choice for mixed data. That’s where Pandas comes in.\n\nWhat is Pandas?\n\nPandas is a high-level data manipulation library built on top of NumPy. It was developed by Wes McKinney and is widely used in data science.\n\nThe main data structure in Pandas for tabular data is called a DataFrame.\n\nA DataFrame:"
       },
       {
-        "title": "In the BRICS example",
-        "body": "Country and capital are strings\n\nArea and population are floats\n\nNumPy prefers arrays with a single data type, so it’s not the best choice for mixed data. That’s where Pandas comes in.\n\nWhat is Pandas?\n\nPandas is a high-level data manipulation library built on top of NumPy. It was developed by Wes McKinney and is widely used in data science.\n\nThe main data structure in Pandas for tabular data is called a DataFrame."
+        "title": "2. Represents data in rows and columns",
+        "body": "Allows different data types in different columns\n\nHas labeled rows (index)"
       },
       {
-        "title": "A DataFrame",
-        "body": "Represents data in rows and columns\n\nAllows different data types in different columns\n\nHas labeled rows (index)\n\nHas labeled columns\n\nThis makes it much more powerful and flexible for real-world datasets.\n\nStructure of a DataFrame"
+        "title": "3. Has labeled columns",
+        "body": "This makes it much more powerful and flexible for real-world datasets."
       },
       {
-        "title": "In a Pandas DataFrame",
-        "body": "Rows represent observations (e.g., countries)\n\nColumns represent variables (e.g., capital, area, population)\n\nEach row has a unique label (called the index)\n\nEach column has a name (column label)\n\nUnlike NumPy arrays, columns can contain different data types.\n\nCreating a DataFrame from a Dictionary\n\nOne way to create a DataFrame is by starting from a Python dictionary."
+        "title": "4. Structure of a DataFrame",
+        "body": "In a Pandas DataFrame:\n\nRows represent observations (e.g., countries)\n\nColumns represent variables (e.g., capital, area, population)\n\nEach row has a unique label (called the index)\n\nEach column has a name (column label)\n\nUnlike NumPy arrays, columns can contain different data types."
       },
       {
-        "title": "In this approach",
-        "body": "The dictionary keys become column names\n\nThe dictionary values (lists) become the column data\n\nAfter importing Pandas as pd, you create a DataFrame like this:\n\n`import pandas as pd`\n\n`data = {`\n\n\"country\": [\"Brazil\", \"Russia\", \"India\", \"China\", \"South Africa\"],\n\n\"capital\": [\"Brasilia\", \"Moscow\", \"New Delhi\", \"Beijing\", \"Pretoria\"],\n\n\"area\": [8.52, 17.10, 3.29, 9.60, 1.22],\n\n\"population\": [200.4, 143.5, 1252, 1357, 52.98]\n\n}\n\n`brics = pd.DataFrame(data)`\n\nBy default, Pandas assigns row labels 0, 1, 2, 3, 4.\u000b You can manually set row labels using the index attribute:\n\n`brics.index = [\"BR\", \"RU\", \"IN\", \"CH\", \"SA\"]`\n\nNow your DataFrame has proper row labels.\n\nCreating a DataFrame from a CSV File\n\nIn real-world data science, you usually won’t build DataFrames manually. Instead, you import data from external files — often CSV files (Comma Separated Values).",
+        "title": "5. Creating a DataFrame from a Dictionary",
+        "body": "One way to create a DataFrame is by starting from a Python dictionary.\n\nIn this approach:"
+      },
+      {
+        "title": "6. The dictionary keys become column names",
+        "body": "The dictionary values (lists) become the column data\n\nAfter importing Pandas as pd, you create a DataFrame like this:\n\n`import pandas as pd`\n\n`data = {`\n\n\"country\": [\"Brazil\", \"Russia\", \"India\", \"China\", \"South Africa\"],\n\n\"capital\": [\"Brasilia\", \"Moscow\", \"New Delhi\", \"Beijing\", \"Pretoria\"],\n\n\"area\": [8.52, 17.10, 3.29, 9.60, 1.22],\n\n\"population\": [200.4, 143.5, 1252, 1357, 52.98]\n\n}\n\n`brics = pd.DataFrame(data)`\n\nBy default, Pandas assigns row labels 0, 1, 2, 3, 4.\n\nYou can manually set row labels using the index attribute:\n\n`brics.index = [\"BR\", \"RU\", \"IN\", \"CH\", \"SA\"]`\n\nNow your DataFrame has proper row labels.",
         "exampleCode": "import pandas as pd\ndata = {\nbrics = pd.DataFrame(data)\nbrics.index = [\"BR\", \"RU\", \"IN\", \"CH\", \"SA\"]"
       },
       {
-        "title": "To read a CSV file",
-        "body": "`brics = pd.read_csv(\"brics.csv\")`\n\nHowever, sometimes the first column in the CSV file contains row labels. Pandas might interpret this as a normal column. To fix this, use the index_col argument:\n\n`brics = pd.read_csv(\"brics.csv\", index_col=0)`\n\nThis tells Pandas that the first column should be used as row labels.\n\nThe read_csv() function has many optional arguments that allow you to:\n\nHandle missing values\n\nSpecify separators\n\nRename columns\n\nSkip rows\n\nAnd much more\n\nIt’s one of the most important functions in Pandas.\n\nKey Takeaways\n\nPandas is designed for structured, tabular data and offers advantages over NumPy when:\n\nYour dataset contains mixed data types\n\nYou need labeled rows and columns\n\nYou want easier data manipulation",
+        "title": "7. Creating a DataFrame from a CSV File",
+        "body": "In real-world data science, you usually won’t build DataFrames manually. Instead, you import data from external files — often CSV files (Comma Separated Values).\n\nTo read a CSV file:\n\n`brics = pd.read_csv(\"brics.csv\")`\n\nHowever, sometimes the first column in the CSV file contains row labels. Pandas might interpret this as a normal column. To fix this, use the index_col argument:\n\n`brics = pd.read_csv(\"brics.csv\", index_col=0)`\n\nThis tells Pandas that the first column should be used as row labels.\n\nThe read_csv() function has many optional arguments that allow you to:",
         "exampleCode": "brics = pd.read_csv(\"brics.csv\")\nbrics = pd.read_csv(\"brics.csv\", index_col=0)"
       },
       {
-        "title": "In short",
-        "body": "NumPy is great for numerical computations\n\nPandas is great for real-world datasets and data analysis"
+        "title": "8. Handle missing values",
+        "body": "Specify separators"
+      },
+      {
+        "title": "9. Rename columns",
+        "body": "Skip rows\n\nAnd much more\n\nIt’s one of the most important functions in Pandas."
+      },
+      {
+        "title": "10. Key Takeaways",
+        "body": "Pandas is designed for structured, tabular data and offers advantages over NumPy when:"
+      },
+      {
+        "title": "11. Your dataset contains mixed data types",
+        "body": "You need labeled rows and columns"
+      },
+      {
+        "title": "12. You want easier data manipulation",
+        "body": "In short:\n\nNumPy is great for numerical computations\n\nPandas is great for real-world datasets and data analysis"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Pandas - 1",
       "scenario": "Apply the concepts learned in Pandas - 1 to process sample tabular data.",
@@ -691,18 +1367,37 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Pandas (Part 2) – Indexing and Selecting Data  In the previous video, we created the brics DataFrame, containing basic data on the BRICS countries. Proper row a...",
     "sections": [
       {
-        "title": "Pandas - 2",
-        "body": "Pandas (Part 2) – Indexing and Selecting Data\n\nIn the previous video, we created the brics DataFrame, containing basic data on the BRICS countries. Proper row and column labels make it much easier to access specific columns, rows, or individual elements in the DataFrame. In this section, we’ll explore different ways to index and select data, starting with square brackets and then moving to the more advanced loc and iloc methods, which make Pandas extremely powerful.\n\nx\n\nTo select a single column, such as the country column, you can use square brackets:\n\nbrics[\"country\"]\n\nThis returns a Pandas Series, which you can think of as a 1-dimensional, labeled array. Series objects are the building blocks of DataFrames — if you combine multiple Series, you get a DataFrame.\n\nIf you want the result to stay as a DataFrame rather than a Series, you use double square brackets:\n\nbrics[[\"country\"]]\n\nYou can extend this approach to select multiple columns by passing a list of column labels:\n\nbrics[[\"country\", \"capital\"]]\n\nThe resulting DataFrame is a \"sub-DataFrame\" containing only the selected columns.\n\nAccessing Rows with Square Brackets\n\nTo select rows using basic square brackets, you use slicing. For example, to get the 2nd, 3rd, and 4th rows:\n\nbrics[1:4]\n\nRemember, Python uses zero-based indexing, and the end of the slice is exclusive. While this works, square brackets offer limited flexibility compared to NumPy-style subsetting.\n\nloc – Label-Based Indexing\n\nThe loc method allows you to select data by row and column labels, similar to how you would index a 2D NumPy array."
+        "title": "1. Concept Overview",
+        "body": "Pandas (Part 2) – Indexing and Selecting Data\n\nIn the previous video, we created the brics DataFrame, containing basic data on the BRICS countries. Proper row and column labels make it much easier to access specific columns, rows, or individual elements in the DataFrame. In this section, we’ll explore different ways to index and select data, starting with square brackets and then moving to the more advanced loc and iloc methods, which make Pandas extremely powerful.\n\nx\n\nTo select a single column, such as the country column, you can use square brackets:\n\nbrics[\"country\"]\n\nThis returns a Pandas Series, which you can think of as a 1-dimensional, labeled array. Series objects are the building blocks of DataFrames — if you combine multiple Series, you get a DataFrame.\n\nIf you want the result to stay as a DataFrame rather than a Series, you use double square brackets:\n\nbrics[[\"country\"]]\n\nYou can extend this approach to select multiple columns by passing a list of column labels:\n\nbrics[[\"country\", \"capital\"]]\n\nThe resulting DataFrame is a \"sub-DataFrame\" containing only the selected columns."
       },
       {
-        "title": "To get a single row by label, for example Russia",
-        "body": "brics.loc[\"RU\"]\n\nThis returns a Series. To keep the result as a DataFrame, wrap the label in double brackets:\n\nbrics.loc[[\"RU\"]]\n\nTo select multiple rows by labels, you pass a list of row labels:\n\nbrics.loc[[\"RU\", \"IN\", \"CH\"]]\n\nYou can also select specific columns at the same time using a comma:\n\nbrics.loc[[\"RU\", \"IN\", \"CH\"], [\"country\", \"capital\"]]\n\nTo select all rows but only certain columns, use a colon for the rows:\n\nbrics.loc[:, [\"country\", \"capital\"]]\n\nUsing loc makes Pandas subsetting very similar to NumPy arrays, with the main difference being that loc uses labels instead of positions.\n\niloc – Position-Based Indexing\n\nThe iloc method works almost identically to loc, but instead of labels, you use integer positions.\n\nTo select the row for Russia (which has index 1):\n\nbrics.iloc[[1]]\n\nFor multiple rows (Russia, India, China):\n\nbrics.iloc[1:4]"
-      },
-      {
-        "title": "To select rows and specific columns by position",
-        "body": "brics.iloc[[1, 2, 3], [0, 1]]\n\nTo select all rows and only the first two columns:\n\nbrics.iloc[:, [0, 1]]\n\nIn summary, loc and iloc provide flexible ways to select rows, columns, or both simultaneously:\n\nloc → label-based (row/column names)\n\niloc → position-based (integer indexes)\n\nBoth methods mirror the intuitive subsetting style of 2D NumPy arrays, making it easier to manipulate and explore DataFrames efficiently. Practicing with these techniques will help you master DataFrame indexing and selection."
+        "title": "2. Accessing Rows with Square Brackets",
+        "body": "To select rows using basic square brackets, you use slicing. For example, to get the 2nd, 3rd, and 4th rows:\n\nbrics[1:4]\n\nRemember, Python uses zero-based indexing, and the end of the slice is exclusive. While this works, square brackets offer limited flexibility compared to NumPy-style subsetting.\n\nloc – Label-Based Indexing\n\nThe loc method allows you to select data by row and column labels, similar to how you would index a 2D NumPy array.\n\nTo get a single row by label, for example Russia:\n\nbrics.loc[\"RU\"]\n\nThis returns a Series. To keep the result as a DataFrame, wrap the label in double brackets:\n\nbrics.loc[[\"RU\"]]\n\nTo select multiple rows by labels, you pass a list of row labels:\n\nbrics.loc[[\"RU\", \"IN\", \"CH\"]]\n\nYou can also select specific columns at the same time using a comma:\n\nbrics.loc[[\"RU\", \"IN\", \"CH\"], [\"country\", \"capital\"]]\n\nTo select all rows but only certain columns, use a colon for the rows:\n\nbrics.loc[:, [\"country\", \"capital\"]]\n\nUsing loc makes Pandas subsetting very similar to NumPy arrays, with the main difference being that loc uses labels instead of positions.\n\niloc – Position-Based Indexing\n\nThe iloc method works almost identically to loc, but instead of labels, you use integer positions.\n\nTo select the row for Russia (which has index 1):\n\nbrics.iloc[[1]]\n\nFor multiple rows (Russia, India, China):\n\nbrics.iloc[1:4]\n\nTo select rows and specific columns by position:\n\nbrics.iloc[[1, 2, 3], [0, 1]]\n\nTo select all rows and only the first two columns:\n\nbrics.iloc[:, [0, 1]]\n\nIn summary, loc and iloc provide flexible ways to select rows, columns, or both simultaneously:\n\nloc → label-based (row/column names)\n\niloc → position-based (integer indexes)\n\nBoth methods mirror the intuitive subsetting style of 2D NumPy arrays, making it easier to manipulate and explore DataFrames efficiently. Practicing with these techniques will help you master DataFrame indexing and selection."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Targeted Country Subsetting with loc",
       "scenario": "The trade strategy department needs to inspect the capital and population for Brazil (BR) and China (CH) from the BRICS dataset.",
@@ -727,18 +1422,57 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Comparison Operators – Notes  Comparison operators allow you to compare two values and determine how they relate to each other. The result of any comparison is ...",
     "sections": [
       {
-        "title": "Comparison Operators",
-        "body": "Comparison Operators – Notes\n\nComparison operators allow you to compare two values and determine how they relate to each other. The result of any comparison is always a Boolean value: True or False. These operators are fundamental in decision-making, filtering data, and logical operations in Python.\n\nBasic Numeric Comparisons\n\nAt the simplest level, comparison operators work with numbers. For example, checking whether 2 < 3 returns True because 2 is indeed smaller than 3. If you check equality using 2 == 3, the result is False, since the values are not the same.\n\nYou can also combine comparison logic, such as checking if a number is smaller than or equal to another using <=. For example, both 2 <= 3 and 3 <= 3 return True. These comparisons work not only with direct values but also with variables that store numbers.\n\nComparison Operators Overview"
+        "title": "1. Concept Overview",
+        "body": "Comparison Operators – Notes\n\nComparison operators allow you to compare two values and determine how they relate to each other. The result of any comparison is always a Boolean value: True or False. These operators are fundamental in decision-making, filtering data, and logical operations in Python."
       },
       {
-        "title": "Here are the main comparison operators in Python",
-        "body": "< → less than\n\n> → greater than\n\n<= → less than or equal to\n\n>= → greater than or equal to\n\n== → equal to\n\n!= → not equal to (inequality)\n\nThe != operator is simply the opposite of ==. If two values are not equal, it returns True.\n\nComparing Strings\n\nComparison operators also work with strings. Python compares strings alphabetically (based on character order). For example, \"carl\" < \"chris\" returns True because “carl” comes before “chris” in alphabetical order.\n\nHowever, comparing values of different types usually results in an error. For example, trying to compare an integer like 3 with a string like \"chris\" will raise an error. Python typically cannot determine how objects of completely different types relate to each other.\n\nAn important exception is numeric types like integers and floats. Python allows comparisons between them (e.g., 3 < 3.5) without errors.\n\nAs a general rule, always try to compare objects of the same type to avoid unexpected errors.\n\nComparison with NumPy Arrays\n\nWhen working with NumPy arrays, comparisons become even more powerful. If you compare an entire NumPy array to a single number, NumPy performs the comparison element-wise.\n\nFor example, if you compare a bmi array to 23 using bmi > 23, NumPy checks each value in the array against 23 and returns a Boolean array of the same size. Behind the scenes, NumPy efficiently applies the comparison to every element.\n\nThis makes filtering data concise and efficient — which is especially useful in data science.\n\nKey Takeaways"
+        "title": "2. Basic Numeric Comparisons",
+        "body": "At the simplest level, comparison operators work with numbers. For example, checking whether 2 < 3 returns True because 2 is indeed smaller than 3. If you check equality using 2 == 3, the result is False, since the values are not the same.\n\nYou can also combine comparison logic, such as checking if a number is smaller than or equal to another using <=. For example, both 2 <= 3 and 3 <= 3 return True. These comparisons work not only with direct values but also with variables that store numbers."
       },
       {
-        "title": "Comparison operators",
-        "body": "Return Boolean values (True or False)\n\nWork with numbers and strings (if types are compatible)\n\nRequire caution when comparing different data types\n\nBecome very powerful when used with NumPy arrays due to element-wise comparison\n\nMastering comparison operators is essential because they are the foundation of filtering data, conditional statements, and logical expressions in Python."
+        "title": "3. Comparison Operators Overview",
+        "body": "Here are the main comparison operators in Python:\n\n< → less than\n\n> → greater than\n\n<= → less than or equal to\n\n>= → greater than or equal to\n\n== → equal to\n\n!= → not equal to (inequality)\n\nThe != operator is simply the opposite of ==. If two values are not equal, it returns True."
+      },
+      {
+        "title": "4. Comparing Strings",
+        "body": "Comparison operators also work with strings. Python compares strings alphabetically (based on character order). For example, \"carl\" < \"chris\" returns True because “carl” comes before “chris” in alphabetical order.\n\nHowever, comparing values of different types usually results in an error. For example, trying to compare an integer like 3 with a string like \"chris\" will raise an error. Python typically cannot determine how objects of completely different types relate to each other.\n\nAn important exception is numeric types like integers and floats. Python allows comparisons between them (e.g., 3 < 3.5) without errors.\n\nAs a general rule, always try to compare objects of the same type to avoid unexpected errors."
+      },
+      {
+        "title": "5. Comparison with NumPy Arrays",
+        "body": "When working with NumPy arrays, comparisons become even more powerful. If you compare an entire NumPy array to a single number, NumPy performs the comparison element-wise.\n\nFor example, if you compare a bmi array to 23 using bmi > 23, NumPy checks each value in the array against 23 and returns a Boolean array of the same size. Behind the scenes, NumPy efficiently applies the comparison to every element.\n\nThis makes filtering data concise and efficient — which is especially useful in data science."
+      },
+      {
+        "title": "6. Key Takeaways",
+        "body": "Comparison operators:\n\nReturn Boolean values (True or False)\n\nWork with numbers and strings (if types are compatible)"
+      },
+      {
+        "title": "7. Require caution when comparing different data types",
+        "body": "Become very powerful when used with NumPy arrays due to element-wise comparison\n\nMastering comparison operators is essential because they are the foundation of filtering data, conditional statements, and logical expressions in Python."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Comparison Operators",
       "scenario": "Apply the concepts learned in Comparison Operators to process sample tabular data.",
@@ -763,52 +1497,56 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Boolean Operators – Notes  Now that you know how to create Boolean values using comparison operators (like >, <, ==), the next step is learning how to combine t...",
     "sections": [
       {
-        "title": "Boolean Operators",
-        "body": "Boolean Operators – Notes\n\nNow that you know how to create Boolean values using comparison operators (like >, <, ==), the next step is learning how to combine these Boolean values. This is where Boolean operators come in.\n\nThe three most important Boolean operators in Python are:\n\nand\n\nor\n\nnot\n\nThese operators allow you to build more complex logical conditions.\n\nThe and Operator\n\nThe and operator returns True only if both conditions are True."
+        "title": "1. Concept Overview",
+        "body": "Boolean Operators – Notes\n\nNow that you know how to create Boolean values using comparison operators (like >, <, ==), the next step is learning how to combine these Boolean values. This is where Boolean operators come in.\n\nThe three most important Boolean operators in Python are:\n\nand\n\nor\n\nnot\n\nThese operators allow you to build more complex logical conditions."
       },
       {
-        "title": "For example",
-        "body": "True and True → True\n\nTrue and False → False\n\nFalse and True → False\n\nFalse and False → False\n\nSo both sides must evaluate to True for the entire expression to be True."
-      },
-      {
-        "title": "You’ll usually use and with comparisons. Suppose",
-        "body": "`x = 12`\n\nIf you want to check whether x is greater than 5 and less than 15:\n\nx > 5 and x < 15\n\nBoth conditions evaluate to True, so the final result is True. This makes sense because 12 lies between 5 and 15.\n\nThe or Operator\n\nThe or operator is less strict. It returns True if at least one condition is True.",
+        "title": "2. The and Operator",
+        "body": "The and operator returns True only if both conditions are True.\n\nFor example:\n\nTrue and True → True\n\nTrue and False → False\n\nFalse and True → False\n\nFalse and False → False\n\nSo both sides must evaluate to True for the entire expression to be True.\n\nYou’ll usually use and with comparisons. Suppose:\n\n`x = 12`\n\nIf you want to check whether x is greater than 5 and less than 15:\n\nx > 5 and x < 15\n\nBoth conditions evaluate to True, so the final result is True. This makes sense because 12 lies between 5 and 15.",
         "exampleCode": "x = 12"
       },
       {
-        "title": "For example",
-        "body": "True or True → True\n\nTrue or False → True\n\nFalse or True → True\n\nFalse or False → False\n\nOnly when both conditions are False does the result become False."
-      },
-      {
-        "title": "Suppose",
-        "body": "`y = 5`",
+        "title": "3. The or Operator",
+        "body": "The or operator is less strict. It returns True if at least one condition is True.\n\nFor example:\n\nTrue or True → True\n\nTrue or False → True\n\nFalse or True → True\n\nFalse or False → False\n\nOnly when both conditions are False does the result become False.\n\nSuppose:\n\n`y = 5`\n\nIf you check:\n\ny < 7 or y > 13\n\nThe first condition (5 < 7) is True, and the second (5 > 13) is False. Since at least one condition is True, the entire expression evaluates to True.",
         "exampleCode": "y = 5"
       },
       {
-        "title": "If you check",
-        "body": "y < 7 or y > 13\n\nThe first condition (5 < 7) is True, and the second (5 > 13) is False. Since at least one condition is True, the entire expression evaluates to True.\n\nThe not Operator"
+        "title": "4. The not Operator",
+        "body": "The not operator simply reverses a Boolean value:\n\nnot True → False\n\nnot False → True\n\nIt is often used to negate the result of a condition, especially when combining multiple logical expressions.\n\nFor example:\n\nnot (x > 5 and x < 15)\n\nThis would return the opposite of the combined condition."
       },
       {
-        "title": "The not operator simply reverses a Boolean value",
-        "body": "not True → False\n\nnot False → True\n\nIt is often used to negate the result of a condition, especially when combining multiple logical expressions."
+        "title": "5. Boolean Operators with NumPy Arrays",
+        "body": "When working with NumPy arrays, things change slightly. The standard Python operators and, or, and not do not work element-wise on arrays.\n\nFor example, if you try:\n\nbmi > 21 and bmi < 22\n\nYou will get an error. This happens because and cannot handle arrays of multiple Boolean values.\n\nInstead, NumPy provides special functions:\n\n`np.logical_and()`\n\n`np.logical_or()`\n\n`np.logical_not()`\n\nThese functions perform element-wise logical operations.\n\nTo find which BMI values are greater than 21 and less than 22:\n\n`np.logical_and(bmi > 21, bmi < 22)`\n\nNumPy evaluates the condition for each element individually. Wherever both conditions are True, the result is True; otherwise, it’s False.\n\nYou can then use this Boolean array to filter the original array:\n\nbmi[np.logical_and(bmi > 21, bmi < 22)]\n\nThis is a powerful pattern in data science:\n\nCreate a Boolean condition.\n\nUse it to filter data.",
+        "exampleCode": "np.logical_and()\nnp.logical_or()\nnp.logical_not()\nnp.logical_and(bmi > 21, bmi < 22)"
       },
       {
-        "title": "For example",
-        "body": "not (x > 5 and x < 15)\n\nThis would return the opposite of the combined condition.\n\nBoolean Operators with NumPy Arrays\n\nWhen working with NumPy arrays, things change slightly. The standard Python operators and, or, and not do not work element-wise on arrays."
-      },
-      {
-        "title": "For example, if you try",
-        "body": "bmi > 21 and bmi < 22\n\nYou will get an error. This happens because and cannot handle arrays of multiple Boolean values."
-      },
-      {
-        "title": "Instead, NumPy provides special functions",
-        "body": "np.logical_and()\n\nnp.logical_or()\n\nnp.logical_not()\n\nThese functions perform element-wise logical operations.\n\nTo find which BMI values are greater than 21 and less than 22:\n\nnp.logical_and(bmi > 21, bmi < 22)\n\nNumPy evaluates the condition for each element individually. Wherever both conditions are True, the result is True; otherwise, it’s False.\n\nYou can then use this Boolean array to filter the original array:\n\nbmi[np.logical_and(bmi > 21, bmi < 22)]"
-      },
-      {
-        "title": "This is a powerful pattern in data science",
-        "body": "Create a Boolean condition.\n\nUse it to filter data.\n\nKey Takeaways\n\nBoolean operators allow you to combine logical conditions:\n\nand → both must be True\n\nor → at least one must be True\n\nnot → reverses a Boolean value\n\nWith regular Python values, you use and, or, and not.\u000b With NumPy arrays, you must use logical_and(), logical_or(), and logical_not() for element-wise operations.\n\nUnderstanding this distinction is very important when moving from basic Python logic to numerical and data analysis work."
+        "title": "6. Key Takeaways",
+        "body": "Boolean operators allow you to combine logical conditions:\n\nand → both must be True\n\nor → at least one must be True\n\nnot → reverses a Boolean value\n\nWith regular Python values, you use and, or, and not.\n\nWith NumPy arrays, you must use logical_and(), logical_or(), and logical_not() for element-wise operations.\n\nUnderstanding this distinction is very important when moving from basic Python logic to numerical and data analysis work."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Boolean Operators",
       "scenario": "Apply the concepts learned in Boolean Operators to process sample tabular data.",
@@ -833,86 +1571,56 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Conditional Statements: if, elif, else – Notes  Now that you understand comparison operators (like <, >, ==) and Boolean operators (and, or, not), the next step...",
     "sections": [
       {
-        "title": "if, elif, else",
-        "body": "Conditional Statements: if, elif, else – Notes\n\nNow that you understand comparison operators (like <, >, ==) and Boolean operators (and, or, not), the next step is using them to control how your program behaves. This is where conditional statements come in. They allow your code to make decisions and execute different blocks depending on whether a condition is True or False.\n\nThe three main conditional keywords in Python are:\n\nif\n\nelif\n\nelse\n\nThe if Statement\n\nThe if statement is the foundation of conditional logic. It checks whether a condition is True. If it is, Python executes the indented block of code below it."
+        "title": "1. Concept Overview",
+        "body": "Conditional Statements: if, elif, else – Notes\n\nNow that you understand comparison operators (like <, >, ==) and Boolean operators (and, or, not), the next step is using them to control how your program behaves. This is where conditional statements come in. They allow your code to make decisions and execute different blocks depending on whether a condition is True or False.\n\nThe three main conditional keywords in Python are:\n\nif\n\nelif\n\nelse"
       },
       {
-        "title": "For example",
-        "body": "`z = 4`",
+        "title": "2. The if Statement",
+        "body": "The if statement is the foundation of conditional logic. It checks whether a condition is True. If it is, Python executes the indented block of code below it.\n\nFor example:\n\n`z = 4`\n\nif z % 2 == 0:\n\nprint(\"z is even\")\n\nHere, % is the modulo operator. z % 2 == 0 checks if z is divisible by 2 (which means it’s even).\n\nIf the condition evaluates to True, the indented code runs. If it’s False, nothing happens.\n\nThere are two very important syntax rules with if:\n\nA colon (:) must follow the condition.\n\nThe code block underneath must be indented (usually 4 spaces).\n\nIndentation tells Python which lines belong to the if statement. When the indentation stops, Python understands that the conditional block has ended.\n\nYou can include multiple lines inside an if block:\n\nif z % 2 == 0:\n\nprint(\"z is even\")\n\nprint(\"This was checked using modulo.\")\n\nIf the condition is False, none of the indented lines will execute.",
         "exampleCode": "z = 4"
       },
       {
-        "title": "if z % 2 == 0",
-        "body": "print(\"z is even\")\n\nHere, % is the modulo operator. z % 2 == 0 checks if z is divisible by 2 (which means it’s even).\n\nIf the condition evaluates to True, the indented code runs. If it’s False, nothing happens.\n\nThere are two very important syntax rules with if:\n\nA colon (:) must follow the condition.\n\nThe code block underneath must be indented (usually 4 spaces).\n\nIndentation tells Python which lines belong to the if statement. When the indentation stops, Python understands that the conditional block has ended.\n\nYou can include multiple lines inside an if block:"
-      },
-      {
-        "title": "if z % 2 == 0",
-        "body": "print(\"z is even\")\n\nprint(\"This was checked using modulo.\")\n\nIf the condition is False, none of the indented lines will execute.\n\nThe else Statement\n\nSometimes you want an alternative action if the condition is not met. That’s where else comes in."
-      },
-      {
-        "title": "For example",
-        "body": "`z = 5`",
+        "title": "3. The else Statement",
+        "body": "Sometimes you want an alternative action if the condition is not met. That’s where else comes in.\n\nFor example:\n\n`z = 5`\n\nif z % 2 == 0:\n\nprint(\"z is even\")\n\nelse:\n\nprint(\"z is odd\")\n\nIf the if condition is False, the else block runs automatically.\n\nUnlike if, the else statement:\n\nDoes not require a condition.\n\nRuns only if the corresponding if condition is False.\n\nIt acts as a fallback option.",
         "exampleCode": "z = 5"
       },
       {
-        "title": "if z % 2 == 0",
-        "body": "print(\"z is even\")"
+        "title": "4. The elif Statement",
+        "body": "Sometimes two possibilities are not enough. You may want to check multiple conditions. This is where elif (short for “else if”) is useful.\n\nFor example:\n\n`z = 3`\n\nif z % 2 == 0:\n\nprint(\"divisible by 2\")\n\nelif z % 3 == 0:\n\nprint(\"divisible by 3\")\n\nHere’s how Python processes this:\n\nIt checks the if condition.\n\nIf it’s False, it checks the elif condition.\n\nIf that condition is True, it executes the corresponding block.\n\nAfter executing one matching block, Python exits the entire structure.\n\nThis is very important:\n\nEven if multiple conditions are technically True, Python stops at the first True condition it encounters.\n\nFor example, if:\n\n`z = 6`\n\nBoth z % 2 == 0 and z % 3 == 0 are True. However, only \"divisible by 2\" will print, because Python executes the first matching condition and then leaves the control structure.",
+        "exampleCode": "z = 3\nz = 6"
       },
       {
-        "title": "else",
-        "body": "print(\"z is odd\")\n\nIf the if condition is False, the else block runs automatically."
+        "title": "5. General Structure",
+        "body": "The full structure of conditional logic looks like this:\n\nif condition1:\n\nexpression1\n\nelif condition2:\n\nexpression2\n\nelif condition3:\n\nexpression3\n\nelse:\n\nexpression4\n\nPython evaluates conditions from top to bottom and stops once a True condition is found."
       },
       {
-        "title": "Unlike if, the else statement",
-        "body": "Does not require a condition.\n\nRuns only if the corresponding if condition is False.\n\nIt acts as a fallback option.\n\nThe elif Statement\n\nSometimes two possibilities are not enough. You may want to check multiple conditions. This is where elif (short for “else if”) is useful."
-      },
-      {
-        "title": "For example",
-        "body": "`z = 3`",
-        "exampleCode": "z = 3"
-      },
-      {
-        "title": "if z % 2 == 0",
-        "body": "print(\"divisible by 2\")"
-      },
-      {
-        "title": "elif z % 3 == 0",
-        "body": "print(\"divisible by 3\")"
-      },
-      {
-        "title": "Here’s how Python processes this",
-        "body": "It checks the if condition.\n\nIf it’s False, it checks the elif condition.\n\nIf that condition is True, it executes the corresponding block.\n\nAfter executing one matching block, Python exits the entire structure."
-      },
-      {
-        "title": "This is very important",
-        "body": "Even if multiple conditions are technically True, Python stops at the first True condition it encounters."
-      },
-      {
-        "title": "For example, if",
-        "body": "`z = 6`\n\nBoth z % 2 == 0 and z % 3 == 0 are True. However, only \"divisible by 2\" will print, because Python executes the first matching condition and then leaves the control structure.\n\nGeneral Structure\n\nThe full structure of conditional logic looks like this:",
-        "exampleCode": "z = 6"
-      },
-      {
-        "title": "if condition1",
-        "body": "expression1"
-      },
-      {
-        "title": "elif condition2",
-        "body": "expression2"
-      },
-      {
-        "title": "elif condition3",
-        "body": "expression3"
-      },
-      {
-        "title": "else",
-        "body": "expression4\n\nPython evaluates conditions from top to bottom and stops once a True condition is found.\n\nKey Takeaways\n\nConditional statements allow your program to make decisions.\n\nif → runs code if a condition is True\n\nelif → checks additional conditions if previous ones were False\n\nelse → runs code if none of the above conditions were True"
-      },
-      {
-        "title": "Two crucial concepts to remember",
-        "body": "Indentation defines code blocks.\n\nPython stops checking conditions once it finds the first True condition.\n\nMastering if, elif, and else is essential because they form the backbone of logic and decision-making in Python programs."
+        "title": "6. Key Takeaways",
+        "body": "Conditional statements allow your program to make decisions.\n\nif → runs code if a condition is True\n\nelif → checks additional conditions if previous ones were False\n\nelse → runs code if none of the above conditions were True\n\nTwo crucial concepts to remember:\n\nIndentation defines code blocks.\n\nPython stops checking conditions once it finds the first True condition.\n\nMastering if, elif, and else is essential because they form the backbone of logic and decision-making in Python programs."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: if, elif, else",
       "scenario": "Apply the concepts learned in if, elif, else to process sample tabular data.",
@@ -937,23 +1645,71 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Filtering Pandas DataFrames – Notes  In earlier lessons, you learned how NumPy allows element-wise comparisons that return Boolean arrays. The same idea applies...",
     "sections": [
       {
-        "title": "Filtering pandas DataFrames",
-        "body": "Filtering Pandas DataFrames – Notes\n\nIn earlier lessons, you learned how NumPy allows element-wise comparisons that return Boolean arrays. The same idea applies to Pandas DataFrames, since Pandas is built on top of NumPy. This makes filtering data very powerful and intuitive.\n\nLet’s use the BRICS dataset as an example. Suppose we want to keep only the countries whose area is greater than 8 million square kilometers. Filtering a DataFrame like this typically follows three logical steps.\n\nThe 3-Step Filtering Process\n\nFiltering a DataFrame using conditions can be broken down into:\n\nSelect the column you want to evaluate\n\nPerform a comparison to create a Boolean Series\n\nUse that Boolean Series to subset the DataFrame\n\nLet’s walk through this clearly.\n\nStep 1: Select the Column\n\nFirst, we extract the area column. It’s best to retrieve it as a Pandas Series, not a DataFrame.\n\nbrics[\"area\"]\n\nYou could also use .loc or .iloc, but square brackets are perfectly fine here.\n\nStep 2: Perform the Comparison"
+        "title": "1. Concept Overview",
+        "body": "Filtering Pandas DataFrames – Notes\n\nIn earlier lessons, you learned how NumPy allows element-wise comparisons that return Boolean arrays. The same idea applies to Pandas DataFrames, since Pandas is built on top of NumPy. This makes filtering data very powerful and intuitive.\n\nLet’s use the BRICS dataset as an example. Suppose we want to keep only the countries whose area is greater than 8 million square kilometers. Filtering a DataFrame like this typically follows three logical steps."
       },
       {
-        "title": "Next, we compare the area values to 8",
-        "body": "brics[\"area\"] > 8\n\nThis returns a Boolean Series — a list of True and False values corresponding to each row. Countries with area greater than 8 million square kilometers will have True; others will have False."
+        "title": "2. The 3-Step Filtering Process",
+        "body": "Filtering a DataFrame using conditions can be broken down into:"
       },
       {
-        "title": "You can store this result",
-        "body": "`is_huge = brics[\"area\"] > 8`\n\nNow is_huge contains Boolean values aligned with the DataFrame’s rows.\n\nStep 3: Subset the DataFrame\n\nThe final step is to use the Boolean Series to filter the DataFrame:\n\nbrics[is_huge]\n\nThis keeps only the rows where is_huge is True. In this case, the result includes:\n\nBrazil\n\nRussia\n\nChina\n\nThis works because Pandas automatically keeps rows where the Boolean value is True.\n\nWriting It in One Line\n\nInstead of storing the Boolean Series in a separate variable, you can directly place the condition inside the square brackets:\n\nbrics[brics[\"area\"] > 8]\n\nThis is a very common and clean way to filter DataFrames.\n\nUsing Boolean Operators with Pandas\n\nYou can also combine conditions. Since Pandas is built on NumPy, you can use NumPy’s logical functions for element-wise Boolean operations.\n\nSuppose you want countries with area between 8 and 10 million square kilometers. You can use np.logical_and():\n\n`import numpy as np`\n\nbrics[np.logical_and(brics[\"area\"] > 8,\n\nbrics[\"area\"] < 10)]\n\nThis creates a Boolean Series where both conditions must be True. The result includes only:\n\nBrazil\n\nChina\n\nRussia is excluded because its area is much larger than 10.\n\nKey Idea Behind Filtering",
-        "exampleCode": "is_huge = brics[\"area\"] > 8\nimport numpy as np"
+        "title": "3. Select the column you want to evaluate",
+        "body": "Perform a comparison to create a Boolean Series"
       },
       {
-        "title": "Filtering in Pandas works because",
-        "body": "Comparisons on a column return a Boolean Series.\n\nA Boolean Series can be used inside square brackets to filter rows.\n\nOnly rows corresponding to True values are kept.\n\nThis pattern — select column → compare → filter — is one of the most important techniques in data analysis. It allows you to quickly extract meaningful subsets of data in a very readable and efficient way.\n\nOnce you master this, you unlock a huge part of Pandas’ real power."
+        "title": "4. Use that Boolean Series to subset the DataFrame",
+        "body": "Let’s walk through this clearly."
+      },
+      {
+        "title": "5. Step 1: Select the Column",
+        "body": "First, we extract the area column. It’s best to retrieve it as a Pandas Series, not a DataFrame.\n\nbrics[\"area\"]\n\nYou could also use .loc or .iloc, but square brackets are perfectly fine here."
+      },
+      {
+        "title": "6. Step 2: Perform the Comparison",
+        "body": "Next, we compare the area values to 8:\n\nbrics[\"area\"] > 8\n\nThis returns a Boolean Series — a list of True and False values corresponding to each row. Countries with area greater than 8 million square kilometers will have True; others will have False.\n\nYou can store this result:\n\n`is_huge = brics[\"area\"] > 8`\n\nNow is_huge contains Boolean values aligned with the DataFrame’s rows.",
+        "exampleCode": "is_huge = brics[\"area\"] > 8"
+      },
+      {
+        "title": "7. Step 3: Subset the DataFrame",
+        "body": "The final step is to use the Boolean Series to filter the DataFrame:\n\nbrics[is_huge]\n\nThis keeps only the rows where is_huge is True. In this case, the result includes:\n\nBrazil\n\nRussia\n\nChina\n\nThis works because Pandas automatically keeps rows where the Boolean value is True."
+      },
+      {
+        "title": "8. Writing It in One Line",
+        "body": "Instead of storing the Boolean Series in a separate variable, you can directly place the condition inside the square brackets:\n\nbrics[brics[\"area\"] > 8]\n\nThis is a very common and clean way to filter DataFrames."
+      },
+      {
+        "title": "9. Using Boolean Operators with Pandas",
+        "body": "You can also combine conditions. Since Pandas is built on NumPy, you can use NumPy’s logical functions for element-wise Boolean operations.\n\nSuppose you want countries with area between 8 and 10 million square kilometers. You can use np.logical_and():\n\n`import numpy as np`\n\nbrics[np.logical_and(brics[\"area\"] > 8,\n\nbrics[\"area\"] < 10)]\n\nThis creates a Boolean Series where both conditions must be True. The result includes only:\n\nBrazil\n\nChina\n\nRussia is excluded because its area is much larger than 10.",
+        "exampleCode": "import numpy as np"
+      },
+      {
+        "title": "10. Key Idea Behind Filtering",
+        "body": "Filtering in Pandas works because:\n\nComparisons on a column return a Boolean Series.\n\nA Boolean Series can be used inside square brackets to filter rows.\n\nOnly rows corresponding to True values are kept.\n\nThis pattern — select column → compare → filter — is one of the most important techniques in data analysis. It allows you to quickly extract meaningful subsets of data in a very readable and efficient way.\n\nOnce you master this, you unlock a huge part of Pandas’ real power."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Using Python 'and'/'or' for Series boolean filtering:\ndf[df[\"price\"] > 100 and df[\"region\"] == \"East\"]",
+      "correctCode": "# Use bitwise & and | with parentheses around each condition:\ndf[(df[\"price\"] > 100) & (df[\"region\"] == \"East\")]",
+      "explanation": "Pandas requires bitwise operators (& and |) with parentheses. Standard Python and/or operators fail because the truth value of a whole Series is ambiguous."
+    },
     "challenge": {
       "title": "Practice Drill: Filtering pandas DataFrames",
       "scenario": "Apply the concepts learned in Filtering pandas DataFrames to process sample tabular data.",
@@ -978,45 +1734,67 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "The while Loop – Notes  In the previous chapter, you learned about the if-elif-else structure. An if statement checks a condition once, executes the correspondi...",
     "sections": [
       {
-        "title": "while loop",
-        "body": "The while Loop – Notes\n\nIn the previous chapter, you learned about the if-elif-else structure. An if statement checks a condition once, executes the corresponding block if the condition is True, and then continues with the rest of the script. The key idea is that the code inside an if statement runs only once when the condition is checked.\n\nA while loop is similar in that it also checks a condition. However, the major difference is this:\n\nA while loop keeps executing its code block over and over again as long as the condition remains True.\n\nBasic Idea of a While Loop"
+        "title": "1. Concept Overview",
+        "body": "The while Loop – Notes\n\nIn the previous chapter, you learned about the if-elif-else structure. An if statement checks a condition once, executes the corresponding block if the condition is True, and then continues with the rest of the script. The key idea is that the code inside an if statement runs only once when the condition is checked.\n\nA while loop is similar in that it also checks a condition. However, the major difference is this:\n\nA while loop keeps executing its code block over and over again as long as the condition remains True."
       },
       {
-        "title": "while condition",
-        "body": "expression"
+        "title": "2. Basic Idea of a While Loop",
+        "body": "The syntax looks very similar to an if statement:\n\nwhile condition:\n\nexpression\n\nJust like with if:\n\nThere is a colon (:) after the condition.\n\nThe body of the loop must be indented.\n\nThe difference is that instead of running once, the code block repeats until the condition becomes False.\n\nWhen to Use a While Loop\n\nA while loop is useful when you want to:"
       },
       {
-        "title": "Just like with if",
-        "body": "There is a colon (:) after the condition.\n\nThe body of the loop must be indented.\n\nThe difference is that instead of running once, the code block repeats until the condition becomes False.\n\nWhen to Use a While Loop"
+        "title": "3. Repeat an action",
+        "body": "Continue until a certain condition is met\n\nRun an algorithm until a stopping rule is satisfied\n\nFor example, in numerical modeling or optimization problems, you often repeat calculations until the error becomes small enough."
       },
       {
-        "title": "A while loop is useful when you want to",
-        "body": "Repeat an action\n\nContinue until a certain condition is met\n\nRun an algorithm until a stopping rule is satisfied\n\nFor example, in numerical modeling or optimization problems, you often repeat calculations until the error becomes small enough.\n\nExample: Reducing Error\n\nSuppose we start with an error value of 50. Our “algorithm” divides the error by 4 each time it runs. We want to keep running the algorithm until the error is no longer greater than 1.\n\n`error = 50`",
-        "exampleCode": "error = 50"
+        "title": "4. Example: Reducing Error",
+        "body": "Suppose we start with an error value of 50. Our “algorithm” divides the error by 4 each time it runs. We want to keep running the algorithm until the error is no longer greater than 1.\n\n`error = 50`\n\nwhile error > 1:\n\n`error = error / 4`\n\nprint(error)\n\nLet’s walk through what happens:\n\nThe initial error is 50. Since 50 > 1, the condition is True, so the loop runs.\n\nThe error becomes 12.5, and it gets printed.\n\nPython checks the condition again. 12.5 > 1 is still True, so the loop runs again.\n\nThe error becomes 3.125.\n\nThe process repeats until the error drops below 1.\n\nOnce the condition becomes False, the loop stops.\n\nThe loop automatically exits when the condition is no longer satisfied.",
+        "exampleCode": "error = 50\nerror = error / 4"
       },
       {
-        "title": "while error > 1",
-        "body": "`error = error / 4`\n\nprint(error)",
+        "title": "5. The Crucial Part: Updating the Condition",
+        "body": "Inside a while loop, something must eventually make the condition False. In our example, the line:\n\n`error = error / 4`\n\nis essential. It updates the variable so that the condition will eventually fail.\n\nIf you remove that update, the value of error never changes. The condition error > 1 would always stay True, and the loop would run forever. This is called an infinite loop.\n\nAn infinite loop:",
         "exampleCode": "error = error / 4"
       },
       {
-        "title": "Let’s walk through what happens",
-        "body": "The initial error is 50. Since 50 > 1, the condition is True, so the loop runs.\n\nThe error becomes 12.5, and it gets printed.\n\nPython checks the condition again. 12.5 > 1 is still True, so the loop runs again.\n\nThe error becomes 3.125.\n\nThe process repeats until the error drops below 1.\n\nOnce the condition becomes False, the loop stops.\n\nThe loop automatically exits when the condition is no longer satisfied.\n\nThe Crucial Part: Updating the Condition\n\nInside a while loop, something must eventually make the condition False. In our example, the line:\n\n`error = error / 4`\n\nis essential. It updates the variable so that the condition will eventually fail.\n\nIf you remove that update, the value of error never changes. The condition error > 1 would always stay True, and the loop would run forever. This is called an infinite loop.",
-        "exampleCode": "error = error / 4"
+        "title": "6. Never reaches a stopping condition",
+        "body": "Keeps running indefinitely"
       },
       {
-        "title": "An infinite loop",
-        "body": "Never reaches a stopping condition\n\nKeeps running indefinitely\n\nMay freeze or crash your session\n\nIf this happens on your own computer, you can stop the program manually (for example, by pressing Ctrl + C).\n\nKey Takeaways"
+        "title": "7. May freeze or crash your session",
+        "body": "If this happens on your own computer, you can stop the program manually (for example, by pressing Ctrl + C)."
       },
       {
-        "title": "A while loop",
-        "body": "Repeats code as long as a condition is True\n\nUses indentation and a colon, just like if\n\nRequires a change inside the loop so the condition eventually becomes False"
+        "title": "8. Key Takeaways",
+        "body": "A while loop:\n\nRepeats code as long as a condition is True"
       },
       {
-        "title": "The most important thing to remember is",
-        "body": "Always make sure your loop has a clear stopping condition.\n\nWithout that, your program may run forever."
+        "title": "9. Uses indentation and a colon, just like if",
+        "body": "Requires a change inside the loop so the condition eventually becomes False\n\nThe most important thing to remember is:\n\nAlways make sure your loop has a clear stopping condition.\n\nWithout that, your program may run forever."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: while loop",
       "scenario": "Apply the concepts learned in while loop to process sample tabular data.",
@@ -1041,27 +1819,54 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "The for Loop – Notes  Next to the while loop, Python also provides the for loop, which is ideal for iterating over sequences such as lists, strings, or other it...",
     "sections": [
       {
-        "title": "for loop",
-        "body": "The for Loop – Notes\n\nNext to the while loop, Python also provides the for loop, which is ideal for iterating over sequences such as lists, strings, or other iterable objects. The general recipe of a for loop can be read as:\n\nFor each var in seq, execute the expressions.\n\nHere, var is a variable that temporarily holds each element of the sequence seq during each iteration.\n\nExample: Iterating over a List\n\nSuppose you have a list fam containing the heights of your family members:\n\n`fam = [1.73, 1.68, 1.71, 1.89]`\n\nInstead of writing separate print statements for each element, you can use a for loop:",
+        "title": "1. Concept Overview",
+        "body": "The for Loop – Notes\n\nNext to the while loop, Python also provides the for loop, which is ideal for iterating over sequences such as lists, strings, or other iterable objects. The general recipe of a for loop can be read as:\n\nFor each var in seq, execute the expressions.\n\nHere, var is a variable that temporarily holds each element of the sequence seq during each iteration."
+      },
+      {
+        "title": "2. Example: Iterating over a List",
+        "body": "Suppose you have a list fam containing the heights of your family members:\n\n`fam = [1.73, 1.68, 1.71, 1.89]`\n\nInstead of writing separate print statements for each element, you can use a for loop:\n\nfor height in fam:\n\nprint(height)\n\nHere’s what happens step by step:\n\nPython first evaluates fam and sees that it contains 4 elements.\n\nOn the first iteration, height takes the value 1.73, and print(height) outputs 1.73.\n\nOn the second iteration, height becomes 1.68, which gets printed.\n\nThis process continues until all elements are printed, producing four separate outputs.\n\nThis approach avoids repetitive code, although you don’t have access to the index of the elements in this basic form.\n\nAccessing Indices with enumerate()\n\nIf you want to print both the index and the value, Python provides the enumerate() function. You can rewrite the loop like this:\n\nfor index, height in enumerate(fam):\n\nprint(str(index) + \": \" + str(height))\n\nenumerate(fam) produces two values on each iteration: the index and the value.\n\nindex stores the current position, while height stores the value itself.\n\nYou can then use a print statement to combine both, converting numbers to strings when necessary.\n\nThis results in output like:",
         "exampleCode": "fam = [1.73, 1.68, 1.71, 1.89]"
       },
       {
-        "title": "for height in fam",
-        "body": "print(height)"
+        "title": "3. 0: 1.73",
+        "body": "1: 1.68"
       },
       {
-        "title": "Here’s what happens step by step",
-        "body": "Python first evaluates fam and sees that it contains 4 elements.\n\nOn the first iteration, height takes the value 1.73, and print(height) outputs 1.73.\n\nOn the second iteration, height becomes 1.68, which gets printed.\n\nThis process continues until all elements are printed, producing four separate outputs.\n\nThis approach avoids repetitive code, although you don’t have access to the index of the elements in this basic form.\n\nAccessing Indices with enumerate()\n\nIf you want to print both the index and the value, Python provides the enumerate() function. You can rewrite the loop like this:\n\nfor index, height in enumerate(fam):\n\nprint(str(index) + \": \" + str(height))\n\nenumerate(fam) produces two values on each iteration: the index and the value.\n\nindex stores the current position, while height stores the value itself.\n\nYou can then use a print statement to combine both, converting numbers to strings when necessary."
+        "title": "4. 2: 1.71",
+        "body": "3: 1.89"
       },
       {
-        "title": "This results in output like",
-        "body": "0: 1.73\n\n1: 1.68\n\n2: 1.71\n\n3: 1.89\n\nLooping Over Strings\n\nfor loops are not limited to lists. You can also iterate over strings, character by character. For example:"
+        "title": "5. Looping Over Strings",
+        "body": "for loops are not limited to lists. You can also iterate over strings, character by character. For example:\n\nfor c in \"family\":\n\nprint(c.upper())\n\nEach iteration stores a single character in c.\n\nUsing .upper(), the character is capitalized and printed.\n\nSince \"family\" has 7 characters, the loop produces 7 printouts."
       },
       {
-        "title": "for c in \"family\"",
-        "body": "print(c.upper())\n\nEach iteration stores a single character in c.\n\nUsing .upper(), the character is capitalized and printed.\n\nSince \"family\" has 7 characters, the loop produces 7 printouts.\n\nKey Takeaways\n\nThe for loop iterates over sequences, executing the same code block for each element.\n\nUse enumerate() when you need access to the index during iteration.\n\nfor loops work on any iterable, including lists, strings, tuples, and more.\n\nThey are especially useful to replace repetitive code with concise, readable loops.\n\nThis makes for loops an essential tool for structured iteration in Python."
+        "title": "6. Key Takeaways",
+        "body": "The for loop iterates over sequences, executing the same code block for each element.\n\nUse enumerate() when you need access to the index during iteration.\n\nfor loops work on any iterable, including lists, strings, tuples, and more.\n\nThey are especially useful to replace repetitive code with concise, readable loops.\n\nThis makes for loops an essential tool for structured iteration in Python."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: for loop",
       "scenario": "Apply the concepts learned in for loop to process sample tabular data.",
@@ -1086,15 +1891,46 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Looping Over Other Data Structures – Notes  So far, we’ve seen how to loop over lists and strings using the for loop. But what about other common data structure...",
     "sections": [
       {
-        "title": "Loop Data Structures Part 1",
-        "body": "Looping Over Other Data Structures – Notes\n\nSo far, we’ve seen how to loop over lists and strings using the for loop. But what about other common data structures, like dictionaries and NumPy arrays? The same for loop construct works in both cases, but the way you define the sequence to iterate over differs depending on the structure.\n\nLooping Over Dictionaries\n\nConsider a dictionary world that contains country names as keys and populations as values. If you want to print each key-value pair on a new line, you might try directly unpacking them in a loop, similar to how enumerate() works for lists. This approach, however, raises an error because Python doesn’t automatically know how to provide two values per iteration.\n\nThe solution is to call the items() method on the dictionary:\n\nfor key, value in world.items():\n\nprint(key + \": \" + str(value))\n\nitems() generates key-value pairs for each iteration.\n\nThe order of iteration is not fixed in standard Python dictionaries (pre-3.6), so the output may not match the order in which you added elements.\n\nThe variable names are arbitrary; for example, key, value could be k, v. What matters is the order: the first variable receives the key, the second receives the value.\n\nThis is a reliable way to iterate over all dictionary pairs and access both components in the loop.\n\nLooping Over NumPy Arrays\n\nNumPy arrays, the “data science equivalent” of Python lists, can also be iterated over with a basic for loop. For a 1D array, like bmi, a simple loop works perfectly:"
+        "title": "1. Concept Overview",
+        "body": "Looping Over Other Data Structures – Notes\n\nSo far, we’ve seen how to loop over lists and strings using the for loop. But what about other common data structures, like dictionaries and NumPy arrays? The same for loop construct works in both cases, but the way you define the sequence to iterate over differs depending on the structure."
       },
       {
-        "title": "for value in bmi",
-        "body": "print(value)\n\nHowever, for 2D arrays, things get trickier. Consider a 2D array meas created by combining height and weight arrays:\n\n`meas = np.array([np_height, np_weight])`\n\nUsing a normal for loop on meas prints each row array as a whole, not individual elements. To iterate over each element in a 2D array, use NumPy’s nditer() function:\n\nfor element in np.nditer(meas):\n\nprint(element)\n\nnditer() allows you to iterate element-wise over any array, regardless of its dimensions.\n\nIn our example, it prints all height values first, followed by all weight values, one per line.\n\nKey Takeaways\n\nFor dictionaries, use the items() method to define the sequence of key-value pairs in a for loop.\n\nFor NumPy arrays, use the nditer() function when you need to iterate over each element individually, especially for 2D or higher-dimensional arrays.\n\nThe choice of sequence definition depends on the data structure: dictionaries require a method, while NumPy arrays require a function.\n\nThis approach ensures you can handle more complex data structures efficiently in Python while keeping your loops clean and readable.",
+        "title": "2. Looping Over Dictionaries",
+        "body": "Consider a dictionary world that contains country names as keys and populations as values. If you want to print each key-value pair on a new line, you might try directly unpacking them in a loop, similar to how enumerate() works for lists. This approach, however, raises an error because Python doesn’t automatically know how to provide two values per iteration.\n\nThe solution is to call the items() method on the dictionary:\n\nfor key, value in world.items():\n\nprint(key + \": \" + str(value))\n\nitems() generates key-value pairs for each iteration.\n\nThe order of iteration is not fixed in standard Python dictionaries (pre-3.6), so the output may not match the order in which you added elements.\n\nThe variable names are arbitrary; for example, key, value could be k, v. What matters is the order: the first variable receives the key, the second receives the value.\n\nThis is a reliable way to iterate over all dictionary pairs and access both components in the loop."
+      },
+      {
+        "title": "3. Looping Over NumPy Arrays",
+        "body": "NumPy arrays, the “data science equivalent” of Python lists, can also be iterated over with a basic for loop. For a 1D array, like bmi, a simple loop works perfectly:\n\nfor value in bmi:\n\nprint(value)\n\nHowever, for 2D arrays, things get trickier. Consider a 2D array meas created by combining height and weight arrays:\n\n`meas = np.array([np_height, np_weight])`\n\nUsing a normal for loop on meas prints each row array as a whole, not individual elements. To iterate over each element in a 2D array, use NumPy’s nditer() function:\n\nfor element in np.nditer(meas):\n\nprint(element)\n\nnditer() allows you to iterate element-wise over any array, regardless of its dimensions.\n\nIn our example, it prints all height values first, followed by all weight values, one per line.",
         "exampleCode": "meas = np.array([np_height, np_weight])"
+      },
+      {
+        "title": "4. Key Takeaways",
+        "body": "For dictionaries, use the items() method to define the sequence of key-value pairs in a for loop.\n\nFor NumPy arrays, use the nditer() function when you need to iterate over each element individually, especially for 2D or higher-dimensional arrays.\n\nThe choice of sequence definition depends on the data structure: dictionaries require a method, while NumPy arrays require a function.\n\nThis approach ensures you can handle more complex data structures efficiently in Python while keeping your loops clean and readable."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Loop Data Structures Part 1",
       "scenario": "Apply the concepts learned in Loop Data Structures Part 1 to process sample tabular data.",
@@ -1119,11 +1955,46 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Looping Over Pandas DataFrames – Notes  Up to this point, we’ve learned how to loop over lists, strings, dictionaries, and NumPy arrays. There’s one more “kille...",
     "sections": [
       {
-        "title": "Loop Data Structures Part 2",
-        "body": "Looping Over Pandas DataFrames – Notes\n\nUp to this point, we’ve learned how to loop over lists, strings, dictionaries, and NumPy arrays. There’s one more “killer” data structure for data analysis that deserves attention: the Pandas DataFrame. Looping over a DataFrame is slightly different from looping over a 2D NumPy array.\n\nBasic For Loop with DataFrames\n\nIf you try a basic for loop on a DataFrame, expecting it to iterate over rows like a 2D array, you’ll quickly notice something unexpected: the loop iterates over column names, not rows. This is because DataFrames don’t automatically treat rows as the default sequence for iteration. To explicitly iterate over rows, you need a dedicated method.\n\nUsing iterrows()\n\nThe iterrows() method allows you to loop over DataFrame rows in a controlled way. Each iteration returns two pieces of data: the row label and the row itself as a Pandas Series. For example:\n\nfor lab, row in brics.iterrows():\n\nprint(lab)\n\nprint(row)\n\nlab contains the row index (label).\n\nrow contains the row data as a Series, allowing you to select specific columns using familiar subsetting techniques.\n\nThis is useful if you want to perform operations or print selective information. For instance, to print the label and the capital of each country:\n\nfor lab, row in brics.iterrows():\n\nprint(lab, row[\"capital\"])\n\nAdding a New Column via a Loop\n\nYou can also use iterrows() to calculate and add new columns to a DataFrame. For example, adding a column name_length to store the number of characters in each country’s name:\n\nIterate over rows with iterrows().\n\nCalculate the length of the country name using len(row[\"country\"]).\n\nAssign this value to a new column using loc[lab, \"name_length\"].\n\nfor lab, row in brics.iterrows():\n\n`brics.loc[lab, \"name_length\"] = len(row[\"country\"])`\n\nThis works fine for small DataFrames, but it’s inefficient because a new Series object is created on every iteration. For very large datasets, this can slow down performance.\n\nUsing apply() – The Vectorized Approach\n\nA more efficient and readable alternative to a for loop is the apply() function. It allows you to perform element-wise operations on a DataFrame column without explicit iteration. For example, to create the same name_length column:\n\n`brics[\"name_length\"] = brics[\"country\"].apply(len)`\n\nHere, len is applied to each element in the country column.\n\nThis produces a new array that can be stored directly in the DataFrame.\n\nThe code is cleaner, faster, and more \"Pythonic\" than using a for loop.\n\nKey Takeaways\n\nLooping over a DataFrame with a simple for loop iterates over columns, not rows.\n\nUse iterrows() to iterate over rows, getting both the label and row data as a Series.\n\nYou can perform selective operations or add new columns with iterrows(), but it’s not the most efficient method for large datasets.\n\nUse apply() for vectorized, element-wise operations on a column—cleaner, faster, and easier to read.\n\nMastering both iterrows() and apply() equips you with flexible tools for iterating, transforming, and manipulating DataFrames effectively.",
+        "title": "1. Concept Overview",
+        "body": "Looping Over Pandas DataFrames – Notes\n\nUp to this point, we’ve learned how to loop over lists, strings, dictionaries, and NumPy arrays. There’s one more “killer” data structure for data analysis that deserves attention: the Pandas DataFrame. Looping over a DataFrame is slightly different from looping over a 2D NumPy array."
+      },
+      {
+        "title": "2. Basic For Loop with DataFrames",
+        "body": "If you try a basic for loop on a DataFrame, expecting it to iterate over rows like a 2D array, you’ll quickly notice something unexpected: the loop iterates over column names, not rows. This is because DataFrames don’t automatically treat rows as the default sequence for iteration. To explicitly iterate over rows, you need a dedicated method.\n\nUsing iterrows()\n\nThe iterrows() method allows you to loop over DataFrame rows in a controlled way. Each iteration returns two pieces of data: the row label and the row itself as a Pandas Series. For example:\n\nfor lab, row in brics.iterrows():\n\nprint(lab)\n\nprint(row)\n\nlab contains the row index (label).\n\nrow contains the row data as a Series, allowing you to select specific columns using familiar subsetting techniques.\n\nThis is useful if you want to perform operations or print selective information. For instance, to print the label and the capital of each country:\n\nfor lab, row in brics.iterrows():\n\nprint(lab, row[\"capital\"])"
+      },
+      {
+        "title": "3. Adding a New Column via a Loop",
+        "body": "You can also use iterrows() to calculate and add new columns to a DataFrame. For example, adding a column name_length to store the number of characters in each country’s name:\n\nIterate over rows with iterrows().\n\nCalculate the length of the country name using len(row[\"country\"]).\n\nAssign this value to a new column using loc[lab, \"name_length\"].\n\nfor lab, row in brics.iterrows():\n\n`brics.loc[lab, \"name_length\"] = len(row[\"country\"])`\n\nThis works fine for small DataFrames, but it’s inefficient because a new Series object is created on every iteration. For very large datasets, this can slow down performance.\n\nUsing apply() – The Vectorized Approach\n\nA more efficient and readable alternative to a for loop is the apply() function. It allows you to perform element-wise operations on a DataFrame column without explicit iteration. For example, to create the same name_length column:\n\n`brics[\"name_length\"] = brics[\"country\"].apply(len)`\n\nHere, len is applied to each element in the country column.\n\nThis produces a new array that can be stored directly in the DataFrame.\n\nThe code is cleaner, faster, and more \"Pythonic\" than using a for loop.",
         "exampleCode": "brics.loc[lab, \"name_length\"] = len(row[\"country\"])\nbrics[\"name_length\"] = brics[\"country\"].apply(len)"
+      },
+      {
+        "title": "4. Key Takeaways",
+        "body": "Looping over a DataFrame with a simple for loop iterates over columns, not rows.\n\nUse iterrows() to iterate over rows, getting both the label and row data as a Series.\n\nYou can perform selective operations or add new columns with iterrows(), but it’s not the most efficient method for large datasets.\n\nUse apply() for vectorized, element-wise operations on a column—cleaner, faster, and easier to read.\n\nMastering both iterrows() and apply() equips you with flexible tools for iterating, transforming, and manipulating DataFrames effectively."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Loop Data Structures Part 2",
       "scenario": "Apply the concepts learned in Loop Data Structures Part 2 to process sample tabular data.",
@@ -1148,19 +2019,51 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Random Numbers – Notes  In this chapter, we move into a more applied scenario using everything we’ve learned so far. The focus is on simulating random processes...",
     "sections": [
       {
-        "title": "Random Numbers",
-        "body": "Random Numbers – Notes\n\nIn this chapter, we move into a more applied scenario using everything we’ve learned so far. The focus is on simulating random processes in Python, which allows us to model complex, probabilistic events without relying solely on analytical solutions.\n\nExample Scenario\n\nImagine a game where you’re walking up the Empire State Building to DataCamp Headquarters. You throw a die 100 times, with these rules:\n\nIf the die shows 1 or 2, you move one step down.\n\nIf it shows 3, 4, or 5, you move one step up.\n\nIf it shows 6, you roll the die again and move up by that number of steps.\n\nAdditional rules: you cannot go below step 0, and there is a 0.1% chance of falling down the stairs with each move, sending you back to step 0. Your goal is to see the probability of reaching step 60.\n\nRather than solving this analytically, we can simulate the process thousands of times and calculate the fraction of simulations where we reach 60 steps. This is a practical application of “hacker statistics” — using computation to explore probability.\n\nRandom Number Generators\n\nTo simulate these random processes, we rely on NumPy’s random generators.\n\nImport NumPy and access its random package.\n\nThe rand() function generates a random number between 0 and 1.\n\nBehind the scenes, these numbers are pseudo-random, meaning they are generated by a mathematical formula starting from a seed. You can set the seed manually for reproducibility:\n\n`import numpy as np`\n\nnp.random.seed(123)\n\nnp.random.rand()\n\nnp.random.rand()\n\nSetting the seed to the same number will produce the same sequence of random numbers every time.\n\nThis reproducibility is crucial in data science, as it allows others to reproduce your experiments.\n\nSimulating a Coin Toss\n\nRandom numbers can simulate simple events like a coin toss:\n\nSet a seed for reproducibility.\n\nUse randint(0, 2) to randomly generate 0 or 1.\n\nCombine with an if-else statement to interpret the result:\n\nnp.random.seed(123)\n\n`coin = np.random.randint(0, 2)`",
-        "exampleCode": "import numpy as np\ncoin = np.random.randint(0, 2)"
+        "title": "1. Concept Overview",
+        "body": "Random Numbers – Notes\n\nIn this chapter, we move into a more applied scenario using everything we’ve learned so far. The focus is on simulating random processes in Python, which allows us to model complex, probabilistic events without relying solely on analytical solutions."
       },
       {
-        "title": "if coin == 0",
-        "body": "print(\"heads\")"
+        "title": "2. Example Scenario",
+        "body": "Imagine a game where you’re walking up the Empire State Building to DataCamp Headquarters. You throw a die 100 times, with these rules:\n\nIf the die shows 1 or 2, you move one step down.\n\nIf it shows 3, 4, or 5, you move one step up.\n\nIf it shows 6, you roll the die again and move up by that number of steps.\n\nAdditional rules: you cannot go below step 0, and there is a 0.1% chance of falling down the stairs with each move, sending you back to step 0. Your goal is to see the probability of reaching step 60.\n\nRather than solving this analytically, we can simulate the process thousands of times and calculate the fraction of simulations where we reach 60 steps. This is a practical application of “hacker statistics” — using computation to explore probability."
       },
       {
-        "title": "else",
-        "body": "print(\"tails\")\n\nHere, 0 represents “heads” and 1 represents “tails”.\n\nBecause the seed is fixed, the coin toss result is consistent between runs.\n\nThis demonstrates how random numbers can be used to simulate real-life chance events in Python, laying the foundation for more complex simulations, like the dice game described earlier.\n\nKey Points\n\nRandom numbers generated in Python are pseudo-random, controlled by a seed.\n\nReproducibility is achieved by setting the seed.\n\nNumPy functions like rand() and randint() allow for flexible simulations of probabilistic events.\n\nCombining randomness with control structures (e.g., if-else) lets us model complex scenarios and explore probabilities computationally.\n\nThis forms the backbone for simulation-based probability studies, Monte Carlo methods, and other stochastic modeling in Python."
+        "title": "3. Random Number Generators",
+        "body": "To simulate these random processes, we rely on NumPy’s random generators.\n\nImport NumPy and access its random package.\n\nThe rand() function generates a random number between 0 and 1.\n\nBehind the scenes, these numbers are pseudo-random, meaning they are generated by a mathematical formula starting from a seed. You can set the seed manually for reproducibility:\n\n`import numpy as np`\n\n`np.random.seed(123)`\n\n`np.random.rand()`\n\n`np.random.rand()`\n\nSetting the seed to the same number will produce the same sequence of random numbers every time.\n\nThis reproducibility is crucial in data science, as it allows others to reproduce your experiments.",
+        "exampleCode": "import numpy as np\nnp.random.seed(123)\nnp.random.rand()\nnp.random.rand()"
+      },
+      {
+        "title": "4. Simulating a Coin Toss",
+        "body": "Random numbers can simulate simple events like a coin toss:\n\nSet a seed for reproducibility.\n\nUse randint(0, 2) to randomly generate 0 or 1.\n\nCombine with an if-else statement to interpret the result:\n\n`np.random.seed(123)`\n\n`coin = np.random.randint(0, 2)`\n\nif coin == 0:\n\nprint(\"heads\")\n\nelse:\n\nprint(\"tails\")\n\nHere, 0 represents “heads” and 1 represents “tails”.\n\nBecause the seed is fixed, the coin toss result is consistent between runs.\n\nThis demonstrates how random numbers can be used to simulate real-life chance events in Python, laying the foundation for more complex simulations, like the dice game described earlier.",
+        "exampleCode": "np.random.seed(123)\ncoin = np.random.randint(0, 2)"
+      },
+      {
+        "title": "5. Key Points",
+        "body": "Random numbers generated in Python are pseudo-random, controlled by a seed.\n\nReproducibility is achieved by setting the seed.\n\nNumPy functions like rand() and randint() allow for flexible simulations of probabilistic events.\n\nCombining randomness with control structures (e.g., if-else) lets us model complex scenarios and explore probabilities computationally.\n\nThis forms the backbone for simulation-based probability studies, Monte Carlo methods, and other stochastic modeling in Python."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Random Numbers",
       "scenario": "Apply the concepts learned in Random Numbers to process sample tabular data.",
@@ -1185,14 +2088,45 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Random Walk – Notes  In probability and simulation, a random step occurs when the next move in a process is determined by chance, such as rolling a die. If this...",
     "sections": [
       {
-        "title": "Random Walk",
-        "body": "Random Walk – Notes\n\nIn probability and simulation, a random step occurs when the next move in a process is determined by chance, such as rolling a die. If this random decision happens repeatedly, the sequence of movements is called a random walk. For example, if you roll a die 100 times and let each roll determine whether you move up or down a step, the resulting sequence of movements forms a random walk.\n\nRandom walks are widely used in science and modeling. They help describe processes where movement or change happens unpredictably over time. For instance, the path of a molecule moving through a liquid or gas can be modeled as a random walk. Another example is the financial status of a gambler, which can increase or decrease randomly depending on wins and losses. To simulate such processes in Python, we need a way to record each step over time, which can be done by gradually building a list inside a loop.\n\nRecording Random Outcomes with a Loop\n\nOne way to start understanding random processes is by simulating a simple heads-or-tails game several times. In Python, this can be done using NumPy’s random number generator."
+        "title": "1. Concept Overview",
+        "body": "Random Walk – Notes\n\nIn probability and simulation, a random step occurs when the next move in a process is determined by chance, such as rolling a die. If this random decision happens repeatedly, the sequence of movements is called a random walk. For example, if you roll a die 100 times and let each roll determine whether you move up or down a step, the resulting sequence of movements forms a random walk.\n\nRandom walks are widely used in science and modeling. They help describe processes where movement or change happens unpredictably over time. For instance, the path of a molecule moving through a liquid or gas can be modeled as a random walk. Another example is the financial status of a gambler, which can increase or decrease randomly depending on wins and losses. To simulate such processes in Python, we need a way to record each step over time, which can be done by gradually building a list inside a loop."
       },
       {
-        "title": "The basic idea is",
-        "body": "Import NumPy and set a random seed for reproducibility.\n\nCreate an empty list to store outcomes.\n\nRun a for loop a certain number of times (for example, 10).\n\nIn each iteration, generate a random number (0 or 1).\n\nAppend either \"heads\" or \"tails\" to the list depending on the result.\n\nThe loop uses the range() function, which generates a sequence of numbers that the loop can iterate over. During each iteration, the outcome is added to the list using the append() method. After the loop finishes, the list contains all outcomes from the 10 simulated coin tosses.\n\nAlthough this produces random results, it does not yet form a random walk, because each outcome is independent and not influenced by previous outcomes.\n\nTurning Random Outcomes into a Random Walk\n\nTo create a true random walk, we must track how the result changes over time based on previous values. In the coin toss example, this can be done by tracking the total number of tails thrown so far.\n\nInstead of storing strings like \"heads\" or \"tails\", we store the cumulative count of tails. The process works like this:\n\nStart with a list called tails that contains a single value [0], since initially no tails have been thrown.\n\nRun a loop 10 times using range().\n\nGenerate a random number (0 for heads, 1 for tails).\n\nAdd the result (coin) to the previous number of tails.\n\nAppend this new value to the list.\n\nEach new value depends on the previous state, meaning the sequence evolves step by step. When the script finishes, the list contains 11 numbers (the starting value plus 10 steps).\n\nFrom Random Steps to Random Walk\n\nWhen comparing the simple outcomes list with the cumulative tails list, the difference becomes clear. In the second version:\n\nThe numbers increase by 1 whenever tails appears.\n\nThe sequence reflects the history of previous events.\n\nThis transformation—from independent random results to a cumulative process—is what turns random steps into a random walk. Random walks are an important concept in data science and statistics because they help model many real-world systems where change happens gradually and unpredictably over time."
+        "title": "2. Recording Random Outcomes with a Loop",
+        "body": "One way to start understanding random processes is by simulating a simple heads-or-tails game several times. In Python, this can be done using NumPy’s random number generator.\n\nThe basic idea is:\n\nImport NumPy and set a random seed for reproducibility.\n\nCreate an empty list to store outcomes.\n\nRun a for loop a certain number of times (for example, 10).\n\nIn each iteration, generate a random number (0 or 1).\n\nAppend either \"heads\" or \"tails\" to the list depending on the result.\n\nThe loop uses the range() function, which generates a sequence of numbers that the loop can iterate over. During each iteration, the outcome is added to the list using the append() method. After the loop finishes, the list contains all outcomes from the 10 simulated coin tosses.\n\nAlthough this produces random results, it does not yet form a random walk, because each outcome is independent and not influenced by previous outcomes."
+      },
+      {
+        "title": "3. Turning Random Outcomes into a Random Walk",
+        "body": "To create a true random walk, we must track how the result changes over time based on previous values. In the coin toss example, this can be done by tracking the total number of tails thrown so far.\n\nInstead of storing strings like \"heads\" or \"tails\", we store the cumulative count of tails. The process works like this:\n\nStart with a list called tails that contains a single value [0], since initially no tails have been thrown.\n\nRun a loop 10 times using range().\n\nGenerate a random number (0 for heads, 1 for tails).\n\nAdd the result (coin) to the previous number of tails.\n\nAppend this new value to the list.\n\nEach new value depends on the previous state, meaning the sequence evolves step by step. When the script finishes, the list contains 11 numbers (the starting value plus 10 steps)."
+      },
+      {
+        "title": "4. From Random Steps to Random Walk",
+        "body": "When comparing the simple outcomes list with the cumulative tails list, the difference becomes clear. In the second version:\n\nThe numbers increase by 1 whenever tails appears.\n\nThe sequence reflects the history of previous events.\n\nThis transformation—from independent random results to a cumulative process—is what turns random steps into a random walk. Random walks are an important concept in data science and statistics because they help model many real-world systems where change happens gradually and unpredictably over time."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Random Walk",
       "scenario": "Apply the concepts learned in Random Walk to process sample tabular data.",
@@ -1217,14 +2151,45 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Distribution of Random Walks – Notes  In this final segment, we explore how to understand the distribution of outcomes in a random walk. Recall the scenario: yo...",
     "sections": [
       {
-        "title": "Distribution of Random Walk",
-        "body": "Distribution of Random Walks – Notes\n\nIn this final segment, we explore how to understand the distribution of outcomes in a random walk. Recall the scenario: you roll a die 100 times, and depending on the result, you move steps up or down. This sequence of steps forms a random walk. While simulating a single walk gives one possible outcome, the question we want to answer is: what is the chance of reaching a certain step, like step 60?\n\nThe key idea is that each simulation of the random walk may end at a different final step. If we repeat the walk thousands of times, we obtain a set of final steps. This set represents a distribution of outcomes, from which we can estimate probabilities.\n\nRandom Walk Example with Coin Toss\n\nWe can illustrate this concept with a simpler example: tracking the total number of tails in 10 coin tosses. Starting at zero, we generate a random number 10 times, either 0 (heads) or 1 (tails), and cumulatively track the number of tails. After 10 tosses, we record the final count of tails.\n\nTo examine the distribution of results across many trials:\n\nSet a random seed for reproducibility.\n\nCreate an empty list called final_tails to store the outcomes.\n\nRun a for loop a number of times (say, 100 iterations) to simulate repeated games.\n\nInside the loop, build the tails list as before.\n\nAfter each simulated game, append the last element of the tails list (the final number of tails) to final_tails.\n\nThe result is a list of integers between 0 and 10, each representing the outcome of a single 10-toss game.\n\nThese values form a distribution, which we can visualize using a histogram.\n\nVisualizing the Distribution"
+        "title": "1. Concept Overview",
+        "body": "Distribution of Random Walks – Notes\n\nIn this final segment, we explore how to understand the distribution of outcomes in a random walk. Recall the scenario: you roll a die 100 times, and depending on the result, you move steps up or down. This sequence of steps forms a random walk. While simulating a single walk gives one possible outcome, the question we want to answer is: what is the chance of reaching a certain step, like step 60?\n\nThe key idea is that each simulation of the random walk may end at a different final step. If we repeat the walk thousands of times, we obtain a set of final steps. This set represents a distribution of outcomes, from which we can estimate probabilities."
       },
       {
-        "title": "To create a histogram of the simulated outcomes",
-        "body": "Import pyplot from Matplotlib.\n\nReplace the print statement with plt.hist(final_tails, bins=10).\n\nCall plt.show() to display the plot.\n\nAs you increase the number of simulations, the histogram becomes smoother:\n\n100 runs: Gives a rough idea of the distribution.\n\n1,000 runs: The histogram starts to show a clearer pattern.\n\n10,000 runs: The distribution starts to converge to a bell shape, resembling the theoretical binomial distribution.\n\nFrom such a curve, we can extract probabilities. For instance, in 10,000 games, about 2,500 games might result in exactly 5 tails.\n\nKey Takeaways\n\nRandom walks produce distributions: Repeating the simulation many times allows us to estimate probabilities.\n\nVisualization helps: Histograms reveal the shape and tendencies of the distribution.\n\nConvergence: Increasing the number of simulations brings the empirical distribution closer to the theoretical one.\n\nThis technique can be extended to more complex scenarios, such as the Empire State Building die-rolling game, allowing you to estimate the probability of reaching step 60 or any other outcome.\n\nSimulating random processes repeatedly and analyzing the distribution of results is a powerful method in data science for understanding chance and probability in complex systems."
+        "title": "2. Random Walk Example with Coin Toss",
+        "body": "We can illustrate this concept with a simpler example: tracking the total number of tails in 10 coin tosses. Starting at zero, we generate a random number 10 times, either 0 (heads) or 1 (tails), and cumulatively track the number of tails. After 10 tosses, we record the final count of tails.\n\nTo examine the distribution of results across many trials:\n\nSet a random seed for reproducibility.\n\nCreate an empty list called final_tails to store the outcomes.\n\nRun a for loop a number of times (say, 100 iterations) to simulate repeated games.\n\nInside the loop, build the tails list as before.\n\nAfter each simulated game, append the last element of the tails list (the final number of tails) to final_tails.\n\nThe result is a list of integers between 0 and 10, each representing the outcome of a single 10-toss game.\n\nThese values form a distribution, which we can visualize using a histogram."
+      },
+      {
+        "title": "3. Visualizing the Distribution",
+        "body": "To create a histogram of the simulated outcomes:\n\nImport pyplot from Matplotlib.\n\nReplace the print statement with plt.hist(final_tails, bins=10).\n\nCall plt.show() to display the plot.\n\nAs you increase the number of simulations, the histogram becomes smoother:\n\n100 runs: Gives a rough idea of the distribution.\n\n1,000 runs: The histogram starts to show a clearer pattern.\n\n10,000 runs: The distribution starts to converge to a bell shape, resembling the theoretical binomial distribution.\n\nFrom such a curve, we can extract probabilities. For instance, in 10,000 games, about 2,500 games might result in exactly 5 tails."
+      },
+      {
+        "title": "4. Key Takeaways",
+        "body": "Random walks produce distributions: Repeating the simulation many times allows us to estimate probabilities.\n\nVisualization helps: Histograms reveal the shape and tendencies of the distribution.\n\nConvergence: Increasing the number of simulations brings the empirical distribution closer to the theoretical one.\n\nThis technique can be extended to more complex scenarios, such as the Empire State Building die-rolling game, allowing you to estimate the probability of reaching step 60 or any other outcome.\n\nSimulating random processes repeatedly and analyzing the distribution of results is a powerful method in data science for understanding chance and probability in complex systems."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Distribution of Random Walk",
       "scenario": "Apply the concepts learned in Distribution of Random Walk to process sample tabular data.",
@@ -1249,15 +2214,47 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Data Aggregation Fundamentals  A data summary provides insights that would otherwise be difficult to recognize by examining raw data.  Data aggregation is the d...",
     "sections": [
       {
-        "title": "Data Aggregation",
-        "body": "Data Aggregation Fundamentals\n\nA data summary provides insights that would otherwise be difficult to recognize by examining raw data.\n\nData aggregation is the data manipulation operation used to summarize data by applying operations to specific columns to produce single values.\n\nDesign Framework\n\nTo effectively design a data aggregation operation, answer two key questions:\n\nWhich column do we wish to summarize? Select the column containing values relevant to your question.\n\nWhich summary operation do we wish to apply? Choose the appropriate operation based on the insight you need.\n\nMean vs. Median\n\nThe mean is the sum of all values divided by the number of values.\n\nThe median is the middle value when data is sorted.\n\nThe median is not affected by outliers because it only considers the middle value(s), while the mean is influenced by outliers because it takes into account all values.\n\nChoose median when you don't want outliers to affect your summary, and mean when there are no outliers or when you want to capture their effect.\n\nWorking with DataFrames\n\nIn Python, a table of data is called a DataFrame. We often create a new DataFrame by loading data into Python from CSV files.\n\n`orders_df = pd.read_csv('orders.csv')`\n\nTo extract a column from a DataFrame, use the bracket [] operator. The column is returned as a Series.\n\n`amounts = orders_df['amount']`\n\nSummarizing Data in Python\n\nTo summarize data in Python, we apply our aggregation method on the extracted columns:\n\namounts= orders_df['amount']\n\n`total_revenue = amounts.sum()`",
-        "exampleCode": "orders_df = pd.read_csv('orders.csv')\namounts = orders_df['amount']\ntotal_revenue = amounts.sum()"
+        "title": "1. Concept Overview",
+        "body": "Data Aggregation Fundamentals\n\nA data summary provides insights that would otherwise be difficult to recognize by examining raw data.\n\nData aggregation is the data manipulation operation used to summarize data by applying operations to specific columns to produce single values."
       },
       {
-        "title": "The key summary methods",
-        "body": "sum(): Calculates the total of all values\n\nmean(): Calculates the average value\n\nmedian(): Identifies the middle value when data is sorted\n\nmin() and max(): Finds the minimum or maximum value\n\ncount(): Counts the number of rows or values\n\nnunique(): Counts the number of unique values"
+        "title": "2. Design Framework",
+        "body": "To effectively design a data aggregation operation, answer two key questions:\n\nWhich column do we wish to summarize? Select the column containing values relevant to your question.\n\nWhich summary operation do we wish to apply? Choose the appropriate operation based on the insight you need."
+      },
+      {
+        "title": "3. Mean vs. Median",
+        "body": "The mean is the sum of all values divided by the number of values.\n\nThe median is the middle value when data is sorted.\n\nThe median is not affected by outliers because it only considers the middle value(s), while the mean is influenced by outliers because it takes into account all values.\n\nChoose median when you don't want outliers to affect your summary, and mean when there are no outliers or when you want to capture their effect."
+      },
+      {
+        "title": "4. Working with DataFrames",
+        "body": "In Python, a table of data is called a DataFrame. We often create a new DataFrame by loading data into Python from CSV files.\n\n`orders_df = pd.read_csv('orders.csv')`\n\nTo extract a column from a DataFrame, use the bracket [] operator. The column is returned as a Series.\n\n`amounts = orders_df['amount']`",
+        "exampleCode": "orders_df = pd.read_csv('orders.csv')\namounts = orders_df['amount']"
+      },
+      {
+        "title": "5. Summarizing Data in Python",
+        "body": "To summarize data in Python, we apply our aggregation method on the extracted columns:\n\namounts= orders_df['amount']\n\n`total_revenue = amounts.sum()`\n\nThe key summary methods:\n\nsum(): Calculates the total of all values\n\nmean(): Calculates the average value\n\nmedian(): Identifies the middle value when data is sorted\n\nmin() and max(): Finds the minimum or maximum value\n\ncount(): Counts the number of rows or values\n\nnunique(): Counts the number of unique values",
+        "exampleCode": "total_revenue = amounts.sum()"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Group by and sum",
+        "syntax": "df.groupby(\"region\")[\"sales\"].sum()"
+      },
+      {
+        "goal": "Multiple aggregations",
+        "syntax": "df.groupby(\"region\")[\"sales\"].agg([\"mean\", \"count\"])"
+      },
+      {
+        "goal": "2D Pivot Table",
+        "syntax": "df.pivot_table(values=\"sales\", index=\"region\", columns=\"prod\")"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Data Aggregation",
       "scenario": "Apply the concepts learned in Data Aggregation to process sample tabular data.",
@@ -1282,71 +2279,66 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Introducing DataFrames (Pandas Notes)  What is pandas?  pandas is a powerful Python package mainly used for data manipulation and analysis. It is one of the mos...",
     "sections": [
       {
-        "title": "Introduction to DataFrames",
-        "body": "Introducing DataFrames (Pandas Notes)\n\nWhat is pandas?\n\npandas is a powerful Python package mainly used for data manipulation and analysis. It is one of the most important tools in data science because real-world data is usually large, messy, and stored in tables. pandas helps organize and work with this data efficiently."
+        "title": "1. Concept Overview",
+        "body": "Introducing DataFrames (Pandas Notes)\n\nWhat is pandas?\n\npandas is a powerful Python package mainly used for data manipulation and analysis. It is one of the most important tools in data science because real-world data is usually large, messy, and stored in tables. pandas helps organize and work with this data efficiently.\n\nThe course introduces pandas step by step:"
       },
       {
-        "title": "The course introduces pandas step by step",
-        "body": "Chapter 1 focuses on DataFrames\n\nChapter 2 covers aggregating and analyzing data\n\nChapter 3 teaches slicing and indexing"
+        "title": "2. Chapter 1 focuses on DataFrames",
+        "body": "Chapter 2 covers aggregating and analyzing data"
       },
       {
-        "title": "Chapter 4 discusses",
-        "body": "visualization\n\nmissing data\n\nimporting data into DataFrames\n\npandas is built on NumPy and Matplotlib\n\npandas is built on top of two important Python libraries:\n\nNumPy — provides fast multidimensional arrays and numerical operations.\n\nMatplotlib — provides data visualization and plotting features.\n\nBecause pandas uses these libraries internally, it becomes both powerful and flexible for handling datasets.\n\nWhy pandas is popular\n\npandas is widely used in the data science community because it simplifies working with datasets. Millions of Python users rely on it for tasks such as:\n\ncleaning data\n\nfiltering information\n\nperforming calculations\n\nanalyzing trends\n\npreparing data for machine learning\n\nvisualizing results\n\nIt has become one of the standard tools for data analysis in Python.\n\nRectangular or Tabular Data\n\nMost datasets are stored in rectangular (tabular) form, similar to spreadsheets or database tables.\n\nExample: a dataset about dogs.\n\nEach row represents one observation (one dog)."
+        "title": "3. Chapter 3 teaches slicing and indexing",
+        "body": "Chapter 4 discusses:\n\nvisualization\n\nmissing data\n\nimporting data into DataFrames\n\npandas is built on NumPy and Matplotlib\n\npandas is built on top of two important Python libraries:\n\nNumPy — provides fast multidimensional arrays and numerical operations.\n\nMatplotlib — provides data visualization and plotting features.\n\nBecause pandas uses these libraries internally, it becomes both powerful and flexible for handling datasets."
       },
       {
-        "title": "Each column represents a variable or property",
-        "body": "name\n\nbreed\n\nage\n\nweight\n\ncolor\n\nThis table-like structure is exactly what pandas is designed to handle.\n\nDataFrames\n\nThe main object in pandas is the DataFrame."
+        "title": "4. Why pandas is popular",
+        "body": "pandas is widely used in the data science community because it simplifies working with datasets. Millions of Python users rely on it for tasks such as:\n\ncleaning data\n\nfiltering information\n\nperforming calculations\n\nanalyzing trends\n\npreparing data for machine learning\n\nvisualizing results\n\nIt has become one of the standard tools for data analysis in Python."
       },
       {
-        "title": "A DataFrame is a table with",
-        "body": "`rows = observations`\n\n`columns = variables/features`\n\nEach column contains values of the same data type, but different columns may contain different types.",
+        "title": "5. Rectangular or Tabular Data",
+        "body": "Most datasets are stored in rectangular (tabular) form, similar to spreadsheets or database tables.\n\nExample: a dataset about dogs.\n\nEach row represents one observation (one dog).\n\nEach column represents a variable or property:\n\nname\n\nbreed\n\nage\n\nweight\n\ncolor\n\nThis table-like structure is exactly what pandas is designed to handle.\n\nDataFrames\n\nThe main object in pandas is the DataFrame.\n\nA DataFrame is a table with:\n\n`rows = observations`\n\n`columns = variables/features`\n\nEach column contains values of the same data type, but different columns may contain different types.\n\nExample:\n\nage → integers\n\nweight → floats\n\nname → strings\n\nThis flexibility makes DataFrames better than regular NumPy arrays for mixed datasets.",
         "exampleCode": "rows = observations\ncolumns = variables/features"
       },
       {
-        "title": "Example",
-        "body": "age → integers\n\nweight → floats\n\nname → strings\n\nThis flexibility makes DataFrames better than regular NumPy arrays for mixed datasets.\n\nExploring a DataFrame\n\nWhen receiving a new dataset, the first step is usually to explore and understand it.\n\npandas provides several useful methods and attributes for this.\n\n.head()\n\nThe .head() method displays the first few rows of a DataFrame.\n\ndogs.head()\n\nThis is useful for quickly previewing the dataset structure and contents.\n\nBy default, it shows the first 5 rows.\n\n.info()\n\nThe .info() method gives technical information about the DataFrame.\n\ndogs.info()"
+        "title": "6. Exploring a DataFrame",
+        "body": "When receiving a new dataset, the first step is usually to explore and understand it.\n\npandas provides several useful methods and attributes for this.\n\n.head()\n\nThe .head() method displays the first few rows of a DataFrame.\n\ndogs.head()\n\nThis is useful for quickly previewing the dataset structure and contents.\n\nBy default, it shows the first 5 rows.\n\n.info()\n\nThe .info() method gives technical information about the DataFrame.\n\ndogs.info()\n\nIt shows:\n\ncolumn names\n\ndata types\n\nnumber of non-missing values\n\nmemory usage\n\nThis is especially useful for checking missing data and understanding the structure of the dataset.\n\n.shape\n\nThe .shape attribute returns the dimensions of the DataFrame.\n\ndogs.shape\n\nOutput example:\n\n(7, 4)\n\nMeaning:"
       },
       {
-        "title": "It shows",
-        "body": "column names\n\ndata types\n\nnumber of non-missing values\n\nmemory usage\n\nThis is especially useful for checking missing data and understanding the structure of the dataset.\n\n.shape\n\nThe .shape attribute returns the dimensions of the DataFrame.\n\ndogs.shape"
+        "title": "7. 7 rows",
+        "body": "4 columns\n\nUnlike methods, attributes do not use parentheses.\n\n.describe()\n\nThe .describe() method generates summary statistics for numerical columns.\n\ndogs.describe()\n\nIt usually includes:\n\ncount\n\nmean\n\nstandard deviation\n\nminimum value\n\nquartiles\n\nmaximum value\n\nThis gives a quick statistical overview of numeric data."
       },
       {
-        "title": "Output example",
-        "body": "(7, 4)"
+        "title": "8. Components of a DataFrame",
+        "body": "A DataFrame has three important parts.\n\n1. Data Values → .to_numpy()\n\nYou can convert the DataFrame values into a NumPy array.\n\ndogs.to_numpy()\n\nThis returns a 2D NumPy array containing only the raw data values.\n\n2. Column Labels → .columns\n\nThe .columns attribute contains the column names.\n\ndogs.columns\n\nExample output:\n\nIndex(['name', 'breed', 'age'])\n\n3. Row Labels → .index\n\nThe .index attribute stores row labels.\n\ndogs.index\n\nThese labels may be:\n\nrow numbers\n\ncustom names\n\ndates\n\nIDs\n\nImportant note:\n\nRow labels are accessed using .index, not .rows.\n\npandas Philosophy\n\nPython generally follows the idea that there should be one obvious way to solve a problem. pandas is different.\n\nIn pandas:\n\nthere are often multiple ways to do the same task\n\nusers can choose whichever method they prefer\n\nThis makes pandas:\n\nvery flexible\n\nextremely powerful\n\nslightly harder to learn at first\n\nA good way to think about pandas is like a Swiss Army knife:\n\nit provides many tools for handling data efficiently."
       },
       {
-        "title": "Meaning",
-        "body": "7 rows\n\n4 columns\n\nUnlike methods, attributes do not use parentheses.\n\n.describe()\n\nThe .describe() method generates summary statistics for numerical columns.\n\ndogs.describe()"
-      },
-      {
-        "title": "It usually includes",
-        "body": "count\n\nmean\n\nstandard deviation\n\nminimum value\n\nquartiles\n\nmaximum value\n\nThis gives a quick statistical overview of numeric data.\n\nComponents of a DataFrame\n\nA DataFrame has three important parts.\n\n1. Data Values → .to_numpy()\n\nYou can convert the DataFrame values into a NumPy array.\n\ndogs.to_numpy()\n\nThis returns a 2D NumPy array containing only the raw data values.\n\n2. Column Labels → .columns\n\nThe .columns attribute contains the column names.\n\ndogs.columns"
-      },
-      {
-        "title": "Example output",
-        "body": "Index(['name', 'breed', 'age'])\n\n3. Row Labels → .index\n\nThe .index attribute stores row labels.\n\ndogs.index"
-      },
-      {
-        "title": "These labels may be",
-        "body": "row numbers\n\ncustom names\n\ndates\n\nIDs\n\nImportant note:\u000b Row labels are accessed using .index, not .rows.\n\npandas Philosophy\n\nPython generally follows the idea that there should be one obvious way to solve a problem. pandas is different."
-      },
-      {
-        "title": "In pandas",
-        "body": "there are often multiple ways to do the same task\n\nusers can choose whichever method they prefer"
-      },
-      {
-        "title": "This makes pandas",
-        "body": "very flexible\n\nextremely powerful\n\nslightly harder to learn at first\n\nA good way to think about pandas is like a Swiss Army knife:\u000b it provides many tools for handling data efficiently.\n\nKey Takeaways\n\npandas is a Python library for data analysis and manipulation.\n\nThe main pandas structure is the DataFrame.\n\nDataFrames store data in rows and columns.\n\npandas works especially well with tabular data."
-      },
-      {
-        "title": "Important exploration tools include",
-        "body": ".head()\n\n.info()\n\n.shape\n\n.describe()"
-      },
-      {
-        "title": "DataFrames also contain",
-        "body": "values\n\ncolumn labels\n\nrow labels\n\npandas is built on top of NumPy and Matplotlib."
+        "title": "9. Key Takeaways",
+        "body": "pandas is a Python library for data analysis and manipulation.\n\nThe main pandas structure is the DataFrame.\n\nDataFrames store data in rows and columns.\n\npandas works especially well with tabular data.\n\nImportant exploration tools include:\n\n.head()\n\n.info()\n\n.shape\n\n.describe()\n\nDataFrames also contain:\n\nvalues\n\ncolumn labels\n\nrow labels\n\npandas is built on top of NumPy and Matplotlib."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Introduction to DataFrames",
       "scenario": "Apply the concepts learned in Introduction to DataFrames to process sample tabular data.",
@@ -1371,66 +2363,93 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Sorting and Subsetting in pandas  Sorting and subsetting are two of the most important skills when working with pandas DataFrames. These techniques help you qui...",
     "sections": [
       {
-        "title": "Sorting and Subsetting",
-        "body": "Sorting and Subsetting in pandas\n\nSorting and subsetting are two of the most important skills when working with pandas DataFrames. These techniques help you quickly focus on the most useful or interesting parts of your dataset.\n\nA DataFrame can contain thousands or even millions of rows, so instead of looking at everything at once, you usually:\n\nsort the data to organize it better\n\nsubset the data to focus only on specific rows or columns\n\nSorting Data\n\nSorting changes the order of the rows in a DataFrame.\n\nIn pandas, this is done using the .sort_values() method.\n\nSorting by One Column\n\nSuppose you have a dogs DataFrame and want to sort dogs by weight.\n\ndogs.sort_values(\"weight_kg\")\n\nThis sorts the rows from smallest weight to largest weight by default."
+        "title": "1. Concept Overview",
+        "body": "Sorting and Subsetting in pandas\n\nSorting and subsetting are two of the most important skills when working with pandas DataFrames. These techniques help you quickly focus on the most useful or interesting parts of your dataset.\n\nA DataFrame can contain thousands or even millions of rows, so instead of looking at everything at once, you usually:\n\nsort the data to organize it better\n\nsubset the data to focus only on specific rows or columns"
       },
       {
-        "title": "Result",
-        "body": "lightest dog appears first\n\nheaviest dog appears last\n\nSorting in Descending Order\n\nTo reverse the order, use the ascending=False argument.\n\ndogs.sort_values(\"weight_kg\", ascending=False)\n\nNow the heaviest dogs appear first.\n\nSorting by Multiple Columns\n\nYou can also sort using more than one column.\n\ndogs.sort_values([\"weight_kg\", \"height_cm\"])"
+        "title": "2. Sorting Data",
+        "body": "Sorting changes the order of the rows in a DataFrame.\n\nIn pandas, this is done using the .sort_values() method."
       },
       {
-        "title": "This means",
-        "body": "sort by weight first\n\nif weights are equal, sort by height\n\nThis is useful when several rows share the same values in one column.\n\nDifferent Sort Directions for Multiple Columns\n\nYou can control the direction for each column separately using a list in ascending.\n\ndogs.sort_values(\n\n[\"weight_kg\", \"height_cm\"],\n\nascending=[True, False]\n\n)"
+        "title": "3. Sorting by One Column",
+        "body": "Suppose you have a dogs DataFrame and want to sort dogs by weight.\n\ndogs.sort_values(\"weight_kg\")\n\nThis sorts the rows from smallest weight to largest weight by default.\n\nResult:\n\nlightest dog appears first\n\nheaviest dog appears last"
       },
       {
-        "title": "Meaning",
-        "body": "weight → ascending\n\nheight → descending\n\nSo rows with equal weight are ordered from tallest to shortest.\n\nSubsetting Columns\n\nSubsetting means selecting only the data you need."
+        "title": "4. Sorting in Descending Order",
+        "body": "To reverse the order, use the ascending=False argument.\n\ndogs.sort_values(\"weight_kg\", ascending=False)\n\nNow the heaviest dogs appear first."
       },
       {
-        "title": "To select one column",
-        "body": "dogs[\"name\"]\n\nThis returns a pandas Series containing only the name column.\n\nSelecting Multiple Columns\n\nTo keep multiple columns, use double square brackets.\n\ndogs[[\"name\", \"height_cm\"]]\n\nWhy double brackets?\n\nouter brackets → subset the DataFrame\n\ninner brackets → create a list of column names\n\nThe result is a smaller DataFrame containing only those columns.\n\nSubsetting Rows\n\nRows are usually filtered using conditions that produce True or False.\n\nFiltering Numeric Data\n\nExample: dogs taller than 50 cm.\n\ndogs[\"height_cm\"] > 50"
+        "title": "5. Sorting by Multiple Columns",
+        "body": "You can also sort using more than one column.\n\ndogs.sort_values([\"weight_kg\", \"height_cm\"])\n\nThis means:\n\nsort by weight first\n\nif weights are equal, sort by height\n\nThis is useful when several rows share the same values in one column."
       },
       {
-        "title": "This produces a Boolean Series",
-        "body": "True if condition matches\n\nFalse otherwise"
+        "title": "6. Different Sort Directions for Multiple Columns",
+        "body": "You can control the direction for each column separately using a list in ascending.\n\ndogs.sort_values(\n\n[\"weight_kg\", \"height_cm\"],\n\nascending=[True, False]\n\n)\n\nMeaning:\n\nweight → ascending\n\nheight → descending\n\nSo rows with equal weight are ordered from tallest to shortest."
       },
       {
-        "title": "To actually filter the DataFrame",
-        "body": "dogs[dogs[\"height_cm\"] > 50]\n\nOnly rows where the condition is True are returned.\n\nFiltering Text Data\n\nYou can also filter categorical or text columns.\n\nExample: get only Labradors.\n\ndogs[dogs[\"breed\"] == \"Labrador\"]\n\nThe double equals == checks equality.\n\nFiltering Dates\n\nDates can also be compared.\n\nExample: dogs born before 2015.\n\ndogs[dogs[\"date_of_birth\"] < \"2015-01-01\"]"
+        "title": "7. Subsetting Columns",
+        "body": "Subsetting means selecting only the data you need.\n\nTo select one column:\n\ndogs[\"name\"]\n\nThis returns a pandas Series containing only the name column."
       },
       {
-        "title": "Date format used",
-        "body": "YYYY-MM-DD\n\nThis is the international standard format.\n\nFiltering with Multiple Conditions\n\nSometimes one condition is not enough."
+        "title": "8. Selecting Multiple Columns",
+        "body": "To keep multiple columns, use double square brackets.\n\ndogs[[\"name\", \"height_cm\"]]\n\nWhy double brackets?\n\nouter brackets → subset the DataFrame\n\ninner brackets → create a list of column names\n\nThe result is a smaller DataFrame containing only those columns."
       },
       {
-        "title": "Example",
-        "body": "dogs taller than 50 cm\n\nAND weighing more than 20 kg\n\ndogs[\n\n(dogs[\"height_cm\"] > 50) &\n\n(dogs[\"weight_kg\"] > 20)\n\n]"
+        "title": "9. Subsetting Rows",
+        "body": "Rows are usually filtered using conditions that produce True or False."
       },
       {
-        "title": "Important",
-        "body": "use parentheses around each condition"
+        "title": "10. Filtering Numeric Data",
+        "body": "Example: dogs taller than 50 cm.\n\ndogs[\"height_cm\"] > 50\n\nThis produces a Boolean Series:"
       },
       {
-        "title": "use",
-        "body": "& for AND\n\n| for OR\n\nIn pandas, you do not use normal Python and and or for Series comparisons.\n\nFiltering with .isin()\n\nIf you want multiple possible values from a category, .isin() is easier.\n\nExample: dogs that are black or brown.\n\ndogs[dogs[\"color\"].isin([\"Black\", \"Brown\"])]\n\n.isin() checks whether each value exists inside the list provided.\n\nKey Takeaways"
+        "title": "11. True if condition matches",
+        "body": "False otherwise\n\nTo actually filter the DataFrame:\n\ndogs[dogs[\"height_cm\"] > 50]\n\nOnly rows where the condition is True are returned."
       },
       {
-        "title": "Sorting",
-        "body": ".sort_values() sorts rows\n\nascending=False reverses order\n\nmultiple columns can be used for sorting"
+        "title": "12. Filtering Text Data",
+        "body": "You can also filter categorical or text columns.\n\nExample: get only Labradors.\n\ndogs[dogs[\"breed\"] == \"Labrador\"]\n\nThe double equals == checks equality."
       },
       {
-        "title": "Subsetting Columns",
-        "body": "single brackets → one column\n\ndouble brackets → multiple columns"
+        "title": "13. Filtering Dates",
+        "body": "Dates can also be compared.\n\nExample: dogs born before 2015.\n\ndogs[dogs[\"date_of_birth\"] < \"2015-01-01\"]\n\nDate format used:\n\nYYYY-MM-DD\n\nThis is the international standard format."
       },
       {
-        "title": "Subsetting Rows",
-        "body": "use logical conditions\n\nconditions return Boolean values\n\nplace conditions inside square brackets"
+        "title": "14. Filtering with Multiple Conditions",
+        "body": "Sometimes one condition is not enough.\n\nExample:\n\ndogs taller than 50 cm\n\nAND weighing more than 20 kg\n\ndogs[\n\n(dogs[\"height_cm\"] > 50) &\n\n(dogs[\"weight_kg\"] > 20)\n\n]\n\nImportant:\n\nuse parentheses around each condition\n\nuse:\n\n& for AND\n\n| for OR\n\nIn pandas, you do not use normal Python and and or for Series comparisons.\n\nFiltering with .isin()\n\nIf you want multiple possible values from a category, .isin() is easier.\n\nExample: dogs that are black or brown.\n\ndogs[dogs[\"color\"].isin([\"Black\", \"Brown\"])]\n\n.isin() checks whether each value exists inside the list provided."
       },
       {
-        "title": "Useful filtering techniques",
-        "body": "numeric filtering\n\ntext filtering\n\ndate filtering\n\nmultiple conditions using & and |\n\n.isin() for multiple category values\n\nThese operations are essential because most real-world data analysis involves:\n\norganizing data\n\nfiltering relevant information\n\nnarrowing large datasets into useful insights"
+        "title": "15. Key Takeaways",
+        "body": "Sorting:\n\n.sort_values() sorts rows\n\nascending=False reverses order\n\nmultiple columns can be used for sorting\n\nSubsetting Columns:\n\nsingle brackets → one column\n\ndouble brackets → multiple columns\n\nSubsetting Rows:\n\nuse logical conditions\n\nconditions return Boolean values\n\nplace conditions inside square brackets\n\nUseful filtering techniques:\n\nnumeric filtering\n\ntext filtering\n\ndate filtering\n\nmultiple conditions using & and |\n\n.isin() for multiple category values\n\nThese operations are essential because most real-world data analysis involves:\n\norganizing data\n\nfiltering relevant information\n\nnarrowing large datasets into useful insights"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Label-based indexing",
+        "syntax": "df.loc[row_label, col_label]"
+      },
+      {
+        "goal": "Position-based indexing",
+        "syntax": "df.iloc[row_idx, col_idx]"
+      },
+      {
+        "goal": "Select column as Series",
+        "syntax": "df[\"col_name\"]"
+      },
+      {
+        "goal": "Select multiple columns",
+        "syntax": "df[[\"col_a\", \"col_b\"]]"
+      },
+      {
+        "goal": "Boolean mask filter",
+        "syntax": "df[df[\"col\"] > 100]"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Using Python 'and'/'or' for Series boolean filtering:\ndf[df[\"price\"] > 100 and df[\"region\"] == \"East\"]",
+      "correctCode": "# Use bitwise & and | with parentheses around each condition:\ndf[(df[\"price\"] > 100) & (df[\"region\"] == \"East\")]",
+      "explanation": "Pandas requires bitwise operators (& and |) with parentheses. Standard Python and/or operators fail because the truth value of a whole Series is ambiguous."
+    },
     "challenge": {
       "title": "Practice Drill: Sorting and Subsetting",
       "scenario": "Apply the concepts learned in Sorting and Subsetting to process sample tabular data.",
@@ -1455,73 +2474,66 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "New Columns in pandas  When working with pandas DataFrames, the data you receive is often not exactly in the format you need. Because of this, one of the most c...",
     "sections": [
       {
-        "title": "New Columns",
-        "body": "New Columns in pandas\n\nWhen working with pandas DataFrames, the data you receive is often not exactly in the format you need. Because of this, one of the most common tasks in pandas is creating new columns based on existing data."
+        "title": "1. Concept Overview",
+        "body": "New Columns in pandas\n\nWhen working with pandas DataFrames, the data you receive is often not exactly in the format you need. Because of this, one of the most common tasks in pandas is creating new columns based on existing data.\n\nThis process can also be called:\n\ntransforming a DataFrame\n\nmutating a DataFrame\n\nfeature engineering\n\nFeature engineering is especially important in data science and machine learning because new variables can reveal better insights from the data."
       },
       {
-        "title": "This process can also be called",
-        "body": "transforming a DataFrame\n\nmutating a DataFrame\n\nfeature engineering\n\nFeature engineering is especially important in data science and machine learning because new variables can reveal better insights from the data.\n\nAdding a New Column\n\nCreating a new column is straightforward in pandas."
-      },
-      {
-        "title": "The general format is",
-        "body": "`df[\"new_column\"] = calculation`\n\nLeft side → name of the new column\n\nRight side → calculation or transformation\n\nExample: Converting Height to Meters\n\nSuppose the dogs DataFrame has a column called height_cm.",
+        "title": "2. Adding a New Column",
+        "body": "Creating a new column is straightforward in pandas.\n\nThe general format is:\n\n`df[\"new_column\"] = calculation`\n\nLeft side → name of the new column\n\nRight side → calculation or transformation",
         "exampleCode": "df[\"new_column\"] = calculation"
       },
       {
-        "title": "To create a new column for height in meters",
-        "body": "`dogs[\"height_m\"] = dogs[\"height_cm\"] / 100`",
+        "title": "3. Example: Converting Height to Meters",
+        "body": "Suppose the dogs DataFrame has a column called height_cm.\n\nTo create a new column for height in meters:\n\n`dogs[\"height_m\"] = dogs[\"height_cm\"] / 100`\n\nWhat happens here:\n\npandas takes every value in height_cm\n\ndivides it by 100\n\nstores the result in a new column called height_m\n\nThe original DataFrame is updated automatically.",
         "exampleCode": "dogs[\"height_m\"] = dogs[\"height_cm\"] / 100"
       },
       {
-        "title": "What happens here",
-        "body": "pandas takes every value in height_cm\n\ndivides it by 100\n\nstores the result in a new column called height_m\n\nThe original DataFrame is updated automatically.\n\nCreating Columns Using Multiple Existing Columns\n\nNew columns can also be created using calculations involving several columns.\n\nExample: Doggy BMI\n\nBMI (Body Mass Index) is calculated as:\n\n`BMI = weight / (height²)`",
-        "exampleCode": "BMI = weight / (height²)"
+        "title": "4. Creating Columns Using Multiple Existing Columns",
+        "body": "New columns can also be created using calculations involving several columns."
       },
       {
-        "title": "For dogs",
-        "body": "`dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2`",
-        "exampleCode": "dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2"
+        "title": "5. Example: Doggy BMI",
+        "body": "BMI (Body Mass Index) is calculated as:\n\n`BMI = weight / (height²)`\n\nFor dogs:\n\n`dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2`\n\nExplanation:\n\ndogs[\"height_m\"] ** 2\n\n→ squares the height values\n\nweight is divided by squared height\n\nresults are stored in a new bmi column\n\nThis demonstrates how pandas performs calculations element-by-element across entire columns.",
+        "exampleCode": "BMI = weight / (height²)\ndogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2"
       },
       {
-        "title": "Explanation",
-        "body": "dogs[\"height_m\"] ** 2\u000b → squares the height values\n\nweight is divided by squared height\n\nresults are stored in a new bmi column\n\nThis demonstrates how pandas performs calculations element-by-element across entire columns.\n\nCombining Multiple pandas Operations\n\nThe real strength of pandas comes from chaining operations together."
+        "title": "6. Combining Multiple pandas Operations",
+        "body": "The real strength of pandas comes from chaining operations together.\n\nYou can:\n\ncreate new columns\n\nfilter rows\n\nsort data\n\nselect specific columns\n\nall in a logical workflow."
       },
       {
-        "title": "You can",
-        "body": "create new columns\n\nfilter rows\n\nsort data\n\nselect specific columns\n\nall in a logical workflow.\n\nExample: Finding Tall Skinny Dogs\n\nSuppose we define skinny dogs as dogs with BMI below 100."
+        "title": "7. Example: Finding Tall Skinny Dogs",
+        "body": "Suppose we define skinny dogs as dogs with BMI below 100.\n\nFirst, filter the DataFrame:\n\n`skinny_dogs = dogs[dogs[\"bmi\"] < 100]`\n\nNext, sort by height in descending order:\n\n`skinny_dogs = skinny_dogs.sort_values(`\n\n\"height_cm\",\n\nascending=False\n\n)\n\nFinally, select only the columns we want:\n\nskinny_dogs[[\"name\", \"height_cm\", \"bmi\"]]\n\nThis produces a cleaner DataFrame focused only on the relevant information.\n\nWhy New Columns Are Important\n\nCreating derived columns allows you to:\n\ncalculate statistics\n\nconvert units\n\nclassify observations\n\nprepare features for machine learning\n\nsimplify analysis\n\nInstead of manually calculating values one at a time, pandas automatically performs operations across entire columns efficiently.",
+        "exampleCode": "skinny_dogs = dogs[dogs[\"bmi\"] < 100]\nskinny_dogs = skinny_dogs.sort_values("
       },
       {
-        "title": "First, filter the DataFrame",
-        "body": "`skinny_dogs = dogs[dogs[\"bmi\"] < 100]`",
-        "exampleCode": "skinny_dogs = dogs[dogs[\"bmi\"] < 100]"
-      },
-      {
-        "title": "Next, sort by height in descending order",
-        "body": "`skinny_dogs = skinny_dogs.sort_values(`\n\n\"height_cm\",\n\nascending=False\n\n)",
-        "exampleCode": "skinny_dogs = skinny_dogs.sort_values("
-      },
-      {
-        "title": "Finally, select only the columns we want",
-        "body": "skinny_dogs[[\"name\", \"height_cm\", \"bmi\"]]\n\nThis produces a cleaner DataFrame focused only on the relevant information.\n\nWhy New Columns Are Important"
-      },
-      {
-        "title": "Creating derived columns allows you to",
-        "body": "calculate statistics\n\nconvert units\n\nclassify observations\n\nprepare features for machine learning\n\nsimplify analysis\n\nInstead of manually calculating values one at a time, pandas automatically performs operations across entire columns efficiently.\n\nKey Takeaways"
-      },
-      {
-        "title": "New columns are created using",
-        "body": "`df[\"new_column\"] = calculation`",
+        "title": "8. Key Takeaways",
+        "body": "New columns are created using:\n\n`df[\"new_column\"] = calculation`\n\nCalculations can use:\n\nconstants\n\none column\n\nmultiple columns\n\npandas performs operations element-wise across rows automatically.\n\nCreating new columns is commonly called:\n\nmutation\n\ntransformation\n\nfeature engineering\n\npandas becomes especially powerful when combining:\n\nfiltering\n\nsorting\n\ncolumn selection\n\nnew column creation\n\nThese transformations are a core part of real-world data analysis workflows.",
         "exampleCode": "df[\"new_column\"] = calculation"
-      },
-      {
-        "title": "Calculations can use",
-        "body": "constants\n\none column\n\nmultiple columns\n\npandas performs operations element-wise across rows automatically."
-      },
-      {
-        "title": "Creating new columns is commonly called",
-        "body": "mutation\n\ntransformation\n\nfeature engineering\n\npandas becomes especially powerful when combining:\n\nfiltering\n\nsorting\n\ncolumn selection\n\nnew column creation\n\nThese transformations are a core part of real-world data analysis workflows."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: New Columns",
       "scenario": "Apply the concepts learned in New Columns to process sample tabular data.",
@@ -1546,66 +2558,125 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Summary Statistics in pandas  In pandas, summary statistics are numerical values that help describe and summarize a dataset. Instead of manually checking every ...",
     "sections": [
       {
-        "title": "Summary Statistics",
-        "body": "Summary Statistics in pandas\n\nIn pandas, summary statistics are numerical values that help describe and summarize a dataset. Instead of manually checking every row, summary statistics give a quick overview of the data and help identify patterns, trends, or unusual values.\n\nThis chapter focuses on aggregating data, which means combining many values into meaningful summaries.\n\nSummarizing Numerical Data\n\nOne of the most common summary statistics is the mean (average). The mean gives an idea of the “center” of the data."
+        "title": "1. Concept Overview",
+        "body": "Summary Statistics in pandas\n\nIn pandas, summary statistics are numerical values that help describe and summarize a dataset. Instead of manually checking every row, summary statistics give a quick overview of the data and help identify patterns, trends, or unusual values.\n\nThis chapter focuses on aggregating data, which means combining many values into meaningful summaries."
       },
       {
-        "title": "To calculate the mean of a column",
-        "body": "dogs[\"weight_kg\"].mean()\n\nThis computes the average weight of all dogs in the dataset.\n\nCommon Summary Statistics\n\npandas provides many built-in statistical methods."
+        "title": "2. Summarizing Numerical Data",
+        "body": "One of the most common summary statistics is the mean (average). The mean gives an idea of the “center” of the data.\n\nTo calculate the mean of a column:\n\ndogs[\"weight_kg\"].mean()\n\nThis computes the average weight of all dogs in the dataset."
       },
       {
-        "title": "Some important ones are",
-        "body": "Method\n\nDescription\n\n.mean()\n\nAverage value\n\n.median()\n\nMiddle value\n\n.mode()\n\nMost common value\n\n.min()\n\nSmallest value\n\n.max()\n\nLargest value\n\n.var()\n\nVariance\n\n.std()\n\nStandard deviation\n\n.sum()\n\nTotal sum\n\n.quantile()\n\nSpecific percentile"
+        "title": "3. Common Summary Statistics",
+        "body": "pandas provides many built-in statistical methods.\n\nSome important ones are:\n\nMethod\n\nDescription\n\n.mean()"
       },
       {
-        "title": "Example",
-        "body": "dogs[\"height_cm\"].median()\n\nThis returns the median height.\n\nSummarizing Dates\n\nSummary statistics also work for date columns."
+        "title": "4. Average value",
+        "body": ".median()"
       },
       {
-        "title": "For example",
-        "body": "dogs[\"date_of_birth\"].min()\n\nThis gives the oldest dog's birth date because earlier dates are smaller."
+        "title": "5. Middle value",
+        "body": ".mode()"
       },
       {
-        "title": "Similarly",
-        "body": "dogs[\"date_of_birth\"].max()\n\nreturns the youngest dog's birth date.\n\nThe .agg() Method\n\nThe .agg() method (short for aggregate) allows you to compute custom or multiple summary statistics.\n\nYou can create your own function and apply it to a column.\n\nExample: 30th Percentile\n\ndef pct30(column):\n\nreturn column.quantile(0.3)\n\nThis function returns the 30th percentile of a column.\n\nUsing .agg():\n\ndogs[\"weight_kg\"].agg(pct30)\n\nThis computes the 30th percentile of dog weights.\n\nUsing .agg() on Multiple Columns\n\nYou can apply the same aggregation to several columns at once.\n\ndogs[[\"weight_kg\", \"height_cm\"]].agg(pct30)\n\nThis calculates the 30th percentile for both weight and height.\n\nMultiple Summary Statistics at Once\n\n.agg() can also calculate several statistics simultaneously."
+        "title": "6. Most common value",
+        "body": ".min()"
       },
       {
-        "title": "Example",
-        "body": "def pct40(column):\n\nreturn column.quantile(0.4)"
+        "title": "7. Smallest value",
+        "body": ".max()"
       },
       {
-        "title": "Now apply both functions",
-        "body": "dogs[\"weight_kg\"].agg([pct30, pct40])"
+        "title": "8. Largest value",
+        "body": ".var()\n\nVariance\n\n.std()"
       },
       {
-        "title": "This returns",
-        "body": "30th percentile\n\n40th percentile\n\nfor the same column.\n\nThis is useful when comparing different summaries together.\n\nCumulative Statistics\n\nUnlike normal summary statistics that return one value, cumulative statistics return a running total or running calculation across rows.\n\nCumulative Sum\n\nThe .cumsum() method computes a running total.\n\ndogs[\"weight_kg\"].cumsum()"
+        "title": "9. Standard deviation",
+        "body": ".sum()"
       },
       {
-        "title": "How it works",
-        "body": "first row → first value\n\nsecond row → first + second\n\nthird row → first + second + third\n\nand so on\n\nThe last value equals the total sum of the column.\n\nOther Cumulative Methods"
+        "title": "10. Total sum",
+        "body": ".quantile()"
       },
       {
-        "title": "pandas also provides other cumulative functions",
-        "body": "Method\n\nDescription\n\n.cumsum()\n\nCumulative sum\n\n.cummax()\n\nRunning maximum\n\n.cummin()\n\nRunning minimum\n\n.cumprod()\n\nRunning product\n\nThese methods return an entire Series instead of one summary number.\n\nWalmart Dataset\n\nThe course introduces a Walmart dataset to practice aggregation and summary statistics."
+        "title": "11. Specific percentile",
+        "body": "Example:\n\ndogs[\"height_cm\"].median()\n\nThis returns the median height."
       },
       {
-        "title": "The dataset includes",
-        "body": "weekly sales\n\nstore IDs\n\nstore types\n\ndepartment IDs\n\nholiday information\n\ntemperature\n\nfuel prices\n\nunemployment rates"
+        "title": "12. Summarizing Dates",
+        "body": "Summary statistics also work for date columns.\n\nFor example:\n\ndogs[\"date_of_birth\"].min()\n\nThis gives the oldest dog's birth date because earlier dates are smaller.\n\nSimilarly:\n\ndogs[\"date_of_birth\"].max()\n\nreturns the youngest dog's birth date.\n\nThe .agg() Method\n\nThe .agg() method (short for aggregate) allows you to compute custom or multiple summary statistics.\n\nYou can create your own function and apply it to a column."
       },
       {
-        "title": "This type of dataset is ideal for",
-        "body": "calculating averages\n\ncomparing stores\n\nanalyzing trends\n\nsummarizing performance\n\nKey Takeaways\n\nSummary statistics help quickly understand datasets without examining every row."
+        "title": "13. Example: 30th Percentile",
+        "body": "def pct30(column):\n\nreturn column.quantile(0.3)\n\nThis function returns the 30th percentile of a column.\n\nUsing .agg():\n\ndogs[\"weight_kg\"].agg(pct30)\n\nThis computes the 30th percentile of dog weights.\n\nUsing .agg() on Multiple Columns\n\nYou can apply the same aggregation to several columns at once.\n\ndogs[[\"weight_kg\", \"height_cm\"]].agg(pct30)\n\nThis calculates the 30th percentile for both weight and height."
       },
       {
-        "title": "Important pandas methods include",
-        "body": ".mean()\n\n.median()\n\n.min()\n\n.max()\n\n.std()\n\n.quantile()\n\nThe .agg() method:\n\napplies custom functions\n\nworks on one or multiple columns\n\ncan compute multiple statistics simultaneously"
+        "title": "14. Multiple Summary Statistics at Once",
+        "body": ".agg() can also calculate several statistics simultaneously.\n\nExample:\n\ndef pct40(column):\n\nreturn column.quantile(0.4)\n\nNow apply both functions:\n\ndogs[\"weight_kg\"].agg([pct30, pct40])\n\nThis returns:"
       },
       {
-        "title": "Cumulative methods like",
-        "body": ".cumsum()\n\n.cummax()\n\n.cummin()\n\nreturn running calculations across rows.\n\nThese tools are essential in real-world data analysis because they help transform raw data into meaningful insights quickly and efficiently."
+        "title": "15. 30th percentile",
+        "body": "40th percentile\n\nfor the same column.\n\nThis is useful when comparing different summaries together."
+      },
+      {
+        "title": "16. Cumulative Statistics",
+        "body": "Unlike normal summary statistics that return one value, cumulative statistics return a running total or running calculation across rows."
+      },
+      {
+        "title": "17. Cumulative Sum",
+        "body": "The .cumsum() method computes a running total.\n\ndogs[\"weight_kg\"].cumsum()\n\nHow it works:\n\nfirst row → first value\n\nsecond row → first + second\n\nthird row → first + second + third\n\nand so on\n\nThe last value equals the total sum of the column."
+      },
+      {
+        "title": "18. Other Cumulative Methods",
+        "body": "pandas also provides other cumulative functions:\n\nMethod\n\nDescription\n\n.cumsum()"
+      },
+      {
+        "title": "19. Cumulative sum",
+        "body": ".cummax()"
+      },
+      {
+        "title": "20. Running maximum",
+        "body": ".cummin()"
+      },
+      {
+        "title": "21. Running minimum",
+        "body": ".cumprod()"
+      },
+      {
+        "title": "22. Running product",
+        "body": "These methods return an entire Series instead of one summary number."
+      },
+      {
+        "title": "23. Walmart Dataset",
+        "body": "The course introduces a Walmart dataset to practice aggregation and summary statistics.\n\nThe dataset includes:\n\nweekly sales\n\nstore IDs\n\nstore types\n\ndepartment IDs\n\nholiday information\n\ntemperature\n\nfuel prices\n\nunemployment rates\n\nThis type of dataset is ideal for:\n\ncalculating averages\n\ncomparing stores\n\nanalyzing trends\n\nsummarizing performance"
+      },
+      {
+        "title": "24. Key Takeaways",
+        "body": "Summary statistics help quickly understand datasets without examining every row.\n\nImportant pandas methods include:\n\n.mean()\n\n.median()\n\n.min()\n\n.max()\n\n.std()\n\n.quantile()\n\nThe .agg() method:\n\napplies custom functions\n\nworks on one or multiple columns\n\ncan compute multiple statistics simultaneously\n\nCumulative methods like:\n\n.cumsum()\n\n.cummax()\n\n.cummin()\n\nreturn running calculations across rows.\n\nThese tools are essential in real-world data analysis because they help transform raw data into meaningful insights quickly and efficiently."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Summary Statistics",
       "scenario": "Apply the concepts learned in Summary Statistics to process sample tabular data.",
@@ -1630,46 +2701,85 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Counting and Summarizing Categorical Data in pandas  In pandas, summary statistics are not only useful for numbers. Sometimes, you also need to summarize catego...",
     "sections": [
       {
-        "title": "Counting",
-        "body": "Counting and Summarizing Categorical Data in pandas\n\nIn pandas, summary statistics are not only useful for numbers. Sometimes, you also need to summarize categorical data such as:\n\ndog breeds\n\ncolors\n\nstore types\n\ndepartments\n\ncategories\n\nThe most common way to summarize categorical variables is through counting.\n\nThe Problem of Double Counting\n\nImagine a dataset containing vet visits.\n\nA dog may visit the vet multiple times, meaning the same dog can appear in several rows."
+        "title": "1. Concept Overview",
+        "body": "Counting and Summarizing Categorical Data in pandas\n\nIn pandas, summary statistics are not only useful for numbers. Sometimes, you also need to summarize categorical data such as:\n\ndog breeds\n\ncolors\n\nstore types\n\ndepartments\n\ncategories\n\nThe most common way to summarize categorical variables is through counting."
       },
       {
-        "title": "Example",
-        "body": "name\n\nbreed\n\nMax\n\nLabrador\n\nStella\n\nChihuahua\n\nMax\n\nLabrador\n\nIf we directly count breeds, the same dog could be counted multiple times, leading to inaccurate results.\n\nTo avoid this, we first remove duplicates.\n\nRemoving Duplicate Rows\n\nThe .drop_duplicates() method removes repeated rows.\n\nDropping Duplicates Based on One Column\n\nSuppose we only want one row per dog name.\n\nvet_visits.drop_duplicates(subset=\"name\")\n\nThis keeps only the first occurrence of each dog name.\n\nHowever, this can create problems if different dogs share the same name."
+        "title": "2. The Problem of Double Counting",
+        "body": "Imagine a dataset containing vet visits.\n\nA dog may visit the vet multiple times, meaning the same dog can appear in several rows.\n\nExample:\n\nname\n\nbreed\n\nMax\n\nLabrador\n\nStella\n\nChihuahua\n\nMax\n\nLabrador\n\nIf we directly count breeds, the same dog could be counted multiple times, leading to inaccurate results.\n\nTo avoid this, we first remove duplicates."
       },
       {
-        "title": "Example",
-        "body": "Max the Labrador\n\nMax the Chow Chow\n\nOne of them would disappear.\n\nDropping Duplicates Using Multiple Columns"
+        "title": "3. Removing Duplicate Rows",
+        "body": "The .drop_duplicates() method removes repeated rows."
       },
       {
-        "title": "To better identify unique dogs, we can use both",
-        "body": "name\n\nBreed\n\nvet_visits.drop_duplicates(\n\nsubset=[\"name\", \"breed\"]\n\n)\n\nNow pandas only removes rows where both the name and breed are duplicates.\n\nThis preserves dogs that share the same name but are different breeds.\n\nCounting Categories with .value_counts()\n\nOnce duplicates are removed, we can count occurrences of each category."
+        "title": "4. Dropping Duplicates Based on One Column",
+        "body": "Suppose we only want one row per dog name.\n\nvet_visits.drop_duplicates(subset=\"name\")\n\nThis keeps only the first occurrence of each dog name.\n\nHowever, this can create problems if different dogs share the same name.\n\nExample:"
       },
       {
-        "title": "Example",
-        "body": "unique_dogs[\"breed\"].value_counts()\n\nThis counts how many dogs belong to each breed."
+        "title": "5. Max the Labrador",
+        "body": "Max the Chow Chow\n\nOne of them would disappear."
       },
       {
-        "title": "Output example",
-        "body": "Labrador     4\n\nChihuahua    2\n\nPoodle       1\n\nBy default, results are sorted from highest count to lowest count.\n\nSorting Counts\n\nYou can control sorting using the sort argument.\n\nunique_dogs[\"breed\"].value_counts(sort=True)\n\nThis keeps the largest counts at the top.\n\nCalculating Proportions\n\nInstead of raw counts, you may want percentages or proportions.\n\nUse normalize=True.\n\nunique_dogs[\"breed\"].value_counts(\n\nnormalize=True\n\n)"
+        "title": "6. Dropping Duplicates Using Multiple Columns",
+        "body": "To better identify unique dogs, we can use both:\n\nname\n\nBreed\n\nvet_visits.drop_duplicates(\n\nsubset=[\"name\", \"breed\"]\n\n)\n\nNow pandas only removes rows where both the name and breed are duplicates.\n\nThis preserves dogs that share the same name but are different breeds.\n\nCounting Categories with .value_counts()\n\nOnce duplicates are removed, we can count occurrences of each category.\n\nExample:\n\nunique_dogs[\"breed\"].value_counts()\n\nThis counts how many dogs belong to each breed.\n\nOutput example:"
       },
       {
-        "title": "Output example",
-        "body": "Labrador     0.25\n\nChihuahua    0.15"
+        "title": "7. Labrador 4",
+        "body": "Chihuahua 2"
       },
       {
-        "title": "Meaning",
-        "body": "25% are Labradors\n\n15% are Chihuahuas\n\nThese are proportions of the total dataset.\n\nWhy Counting is Important\n\nCounting categorical data helps answer questions like:\n\nWhich category appears most often?\n\nWhat percentage belongs to each group?\n\nWhich values are rare?\n\nHow is the data distributed?"
+        "title": "8. Poodle 1",
+        "body": "By default, results are sorted from highest count to lowest count."
       },
       {
-        "title": "This is extremely common in",
-        "body": "surveys\n\ncustomer analysis\n\nsales data\n\nmachine learning preprocessing\n\nKey Takeaways\n\nCategorical data is summarized mainly through counting.\n\n.drop_duplicates() removes repeated rows.\n\nsubset= specifies which columns determine duplicates.\n\nMultiple columns can be used for more accurate duplicate handling."
+        "title": "9. Sorting Counts",
+        "body": "You can control sorting using the sort argument.\n\nunique_dogs[\"breed\"].value_counts(sort=True)\n\nThis keeps the largest counts at the top."
       },
       {
-        "title": "Counting methods",
-        "body": ".value_counts() → counts occurrences\n\nnormalize=True → converts counts into proportions\n\nThese tools are essential for understanding distributions in categorical datasets and avoiding misleading duplicate counts."
+        "title": "10. Calculating Proportions",
+        "body": "Instead of raw counts, you may want percentages or proportions.\n\nUse normalize=True.\n\nunique_dogs[\"breed\"].value_counts(\n\nnormalize=True\n\n)\n\nOutput example:"
+      },
+      {
+        "title": "11. Labrador 0.25",
+        "body": "Chihuahua 0.15\n\nMeaning:"
+      },
+      {
+        "title": "12. 25% are Labradors",
+        "body": "15% are Chihuahuas\n\nThese are proportions of the total dataset."
+      },
+      {
+        "title": "13. Why Counting is Important",
+        "body": "Counting categorical data helps answer questions like:\n\nWhich category appears most often?\n\nWhat percentage belongs to each group?\n\nWhich values are rare?\n\nHow is the data distributed?\n\nThis is extremely common in:\n\nsurveys\n\ncustomer analysis\n\nsales data\n\nmachine learning preprocessing"
+      },
+      {
+        "title": "14. Key Takeaways",
+        "body": "Categorical data is summarized mainly through counting.\n\n.drop_duplicates() removes repeated rows.\n\nsubset= specifies which columns determine duplicates.\n\nMultiple columns can be used for more accurate duplicate handling.\n\nCounting methods:\n\n.value_counts() → counts occurrences\n\nnormalize=True → converts counts into proportions\n\nThese tools are essential for understanding distributions in categorical datasets and avoiding misleading duplicate counts."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Counting",
       "scenario": "Apply the concepts learned in Counting to process sample tabular data.",
@@ -1694,87 +2804,74 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Grouped Summary Statistics in pandas  Grouped summary statistics let you calculate statistics for different categories or groups inside your dataset instead of ...",
     "sections": [
       {
-        "title": "Grouped summary statistics",
-        "body": "Grouped Summary Statistics in pandas\n\nGrouped summary statistics let you calculate statistics for different categories or groups inside your dataset instead of calculating everything for the whole DataFrame at once. This is useful because comparing groups often reveals patterns and insights that would otherwise stay hidden."
+        "title": "1. Concept Overview",
+        "body": "Grouped Summary Statistics in pandas\n\nGrouped summary statistics let you calculate statistics for different categories or groups inside your dataset instead of calculating everything for the whole DataFrame at once. This is useful because comparing groups often reveals patterns and insights that would otherwise stay hidden.\n\nFor example, instead of asking:\n\n“What is the average weight of all dogs?”\n\nyou can ask:\n\n“What is the average weight for each dog color?”\n\n“Which breed is tallest on average?”\n\n“Do male dogs weigh more than female dogs?”\n\nThis is where the groupby() method becomes extremely powerful.\n\nWhy Use groupby()?\n\nWithout groupby(), you would have to manually create subsets for every category and calculate statistics one by one. That quickly becomes repetitive and messy.\n\nFor example, you could filter all black dogs, compute their mean weight, then repeat for brown dogs, white dogs, and so on. But that creates duplicate code and increases the chance of mistakes.\n\ngroupby() automates this process."
       },
       {
-        "title": "For example, instead of asking",
-        "body": "“What is the average weight of all dogs?”"
+        "title": "2. Basic Grouped Summary",
+        "body": "Suppose we have a DataFrame called dogs with columns like:\n\ncolor\n\nbreed\n\nweight_kg\n\nheight_cm\n\nIf we want the average weight for each dog color, we can do:\n\ndogs.groupby(\"color\")[\"weight_kg\"].mean()\n\nWhat happens here?\n\nStep by step:\n\ngroupby(\"color\")\n\nSplits the dataset into groups based on dog color.\n\n[\"weight_kg\"]\n\nSelects the weight column.\n\n.mean()\n\nCalculates the average weight for each group.\n\nThe result might look like:\n\nblack 26.5\n\nbrown 21.3\n\nwhite 18.7\n\nThis means black dogs weigh 26.5 kg on average, brown dogs 21.3 kg, and so on.\n\nMultiple Summary Statistics with .agg()\n\nYou are not limited to just one statistic. Using .agg() allows you to calculate several statistics at once.\n\nExample:\n\ndogs.groupby(\"color\")[\"weight_kg\"].agg([min, max, sum])\n\nThis calculates:"
       },
       {
-        "title": "you can ask",
-        "body": "“What is the average weight for each dog color?”\u000b “Which breed is tallest on average?”\u000b “Do male dogs weigh more than female dogs?”\n\nThis is where the groupby() method becomes extremely powerful.\n\nWhy Use groupby()?\n\nWithout groupby(), you would have to manually create subsets for every category and calculate statistics one by one. That quickly becomes repetitive and messy.\n\nFor example, you could filter all black dogs, compute their mean weight, then repeat for brown dogs, white dogs, and so on. But that creates duplicate code and increases the chance of mistakes.\n\ngroupby() automates this process.\n\nBasic Grouped Summary\n\nSuppose we have a DataFrame called dogs with columns like:\n\ncolor\n\nbreed\n\nweight_kg\n\nheight_cm\n\nIf we want the average weight for each dog color, we can do:\n\ndogs.groupby(\"color\")[\"weight_kg\"].mean()\n\nWhat happens here?"
+        "title": "3. Minimum weight",
+        "body": "Maximum weight"
       },
       {
-        "title": "Step by step",
-        "body": "groupby(\"color\")\n\nSplits the dataset into groups based on dog color.\n\n[\"weight_kg\"]\n\nSelects the weight column.\n\n.mean()\n\nCalculates the average weight for each group."
+        "title": "4. Total weight",
+        "body": "for each dog color.\n\nThe result becomes a small summary table."
       },
       {
-        "title": "The result might look like",
-        "body": "black    26.5\n\nbrown    21.3\n\nwhite    18.7\n\nThis means black dogs weigh 26.5 kg on average, brown dogs 21.3 kg, and so on.\n\nMultiple Summary Statistics with .agg()\n\nYou are not limited to just one statistic. Using .agg() allows you to calculate several statistics at once."
+        "title": "5. Grouping by Multiple Columns",
+        "body": "You can also group by more than one category.\n\nExample:\n\ndogs.groupby([\"color\", \"breed\"])[\"weight_kg\"].mean()\n\nNow pandas groups dogs by:\n\ncolor\n\nbreed\n\nThis creates more detailed summaries.\n\nInstead of:\n\n“Average weight of black dogs”\n\nyou now get:\n\n“Average weight of black Labradors”\n\n“Average weight of brown Poodles”\n\nand so on.\n\nThis is useful when one grouping category is not enough."
       },
       {
-        "title": "Example",
-        "body": "dogs.groupby(\"color\")[\"weight_kg\"].agg([min, max, sum])"
+        "title": "6. Multiple Groups + Multiple Statistics",
+        "body": "You can combine everything together:\n\ndogs.groupby([\"color\", \"breed\"])[\"weight_kg\"].agg([min, max, mean])\n\nThis gives grouped statistics for every breed-color combination.\n\nVery powerful for data analysis.\n\nKey Idea Behind groupby()\n\nThe overall process is:"
       },
       {
-        "title": "This calculates",
-        "body": "Minimum weight\n\nMaximum weight\n\nTotal weight\n\nfor each dog color.\n\nThe result becomes a small summary table.\n\nGrouping by Multiple Columns\n\nYou can also group by more than one category."
+        "title": "7. Split the data into groups",
+        "body": "Apply a calculation"
       },
       {
-        "title": "Example",
-        "body": "dogs.groupby([\"color\", \"breed\"])[\"weight_kg\"].mean()"
+        "title": "8. Combine the results",
+        "body": "This is often called:\n\nSplit → Apply → Combine\n\nand it is one of the core ideas in pandas."
       },
       {
-        "title": "Now pandas groups dogs by",
-        "body": "color\n\nbreed\n\nThis creates more detailed summaries."
+        "title": "9. Important Notes",
+        "body": "groupby() does NOT change the original DataFrame\n\nIt only creates grouped results."
       },
       {
-        "title": "Instead of",
-        "body": "“Average weight of black dogs”"
+        "title": "10. Common summary methods after grouping",
+        "body": "Some commonly used methods are:\n\n.mean()\n\n.sum()\n\n.min()\n\n.max()\n\n.count()\n\n.median()\n\n.std()\n\n.var()\n\n.agg() is flexible\n\nYou can pass:\n\na single function\n\nmultiple functions\n\neven custom functions\n\nExample:\n\ndogs.groupby(\"color\")[\"weight_kg\"].agg([mean, median, max])"
       },
       {
-        "title": "you now get",
-        "body": "“Average weight of black Labradors”\u000b “Average weight of brown Poodles”\n\nand so on.\n\nThis is useful when one grouping category is not enough.\n\nMultiple Groups + Multiple Statistics"
+        "title": "11. Simple Mental Model",
+        "body": "Think of groupby() like organizing students into classroom groups before calculating grades.\n\nWithout grouping:\n\nOne average for the whole school.\n\nWith grouping:\n\nOne average per classroom.\n\nThat’s exactly what pandas is doing with your data."
       },
       {
-        "title": "You can combine everything together",
-        "body": "dogs.groupby([\"color\", \"breed\"])[\"weight_kg\"].agg([min, max, mean])\n\nThis gives grouped statistics for every breed-color combination.\n\nVery powerful for data analysis.\n\nKey Idea Behind groupby()"
-      },
-      {
-        "title": "The overall process is",
-        "body": "Split the data into groups\n\nApply a calculation\n\nCombine the results"
-      },
-      {
-        "title": "This is often called",
-        "body": "Split → Apply → Combine\n\nand it is one of the core ideas in pandas.\n\nImportant Notes\n\ngroupby() does NOT change the original DataFrame\n\nIt only creates grouped results.\n\nCommon summary methods after grouping"
-      },
-      {
-        "title": "Some commonly used methods are",
-        "body": ".mean()\n\n.sum()\n\n.min()\n\n.max()\n\n.count()\n\n.median()\n\n.std()\n\n.var()\n\n.agg() is flexible"
-      },
-      {
-        "title": "You can pass",
-        "body": "a single function\n\nmultiple functions\n\neven custom functions"
-      },
-      {
-        "title": "Example",
-        "body": "dogs.groupby(\"color\")[\"weight_kg\"].agg([mean, median, max])\n\nSimple Mental Model\n\nThink of groupby() like organizing students into classroom groups before calculating grades."
-      },
-      {
-        "title": "Without grouping",
-        "body": "One average for the whole school."
-      },
-      {
-        "title": "With grouping",
-        "body": "One average per classroom.\n\nThat’s exactly what pandas is doing with your data.\n\nQuick Summary\n\ngroupby() is used to calculate statistics separately for categories or groups in your dataset."
-      },
-      {
-        "title": "Main patterns",
-        "body": "`df.groupby(\"column\")[\"value\"].mean()`\n\n`df.groupby(\"column\")[\"value\"].agg([min, max, mean])`\n\n`df.groupby([\"col1\", \"col2\"])[\"value\"].mean()`\n\nIt is one of the most important tools in pandas because real-world data analysis almost always involves comparing groups.",
+        "title": "12. Quick Summary",
+        "body": "groupby() is used to calculate statistics separately for categories or groups in your dataset.\n\nMain patterns:\n\n`df.groupby(\"column\")[\"value\"].mean()`\n\n`df.groupby(\"column\")[\"value\"].agg([min, max, mean])`\n\n`df.groupby([\"col1\", \"col2\"])[\"value\"].mean()`\n\nIt is one of the most important tools in pandas because real-world data analysis almost always involves comparing groups.",
         "exampleCode": "df.groupby(\"column\")[\"value\"].mean()\ndf.groupby(\"column\")[\"value\"].agg([min, max, mean])\ndf.groupby([\"col1\", \"col2\"])[\"value\"].mean()"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Group by and sum",
+        "syntax": "df.groupby(\"region\")[\"sales\"].sum()"
+      },
+      {
+        "goal": "Multiple aggregations",
+        "syntax": "df.groupby(\"region\")[\"sales\"].agg([\"mean\", \"count\"])"
+      },
+      {
+        "goal": "2D Pivot Table",
+        "syntax": "df.pivot_table(values=\"sales\", index=\"region\", columns=\"prod\")"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Regional Revenue Aggregation",
       "scenario": "The CFO needs to review total revenue and order volume broken down by sales region.",
@@ -1799,78 +2896,89 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Pivot Tables in pandas  Pivot tables are another powerful way to calculate grouped summary statistics in pandas. If you have ever used Excel or Google Sheets, y...",
     "sections": [
       {
-        "title": "Pivot Tables",
-        "body": "Pivot Tables in pandas\n\nPivot tables are another powerful way to calculate grouped summary statistics in pandas. If you have ever used Excel or Google Sheets, you may already be familiar with pivot tables. In pandas, they work similarly, but with Python code.\n\nA pivot table helps you summarize and organize data by grouping values together and applying calculations such as averages, sums, or counts.\n\nBasic Idea of a Pivot Table\n\nSuppose you have a DataFrame of dogs with columns like:\n\ncolor\n\nbreed\n\nweight_kg\n\nIf you want the average weight for each dog color, you can use a pivot table.\n\ndogs.pivot_table(values=\"weight_kg\", index=\"color\")\n\nUnderstanding the arguments\n\nvalues\u000b → the column you want to summarize\n\nindex\u000b → the column you want to group by\n\nBy default, pivot_table() calculates the mean (average)."
+        "title": "1. Concept Overview",
+        "body": "Pivot Tables in pandas\n\nPivot tables are another powerful way to calculate grouped summary statistics in pandas. If you have ever used Excel or Google Sheets, you may already be familiar with pivot tables. In pandas, they work similarly, but with Python code.\n\nA pivot table helps you summarize and organize data by grouping values together and applying calculations such as averages, sums, or counts."
       },
       {
-        "title": "So this code means",
-        "body": "“Group dogs by color and calculate the average weight.”\n\nChanging the Summary Statistic\n\nPivot tables use the mean by default, but you can change the calculation using aggfunc."
+        "title": "2. Basic Idea of a Pivot Table",
+        "body": "Suppose you have a DataFrame of dogs with columns like:\n\ncolor\n\nbreed\n\nweight_kg\n\nIf you want the average weight for each dog color, you can use a pivot table.\n\ndogs.pivot_table(values=\"weight_kg\", index=\"color\")"
       },
       {
-        "title": "Example",
-        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=\"median\"\n\n)\n\nThis calculates the median weight instead of the mean."
+        "title": "3. Understanding the arguments",
+        "body": "values\n\n→ the column you want to summarize\n\nindex\n\n→ the column you want to group by\n\nBy default, pivot_table() calculates the mean (average).\n\nSo this code means:\n\n“Group dogs by color and calculate the average weight.”"
       },
       {
-        "title": "You can use many functions such as",
-        "body": "\"mean\"\n\n\"median\"\n\n\"sum\"\n\n\"min\"\n\n\"max\"\n\n\"count\"\n\nMultiple Statistics at Once\n\nYou can calculate several statistics together by passing a list into aggfunc."
+        "title": "4. Changing the Summary Statistic",
+        "body": "Pivot tables use the mean by default, but you can change the calculation using aggfunc.\n\nExample:\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=\"median\"\n\n)\n\nThis calculates the median weight instead of the mean.\n\nYou can use many functions such as:\n\n\"mean\"\n\n\"median\"\n\n\"sum\"\n\n\"min\"\n\n\"max\"\n\n\"count\""
       },
       {
-        "title": "Example",
-        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=[\"mean\", \"median\"]\n\n)"
+        "title": "5. Multiple Statistics at Once",
+        "body": "You can calculate several statistics together by passing a list into aggfunc.\n\nExample:\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=[\"mean\", \"median\"]\n\n)\n\nThis creates a table containing both:\n\naverage weight\n\nmedian weight\n\nfor every dog color."
       },
       {
-        "title": "This creates a table containing both",
-        "body": "average weight\n\nmedian weight\n\nfor every dog color.\n\nGrouping by Two Variables\n\nPivot tables become more powerful when you summarize data across two categories."
+        "title": "6. Grouping by Two Variables",
+        "body": "Pivot tables become more powerful when you summarize data across two categories.\n\nExample:\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\"\n\n)\n\nWhat happens here?"
       },
       {
-        "title": "Example",
-        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\"\n\n)\n\nWhat happens here?\n\nRows represent dog colors\n\nColumns represent dog breeds\n\nValues inside the table are average weights\n\nThis creates a matrix-like summary table.\n\nMissing Values (NaN)\n\nSometimes certain combinations do not exist."
+        "title": "7. Rows represent dog colors",
+        "body": "Columns represent dog breeds\n\nValues inside the table are average weights\n\nThis creates a matrix-like summary table.\n\nMissing Values (NaN)\n\nSometimes certain combinations do not exist.\n\nFor example:\n\nmaybe there are no black Chihuahuas\n\nmaybe there are no gray Labradors\n\nIn these cases, pandas displays:\n\nNaN\n\nwhich means:\n\n“No data available.”"
       },
       {
-        "title": "For example",
-        "body": "maybe there are no black Chihuahuas\n\nmaybe there are no gray Labradors"
+        "title": "8. Filling Missing Values",
+        "body": "You can replace missing values using fill_value.\n\nExample:\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\",\n\nfill_value=0\n\n)\n\nNow all missing values become 0.\n\nThis makes the table cleaner and easier to read.\n\nAdding Totals with margins=True\n\nPivot tables can also calculate overall summaries automatically.\n\nExample:\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\",\n\nfill_value=0,\n\nmargins=True\n\n)\n\nThis adds:\n\na final row\n\na final column\n\ncalled \"All\".\n\nThese contain summary statistics for:\n\nall rows\n\nall columns\n\nthe entire dataset\n\nSo you can instantly see:\n\naverage weight per color\n\naverage weight per breed\n\noverall average weight\n\nall in one table.\n\nDifference Between groupby() and pivot_table()\n\nBoth can calculate grouped statistics, but they are often used differently.\n\ngroupby()\n\nBest for:\n\nflexible analysis\n\ntransformations\n\nchaining operations\n\npivot_table()\n\nBest for:\n\nspreadsheet-style summaries\n\nclean table layouts\n\ncomparing categories visually\n\nYou can often solve the same problem with either one."
       },
       {
-        "title": "In these cases, pandas displays",
-        "body": "NaN"
+        "title": "9. Mental Model",
+        "body": "Think of a pivot table like creating a report table.\n\nFor example:\n\nColor\n\nLabrador\n\nPoodle\n\nChihuahua\n\nBlack\n\n30\n\n12\n\nNaN\n\nBrown\n\n28\n\n10\n\n5\n\nInstead of reading raw rows one by one, pivot tables organize data into a compact summary."
       },
       {
-        "title": "which means",
-        "body": "“No data available.”\n\nFilling Missing Values\n\nYou can replace missing values using fill_value."
+        "title": "10. Important Parameters to Remember",
+        "body": "Core arguments\n\nvalues\n\n→ what to summarize\n\nindex\n\n→ row groups\n\ncolumns\n\n→ column groups\n\naggfunc\n\n→ summary calculation"
       },
       {
-        "title": "Example",
-        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\",\n\nfill_value=0\n\n)\n\nNow all missing values become 0.\n\nThis makes the table cleaner and easier to read.\n\nAdding Totals with margins=True\n\nPivot tables can also calculate overall summaries automatically."
+        "title": "11. Useful optional arguments",
+        "body": "fill_value\n\n→ replaces missing values\n\nmargins=True\n\n→ adds totals/overall summaries"
       },
       {
-        "title": "Example",
-        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\",\n\nfill_value=0,\n\nmargins=True\n\n)"
+        "title": "12. Quick Examples",
+        "body": "Average weight by color\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\"\n\n)"
       },
       {
-        "title": "This adds",
-        "body": "a final row\n\na final column\n\ncalled \"All\"."
+        "title": "13. Median weight by color",
+        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=\"median\"\n\n)"
       },
       {
-        "title": "These contain summary statistics for",
-        "body": "all rows\n\nall columns\n\nthe entire dataset"
+        "title": "14. Multiple statistics",
+        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=[\"mean\", \"max\"]\n\n)"
       },
       {
-        "title": "So you can instantly see",
-        "body": "average weight per color\n\naverage weight per breed\n\noverall average weight\n\nall in one table.\n\nDifference Between groupby() and pivot_table()\n\nBoth can calculate grouped statistics, but they are often used differently.\n\ngroupby()"
+        "title": "15. Two-variable pivot table",
+        "body": "dogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\"\n\n)"
       },
       {
-        "title": "Best for",
-        "body": "flexible analysis\n\ntransformations\n\nchaining operations\n\npivot_table()"
-      },
-      {
-        "title": "Best for",
-        "body": "spreadsheet-style summaries\n\nclean table layouts\n\ncomparing categories visually\n\nYou can often solve the same problem with either one.\n\nMental Model\n\nThink of a pivot table like creating a report table."
-      },
-      {
-        "title": "For example",
-        "body": "Color\n\nLabrador\n\nPoodle\n\nChihuahua\n\nBlack\n\n30\n\n12\n\nNaN\n\nBrown\n\n28\n\n10\n\n5\n\nInstead of reading raw rows one by one, pivot tables organize data into a compact summary.\n\nImportant Parameters to Remember\n\nCore arguments\n\nvalues\u000b → what to summarize\n\nindex\u000b → row groups\n\ncolumns\u000b → column groups\n\naggfunc\u000b → summary calculation\n\nUseful optional arguments\n\nfill_value\u000b → replaces missing values\n\nmargins=True\u000b → adds totals/overall summaries\n\nQuick Examples\n\nAverage weight by color\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\"\n\n)\n\nMedian weight by color\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=\"median\"\n\n)\n\nMultiple statistics\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\naggfunc=[\"mean\", \"max\"]\n\n)\n\nTwo-variable pivot table\n\ndogs.pivot_table(\n\nvalues=\"weight_kg\",\n\nindex=\"color\",\n\ncolumns=\"breed\"\n\n)\n\nKey Takeaway\n\nPivot tables are a compact and powerful way to summarize data in pandas. They allow you to:\n\ngroup data\n\ncalculate statistics\n\ncompare categories\n\ncreate spreadsheet-style summaries\n\nall with very little code."
+        "title": "16. Key Takeaway",
+        "body": "Pivot tables are a compact and powerful way to summarize data in pandas. They allow you to:\n\ngroup data\n\ncalculate statistics\n\ncompare categories\n\ncreate spreadsheet-style summaries\n\nall with very little code."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Group by and sum",
+        "syntax": "df.groupby(\"region\")[\"sales\"].sum()"
+      },
+      {
+        "goal": "Multiple aggregations",
+        "syntax": "df.groupby(\"region\")[\"sales\"].agg([\"mean\", \"count\"])"
+      },
+      {
+        "goal": "2D Pivot Table",
+        "syntax": "df.pivot_table(values=\"sales\", index=\"region\", columns=\"prod\")"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Pivot Tables",
       "scenario": "Apply the concepts learned in Pivot Tables to process sample tabular data.",
@@ -1892,117 +3000,136 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 3,
     "lessonOrder": 38,
     "title": "Explicit indexes",
-    "description": "Explicit Indexes in pandas  In pandas, a DataFrame is made up of three main parts:  the actual data  column labels  row labels (called the index)...",
+    "description": "Explicit Indexes in pandas  In pandas, a DataFrame is made up of three main parts:  the actual data  column labels  row labels (called the index)  You already k...",
     "sections": [
       {
-        "title": "Explicit indexes",
-        "body": "Explicit Indexes in pandas\n\nIn pandas, a DataFrame is made up of three main parts:\n\nthe actual data\n\ncolumn labels\n\nrow labels (called the index)"
+        "title": "1. Concept Overview",
+        "body": "Explicit Indexes in pandas\n\nIn pandas, a DataFrame is made up of three main parts:\n\nthe actual data\n\ncolumn labels\n\nrow labels (called the index)\n\nYou already know that:\n\n`df.columns`\n\nshows the column names, while:\n\n`df.index`\n\nshows the row labels.\n\nBy default, pandas automatically uses numbers like 0, 1, 2, 3... as row indexes, but you can replace these with more meaningful values. This is called setting an index.",
+        "exampleCode": "df.columns\ndf.index"
       },
       {
-        "title": "You already know that",
-        "body": "`df.columns`",
-        "exampleCode": "df.columns"
+        "title": "2. Setting a Column as the Index",
+        "body": "Suppose you have a DataFrame of dogs with a name column.\n\nYou can make the dog names become the row labels using:\n\n`dogs = dogs.set_index(\"name\")`\n\nNow the name column is no longer part of the main table columns. Instead, it becomes the index.\n\nThis makes the DataFrame easier to read and sometimes easier to subset.\n\nOne visual clue is that index values are displayed on the far left side of the DataFrame.",
+        "exampleCode": "dogs = dogs.set_index(\"name\")"
       },
       {
-        "title": "shows the column names, while",
-        "body": "`df.index`\n\nshows the row labels.\n\nBy default, pandas automatically uses numbers like 0, 1, 2, 3... as row indexes, but you can replace these with more meaningful values. This is called setting an index.\n\nSetting a Column as the Index\n\nSuppose you have a DataFrame of dogs with a name column.\n\nYou can make the dog names become the row labels using:\n\n`dogs = dogs.set_index(\"name\")`\n\nNow the name column is no longer part of the main table columns. Instead, it becomes the index.\n\nThis makes the DataFrame easier to read and sometimes easier to subset.\n\nOne visual clue is that index values are displayed on the far left side of the DataFrame.\n\nResetting the Index\n\nIf you want to bring the index back as a normal column again, use:\n\n`dogs = dogs.reset_index()`\n\nThis restores the default numbered index and moves the old index back into the DataFrame as a regular column.\n\nDropping the Index Completely",
-        "exampleCode": "df.index\ndogs = dogs.set_index(\"name\")\ndogs = dogs.reset_index()"
+        "title": "3. Resetting the Index",
+        "body": "If you want to bring the index back as a normal column again, use:\n\n`dogs = dogs.reset_index()`\n\nThis restores the default numbered index and moves the old index back into the DataFrame as a regular column.",
+        "exampleCode": "dogs = dogs.reset_index()"
       },
       {
-        "title": "You can also remove the index entirely using",
-        "body": "`dogs = dogs.reset_index(drop=True)`",
-        "exampleCode": "dogs = dogs.reset_index(drop=True)"
+        "title": "4. Dropping the Index Completely",
+        "body": "You can also remove the index entirely using:\n\n`dogs = dogs.reset_index(drop=True)`\n\nHere:\n\ndrop=True\n\nmeans:\n\n“Do not keep the old index as a column.”\n\nSo the custom index disappears completely.\n\nWhy Use Indexes?\n\nIndexes make certain types of subsetting much cleaner and easier.\n\nWithout indexes, filtering rows can look more complicated.\n\nExample without index:\n\ndogs[dogs[\"name\"].isin([\"Bella\", \"Stella\"])]\n\nThis works, but it is somewhat long.\n\nIf the name column is set as the index:\n\ndogs.loc[[\"Bella\", \"Stella\"]]\n\nThis is much simpler and easier to read.\n\nThe .loc[] method works directly with index labels.\n\nIndex Values Do NOT Need to Be Unique\n\nUnlike primary keys in databases, pandas indexes can contain duplicates.\n\nExample:\n\n`dogs = dogs.set_index(\"breed\")`\n\nIf there are multiple Labradors, the index can contain \"Labrador\" more than once.\n\nThen:\n\ndogs.loc[\"Labrador\"]\n\nreturns all Labrador rows.\n\nMulti-Level Indexes (Hierarchical Indexes)\n\nYou can also use more than one column as the index.\n\nExample:\n\n`dogs = dogs.set_index([\"breed\", \"color\"])`\n\nNow the DataFrame has two index levels:\n\nouter index → breed\n\ninner index → color\n\nThis is called:\n\na multi-level index\n\nor a hierarchical index\n\nBoth terms mean the same thing.",
+        "exampleCode": "dogs = dogs.reset_index(drop=True)\ndogs = dogs.set_index(\"breed\")\ndogs = dogs.set_index([\"breed\", \"color\"])"
       },
       {
-        "title": "Here",
-        "body": "drop=True\u000b means:\u000b\u000b\u000b “Do not keep the old index as a column.”\n\nSo the custom index disappears completely.\n\nWhy Use Indexes?\n\nIndexes make certain types of subsetting much cleaner and easier.\n\nWithout indexes, filtering rows can look more complicated."
+        "title": "5. Subsetting Multi-Level Indexes",
+        "body": "Selecting outer-level indexes\n\nExample:\n\ndogs.loc[[\"Labrador\", \"Chihuahua\"]]\n\nThis returns all Labradors and Chihuahuas."
       },
       {
-        "title": "Example without index",
-        "body": "dogs[dogs[\"name\"].isin([\"Bella\", \"Stella\"])]\n\nThis works, but it is somewhat long."
-      },
-      {
-        "title": "If the name column is set as the index",
-        "body": "dogs.loc[[\"Bella\", \"Stella\"]]\n\nThis is much simpler and easier to read.\n\nThe .loc[] method works directly with index labels.\n\nIndex Values Do NOT Need to Be Unique\n\nUnlike primary keys in databases, pandas indexes can contain duplicates."
-      },
-      {
-        "title": "Example",
-        "body": "`dogs = dogs.set_index(\"breed\")`\n\nIf there are multiple Labradors, the index can contain \"Labrador\" more than once.",
-        "exampleCode": "dogs = dogs.set_index(\"breed\")"
-      },
-      {
-        "title": "Then",
-        "body": "dogs.loc[\"Labrador\"]\n\nreturns all Labrador rows.\n\nMulti-Level Indexes (Hierarchical Indexes)\n\nYou can also use more than one column as the index."
-      },
-      {
-        "title": "Example",
-        "body": "`dogs = dogs.set_index([\"breed\", \"color\"])`",
-        "exampleCode": "dogs = dogs.set_index([\"breed\", \"color\"])"
-      },
-      {
-        "title": "Now the DataFrame has two index levels",
-        "body": "outer index → breed\n\ninner index → color"
-      },
-      {
-        "title": "This is called",
-        "body": "a multi-level index\n\nor a hierarchical index\n\nBoth terms mean the same thing.\n\nSubsetting Multi-Level Indexes\n\nSelecting outer-level indexes"
-      },
-      {
-        "title": "Example",
-        "body": "dogs.loc[[\"Labrador\", \"Chihuahua\"]]\n\nThis returns all Labradors and Chihuahuas.\n\nSelecting inner-level combinations\n\nFor deeper filtering, use tuples."
-      },
-      {
-        "title": "Example",
-        "body": "dogs.loc[[(\"Labrador\", \"Brown\")]]"
-      },
-      {
-        "title": "Give rows where",
-        "body": "`breed = Labrador`\n\n`color = Brown`\n\nEvery condition inside the tuple must match.\n\nSorting by Index",
+        "title": "6. Selecting inner-level combinations",
+        "body": "For deeper filtering, use tuples.\n\nExample:\n\ndogs.loc[[(\"Labrador\", \"Brown\")]]\n\nThis means:\n\nGive rows where:\n\n`breed = Labrador`\n\n`color = Brown`\n\nEvery condition inside the tuple must match.",
         "exampleCode": "breed = Labrador\ncolor = Brown"
       },
       {
-        "title": "Besides sorting by column values using",
-        "body": "sort_values()"
+        "title": "7. Sorting by Index",
+        "body": "Besides sorting by column values using:\n\nsort_values()\n\nyou can sort using index labels with:\n\ndogs.sort_index()\n\nThis sorts from outer index to inner index."
       },
       {
-        "title": "you can sort using index labels with",
-        "body": "dogs.sort_index()\n\nThis sorts from outer index to inner index.\n\nControlling Index Sorting"
+        "title": "8. Controlling Index Sorting",
+        "body": "You can customize sorting behavior using:\n\nlevel\n\nascending\n\nExample:\n\ndogs.sort_index(level=[\"breed\", \"color\"], ascending=[True, False])\n\nThis allows different sorting directions for different levels."
       },
       {
-        "title": "You can customize sorting behavior using",
-        "body": "level\n\nascending"
+        "title": "9. The Downsides of Indexes",
+        "body": "Indexes are powerful, but they are somewhat controversial in pandas.\n\nWhy?\n\nBecause indexes are still data, but they are stored differently from normal columns.\n\nThis creates some issues:"
       },
       {
-        "title": "Example",
-        "body": "dogs.sort_index(level=[\"breed\", \"color\"], ascending=[True, False])\n\nThis allows different sorting directions for different levels.\n\nThe Downsides of Indexes\n\nIndexes are powerful, but they are somewhat controversial in pandas.\n\nWhy?\n\nBecause indexes are still data, but they are stored differently from normal columns."
+        "title": "10. 1. More complicated syntax",
+        "body": "Working with indexes uses different syntax (loc) compared to normal columns.\n\nThat means more things to remember."
       },
       {
-        "title": "This creates some issues",
-        "body": "1. More complicated syntax\n\nWorking with indexes uses different syntax (loc) compared to normal columns.\n\nThat means more things to remember.\n\n2. Violates “tidy data” principles"
-      },
-      {
-        "title": "Tidy data says",
-        "body": "`every row = one observation`\n\n`every column = one variable`\n\nIndexes are data that are not stored in columns, which breaks this structure somewhat.\n\n3. Can increase bugs",
+        "title": "11. 2. Violates “tidy data” principles",
+        "body": "Tidy data says:\n\n`every row = one observation`\n\n`every column = one variable`\n\nIndexes are data that are not stored in columns, which breaks this structure somewhat.",
         "exampleCode": "every row = one observation\nevery column = one variable"
       },
       {
-        "title": "Since pandas has",
-        "body": "column-based syntax\n\nindex-based syntax\n\nyou may accidentally mix them up.\n\nImportant Perspective\n\nYou do NOT always need indexes.\n\nMany pandas users prefer keeping everything as normal columns because it is simpler and easier to debug."
+        "title": "12. 3. Can increase bugs",
+        "body": "Since pandas has:\n\ncolumn-based syntax\n\nindex-based syntax\n\nyou may accidentally mix them up."
       },
       {
-        "title": "However, indexes are still important because",
-        "body": "many pandas operations rely on them\n\nmany real-world datasets use them\n\nyou will often encounter them in other people's code\n\nSo understanding indexes is essential.\n\nMental Model\n\nThink of indexes as labels for rows."
+        "title": "13. Important Perspective",
+        "body": "You do NOT always need indexes.\n\nMany pandas users prefer keeping everything as normal columns because it is simpler and easier to debug.\n\nHowever, indexes are still important because:\n\nmany pandas operations rely on them\n\nmany real-world datasets use them\n\nyou will often encounter them in other people's code\n\nSo understanding indexes is essential."
       },
       {
-        "title": "Normally rows are labeled",
-        "body": "0, 1, 2, 3\n\nBut you can replace them with meaningful identifiers like:\n\nBella, Max, Charlie"
+        "title": "14. Mental Model",
+        "body": "Think of indexes as labels for rows.\n\nNormally rows are labeled:"
       },
       {
-        "title": "or even combinations like",
-        "body": "(Labrador, Brown)\n\nThis helps organize and access data more efficiently.\n\nQuick Summary\n\nSetting an index\n\n`df.set_index(\"column\")`\n\nResetting the index\n\n`df.reset_index()`\n\nDropping the old index\n\n`df.reset_index(drop=True)`\n\nSelecting with .loc\n\n`df.loc[\"Bella\"]`\n\nMulti-level index\n\n`df.set_index([\"breed\", \"color\"])`\n\nSorting indexes\n\n`df.sort_index()`\n\nKey Takeaway\n\nIndexes in pandas are special row labels that make certain operations, especially subsetting, cleaner and more powerful. They can simplify data access, support hierarchical organization, and improve readability, but they also introduce additional complexity.",
-        "exampleCode": "df.set_index(\"column\")\ndf.reset_index()\ndf.reset_index(drop=True)\ndf.loc[\"Bella\"]\ndf.set_index([\"breed\", \"color\"])\ndf.sort_index()"
+        "title": "15. 0, 1, 2, 3",
+        "body": "But you can replace them with meaningful identifiers like:"
+      },
+      {
+        "title": "16. Bella, Max, Charlie",
+        "body": "or even combinations like:\n\n(Labrador, Brown)\n\nThis helps organize and access data more efficiently."
+      },
+      {
+        "title": "17. Quick Summary",
+        "body": "Setting an index\n\n`df.set_index(\"column\")`",
+        "exampleCode": "df.set_index(\"column\")"
+      },
+      {
+        "title": "18. Resetting the index",
+        "body": "`df.reset_index()`",
+        "exampleCode": "df.reset_index()"
+      },
+      {
+        "title": "19. Dropping the old index",
+        "body": "`df.reset_index(drop=True)`",
+        "exampleCode": "df.reset_index(drop=True)"
+      },
+      {
+        "title": "20. Selecting with .loc",
+        "body": "`df.loc[\"Bella\"]`",
+        "exampleCode": "df.loc[\"Bella\"]"
+      },
+      {
+        "title": "21. Multi-level index",
+        "body": "`df.set_index([\"breed\", \"color\"])`",
+        "exampleCode": "df.set_index([\"breed\", \"color\"])"
+      },
+      {
+        "title": "22. Sorting indexes",
+        "body": "`df.sort_index()`",
+        "exampleCode": "df.sort_index()"
+      },
+      {
+        "title": "23. Key Takeaway",
+        "body": "Indexes in pandas are special row labels that make certain operations, especially subsetting, cleaner and more powerful. They can simplify data access, support hierarchical organization, and improve readability, but they also introduce additional complexity."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Explicit indexes",
       "scenario": "Apply the concepts learned in Explicit indexes to process sample tabular data.",
@@ -2024,107 +3151,114 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 3,
     "lessonOrder": 39,
     "title": "Slicing and subsetting with .loc and .iloc",
-    "description": "Slicing and Subsetting with .loc and .iloc  Slicing is a way of selecting consecutive parts of a sequence or dataset. In Python, you first learn slicing with li...",
+    "description": "Slicing is a way of selecting consecutive parts of a sequence or dataset. In Python, you first learn slicing with lists, then apply the same idea to pandas Data...",
     "sections": [
       {
-        "title": "Slicing and subsetting with .loc and .iloc",
-        "body": "Slicing and Subsetting with .loc and .iloc\n\nSlicing is a way of selecting consecutive parts of a sequence or dataset. In Python, you first learn slicing with lists, then apply the same idea to pandas DataFrames. Understanding slicing is important because it allows you to quickly extract only the rows or columns you need from large datasets.\n\nWith Python lists, slicing uses positions (indexes). Remember that Python starts counting at 0. For example:\n\nbreeds[2:5]"
+        "title": "1. Concept Overview",
+        "body": "Slicing is a way of selecting consecutive parts of a sequence or dataset. In Python, you first learn slicing with lists, then apply the same idea to pandas DataFrames. Understanding slicing is important because it allows you to quickly extract only the rows or columns you need from large datasets.\n\nWith Python lists, slicing uses positions (indexes). Remember that Python starts counting at 0. For example:\n\nbreeds[2:5]\n\nThis means:\n\nstart at position 2\n\nstop before position 5\n\nSo elements at positions 2, 3, and 4 are included. The last position is not included in normal Python slicing.\n\nYou can also simplify slices:\n\nbreeds[:3]"
       },
       {
-        "title": "This means",
-        "body": "start at position 2\n\nstop before position 5\n\nSo elements at positions 2, 3, and 4 are included. The last position is not included in normal Python slicing."
+        "title": "2. This means “from the start up to position 3.”",
+        "body": "And:\n\nbreeds[:]\n\nmeans “take everything.”"
       },
       {
-        "title": "You can also simplify slices",
-        "body": "breeds[:3]\n\nThis means “from the start up to position 3.”"
-      },
-      {
-        "title": "And",
-        "body": "breeds[:]\n\nmeans “take everything.”\n\nSlicing DataFrames with .loc\n\nFor pandas DataFrames, slicing is usually done using .loc or .iloc.\n\nBefore slicing rows using index labels, it is important to sort the index first:\n\n`dogs = dogs.sort_index()`\n\nThis prevents unexpected results.\n\n.loc Uses Labels (Names)\n\n.loc slices using row or column labels instead of numeric positions.",
+        "title": "3. Slicing DataFrames with .loc",
+        "body": "For pandas DataFrames, slicing is usually done using .loc or .iloc.\n\nBefore slicing rows using index labels, it is important to sort the index first:\n\n`dogs = dogs.sort_index()`\n\nThis prevents unexpected results.\n\n.loc Uses Labels (Names)\n\n.loc slices using row or column labels instead of numeric positions.\n\nExample:\n\ndogs.loc[\"Chow Chow\":\"Poodle\"]\n\nThis selects all rows from \"Chow Chow\" to \"Poodle\".\n\nA very important difference from normal Python slicing:\n\nwith .loc, the ending value IS included\n\nSo \"Poodle\" will appear in the result.",
         "exampleCode": "dogs = dogs.sort_index()"
       },
       {
-        "title": "Example",
-        "body": "dogs.loc[\"Chow Chow\":\"Poodle\"]\n\nThis selects all rows from \"Chow Chow\" to \"Poodle\".\n\nA very important difference from normal Python slicing:\n\nwith .loc, the ending value IS included\n\nSo \"Poodle\" will appear in the result.\n\nMulti-Level Index Slicing\n\nWhen using hierarchical or multi-level indexes, slicing becomes more advanced."
+        "title": "4. Multi-Level Index Slicing",
+        "body": "When using hierarchical or multi-level indexes, slicing becomes more advanced.\n\nSuppose the index has two levels:\n\nbreed\n\ncolor\n\nTrying to slice inner levels directly may fail:\n\ndogs.loc[\"Tan\":\"Grey\"]\n\nThis can return incorrect or empty results.\n\nThe correct way is to use tuples:\n\ndogs.loc[\n\n(\"Labrador\", \"Brown\"):\n\n(\"Schnauzer\", \"Grey\")\n\n]\n\nEach tuple represents a complete index position."
       },
       {
-        "title": "Suppose the index has two levels",
-        "body": "breed\n\ncolor"
+        "title": "5. Slicing Columns",
+        "body": "Because DataFrames are two-dimensional, you can slice columns too.\n\nSyntax:\n\ndogs.loc[:, \"name\":\"height_cm\"]\n\nThe colon : means:\n\nkeep all rows\n\nThen the second argument slices the columns.\n\nThis selects all rows, but only columns from \"name\" to \"height_cm\"."
       },
       {
-        "title": "Trying to slice inner levels directly may fail",
-        "body": "dogs.loc[\"Tan\":\"Grey\"]\n\nThis can return incorrect or empty results."
+        "title": "6. Slicing Rows and Columns Together",
+        "body": "You can slice both dimensions at the same time:\n\ndogs.loc[\n\n\"Labrador\":\"Poodle\",\n\n\"name\":\"height_cm\"\n\n]\n\nThis filters:\n\nspecific rows\n\nspecific columns\n\nall in one command."
       },
       {
-        "title": "The correct way is to use tuples",
-        "body": "dogs.loc[\n\n(\"Labrador\", \"Brown\"):\n\n(\"Schnauzer\", \"Grey\")\n\n]\n\nEach tuple represents a complete index position.\n\nSlicing Columns\n\nBecause DataFrames are two-dimensional, you can slice columns too."
-      },
-      {
-        "title": "Syntax",
-        "body": "dogs.loc[:, \"name\":\"height_cm\"]"
-      },
-      {
-        "title": "The colon : means",
-        "body": "keep all rows\n\nThen the second argument slices the columns.\n\nThis selects all rows, but only columns from \"name\" to \"height_cm\".\n\nSlicing Rows and Columns Together"
-      },
-      {
-        "title": "You can slice both dimensions at the same time",
-        "body": "dogs.loc[\n\n\"Labrador\":\"Poodle\",\n\n\"name\":\"height_cm\"\n\n]"
-      },
-      {
-        "title": "This filters",
-        "body": "specific rows\n\nspecific columns\n\nall in one command.\n\nDate Slicing\n\nDates are extremely common in pandas datasets."
-      },
-      {
-        "title": "If a date column becomes the index",
-        "body": "`dogs = dogs.set_index(\"date_of_birth\").sort_index()`\n\nyou can slice using date strings.",
+        "title": "7. Date Slicing",
+        "body": "Dates are extremely common in pandas datasets.\n\nIf a date column becomes the index:\n\n`dogs = dogs.set_index(\"date_of_birth\").sort_index()`\n\nyou can slice using date strings.\n\nExample:\n\ndogs.loc[\"2014\":\"2016\"]\n\nThis includes all rows between 2014 and 2016.\n\nOne useful pandas feature is partial date slicing. You do not always need full dates like \"2014-01-01\".\n\nYou can simply write:\n\ndogs.loc[\"2015\"]\n\nand pandas understands you mean the entire year.\n\n.iloc Uses Numeric Positions\n\nWhile .loc uses labels, .iloc uses integer positions.\n\nExample:\n\ndogs.iloc[2:5, 1:4]\n\nThis means:\n\nrows 2 to 4\n\ncolumns 1 to 3\n\nImportant difference:\n\n.iloc follows normal Python slicing rules\n\nthe ending position is NOT included\n\nSo position 5 and 4 are excluded.",
         "exampleCode": "dogs = dogs.set_index(\"date_of_birth\").sort_index()"
       },
       {
-        "title": "Example",
-        "body": "dogs.loc[\"2014\":\"2016\"]\n\nThis includes all rows between 2014 and 2016.\n\nOne useful pandas feature is partial date slicing. You do not always need full dates like \"2014-01-01\"."
+        "title": "8. Difference Between .loc and .iloc",
+        "body": "A good way to remember them:\n\n.loc → labels/names\n\n.iloc → integer positions\n\nExample:\n\ndogs.loc[\"Bella\":\"Stella\"]\n\nuses names.\n\ndogs.iloc[0:3]\n\nuses row numbers."
       },
       {
-        "title": "You can simply write",
-        "body": "dogs.loc[\"2015\"]\n\nand pandas understands you mean the entire year.\n\n.iloc Uses Numeric Positions\n\nWhile .loc uses labels, .iloc uses integer positions."
+        "title": "9. Key Things to Remember",
+        "body": ".loc"
       },
       {
-        "title": "Example",
-        "body": "dogs.iloc[2:5, 1:4]"
+        "title": "10. Uses labels/index names",
+        "body": "Ending value is included"
       },
       {
-        "title": "This means",
-        "body": "rows 2 to 4\n\ncolumns 1 to 3"
+        "title": "11. Good for readable filtering",
+        "body": ".iloc"
       },
       {
-        "title": "Important difference",
-        "body": ".iloc follows normal Python slicing rules\n\nthe ending position is NOT included\n\nSo position 5 and 4 are excluded.\n\nDifference Between .loc and .iloc"
+        "title": "12. Uses numeric positions",
+        "body": "Ending value is excluded"
       },
       {
-        "title": "A good way to remember them",
-        "body": ".loc → labels/names\n\n.iloc → integer positions"
+        "title": "13. Similar to normal Python slicing",
+        "body": "Slicing Tips"
       },
       {
-        "title": "Example",
-        "body": "dogs.loc[\"Bella\":\"Stella\"]\n\nuses names.\n\ndogs.iloc[0:3]\n\nuses row numbers.\n\nKey Things to Remember\n\n.loc\n\nUses labels/index names\n\nEnding value is included\n\nGood for readable filtering\n\n.iloc\n\nUses numeric positions\n\nEnding value is excluded\n\nSimilar to normal Python slicing\n\nSlicing Tips\n\nAlways sort indexes before slicing\n\nUse tuples for multi-level indexes\n\nUse : to mean “everything”\n\nDate slicing works very naturally in pandas\n\nExample Summary"
+        "title": "14. Always sort indexes before slicing",
+        "body": "Use tuples for multi-level indexes"
       },
       {
-        "title": "Slice rows by labels",
-        "body": "dogs.loc[\"A\":\"C\"]"
+        "title": "15. Use : to mean “everything”",
+        "body": "Date slicing works very naturally in pandas"
       },
       {
-        "title": "Slice rows and columns",
+        "title": "16. Example Summary",
+        "body": "# Slice rows by labels\n\ndogs.loc[\"A\":\"C\"]"
+      },
+      {
+        "title": "17. Slice rows and columns",
         "body": "dogs.loc[\"A\":\"C\", \"name\":\"height_cm\"]"
       },
       {
-        "title": "Slice by positions",
+        "title": "18. Slice by positions",
         "body": "dogs.iloc[0:3, 1:4]"
       },
       {
-        "title": "Slice dates",
+        "title": "19. Slice dates",
         "body": "dogs.loc[\"2014\":\"2016\"]\n\nThese slicing techniques are some of the most powerful tools in pandas because they allow you to quickly focus on the exact part of a dataset you want to analyze."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Label-based indexing",
+        "syntax": "df.loc[row_label, col_label]"
+      },
+      {
+        "goal": "Position-based indexing",
+        "syntax": "df.iloc[row_idx, col_idx]"
+      },
+      {
+        "goal": "Select column as Series",
+        "syntax": "df[\"col_name\"]"
+      },
+      {
+        "goal": "Select multiple columns",
+        "syntax": "df[[\"col_a\", \"col_b\"]]"
+      },
+      {
+        "goal": "Boolean mask filter",
+        "syntax": "df[df[\"col\"] > 100]"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Using Python 'and'/'or' for Series boolean filtering:\ndf[df[\"price\"] > 100 and df[\"region\"] == \"East\"]",
+      "correctCode": "# Use bitwise & and | with parentheses around each condition:\ndf[(df[\"price\"] > 100) & (df[\"region\"] == \"East\")]",
+      "explanation": "Pandas requires bitwise operators (& and |) with parentheses. Standard Python and/or operators fail because the truth value of a whole Series is ambiguous."
+    },
     "challenge": {
       "title": "Targeted Country Subsetting with loc",
       "scenario": "The trade strategy department needs to inspect the capital and population for Brazil (BR) and China (CH) from the BRICS dataset.",
@@ -2146,94 +3280,97 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 3,
     "lessonOrder": 40,
     "title": "Working with pivot tables",
-    "description": "Working with Pivot Tables  Pivot tables are one of the most powerful tools in pandas for summarizing and analyzing grouped data. Earlier, you learned how to cre...",
+    "description": "Pivot tables are one of the most powerful tools in pandas for summarizing and analyzing grouped data. Earlier, you learned how to create them using pivot_table(...",
     "sections": [
       {
-        "title": "Working with pivot tables",
-        "body": "Working with Pivot Tables\n\nPivot tables are one of the most powerful tools in pandas for summarizing and analyzing grouped data. Earlier, you learned how to create them using pivot_table(). In this lesson, the focus is on how to work with pivot tables after they are created — especially how to subset them and compute additional statistics.\n\nA pivot table in pandas is essentially just another DataFrame, but with grouped and summarized data. Because of this, all the DataFrame skills you already learned — especially .loc, slicing, and summary methods — can also be applied to pivot tables.\n\nCreating a Pivot Table\n\nA pivot table is created using .pivot_table()."
+        "title": "1. Concept Overview",
+        "body": "Pivot tables are one of the most powerful tools in pandas for summarizing and analyzing grouped data. Earlier, you learned how to create them using pivot_table(). In this lesson, the focus is on how to work with pivot tables after they are created — especially how to subset them and compute additional statistics.\n\nA pivot table in pandas is essentially just another DataFrame, but with grouped and summarized data. Because of this, all the DataFrame skills you already learned — especially .loc, slicing, and summary methods — can also be applied to pivot tables."
       },
       {
-        "title": "Example",
-        "body": "dogs.pivot_table(\n\nvalues=\"height_cm\",\n\nindex=\"breed\",\n\ncolumns=\"color\"\n\n)"
+        "title": "2. Creating a Pivot Table",
+        "body": "A pivot table is created using .pivot_table().\n\nExample:\n\ndogs.pivot_table(\n\nvalues=\"height_cm\",\n\nindex=\"breed\",\n\ncolumns=\"color\"\n\n)\n\nThis means:\n\nvalues → the column to summarize\n\nindex → the groups shown as rows\n\ncolumns → the groups shown as columns\n\nBy default, pandas calculates the mean.\n\nSo this pivot table shows:\n\nthe average height of each dog breed for each color."
       },
       {
-        "title": "This means",
-        "body": "values → the column to summarize\n\nindex → the groups shown as rows\n\ncolumns → the groups shown as columns\n\nBy default, pandas calculates the mean."
+        "title": "3. Pivot Tables are DataFrames",
+        "body": "A very important idea:\n\nPivot tables are just DataFrames with organized indexes.\n\nBecause of this, you can use everything you already know about DataFrames:\n\n.loc[]\n\nslicing\n\nfiltering\n\nsummary statistics\n\nindexing\n\nThis makes pivot tables extremely flexible."
       },
       {
-        "title": "So this pivot table shows",
-        "body": "the average height of each dog breed for each color.\n\nPivot Tables are DataFrames"
+        "title": "4. Using .loc[] with Pivot Tables",
+        "body": "Since pivot tables have indexes, .loc[] works perfectly for selecting specific rows or columns.\n\nExample:\n\npt.loc[\"Chihuahua\":\"Poodle\"]\n\nThis slices breeds from \"Chihuahua\" to \"Poodle\".\n\nYou can also subset rows and columns together:\n\npt.loc[\n\n\"Chihuahua\":\"Poodle\",\n\n\"Brown\":\"Gray\"\n\n]\n\nThis selects:\n\nspecific breeds (rows)\n\nspecific colors (columns)\n\nat the same time.\n\nThis combination of .loc[] + slicing is one of the best ways to work with pivot tables."
       },
       {
-        "title": "A very important idea",
-        "body": "Pivot tables are just DataFrames with organized indexes.\n\nBecause of this, you can use everything you already know about DataFrames:\n\n.loc[]\n\nslicing\n\nfiltering\n\nsummary statistics\n\nindexing\n\nThis makes pivot tables extremely flexible.\n\nUsing .loc[] with Pivot Tables\n\nSince pivot tables have indexes, .loc[] works perfectly for selecting specific rows or columns."
+        "title": "5. Summary Statistics on Pivot Tables",
+        "body": "Because pivot tables usually contain only numeric values, you can easily calculate statistics on them.\n\nExample:\n\npt.mean()\n\nThis calculates the mean of each column."
       },
       {
-        "title": "Example",
-        "body": "pt.loc[\"Chihuahua\":\"Poodle\"]\n\nThis slices breeds from \"Chihuahua\" to \"Poodle\"."
+        "title": "6. Understanding the axis Argument",
+        "body": "Many pandas methods use an axis argument.\n\nThe default is:\n\naxis=\"index\"\n\nor equivalently:\n\naxis=0\n\nThis means:\n\ncalculate statistics down the rows (vertically)\n\nFor a pivot table, this calculates a result for each column."
       },
       {
-        "title": "You can also subset rows and columns together",
-        "body": "pt.loc[\n\n\"Chihuahua\":\"Poodle\",\n\n\"Brown\":\"Gray\"\n\n]"
+        "title": "7. Calculating Across Rows",
+        "body": "Example:\n\npt.mean(axis=\"index\")\n\nThis computes the average for each color across all breeds.\n\nSo the calculation moves vertically down each column."
       },
       {
-        "title": "This selects",
-        "body": "specific breeds (rows)\n\nspecific colors (columns)\n\nat the same time.\n\nThis combination of .loc[] + slicing is one of the best ways to work with pivot tables.\n\nSummary Statistics on Pivot Tables\n\nBecause pivot tables usually contain only numeric values, you can easily calculate statistics on them."
+        "title": "8. Calculating Across Columns",
+        "body": "If you want calculations horizontally across columns, use:\n\npt.mean(axis=\"columns\")\n\nThis computes the average for each breed across all colors.\n\nSo now the calculation moves horizontally across each row."
       },
       {
-        "title": "Example",
-        "body": "pt.mean()\n\nThis calculates the mean of each column.\n\nUnderstanding the axis Argument\n\nMany pandas methods use an axis argument."
+        "title": "9. Why axis Matters More for Pivot Tables",
+        "body": "In normal DataFrames, columns often contain different data types:\n\ntext\n\ndates\n\nnumbers\n\nBecause of that, calculations across columns often do not make sense.\n\nBut pivot tables are special because:\n\nalmost every value is numeric\n\nevery column usually represents the same type of measurement\n\nThat is why operations like .mean(axis=\"columns\") become very useful with pivot tables."
       },
       {
-        "title": "The default is",
-        "body": "axis=\"index\""
+        "title": "10. Quick Comparison",
+        "body": "axis=\"index\" (default)"
       },
       {
-        "title": "or equivalently",
-        "body": "axis=0"
+        "title": "11. Calculates vertically",
+        "body": "Produces one result per column\n\nExample:\n\npt.mean(axis=\"index\")\n\naxis=\"columns\""
       },
       {
-        "title": "This means",
-        "body": "calculate statistics down the rows (vertically)\n\nFor a pivot table, this calculates a result for each column.\n\nCalculating Across Rows"
+        "title": "12. Calculates horizontally",
+        "body": "Produces one result per row\n\nExample:\n\npt.mean(axis=\"columns\")"
       },
       {
-        "title": "Example",
-        "body": "pt.mean(axis=\"index\")\n\nThis computes the average for each color across all breeds.\n\nSo the calculation moves vertically down each column.\n\nCalculating Across Columns\n\nIf you want calculations horizontally across columns, use:\n\npt.mean(axis=\"columns\")\n\nThis computes the average for each breed across all colors.\n\nSo now the calculation moves horizontally across each row.\n\nWhy axis Matters More for Pivot Tables\n\nIn normal DataFrames, columns often contain different data types:\n\ntext\n\ndates\n\nnumbers\n\nBecause of that, calculations across columns often do not make sense."
-      },
-      {
-        "title": "But pivot tables are special because",
-        "body": "almost every value is numeric\n\nevery column usually represents the same type of measurement\n\nThat is why operations like .mean(axis=\"columns\") become very useful with pivot tables.\n\nQuick Comparison\n\naxis=\"index\" (default)\n\nCalculates vertically\n\nProduces one result per column"
-      },
-      {
-        "title": "Example",
-        "body": "pt.mean(axis=\"index\")\n\naxis=\"columns\"\n\nCalculates horizontally\n\nProduces one result per row"
-      },
-      {
-        "title": "Example",
-        "body": "pt.mean(axis=\"columns\")\n\nExample Workflow"
-      },
-      {
-        "title": "Create pivot table",
-        "body": "`pt = dogs.pivot_table(`\n\nvalues=\"height_cm\",\n\nindex=\"breed\",\n\ncolumns=\"color\"\n\n)",
+        "title": "13. Example Workflow",
+        "body": "# Create pivot table\n\n`pt = dogs.pivot_table(`\n\nvalues=\"height_cm\",\n\nindex=\"breed\",\n\ncolumns=\"color\"\n\n)",
         "exampleCode": "pt = dogs.pivot_table("
       },
       {
-        "title": "Subset breeds",
+        "title": "14. Subset breeds",
         "body": "pt.loc[\"Chihuahua\":\"Poodle\"]"
       },
       {
-        "title": "Mean for each color",
+        "title": "15. Mean for each color",
         "body": "pt.mean()"
       },
       {
-        "title": "Mean for each breed",
-        "body": "pt.mean(axis=\"columns\")\n\nKey Takeaways"
+        "title": "16. Mean for each breed",
+        "body": "pt.mean(axis=\"columns\")"
       },
       {
-        "title": "Pivot tables are powerful because they combine",
-        "body": "grouping\n\naggregation\n\nreshaping\n\ninto a single structure.\n\nOnce created, you can treat them like normal DataFrames and use:\n\n.loc[]\n\nslicing\n\n.mean()\n\n.sum()\n\n.max()\n\n.min()\n\nand many other pandas operations on them.\n\nThe axis argument is especially important because it controls the direction of calculations:\n\naxis=\"index\" → down columns\n\naxis=\"columns\" → across rows"
+        "title": "17. Key Takeaways",
+        "body": "Pivot tables are powerful because they combine:\n\ngrouping\n\naggregation\n\nreshaping\n\ninto a single structure.\n\nOnce created, you can treat them like normal DataFrames and use:\n\n.loc[]\n\nslicing\n\n.mean()\n\n.sum()\n\n.max()\n\n.min()\n\nand many other pandas operations on them.\n\nThe axis argument is especially important because it controls the direction of calculations:\n\naxis=\"index\" → down columns\n\naxis=\"columns\" → across rows"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Group by and sum",
+        "syntax": "df.groupby(\"region\")[\"sales\"].sum()"
+      },
+      {
+        "goal": "Multiple aggregations",
+        "syntax": "df.groupby(\"region\")[\"sales\"].agg([\"mean\", \"count\"])"
+      },
+      {
+        "goal": "2D Pivot Table",
+        "syntax": "df.pivot_table(values=\"sales\", index=\"region\", columns=\"prod\")"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Working with pivot tables",
       "scenario": "Apply the concepts learned in Working with pivot tables to process sample tabular data.",
@@ -2255,124 +3392,108 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 3,
     "lessonOrder": 41,
     "title": "Visualizing your data",
-    "description": "Visualizing Your Data  Data visualization is one of the most important parts of data analysis because it helps transform raw numbers into something easier to un...",
+    "description": "Data visualization is one of the most important parts of data analysis because it helps transform raw numbers into something easier to understand. Instead of on...",
     "sections": [
       {
-        "title": "Visualizing your data",
-        "body": "Visualizing Your Data\n\nData visualization is one of the most important parts of data analysis because it helps transform raw numbers into something easier to understand. Instead of only reading tables of values, plots allow you to quickly notice patterns, trends, relationships, and outliers in your data.\n\nIn pandas, plotting is closely connected with the matplotlib library. Before creating visualizations, you usually import:\n\n`import matplotlib.pyplot as plt`\n\nJust like pd is the common alias for pandas, plt is the standard alias for matplotlib.pyplot.",
-        "exampleCode": "import matplotlib.pyplot as plt"
+        "title": "1. Concept Overview",
+        "body": "Data visualization is one of the most important parts of data analysis because it helps transform raw numbers into something easier to understand. Instead of only reading tables of values, plots allow you to quickly notice patterns, trends, relationships, and outliers in your data.\n\nIn pandas, plotting is closely connected with the matplotlib library. Before creating visualizations, you usually import:\n\n`import matplotlib.pyplot as plt`\n\nJust like pd is the common alias for pandas, plt is the standard alias for matplotlib.pyplot.\n\nAfter creating a plot, you often need:\n\n`plt.show()`\n\nto actually display it.\n\nHistograms\n\nA histogram is used to visualize the distribution of a numeric variable. It groups values into ranges called bins and shows how many observations fall into each range.\n\nExample:\n\ndog_pack[\"height_cm\"].hist()\n\n`plt.show()`\n\nThis creates a histogram of dog heights.\n\nThe:\n\nx-axis represents the height ranges\n\ny-axis represents how many dogs fall into each range\n\nHistograms are useful for understanding:\n\nwhere most values are concentrated\n\nwhether data is spread out\n\nwhether the distribution is symmetric or skewed",
+        "exampleCode": "import matplotlib.pyplot as plt\nplt.show()\nplt.show()"
       },
       {
-        "title": "After creating a plot, you often need",
-        "body": "`plt.show()`\n\nto actually display it.\n\nHistograms\n\nA histogram is used to visualize the distribution of a numeric variable. It groups values into ranges called bins and shows how many observations fall into each range.",
+        "title": "2. Changing the Number of Bins",
+        "body": "You can control how detailed the histogram is using the bins argument.\n\nExample:\n\ndog_pack[\"height_cm\"].hist(bins=20)\n\n`plt.show()`\n\nfewer bins → simpler overview\n\nmore bins → more detailed distribution\n\nChoosing the right number of bins helps make patterns clearer.",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Example",
-        "body": "dog_pack[\"height_cm\"].hist()\n\n`plt.show()`\n\nThis creates a histogram of dog heights.",
+        "title": "3. Bar Plots",
+        "body": "Bar plots are useful for comparing categories.\n\nFor example, if you want to compare the average weight of each dog breed:\n\n`avg_weight = dog_pack.groupby(\"breed\")[\"weight_kg\"].mean()`\n\nThen create a bar plot:\n\navg_weight.plot(kind=\"bar\")\n\n`plt.show()`\n\nEach bar represents a breed, and the height of the bar represents the average weight.",
+        "exampleCode": "avg_weight = dog_pack.groupby(\"breed\")[\"weight_kg\"].mean()\nplt.show()"
+      },
+      {
+        "title": "4. Adding a Title",
+        "body": "Plots become easier to understand when labeled properly.\n\nExample:\n\navg_weight.plot(\n\nkind=\"bar\",\n\ntitle=\"Average Weight per Breed\"\n\n)\n\n`plt.show()`\n\nTitles help explain what the visualization is showing.",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "The",
-        "body": "x-axis represents the height ranges\n\ny-axis represents how many dogs fall into each range"
-      },
-      {
-        "title": "Histograms are useful for understanding",
-        "body": "where most values are concentrated\n\nwhether data is spread out\n\nwhether the distribution is symmetric or skewed\n\nChanging the Number of Bins\n\nYou can control how detailed the histogram is using the bins argument."
-      },
-      {
-        "title": "Example",
-        "body": "dog_pack[\"height_cm\"].hist(bins=20)\n\n`plt.show()`\n\nfewer bins → simpler overview\n\nmore bins → more detailed distribution\n\nChoosing the right number of bins helps make patterns clearer.\n\nBar Plots\n\nBar plots are useful for comparing categories.\n\nFor example, if you want to compare the average weight of each dog breed:\n\n`avg_weight = dog_pack.groupby(\"breed\")[\"weight_kg\"].mean()`",
-        "exampleCode": "plt.show()\navg_weight = dog_pack.groupby(\"breed\")[\"weight_kg\"].mean()"
-      },
-      {
-        "title": "Then create a bar plot",
-        "body": "avg_weight.plot(kind=\"bar\")\n\n`plt.show()`\n\nEach bar represents a breed, and the height of the bar represents the average weight.\n\nAdding a Title\n\nPlots become easier to understand when labeled properly.",
+        "title": "5. Line Plots",
+        "body": "Line plots are excellent for showing how data changes over time.\n\nExample:\n\nsully.plot(\n\nx=\"date\",\n\ny=\"weight_kg\",\n\nkind=\"line\"\n\n)\n\n`plt.show()`\n\nThis visualizes Sully’s weight over time.\n\nLine plots are commonly used for:\n\ntime series data\n\ntrends\n\ngrowth or decline\n\ntracking changes",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Example",
-        "body": "avg_weight.plot(\n\nkind=\"bar\",\n\ntitle=\"Average Weight per Breed\"\n\n)\n\n`plt.show()`\n\nTitles help explain what the visualization is showing.\n\nLine Plots\n\nLine plots are excellent for showing how data changes over time.",
+        "title": "6. Rotating Axis Labels",
+        "body": "Sometimes date labels overlap and become hard to read.\n\nYou can rotate labels using:\n\nsully.plot(\n\nx=\"date\",\n\ny=\"weight_kg\",\n\nkind=\"line\",\n\nrot=45\n\n)\n\n`plt.show()`\n\nrot=45 rotates labels by 45 degrees.",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Example",
-        "body": "sully.plot(\n\nx=\"date\",\n\ny=\"weight_kg\",\n\nkind=\"line\"\n\n)\n\n`plt.show()`\n\nThis visualizes Sully’s weight over time.",
+        "title": "7. Scatter Plots",
+        "body": "Scatter plots are used to examine relationships between two numeric variables.\n\nExample:\n\ndog_pack.plot(\n\nx=\"height_cm\",\n\ny=\"weight_kg\",\n\nkind=\"scatter\"\n\n)\n\n`plt.show()`\n\nEach point represents one dog.\n\nThis helps identify:\n\ncorrelations\n\ntrends\n\nclusters\n\noutliers\n\nIn this example, taller dogs generally weigh more.",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Line plots are commonly used for",
-        "body": "time series data\n\ntrends\n\ngrowth or decline\n\ntracking changes\n\nRotating Axis Labels\n\nSometimes date labels overlap and become hard to read."
-      },
-      {
-        "title": "You can rotate labels using",
-        "body": "sully.plot(\n\nx=\"date\",\n\ny=\"weight_kg\",\n\nkind=\"line\",\n\nrot=45\n\n)\n\n`plt.show()`\n\nrot=45 rotates labels by 45 degrees.\n\nScatter Plots\n\nScatter plots are used to examine relationships between two numeric variables.",
+        "title": "8. Layering Plots",
+        "body": "You can place multiple plots on top of each other to compare groups.\n\nExample:\n\ndog_pack[dog_pack[\"sex\"] == \"F\"][\"height_cm\"].hist()\n\ndog_pack[dog_pack[\"sex\"] == \"M\"][\"height_cm\"].hist()\n\n`plt.show()`\n\nThis overlays histograms for female and male dogs.",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Example",
-        "body": "dog_pack.plot(\n\nx=\"height_cm\",\n\ny=\"weight_kg\",\n\nkind=\"scatter\"\n\n)\n\n`plt.show()`\n\nEach point represents one dog.",
-        "exampleCode": "plt.show()"
+        "title": "9. Adding a Legend",
+        "body": "When multiple plots overlap, it may be unclear which is which.\n\nUse:\n\n`plt.legend([\"Female\", \"Male\"])`\n\nto label the plots.\n\nExample:\n\n`plt.legend([\"Female\", \"Male\"])`\n\n`plt.show()`",
+        "exampleCode": "plt.legend([\"Female\", \"Male\"])\nplt.legend([\"Female\", \"Male\"])\nplt.show()"
       },
       {
-        "title": "This helps identify",
-        "body": "correlations\n\ntrends\n\nclusters\n\noutliers\n\nIn this example, taller dogs generally weigh more.\n\nLayering Plots\n\nYou can place multiple plots on top of each other to compare groups."
-      },
-      {
-        "title": "Example",
-        "body": "dog_pack[dog_pack[\"sex\"] == \"F\"][\"height_cm\"].hist()\n\ndog_pack[dog_pack[\"sex\"] == \"M\"][\"height_cm\"].hist()\n\n`plt.show()`\n\nThis overlays histograms for female and male dogs.\n\nAdding a Legend\n\nWhen multiple plots overlap, it may be unclear which is which.",
-        "exampleCode": "plt.show()"
-      },
-      {
-        "title": "Use",
-        "body": "`plt.legend([\"Female\", \"Male\"])`\n\nto label the plots.",
-        "exampleCode": "plt.legend([\"Female\", \"Male\"])"
-      },
-      {
-        "title": "Example",
-        "body": "`plt.legend([\"Female\", \"Male\"])`\n\n`plt.show()`\n\nTransparency with alpha\n\nOverlapping plots can block each other visually. The alpha argument controls transparency.",
+        "title": "10. Transparency with alpha",
+        "body": "Overlapping plots can block each other visually. The alpha argument controls transparency.\n\nValues:\n\n0 → fully transparent\n\n1 → fully opaque\n\nExample:\n\ndog_pack[dog_pack[\"sex\"] == \"F\"][\"height_cm\"].hist(alpha=0.5)\n\ndog_pack[dog_pack[\"sex\"] == \"M\"][\"height_cm\"].hist(alpha=0.5)\n\n`plt.legend([\"Female\", \"Male\"])`\n\n`plt.show()`\n\nThis makes both histograms easier to compare.",
         "exampleCode": "plt.legend([\"Female\", \"Male\"])\nplt.show()"
       },
       {
-        "title": "Values",
-        "body": "0 → fully transparent\n\n1 → fully opaque"
+        "title": "11. Choosing the Right Plot",
+        "body": "Different plots are useful for different situations:\n\nHistogram → distribution of one numeric variable\n\nBar plot → compare categories\n\nLine plot → trends over time\n\nScatter plot → relationship between two numeric variables"
       },
       {
-        "title": "Example",
-        "body": "dog_pack[dog_pack[\"sex\"] == \"F\"][\"height_cm\"].hist(alpha=0.5)\n\ndog_pack[dog_pack[\"sex\"] == \"M\"][\"height_cm\"].hist(alpha=0.5)\n\n`plt.legend([\"Female\", \"Male\"])`\n\n`plt.show()`\n\nThis makes both histograms easier to compare.\n\nChoosing the Right Plot\n\nDifferent plots are useful for different situations:\n\nHistogram → distribution of one numeric variable\n\nBar plot → compare categories\n\nLine plot → trends over time\n\nScatter plot → relationship between two numeric variables\n\nExample Summary",
-        "exampleCode": "plt.legend([\"Female\", \"Male\"])\nplt.show()"
+        "title": "12. Example Summary",
+        "body": "# Histogram\n\ndog_pack[\"height_cm\"].hist()"
       },
       {
-        "title": "Histogram",
-        "body": "dog_pack[\"height_cm\"].hist()"
-      },
-      {
-        "title": "Bar plot",
+        "title": "13. Bar plot",
         "body": "avg_weight.plot(kind=\"bar\")"
       },
       {
-        "title": "Line plot",
+        "title": "14. Line plot",
         "body": "dog_pack.plot(x=\"date\", y=\"weight_kg\", kind=\"line\")"
       },
       {
-        "title": "Scatter plot",
-        "body": "dog_pack.plot(\n\nx=\"height_cm\",\n\ny=\"weight_kg\",\n\nkind=\"scatter\"\n\n)\n\n`plt.show()`\n\nKey Takeaways",
+        "title": "15. Scatter plot",
+        "body": "dog_pack.plot(\n\nx=\"height_cm\",\n\ny=\"weight_kg\",\n\nkind=\"scatter\"\n\n)\n\n`plt.show()`",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Data visualization helps you",
-        "body": "understand data faster\n\ndiscover trends and patterns\n\ncommunicate findings clearly\n\npandas makes plotting easy because plots can be created directly from DataFrames and Series using methods like:\n\n.hist()\n\n.plot()"
-      },
-      {
-        "title": "combined with matplotlib tools such as",
-        "body": "`plt.show()`\n\n`plt.legend()`",
+        "title": "16. Key Takeaways",
+        "body": "Data visualization helps you:\n\nunderstand data faster\n\ndiscover trends and patterns\n\ncommunicate findings clearly\n\npandas makes plotting easy because plots can be created directly from DataFrames and Series using methods like:\n\n.hist()\n\n.plot()\n\ncombined with matplotlib tools such as:\n\n`plt.show()`\n\n`plt.legend()`\n\nand visualization settings like:\n\nbins\n\ntitle\n\nrot\n\nalpha",
         "exampleCode": "plt.show()\nplt.legend()"
-      },
-      {
-        "title": "and visualization settings like",
-        "body": "bins\n\ntitle\n\nrot\n\nalpha"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Visualizing your data",
       "scenario": "Apply the concepts learned in Visualizing your data to process sample tabular data.",
@@ -2397,111 +3518,98 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Missing Values in pandas  In real-world datasets, missing values are extremely common. Data is rarely perfect — sometimes information is not recorded, sensors f...",
     "sections": [
       {
-        "title": "Missing values",
-        "body": "Missing Values in pandas\n\nIn real-world datasets, missing values are extremely common. Data is rarely perfect — sometimes information is not recorded, sensors fail, users skip inputs, or files become incomplete. Because of this, knowing how to detect and handle missing values is an essential skill in data analysis."
+        "title": "1. Concept Overview",
+        "body": "Missing Values in pandas\n\nIn real-world datasets, missing values are extremely common. Data is rarely perfect — sometimes information is not recorded, sensors fail, users skip inputs, or files become incomplete. Because of this, knowing how to detect and handle missing values is an essential skill in data analysis.\n\nIn pandas, missing values are represented by:\n\nNaN\n\nwhich stands for:\n\n“Not a Number”\n\nEven though the name sounds numeric, NaN is used for many types of missing data in pandas."
       },
       {
-        "title": "In pandas, missing values are represented by",
-        "body": "NaN"
+        "title": "2. Why Missing Values Matter",
+        "body": "Missing data can affect:\n\ncalculations\n\naverages\n\nmachine learning models\n\nvisualizations\n\nfiltering and grouping\n\nFor example, if some dog weights are missing because the scale was broken, calculations involving weight may become inaccurate or incomplete.\n\nThat’s why one of the first things you should do when receiving a new dataset is check for missing values.\n\nDetecting Missing Values with .isna()\n\nThe .isna() method checks every value in a DataFrame and returns:\n\nTrue → value is missing\n\nFalse → value exists\n\nExample:\n\ndogs.isna()\n\nThis creates a DataFrame of Booleans.\n\nExample result:\n\nname\n\nweight_kg\n\nFalse\n\nFalse\n\nFalse\n\nTrue\n\nHowever, for large datasets, this output can be difficult to read."
       },
       {
-        "title": "which stands for",
-        "body": "“Not a Number”\n\nEven though the name sounds numeric, NaN is used for many types of missing data in pandas.\n\nWhy Missing Values Matter"
+        "title": "3. Checking if Columns Contain Missing Values",
+        "body": "To see whether a column contains any missing values, combine:\n\n.isna().any()\n\nExample:\n\ndogs.isna().any()\n\nResult:\n\nname False\n\nweight_kg True\n\nheight_cm False\n\nThis means:\n\nweight_kg contains at least one missing value\n\nother columns do not"
       },
       {
-        "title": "Missing data can affect",
-        "body": "calculations\n\naverages\n\nmachine learning models\n\nvisualizations\n\nfiltering and grouping\n\nFor example, if some dog weights are missing because the scale was broken, calculations involving weight may become inaccurate or incomplete.\n\nThat’s why one of the first things you should do when receiving a new dataset is check for missing values.\n\nDetecting Missing Values with .isna()\n\nThe .isna() method checks every value in a DataFrame and returns:\n\nTrue → value is missing\n\nFalse → value exists"
+        "title": "4. Counting Missing Values",
+        "body": "Since True is treated as 1 in Python, summing Boolean values counts the number of missing entries.\n\nExample:\n\ndogs.isna().sum()\n\nThis returns the number of missing values per column.\n\nExample output:\n\nname 0\n\nweight_kg 2\n\nheight_cm 0\n\nSo there are:"
       },
       {
-        "title": "Example",
-        "body": "dogs.isna()\n\nThis creates a DataFrame of Booleans."
+        "title": "5. 2 missing weights",
+        "body": "no missing names or heights"
       },
       {
-        "title": "Example result",
-        "body": "name\n\nweight_kg\n\nFalse\n\nFalse\n\nFalse\n\nTrue\n\nHowever, for large datasets, this output can be difficult to read.\n\nChecking if Columns Contain Missing Values\n\nTo see whether a column contains any missing values, combine:\n\n.isna().any()"
-      },
-      {
-        "title": "Example",
-        "body": "dogs.isna().any()"
-      },
-      {
-        "title": "Result",
-        "body": "name         False\n\nweight_kg     True\n\nheight_cm    False"
-      },
-      {
-        "title": "This means",
-        "body": "weight_kg contains at least one missing value\n\nother columns do not\n\nCounting Missing Values\n\nSince True is treated as 1 in Python, summing Boolean values counts the number of missing entries."
-      },
-      {
-        "title": "Example",
-        "body": "dogs.isna().sum()\n\nThis returns the number of missing values per column."
-      },
-      {
-        "title": "Example output",
-        "body": "name         0\n\nweight_kg    2\n\nheight_cm    0"
-      },
-      {
-        "title": "So there are",
-        "body": "2 missing weights\n\nno missing names or heights\n\nVisualizing Missing Values\n\nYou can plot the number of missing values using a bar plot."
-      },
-      {
-        "title": "Example",
-        "body": "dogs.isna().sum().plot(kind=\"bar\")\n\n`plt.show()`\n\nThis helps quickly identify which columns have the most missing data.\n\nVisualization becomes especially useful in large datasets with many variables.\n\nRemoving Missing Values with .dropna()\n\nOne approach is to remove rows that contain missing values.",
+        "title": "6. Visualizing Missing Values",
+        "body": "You can plot the number of missing values using a bar plot.\n\nExample:\n\ndogs.isna().sum().plot(kind=\"bar\")\n\n`plt.show()`\n\nThis helps quickly identify which columns have the most missing data.\n\nVisualization becomes especially useful in large datasets with many variables.\n\nRemoving Missing Values with .dropna()\n\nOne approach is to remove rows that contain missing values.\n\nExample:\n\ndogs.dropna()\n\nThis removes all rows where at least one value is missing.",
         "exampleCode": "plt.show()"
       },
       {
-        "title": "Example",
-        "body": "dogs.dropna()\n\nThis removes all rows where at least one value is missing.\n\nImportant Consideration\n\nDropping rows is simple, but it can be risky."
+        "title": "7. Important Consideration",
+        "body": "Dropping rows is simple, but it can be risky.\n\nIf many rows contain missing data:\n\nyou may lose a large part of your dataset\n\nyour analysis may become biased\n\nSo use .dropna() carefully.\n\nReplacing Missing Values with .fillna()\n\nInstead of deleting rows, you can replace missing values.\n\nExample:\n\ndogs.fillna(0)\n\nThis replaces all NaN values with 0."
       },
       {
-        "title": "If many rows contain missing data",
-        "body": "you may lose a large part of your dataset\n\nyour analysis may become biased\n\nSo use .dropna() carefully.\n\nReplacing Missing Values with .fillna()\n\nInstead of deleting rows, you can replace missing values."
+        "title": "8. Filling with Other Values",
+        "body": "You can also fill missing values using:\n\naverages\n\nmedians\n\ntext labels\n\ncalculated values\n\nExample:\n\ndogs[\"weight_kg\"].fillna(\n\ndogs[\"weight_kg\"].mean()\n\n)\n\nThis replaces missing weights with the average weight.\n\nThis is often better than removing data entirely."
       },
       {
-        "title": "Example",
-        "body": "dogs.fillna(0)\n\nThis replaces all NaN values with 0.\n\nFilling with Other Values"
+        "title": "9. Common Missing Value Workflow",
+        "body": "A typical workflow looks like this:"
       },
       {
-        "title": "You can also fill missing values using",
-        "body": "averages\n\nmedians\n\ntext labels\n\ncalculated values"
-      },
-      {
-        "title": "Example",
-        "body": "dogs[\"weight_kg\"].fillna(\n\ndogs[\"weight_kg\"].mean()\n\n)\n\nThis replaces missing weights with the average weight.\n\nThis is often better than removing data entirely.\n\nCommon Missing Value Workflow"
-      },
-      {
-        "title": "A typical workflow looks like this",
-        "body": "1. Detect missing values\n\ndogs.isna()\n\n2. Count them\n\ndogs.isna().sum()\n\n3. Decide what to do\n\nremove rows → .dropna()\n\nreplace values → .fillna()\n\nExample Summary"
-      },
-      {
-        "title": "Detect missing values",
+        "title": "10. 1. Detect missing values",
         "body": "dogs.isna()"
       },
       {
-        "title": "Check columns with missing data",
+        "title": "11. 2. Count them",
+        "body": "dogs.isna().sum()\n\n3. Decide what to do\n\nremove rows → .dropna()\n\nreplace values → .fillna()"
+      },
+      {
+        "title": "12. Example Summary",
+        "body": "# Detect missing values\n\ndogs.isna()"
+      },
+      {
+        "title": "13. Check columns with missing data",
         "body": "dogs.isna().any()"
       },
       {
-        "title": "Count missing values",
+        "title": "14. Count missing values",
         "body": "dogs.isna().sum()"
       },
       {
-        "title": "Remove rows with missing values",
+        "title": "15. Remove rows with missing values",
         "body": "dogs.dropna()"
       },
       {
-        "title": "Replace missing values",
-        "body": "dogs.fillna(0)\n\nKey Takeaways\n\nMissing values are a normal part of data analysis, and pandas provides powerful tools to handle them."
+        "title": "16. Replace missing values",
+        "body": "dogs.fillna(0)"
       },
       {
-        "title": "Important methods include",
-        "body": ".isna() → detect missing values\n\n.any() → check if missing values exist\n\n.sum() → count missing values\n\n.dropna() → remove missing data\n\n.fillna() → replace missing data"
-      },
-      {
-        "title": "The best method depends on the situation",
-        "body": "small amount of missing data → dropping may be fine\n\nlarge amount of missing data → filling is often better\n\nHandling missing values properly helps ensure your analysis remains accurate and reliable."
+        "title": "17. Key Takeaways",
+        "body": "Missing values are a normal part of data analysis, and pandas provides powerful tools to handle them.\n\nImportant methods include:\n\n.isna() → detect missing values\n\n.any() → check if missing values exist\n\n.sum() → count missing values\n\n.dropna() → remove missing data\n\n.fillna() → replace missing data\n\nThe best method depends on the situation:\n\nsmall amount of missing data → dropping may be fine\n\nlarge amount of missing data → filling is often better\n\nHandling missing values properly helps ensure your analysis remains accurate and reliable."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Clean Incomplete Customer Emails",
       "scenario": "The CRM sync job fails when customer emails are null or missing. Impute missing emails with a placeholder.",
@@ -2526,82 +3634,107 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Creating DataFrames in pandas  After learning how to manipulate and analyze DataFrames, the next important skill is learning how to create them. In pandas, a Da...",
     "sections": [
       {
-        "title": "Creating DataFrames",
-        "body": "Creating DataFrames in pandas\n\nAfter learning how to manipulate and analyze DataFrames, the next important skill is learning how to create them. In pandas, a DataFrame is the main structure used to store tabular or rectangular data, similar to a spreadsheet or SQL table.\n\nBefore creating DataFrames, it’s important to understand dictionaries, because pandas heavily uses them when building DataFrames.\n\nA dictionary in Python stores data as key-value pairs. The key acts like a label, while the value is the actual data connected to that label."
-      },
-      {
-        "title": "Example",
-        "body": "`book = {`\n\n\"title\": \"Charlotte's Web\",\n\n\"author\": \"E.B. White\"\n\n}",
+        "title": "1. Concept Overview",
+        "body": "Creating DataFrames in pandas\n\nAfter learning how to manipulate and analyze DataFrames, the next important skill is learning how to create them. In pandas, a DataFrame is the main structure used to store tabular or rectangular data, similar to a spreadsheet or SQL table.\n\nBefore creating DataFrames, it’s important to understand dictionaries, because pandas heavily uses them when building DataFrames.\n\nA dictionary in Python stores data as key-value pairs. The key acts like a label, while the value is the actual data connected to that label.\n\nExample:\n\n`book = {`\n\n\"title\": \"Charlotte's Web\",\n\n\"author\": \"E.B. White\"\n\n}\n\nHere:\n\n\"title\" and \"author\" are keys\n\n\"Charlotte's Web\" and \"E.B. White\" are values\n\nYou can access values using square brackets:\n\nbook[\"title\"]\n\nThis returns:",
         "exampleCode": "book = {"
       },
       {
-        "title": "Here",
-        "body": "\"title\" and \"author\" are keys\n\n\"Charlotte's Web\" and \"E.B. White\" are values"
-      },
-      {
-        "title": "You can access values using square brackets",
-        "body": "book[\"title\"]"
-      },
-      {
-        "title": "This returns",
-        "body": "Charlotte's Web\n\nTwo Main Ways to Create DataFrames\n\nThere are many ways to create DataFrames, but this lesson focuses on two common methods:\n\nList of dictionaries → build DataFrame row by row\n\nDictionary of lists → build DataFrame column by column\n\n1. Creating a DataFrame from a List of Dictionaries (Row-Based)\n\nIn this method, each dictionary represents one row of data.\n\nYou first create a list, then place dictionaries inside it."
-      },
-      {
-        "title": "Example",
-        "body": "`import pandas as pd`\n\n`list_of_dicts = [`\n\n{\n\n\"name\": \"Ginger\",\n\n\"breed\": \"Dachshund\",\n\n\"height_cm\": 22,\n\n\"weight_kg\": 10\n\n},\n\n{\n\n\"name\": \"Scout\",\n\n\"breed\": \"Dalmatian\",\n\n\"height_cm\": 59,\n\n\"weight_kg\": 25\n\n}\n\n]\n\n`dogs = pd.DataFrame(list_of_dicts)`\n\nprint(dogs)",
+        "title": "2. Charlotte's Web",
+        "body": "Two Main Ways to Create DataFrames\n\nThere are many ways to create DataFrames, but this lesson focuses on two common methods:\n\nList of dictionaries → build DataFrame row by row\n\nDictionary of lists → build DataFrame column by column\n\n1. Creating a DataFrame from a List of Dictionaries (Row-Based)\n\nIn this method, each dictionary represents one row of data.\n\nYou first create a list, then place dictionaries inside it.\n\nExample:\n\n`import pandas as pd`\n\n`list_of_dicts = [`\n\n{\n\n\"name\": \"Ginger\",\n\n\"breed\": \"Dachshund\",\n\n\"height_cm\": 22,\n\n\"weight_kg\": 10\n\n},\n\n{\n\n\"name\": \"Scout\",\n\n\"breed\": \"Dalmatian\",\n\n\"height_cm\": 59,\n\n\"weight_kg\": 25\n\n}\n\n]\n\n`dogs = pd.DataFrame(list_of_dicts)`\n\nprint(dogs)\n\nOutput:\n\nname breed height_cm weight_kg",
         "exampleCode": "import pandas as pd\nlist_of_dicts = [\ndogs = pd.DataFrame(list_of_dicts)"
       },
       {
-        "title": "Output",
-        "body": "name       breed  height_cm  weight_kg\n\n0  Ginger   Dachshund         22         10\n\n1   Scout  Dalmatian         59         25\n\nHow it works"
+        "title": "3. 0 Ginger Dachshund 22 10",
+        "body": "1 Scout Dalmatian 59 25"
       },
       {
-        "title": "Each dictionary becomes",
-        "body": "one row in the DataFrame"
+        "title": "4. How it works",
+        "body": "Each dictionary becomes:\n\none row in the DataFrame\n\nEach key becomes:\n\na column name\n\nEach value becomes:\n\nthe data inside that row and column\n\nThis approach is useful when your data naturally comes row-by-row, such as:"
       },
       {
-        "title": "Each key becomes",
-        "body": "a column name"
-      },
-      {
-        "title": "Each value becomes",
-        "body": "the data inside that row and column\n\nThis approach is useful when your data naturally comes row-by-row, such as:\n\nAPI responses\n\nJSON objects\n\nmanually entered records\n\n2. Creating a DataFrame from a Dictionary of Lists (Column-Based)\n\nIn this method, each key is a column name, and each value is a list containing all values for that column."
-      },
-      {
-        "title": "Example",
-        "body": "`import pandas as pd`\n\n`dict_of_lists = {`\n\n\"name\": [\"Ginger\", \"Scout\"],\n\n\"breed\": [\"Dachshund\", \"Dalmatian\"],\n\n\"height_cm\": [22, 59],\n\n\"weight_kg\": [10, 25]\n\n}\n\n`dogs = pd.DataFrame(dict_of_lists)`\n\nprint(dogs)",
+        "title": "5. API responses",
+        "body": "JSON objects\n\nmanually entered records\n\n2. Creating a DataFrame from a Dictionary of Lists (Column-Based)\n\nIn this method, each key is a column name, and each value is a list containing all values for that column.\n\nExample:\n\n`import pandas as pd`\n\n`dict_of_lists = {`\n\n\"name\": [\"Ginger\", \"Scout\"],\n\n\"breed\": [\"Dachshund\", \"Dalmatian\"],\n\n\"height_cm\": [22, 59],\n\n\"weight_kg\": [10, 25]\n\n}\n\n`dogs = pd.DataFrame(dict_of_lists)`\n\nprint(dogs)\n\nOutput:\n\nname breed height_cm weight_kg",
         "exampleCode": "import pandas as pd\ndict_of_lists = {\ndogs = pd.DataFrame(dict_of_lists)"
       },
       {
-        "title": "Output",
-        "body": "name       breed  height_cm  weight_kg\n\n0  Ginger   Dachshund         22         10\n\n1   Scout  Dalmatian         59         25\n\nHow it works\n\nKeys become column names\n\nLists become column values\n\nEach list must usually have the same length\n\nThis method is often cleaner and easier when working with structured data.\n\nComparing the Two Methods\n\nList of Dictionaries\n\nBuilt row by row\n\nGood for record-style data\n\nFlexible for irregular data"
+        "title": "6. 0 Ginger Dachshund 22 10",
+        "body": "1 Scout Dalmatian 59 25"
       },
       {
-        "title": "Example mindset",
-        "body": "“Here is one dog's information.”\n\nDictionary of Lists\n\nBuilt column by column\n\nCleaner for organized datasets\n\nCommon in data analysis"
+        "title": "7. How it works",
+        "body": "Keys become column names"
       },
       {
-        "title": "Example mindset",
-        "body": "“Here are all the dog names, all the breeds, all the heights…”\n\nBig Picture"
+        "title": "8. Lists become column values",
+        "body": "Each list must usually have the same length\n\nThis method is often cleaner and easier when working with structured data."
       },
       {
-        "title": "A pandas DataFrame is basically",
-        "body": "`rows = observations/items`\n\n`columns = variables/features`\n\nThese creation methods simply provide different ways to organize the same data before converting it into a DataFrame.",
+        "title": "9. Comparing the Two Methods",
+        "body": "List of Dictionaries"
+      },
+      {
+        "title": "10. Built row by row",
+        "body": "Good for record-style data"
+      },
+      {
+        "title": "11. Flexible for irregular data",
+        "body": "Example mindset:\n\n“Here is one dog's information.”"
+      },
+      {
+        "title": "12. Dictionary of Lists",
+        "body": "Built column by column"
+      },
+      {
+        "title": "13. Cleaner for organized datasets",
+        "body": "Common in data analysis\n\nExample mindset:\n\n“Here are all the dog names, all the breeds, all the heights…”"
+      },
+      {
+        "title": "14. Big Picture",
+        "body": "A pandas DataFrame is basically:\n\n`rows = observations/items`\n\n`columns = variables/features`\n\nThese creation methods simply provide different ways to organize the same data before converting it into a DataFrame.\n\nYou can think of it like this:\n\nMethod",
         "exampleCode": "rows = observations/items\ncolumns = variables/features"
       },
       {
-        "title": "You can think of it like this",
-        "body": "Method\n\nThink About\n\nList of dictionaries\n\nRows\n\nDictionary of lists\n\nColumns\n\nImportant pandas Function"
+        "title": "15. Think About",
+        "body": "List of dictionaries\n\nRows"
       },
       {
-        "title": "The key function used is",
-        "body": "pd.DataFrame()\n\nThis converts Python data structures into a DataFrame.\n\nKey Takeaways\n\nDataFrames store tabular data in pandas.\n\nDictionaries use key-value pairs."
+        "title": "16. Dictionary of lists",
+        "body": "Columns"
       },
       {
-        "title": "You can create DataFrames",
-        "body": "row-by-row using a list of dictionaries\n\ncolumn-by-column using a dictionary of lists\n\npd.DataFrame() converts Python structures into DataFrames.\n\nColumn names usually come from dictionary keys."
+        "title": "17. Important pandas Function",
+        "body": "The key function used is:\n\n`pd.DataFrame()`\n\nThis converts Python data structures into a DataFrame.",
+        "exampleCode": "pd.DataFrame()"
+      },
+      {
+        "title": "18. Key Takeaways",
+        "body": "DataFrames store tabular data in pandas.\n\nDictionaries use key-value pairs.\n\nYou can create DataFrames:\n\nrow-by-row using a list of dictionaries\n\ncolumn-by-column using a dictionary of lists\n\n`pd.DataFrame() converts Python structures into DataFrames.`\n\nColumn names usually come from dictionary keys.",
+        "exampleCode": "pd.DataFrame() converts Python structures into DataFrames."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Creating DataFrames",
       "scenario": "Apply the concepts learned in Creating DataFrames to process sample tabular data.",
@@ -2626,64 +3759,105 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Reading and Writing CSV Files in pandas  So far, you've learned how to manually create DataFrames, but in real-world data analysis, datasets are usually already...",
     "sections": [
       {
-        "title": "Reading and writing CSVs",
-        "body": "Reading and Writing CSV Files in pandas\n\nSo far, you've learned how to manually create DataFrames, but in real-world data analysis, datasets are usually already stored in files. One of the most common file formats used for storing tabular data is the CSV file.\n\nCSV stands for Comma-Separated Values. It is a simple text file format where:\n\neach row of data is placed on a new line\n\neach value is separated by commas\n\nBecause CSV files are simple and universal, almost every programming language, spreadsheet software, and database system can read and write them. This makes CSV one of the most widely used formats for sharing data.\n\nWhat a CSV File Looks Like"
+        "title": "1. Concept Overview",
+        "body": "Reading and Writing CSV Files in pandas\n\nSo far, you've learned how to manually create DataFrames, but in real-world data analysis, datasets are usually already stored in files. One of the most common file formats used for storing tabular data is the CSV file.\n\nCSV stands for Comma-Separated Values. It is a simple text file format where:\n\neach row of data is placed on a new line\n\neach value is separated by commas\n\nBecause CSV files are simple and universal, almost every programming language, spreadsheet software, and database system can read and write them. This makes CSV one of the most widely used formats for sharing data."
       },
       {
-        "title": "Example CSV file",
-        "body": "name,breed,height_cm,weight_kg\n\nGinger,Dachshund,22,10\n\nScout,Dalmatian,59,25\n\nThis is basically the same structure as a DataFrame:\n\ncolumns at the top\n\nrows underneath\n\nReading a CSV File into pandas\n\nTo load a CSV file into a pandas DataFrame, pandas provides the function:\n\npd.read_csv()"
+        "title": "2. What a CSV File Looks Like",
+        "body": "Example CSV file:\n\nname,breed,height_cm,weight_kg\n\nGinger,Dachshund,22,10\n\nScout,Dalmatian,59,25\n\nThis is basically the same structure as a DataFrame:\n\ncolumns at the top\n\nrows underneath"
       },
       {
-        "title": "Example",
-        "body": "`import pandas as pd`\n\n`dogs = pd.read_csv(\"new_dogs.csv\")`\n\nprint(dogs)\n\nWhat happens here?\n\npd.read_csv() reads the CSV file\n\npandas converts the file into a DataFrame automatically\n\nthe variable dogs now stores the DataFrame\n\nThis is much faster and more practical than manually typing data into Python.\n\nManipulating the DataFrame\n\nOnce the CSV is loaded into a DataFrame, you can use all the pandas operations you've learned.",
-        "exampleCode": "import pandas as pd\ndogs = pd.read_csv(\"new_dogs.csv\")"
+        "title": "3. Reading a CSV File into pandas",
+        "body": "To load a CSV file into a pandas DataFrame, pandas provides the function:\n\n`pd.read_csv()`\n\nExample:\n\n`import pandas as pd`\n\n`dogs = pd.read_csv(\"new_dogs.csv\")`\n\nprint(dogs)\n\nWhat happens here?\n\n`pd.read_csv() reads the CSV file`\n\npandas converts the file into a DataFrame automatically\n\nthe variable dogs now stores the DataFrame\n\nThis is much faster and more practical than manually typing data into Python.",
+        "exampleCode": "pd.read_csv()\nimport pandas as pd\ndogs = pd.read_csv(\"new_dogs.csv\")\npd.read_csv() reads the CSV file"
       },
       {
-        "title": "For example, creating a BMI column",
-        "body": "`dogs[\"height_m\"] = dogs[\"height_cm\"] / 100`\n\n`dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2`\n\nThis adds new columns directly into the DataFrame.\n\nWriting a DataFrame Back to CSV\n\nAfter modifying the DataFrame, you may want to save the updated data.\n\nYou can convert a DataFrame back into a CSV file using:\n\nDataFrame.to_csv()",
+        "title": "4. Manipulating the DataFrame",
+        "body": "Once the CSV is loaded into a DataFrame, you can use all the pandas operations you've learned.\n\nFor example, creating a BMI column:\n\n`dogs[\"height_m\"] = dogs[\"height_cm\"] / 100`\n\n`dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2`\n\nThis adds new columns directly into the DataFrame.",
         "exampleCode": "dogs[\"height_m\"] = dogs[\"height_cm\"] / 100\ndogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2"
       },
       {
-        "title": "Example",
-        "body": "dogs.to_csv(\"new_dogs_with_bmi.csv\")\n\nWhat this does\n\ntakes the DataFrame\n\nconverts it into CSV format\n\nsaves it as a new file\n\nThe new CSV file now contains the updated BMI column.\n\nComplete Example\n\n`import pandas as pd`",
+        "title": "5. Writing a DataFrame Back to CSV",
+        "body": "After modifying the DataFrame, you may want to save the updated data.\n\nYou can convert a DataFrame back into a CSV file using:\n\nDataFrame.to_csv()\n\nExample:\n\ndogs.to_csv(\"new_dogs_with_bmi.csv\")"
+      },
+      {
+        "title": "6. What this does",
+        "body": "takes the DataFrame\n\nconverts it into CSV format\n\nsaves it as a new file\n\nThe new CSV file now contains the updated BMI column."
+      },
+      {
+        "title": "7. Complete Example",
+        "body": "`import pandas as pd`",
         "exampleCode": "import pandas as pd"
       },
       {
-        "title": "Read CSV file",
+        "title": "8. Read CSV file",
         "body": "`dogs = pd.read_csv(\"new_dogs.csv\")`",
         "exampleCode": "dogs = pd.read_csv(\"new_dogs.csv\")"
       },
       {
-        "title": "Create height in meters",
+        "title": "9. Create height in meters",
         "body": "`dogs[\"height_m\"] = dogs[\"height_cm\"] / 100`",
         "exampleCode": "dogs[\"height_m\"] = dogs[\"height_cm\"] / 100"
       },
       {
-        "title": "Create BMI column",
+        "title": "10. Create BMI column",
         "body": "`dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2`",
         "exampleCode": "dogs[\"bmi\"] = dogs[\"weight_kg\"] / dogs[\"height_m\"] ** 2"
       },
       {
-        "title": "Save updated DataFrame",
-        "body": "dogs.to_csv(\"new_dogs_with_bmi.csv\")\n\nImportant pandas Functions\n\nReading CSV files\n\npd.read_csv(\"file_name.csv\")"
+        "title": "11. Save updated DataFrame",
+        "body": "dogs.to_csv(\"new_dogs_with_bmi.csv\")"
       },
       {
-        "title": "Used to",
-        "body": "load CSV data into a DataFrame\n\nWriting CSV files\n\nDataFrame.to_csv(\"file_name.csv\")"
+        "title": "12. Important pandas Functions",
+        "body": "Reading CSV files\n\n`pd.read_csv(\"file_name.csv\")`\n\nUsed to:\n\nload CSV data into a DataFrame",
+        "exampleCode": "pd.read_csv(\"file_name.csv\")"
       },
       {
-        "title": "Used to",
-        "body": "save DataFrames as CSV files\n\nBig Picture"
+        "title": "13. Writing CSV files",
+        "body": "DataFrame.to_csv(\"file_name.csv\")\n\nUsed to:\n\nsave DataFrames as CSV files"
       },
       {
-        "title": "The usual pandas workflow is",
-        "body": "Read data from a file\n\nStore it in a DataFrame\n\nAnalyze or manipulate the data\n\nSave the updated data"
+        "title": "14. Big Picture",
+        "body": "The usual pandas workflow is:"
       },
       {
-        "title": "Example workflow",
-        "body": "CSV File → pandas DataFrame → Data Analysis → Updated CSV File\n\nThis is one of the core workflows in data science and data analysis.\n\nKey Takeaways\n\nCSV files store tabular data using commas.\n\npd.read_csv() loads CSV files into pandas DataFrames.\n\nOnce loaded, DataFrames can be analyzed and modified.\n\nto_csv() saves DataFrames back into CSV files.\n\nCSV is widely used because it is simple and compatible with many tools."
+        "title": "15. Read data from a file",
+        "body": "Store it in a DataFrame"
+      },
+      {
+        "title": "16. Analyze or manipulate the data",
+        "body": "Save the updated data\n\nExample workflow:\n\nCSV File → pandas DataFrame → Data Analysis → Updated CSV File\n\nThis is one of the core workflows in data science and data analysis."
+      },
+      {
+        "title": "17. Key Takeaways",
+        "body": "CSV files store tabular data using commas.\n\n`pd.read_csv() loads CSV files into pandas DataFrames.`\n\nOnce loaded, DataFrames can be analyzed and modified.\n\nto_csv() saves DataFrames back into CSV files.\n\nCSV is widely used because it is simple and compatible with many tools.",
+        "exampleCode": "pd.read_csv() loads CSV files into pandas DataFrames."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Reading and writing CSVs",
       "scenario": "Apply the concepts learned in Reading and writing CSVs to process sample tabular data.",
@@ -2708,90 +3882,78 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "pandas Wrap-Up Notes  Congratulations — this marks the end of the introduction to pandas. Throughout the course, you learned the core foundations of working wit...",
     "sections": [
       {
-        "title": "Wrap up",
-        "body": "pandas Wrap-Up Notes\n\nCongratulations — this marks the end of the introduction to pandas. Throughout the course, you learned the core foundations of working with data in Python using one of the most important libraries in data science."
+        "title": "1. Concept Overview",
+        "body": "pandas Wrap-Up Notes\n\nCongratulations — this marks the end of the introduction to pandas. Throughout the course, you learned the core foundations of working with data in Python using one of the most important libraries in data science.\n\npandas is mainly used for:\n\norganizing data\n\ncleaning data\n\nanalyzing data\n\ntransforming data\n\nvisualizing tabular datasets\n\nThe central structure in pandas is the DataFrame, which works like a spreadsheet or table with rows and columns."
       },
       {
-        "title": "pandas is mainly used for",
-        "body": "organizing data\n\ncleaning data\n\nanalyzing data\n\ntransforming data\n\nvisualizing tabular datasets\n\nThe central structure in pandas is the DataFrame, which works like a spreadsheet or table with rows and columns.\n\nChapter Recap\n\nChapter 1 — DataFrames Basics"
+        "title": "2. Chapter Recap",
+        "body": "Chapter 1 — DataFrames Basics\n\nYou first learned how to work with DataFrames by:\n\nexploring datasets\n\nsorting rows\n\nsubsetting rows and columns\n\nfiltering data using conditions\n\ncreating new columns\n\nSome important skills included:\n\nsort_values()\n\nfiltering with conditions\n\nselecting columns with brackets\n\nadding calculated columns\n\nThis chapter focused on understanding and manipulating tabular data."
       },
       {
-        "title": "You first learned how to work with DataFrames by",
-        "body": "exploring datasets\n\nsorting rows\n\nsubsetting rows and columns\n\nfiltering data using conditions\n\ncreating new columns"
+        "title": "3. Chapter 2 — Summary Statistics and Aggregation",
+        "body": "Next, you learned how to summarize and analyze datasets.\n\nYou explored:\n\nmean\n\nmedian\n\nmin/max\n\ncumulative statistics\n\ngrouped statistics\n\ncounting categorical data\n\nYou also learned:\n\ngroupby()\n\nagg()\n\nvalue_counts()\n\npivot_table()\n\nThese tools help turn raw data into useful insights.\n\nThe main idea of this chapter was:\n\nanalyzing patterns and relationships inside datasets."
       },
       {
-        "title": "Some important skills included",
-        "body": "sort_values()\n\nfiltering with conditions\n\nselecting columns with brackets\n\nadding calculated columns\n\nThis chapter focused on understanding and manipulating tabular data.\n\nChapter 2 — Summary Statistics and Aggregation\n\nNext, you learned how to summarize and analyze datasets."
+        "title": "4. Chapter 3 — Indexing and Slicing",
+        "body": "This chapter focused on selecting data more efficiently.\n\nYou learned:\n\nhow indexes work\n\nhow to set and reset indexes\n\nslicing rows and columns\n\nusing .loc[]\n\nusing .iloc[]\n\nImportant distinction:\n\nMethod\n\nUses\n\n.loc[]\n\nlabels/names\n\n.iloc[]\n\npositions/numbers\n\nYou also learned about:\n\nhierarchical indexes\n\ndate slicing\n\nrow/column slicing\n\nThis chapter was mainly about:\n\naccessing exactly the data you want."
       },
       {
-        "title": "You explored",
-        "body": "mean\n\nmedian\n\nmin/max\n\ncumulative statistics\n\ngrouped statistics\n\ncounting categorical data"
+        "title": "5. Chapter 4 — Visualization and File Handling",
+        "body": "Finally, you learned how to:\n\ncreate plots\n\nhandle missing values\n\nread data from CSV files\n\nwrite data back to CSV files\n\nVisualization methods included:\n\nhistograms\n\nbar plots\n\nline plots\n\nscatter plots\n\nYou also learned:\n\nisna()\n\ndropna()\n\nfillna()\n\n`pd.read_csv()`\n\nto_csv()\n\nThis chapter connected pandas to real-world workflows.",
+        "exampleCode": "pd.read_csv()"
       },
       {
-        "title": "You also learned",
-        "body": "groupby()\n\nagg()\n\nvalue_counts()\n\npivot_table()\n\nThese tools help turn raw data into useful insights."
+        "title": "6. The Bigger Picture",
+        "body": "The full pandas workflow usually looks like this:\n\nRead Data → Clean Data → Analyze Data → Visualize Data → Save Results\n\nOr more specifically:\n\nCSV File → DataFrame → Manipulation & Analysis → Charts/Insights → New CSV\n\nThis is the foundation of many real data science, machine learning, and analytics projects."
       },
       {
-        "title": "The main idea of this chapter was",
-        "body": "analyzing patterns and relationships inside datasets.\n\nChapter 3 — Indexing and Slicing\n\nThis chapter focused on selecting data more efficiently."
+        "title": "7. Important Realization About pandas",
+        "body": "One of the biggest lessons from the course is that pandas is extremely powerful and flexible.\n\nUnlike regular Python, pandas often gives:\n\nmultiple ways to solve the same problem\n\nmany functions that overlap\n\ndifferent approaches depending on preference\n\nThis makes pandas:\n\npowerful\n\npractical\n\nsometimes harder to master\n\nYou can think of pandas like a toolbox:\n\nthere are many tools available, and part of learning pandas is learning which tool is best for a situation."
       },
       {
-        "title": "You learned",
-        "body": "how indexes work\n\nhow to set and reset indexes\n\nslicing rows and columns\n\nusing .loc[]\n\nusing .iloc[]"
+        "title": "8. Topics Beyond the Course",
+        "body": "The course only covered the fundamentals. pandas can do much more, including:\n\nmerging/joining multiple DataFrames\n\nworking with Excel files"
       },
       {
-        "title": "Important distinction",
-        "body": "Method\n\nUses\n\n.loc[]\n\nlabels/names\n\n.iloc[]\n\npositions/numbers"
+        "title": "9. SQL integration",
+        "body": "time series analysis\n\nadvanced missing data handling\n\nadvanced visualization\n\nlarge dataset optimization\n\nexploratory data analysis (EDA)\n\nThere is still a lot more to explore after the basics."
       },
       {
-        "title": "You also learned about",
-        "body": "hierarchical indexes\n\ndate slicing\n\nrow/column slicing"
+        "title": "10. Core pandas Skills You Learned",
+        "body": "By the end of the course, you now know how to:\n\ncreate DataFrames\n\nread CSV files\n\nexplore datasets\n\nfilter and sort data\n\nslice rows and columns\n\ngroup and summarize data\n\ncreate pivot tables\n\nadd new columns\n\nhandle missing values\n\nvisualize data\n\nexport results\n\nThese are the essential beginner-to-intermediate pandas skills used in real projects."
       },
       {
-        "title": "This chapter was mainly about",
-        "body": "accessing exactly the data you want.\n\nChapter 4 — Visualization and File Handling"
+        "title": "11. Final Takeaway",
+        "body": "pandas is one of the most important Python libraries for data analysis because it makes working with tabular data:\n\nfaster\n\ncleaner\n\nmore efficient\n\neasier to analyze\n\nA lot of modern data science workflows begin with pandas.\n\nThis course gave you the foundation needed to continue into:\n\ndata analytics\n\nmachine learning"
       },
       {
-        "title": "Finally, you learned how to",
-        "body": "create plots\n\nhandle missing values\n\nread data from CSV files\n\nwrite data back to CSV files"
-      },
-      {
-        "title": "Visualization methods included",
-        "body": "histograms\n\nbar plots\n\nline plots\n\nscatter plots"
-      },
-      {
-        "title": "You also learned",
-        "body": "isna()\n\ndropna()\n\nfillna()\n\npd.read_csv()\n\nto_csv()\n\nThis chapter connected pandas to real-world workflows.\n\nThe Bigger Picture"
-      },
-      {
-        "title": "The full pandas workflow usually looks like this",
-        "body": "Read Data → Clean Data → Analyze Data → Visualize Data → Save Results"
-      },
-      {
-        "title": "Or more specifically",
-        "body": "CSV File → DataFrame → Manipulation & Analysis → Charts/Insights → New CSV\n\nThis is the foundation of many real data science, machine learning, and analytics projects.\n\nImportant Realization About pandas\n\nOne of the biggest lessons from the course is that pandas is extremely powerful and flexible."
-      },
-      {
-        "title": "Unlike regular Python, pandas often gives",
-        "body": "multiple ways to solve the same problem\n\nmany functions that overlap\n\ndifferent approaches depending on preference"
-      },
-      {
-        "title": "This makes pandas",
-        "body": "powerful\n\npractical\n\nsometimes harder to master"
-      },
-      {
-        "title": "You can think of pandas like a toolbox",
-        "body": "there are many tools available, and part of learning pandas is learning which tool is best for a situation.\n\nTopics Beyond the Course\n\nThe course only covered the fundamentals. pandas can do much more, including:\n\nmerging/joining multiple DataFrames\n\nworking with Excel files\n\nSQL integration\n\ntime series analysis\n\nadvanced missing data handling\n\nadvanced visualization\n\nlarge dataset optimization\n\nexploratory data analysis (EDA)\n\nThere is still a lot more to explore after the basics.\n\nCore pandas Skills You Learned"
-      },
-      {
-        "title": "By the end of the course, you now know how to",
-        "body": "create DataFrames\n\nread CSV files\n\nexplore datasets\n\nfilter and sort data\n\nslice rows and columns\n\ngroup and summarize data\n\ncreate pivot tables\n\nadd new columns\n\nhandle missing values\n\nvisualize data\n\nexport results\n\nThese are the essential beginner-to-intermediate pandas skills used in real projects.\n\nFinal Takeaway\n\npandas is one of the most important Python libraries for data analysis because it makes working with tabular data:\n\nfaster\n\ncleaner\n\nmore efficient\n\neasier to analyze\n\nA lot of modern data science workflows begin with pandas.\n\nThis course gave you the foundation needed to continue into:\n\ndata analytics\n\nmachine learning\n\nAI/data preprocessing\n\nbusiness intelligence\n\nscientific computing"
-      },
-      {
-        "title": "And most importantly",
-        "body": "you now understand the general workflow of working with data in Python."
+        "title": "12. AI/data preprocessing",
+        "body": "business intelligence\n\nscientific computing\n\nAnd most importantly:\n\nyou now understand the general workflow of working with data in Python."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Wrap up",
       "scenario": "Apply the concepts learned in Wrap up to process sample tabular data.",
@@ -2813,125 +3975,70 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 46,
     "title": "Inner Join in pandas",
-    "description": "Inner Join in pandas  In real-world data analysis, information is often split across multiple tables or DataFrames. Instead of storing everything in one huge ta...",
+    "description": "In real-world data analysis, information is often split across multiple tables or DataFrames. Instead of storing everything in one huge table, datasets are usua...",
     "sections": [
       {
-        "title": "Inner Join in pandas",
-        "body": "Inner Join in pandas\n\nIn real-world data analysis, information is often split across multiple tables or DataFrames. Instead of storing everything in one huge table, datasets are usually organized separately based on topic. Because of this, an important skill in pandas is learning how to combine tables together."
+        "title": "1. Concept Overview",
+        "body": "In real-world data analysis, information is often split across multiple tables or DataFrames. Instead of storing everything in one huge table, datasets are usually organized separately based on topic. Because of this, an important skill in pandas is learning how to combine tables together.\n\nIn pandas, combining tables is commonly called:\n\nmerging\n\nor sometimes joining\n\nIn this course, both terms mean essentially the same thing."
       },
       {
-        "title": "In pandas, combining tables is commonly called",
-        "body": "merging\n\nor sometimes joining\n\nIn this course, both terms mean essentially the same thing.\n\nBig Picture of Merging"
+        "title": "2. Big Picture of Merging",
+        "body": "Imagine you have two tables:\n\nTable 1 — Ward Government Data\n\nward\n\nalderman\n\naddress\n\n1\n\nPerson A\n\nAddress A\n\n2\n\nPerson B\n\nAddress B\n\nTable 2 — Census Data\n\nward\n\npopulation\n\n1\n\n50000\n\n2\n\n54000\n\nBoth tables contain a common column:\n\nward\n\nThis shared column allows pandas to connect related rows together.\n\nWhat is an Inner Join?\n\nAn inner join returns only the rows where matching values exist in BOTH tables.\n\nThink of it like:\n\n“Keep only the rows that successfully match.”\n\nIf ward 2 exists in both tables:\n\nthey get combined\n\nIf a ward exists in only one table:\n\nit gets excluded\n\nUsing merge()\n\nThe main pandas function used for joining tables is:\n\nmerge()\n\nBasic syntax:\n\n`merged_df = left_table.merge(right_table, on=\"common_column\")`\n\nExample:\n\n`wards_census = wards.merge(census, on=\"ward\")`",
+        "exampleCode": "merged_df = left_table.merge(right_table, on=\"common_column\")\nwards_census = wards.merge(census, on=\"ward\")"
       },
       {
-        "title": "Imagine you have two tables",
-        "body": "Table 1 — Ward Government Data\n\nward\n\nalderman\n\naddress\n\n1\n\nPerson A\n\nAddress A\n\n2\n\nPerson B\n\nAddress B\n\nTable 2 — Census Data\n\nward\n\npopulation\n\n1\n\n50000\n\n2\n\n54000"
+        "title": "3. What this means",
+        "body": "Start with wards\n\nMerge with census\n\nMatch rows using the ward column\n\nHow merge() Works\n\nSuppose:\n\nwards table\n\nward\n\nalderman\n\n1\n\nSmith\n\n2\n\nHopkins\n\ncensus table\n\nward\n\npopulation\n\n2\n\n54361\n\n3\n\n60000\n\nAfter inner join:\n\nward\n\nalderman\n\npopulation\n\n2\n\nHopkins\n\n54361\n\nOnly ward 2 remains because:\n\nit exists in both tables\n\nWard 1 is removed because:\n\nno matching census data\n\nWard 3 is removed because:\n\nno matching ward data\n\nImportant merge() Arguments\n\non=\n\nSpecifies the column used to match rows.\n\nExample:\n\non=\"ward\""
       },
       {
-        "title": "Both tables contain a common column",
-        "body": "ward\n\nThis shared column allows pandas to connect related rows together.\n\nWhat is an Inner Join?\n\nAn inner join returns only the rows where matching values exist in BOTH tables."
+        "title": "4. Column Order in Result",
+        "body": "The table written first becomes the “left” table.\n\nExample:\n\nwards.merge(census, on=\"ward\")\n\nResult:\n\ncolumns from wards\n\nthen columns from census"
       },
       {
-        "title": "Think of it like",
-        "body": "“Keep only the rows that successfully match.”"
+        "title": "5. Overlapping Column Names",
+        "body": "Sometimes both tables contain columns with the same name.\n\nExample:\n\naddress\n\nzip\n\npandas automatically avoids duplicate names by adding suffixes:\n\naddress_x\n\naddress_y\n\nWhere:\n\n_x → left table\n\n_y → right table"
       },
       {
-        "title": "If ward 2 exists in both tables",
-        "body": "they get combined"
+        "title": "6. Using Custom Suffixes",
+        "body": "You can make suffixes more readable using:\n\nsuffixes=\n\nExample:\n\nwards.merge(\n\ncensus,\n\non=\"ward\",\n\nsuffixes=(\"_ward\", \"_cen\")\n\n)\n\nResult:\n\naddress_ward\n\naddress_cen\n\nThis makes it easier to understand which table each column came from."
       },
       {
-        "title": "If a ward exists in only one table",
-        "body": "it gets excluded\n\nUsing merge()\n\nThe main pandas function used for joining tables is:\n\nmerge()"
+        "title": "7. General Structure of an Inner Join",
+        "body": "`merged_df = left_df.merge(`\n\nright_df,\n\non=\"column_name\"\n\n)\n\nWith suffixes:\n\n`merged_df = left_df.merge(`\n\nright_df,\n\non=\"column_name\",\n\nsuffixes=(\"_left\", \"_right\")\n\n)",
+        "exampleCode": "merged_df = left_df.merge(\nmerged_df = left_df.merge("
       },
       {
-        "title": "Basic syntax",
-        "body": "`merged_df = left_table.merge(right_table, on=\"common_column\")`",
-        "exampleCode": "merged_df = left_table.merge(right_table, on=\"common_column\")"
+        "title": "8. Big Concept to Remember",
+        "body": "Merging is basically:\n\nmatching related rows from different tables using a common column.\n\nThe common column is often called:\n\nkey\n\njoin key\n\nmerge key\n\nExamples:\n\nid\n\ncustomer_id\n\nward\n\nemployee_number"
       },
       {
-        "title": "Example",
-        "body": "`wards_census = wards.merge(census, on=\"ward\")`\n\nWhat this means\n\nStart with wards\n\nMerge with census\n\nMatch rows using the ward column\n\nHow merge() Works",
-        "exampleCode": "wards_census = wards.merge(census, on=\"ward\")"
+        "title": "9. Why Merging is Important",
+        "body": "Real datasets are usually separated into multiple tables because:\n\ndata is cleaner\n\neasier to maintain\n\navoids repetition\n\nFor example:\n\ncustomer info in one table\n\norders in another\n\npayments in another\n\nMerging allows you to combine them for analysis.\n\nThis is one of the most important skills in:\n\npandas\n\nSQL\n\ndata analytics\n\ndata science"
       },
       {
-        "title": "Suppose",
-        "body": "wards table\n\nward\n\nalderman\n\n1\n\nSmith\n\n2\n\nHopkins\n\ncensus table\n\nward\n\npopulation\n\n2\n\n54361\n\n3\n\n60000"
-      },
-      {
-        "title": "After inner join",
-        "body": "ward\n\nalderman\n\npopulation\n\n2\n\nHopkins\n\n54361"
-      },
-      {
-        "title": "Only ward 2 remains because",
-        "body": "it exists in both tables"
-      },
-      {
-        "title": "Ward 1 is removed because",
-        "body": "no matching census data"
-      },
-      {
-        "title": "Ward 3 is removed because",
-        "body": "no matching ward data\n\nImportant merge() Arguments\n\non=\n\nSpecifies the column used to match rows."
-      },
-      {
-        "title": "Example",
-        "body": "on=\"ward\"\n\nColumn Order in Result\n\nThe table written first becomes the “left” table."
-      },
-      {
-        "title": "Example",
-        "body": "wards.merge(census, on=\"ward\")"
-      },
-      {
-        "title": "Result",
-        "body": "columns from wards\n\nthen columns from census\n\nOverlapping Column Names\n\nSometimes both tables contain columns with the same name."
-      },
-      {
-        "title": "Example",
-        "body": "address\n\nzip\n\npandas automatically avoids duplicate names by adding suffixes:\n\naddress_x\n\naddress_y"
-      },
-      {
-        "title": "Where",
-        "body": "_x → left table\n\n_y → right table\n\nUsing Custom Suffixes"
-      },
-      {
-        "title": "You can make suffixes more readable using",
-        "body": "suffixes="
-      },
-      {
-        "title": "Example",
-        "body": "wards.merge(\n\ncensus,\n\non=\"ward\",\n\nsuffixes=(\"_ward\", \"_cen\")\n\n)"
-      },
-      {
-        "title": "Result",
-        "body": "address_ward\n\naddress_cen\n\nThis makes it easier to understand which table each column came from.\n\nGeneral Structure of an Inner Join\n\n`merged_df = left_df.merge(`\n\nright_df,\n\non=\"column_name\"\n\n)",
-        "exampleCode": "merged_df = left_df.merge("
-      },
-      {
-        "title": "With suffixes",
-        "body": "`merged_df = left_df.merge(`\n\nright_df,\n\non=\"column_name\",\n\nsuffixes=(\"_left\", \"_right\")\n\n)\n\nBig Concept to Remember",
-        "exampleCode": "merged_df = left_df.merge("
-      },
-      {
-        "title": "Merging is basically",
-        "body": "matching related rows from different tables using a common column."
-      },
-      {
-        "title": "The common column is often called",
-        "body": "key\n\njoin key\n\nmerge key"
-      },
-      {
-        "title": "Examples",
-        "body": "id\n\ncustomer_id\n\nward\n\nemployee_number\n\nWhy Merging is Important\n\nReal datasets are usually separated into multiple tables because:\n\ndata is cleaner\n\neasier to maintain\n\navoids repetition"
-      },
-      {
-        "title": "For example",
-        "body": "customer info in one table\n\norders in another\n\npayments in another\n\nMerging allows you to combine them for analysis."
-      },
-      {
-        "title": "This is one of the most important skills in",
-        "body": "pandas\n\nSQL\n\ndata analytics\n\ndata science\n\nKey Takeaways\n\nmerge() combines DataFrames together.\n\nAn inner join keeps only matching rows from both tables.\n\non= specifies the matching column.\n\nOverlapping column names get suffixes automatically.\n\nsuffixes= lets you customize overlapping column names.\n\nMerging is essential for real-world data analysis."
+        "title": "10. Key Takeaways",
+        "body": "merge() combines DataFrames together.\n\nAn inner join keeps only matching rows from both tables.\n\non= specifies the matching column.\n\nOverlapping column names get suffixes automatically.\n\nsuffixes= lets you customize overlapping column names.\n\nMerging is essential for real-world data analysis."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
+      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
+      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -2955,34 +4062,85 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "One-to-Many Relationships in pandas  In the previous lesson, you learned how to merge two DataFrames using the merge() method. In this lesson, the focus is on u...",
     "sections": [
       {
-        "title": "One-to-Many Relationships",
-        "body": "One-to-Many Relationships in pandas\n\nIn the previous lesson, you learned how to merge two DataFrames using the merge() method. In this lesson, the focus is on understanding relationships between tables, especially the one-to-many relationship.\n\nBefore learning one-to-many, it helps to quickly review one-to-one relationships.\n\nA one-to-one relationship means that each row in one table matches exactly one row in another table. For example, the wards table and the census table both contain one row per ward. Ward 3 in the first table matches only ward 3 in the second table. Since there is only one population record for each ward, the relationship is naturally one-to-one."
+        "title": "1. Concept Overview",
+        "body": "One-to-Many Relationships in pandas\n\nIn the previous lesson, you learned how to merge two DataFrames using the merge() method. In this lesson, the focus is on understanding relationships between tables, especially the one-to-many relationship.\n\nBefore learning one-to-many, it helps to quickly review one-to-one relationships.\n\nA one-to-one relationship means that each row in one table matches exactly one row in another table. For example, the wards table and the census table both contain one row per ward. Ward 3 in the first table matches only ward 3 in the second table. Since there is only one population record for each ward, the relationship is naturally one-to-one.\n\nExample idea:\n\nOne ward → one census record\n\nOne row in the left table → one row in the right table\n\nA one-to-many relationship is different. In this case, one row in the left table can match multiple rows in the right table.\n\nThe example used is the relationship between:\n\nthe wards table\n\nthe licenses table\n\nThe wards table contains information about each ward, while the licenses table contains many business licenses. Since many businesses can exist inside one ward, a single ward can appear multiple times in the licenses table.\n\nSo the relationship becomes:\n\nOne ward → many businesses\n\nBoth tables are connected using the ward column.\n\nWhen using:\n\nwards.merge(licenses, on=\"ward\")\n\npandas automatically handles the one-to-many relationship.\n\nIf ward 1 has many businesses, the row for ward 1 from the wards table will be repeated for every matching business in the licenses table.\n\nThis is important because it explains why merged tables can suddenly become much larger.\n\nFor example:"
       },
       {
-        "title": "Example idea",
-        "body": "One ward → one census record\n\nOne row in the left table → one row in the right table\n\nA one-to-many relationship is different. In this case, one row in the left table can match multiple rows in the right table."
+        "title": "2. Original wards table: 50 rows",
+        "body": "After merging with licenses: 10,000 rows\n\nThe number of rows increases because each ward may match many business records."
       },
       {
-        "title": "The example used is the relationship between",
-        "body": "the wards table\n\nthe licenses table\n\nThe wards table contains information about each ward, while the licenses table contains many business licenses. Since many businesses can exist inside one ward, a single ward can appear multiple times in the licenses table."
+        "title": "3. Key Idea",
+        "body": "In a one-to-many relationship:\n\nThe left table usually contains unique values.\n\nThe right table can contain repeated values for the matching column.\n\nMerging repeats rows from the left table whenever multiple matches exist."
       },
       {
-        "title": "So the relationship becomes",
-        "body": "One ward → many businesses\n\nBoth tables are connected using the ward column."
+        "title": "4. Important Notes",
+        "body": "One-to-One Relationship\n\nOne row matches exactly one row."
       },
       {
-        "title": "When using",
-        "body": "wards.merge(licenses, on=\"ward\")\n\npandas automatically handles the one-to-many relationship.\n\nIf ward 1 has many businesses, the row for ward 1 from the wards table will be repeated for every matching business in the licenses table.\n\nThis is important because it explains why merged tables can suddenly become much larger."
+        "title": "5. Example: wards ↔ census",
+        "body": "One-to-Many Relationship\n\nOne row matches several rows."
       },
       {
-        "title": "For example",
-        "body": "Original wards table: 50 rows\n\nAfter merging with licenses: 10,000 rows\n\nThe number of rows increases because each ward may match many business records.\n\nKey Idea"
+        "title": "6. Example: wards ↔ licenses",
+        "body": "pandas Behavior\n\nThe same merge() syntax is used.\n\npandas automatically duplicates matching rows when needed.\n\nRow counts often increase after merging."
       },
       {
-        "title": "In a one-to-many relationship",
-        "body": "The left table usually contains unique values.\n\nThe right table can contain repeated values for the matching column.\n\nMerging repeats rows from the left table whenever multiple matches exist.\n\nImportant Notes\n\nOne-to-One Relationship\n\nOne row matches exactly one row.\n\nExample: wards ↔ census\n\nOne-to-Many Relationship\n\nOne row matches several rows.\n\nExample: wards ↔ licenses\n\npandas Behavior\n\nThe same merge() syntax is used.\n\npandas automatically duplicates matching rows when needed.\n\nRow counts often increase after merging.\n\nExample Structure\n\nwards table\n\nward\n\nalderman\n\n1\n\nJoe\n\n2\n\nBrian\n\nlicenses table\n\nbusiness\n\nward\n\nStore A\n\n1\n\nCafe B\n\n1\n\nShop C\n\n2\n\nmerged result\n\nward\n\nalderman\n\nbusiness\n\n1\n\nJoe\n\nStore A\n\n1\n\nJoe\n\nCafe B\n\n2\n\nBrian\n\nShop C\n\nNotice how ward 1 and Joe appear twice because there are two businesses in ward 1.\n\nMain Takeaway\n\nA one-to-many merge is extremely common in real-world datasets. One category, customer, location, or ID often connects to many records in another table. pandas handles this automatically during merges, but you should always expect the resulting DataFrame to potentially have many more rows than the original table."
+        "title": "7. Example Structure",
+        "body": "wards table\n\nward\n\nalderman\n\n1\n\nJoe\n\n2\n\nBrian\n\nlicenses table\n\nbusiness\n\nward"
+      },
+      {
+        "title": "8. Store A",
+        "body": "1"
+      },
+      {
+        "title": "9. Cafe B",
+        "body": "1"
+      },
+      {
+        "title": "10. Shop C",
+        "body": "2\n\nmerged result\n\nward\n\nalderman\n\nbusiness\n\n1\n\nJoe"
+      },
+      {
+        "title": "11. Store A",
+        "body": "1\n\nJoe"
+      },
+      {
+        "title": "12. Cafe B",
+        "body": "2\n\nBrian"
+      },
+      {
+        "title": "13. Shop C",
+        "body": "Notice how ward 1 and Joe appear twice because there are two businesses in ward 1."
+      },
+      {
+        "title": "14. Main Takeaway",
+        "body": "A one-to-many merge is extremely common in real-world datasets. One category, customer, location, or ID often connects to many records in another table. pandas handles this automatically during merges, but you should always expect the resulting DataFrame to potentially have many more rows than the original table."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: One-to-Many Relationships",
       "scenario": "Apply the concepts learned in One-to-Many Relationships to process sample tabular data.",
@@ -3004,53 +4162,68 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 48,
     "title": "Merging Multiple DataFrames",
-    "description": "Merging Multiple DataFrames  In the previous lesson, you learned how to merge two tables together using merge(). In real-world data analysis, though, informatio...",
+    "description": "In the previous lesson, you learned how to merge two tables together using merge(). In real-world data analysis, though, information is often spread across seve...",
     "sections": [
       {
-        "title": "Merging Multiple DataFrames",
-        "body": "Merging Multiple DataFrames\n\nIn the previous lesson, you learned how to merge two tables together using merge(). In real-world data analysis, though, information is often spread across several different tables, not just two. Because of this, it’s very common to merge multiple DataFrames together step by step.\n\nThe lesson continues using datasets from the city of Chicago. Previously, there were two tables:\n\nlicenses → contains business license information\n\nwards → contains information about Chicago wards and government offices"
+        "title": "1. Concept Overview",
+        "body": "In the previous lesson, you learned how to merge two tables together using merge(). In real-world data analysis, though, information is often spread across several different tables, not just two. Because of this, it’s very common to merge multiple DataFrames together step by step.\n\nThe lesson continues using datasets from the city of Chicago. Previously, there were two tables:\n\nlicenses → contains business license information\n\nwards → contains information about Chicago wards and government offices\n\nNow, a third table is introduced:\n\ngrants → contains information about businesses that received small business grant money\n\nThe goal is to combine all this information together so we can analyze things like:\n\nwhich businesses received grants\n\nwhere those businesses are located\n\nwhich wards received the most grant money"
       },
       {
-        "title": "Now, a third table is introduced",
-        "body": "grants → contains information about businesses that received small business grant money\n\nThe goal is to combine all this information together so we can analyze things like:\n\nwhich businesses received grants\n\nwhere those businesses are located\n\nwhich wards received the most grant money\n\nConnecting Multiple Tables\n\nTo combine all the information, the process is done in stages."
+        "title": "2. Connecting Multiple Tables",
+        "body": "To combine all the information, the process is done in stages.\n\nFirst:\n\ngrants.merge(licenses, on=[\"address\", \"zip\"])\n\nThen:\n\nmerged_table.merge(wards, on=\"ward\")\n\nThis creates one final DataFrame containing:\n\nbusiness information\n\ngrant information\n\nward information\n\nWhy Merge on Multiple Columns?\n\nA very important concept introduced here is merging using more than one column.\n\nAt first glance, merging on only zip might seem enough, but it creates incorrect matches because many businesses can share the same zip code.\n\nSimilarly, merging only on address could also cause problems because addresses might repeat in different places.\n\nThe safer solution is to merge using BOTH:\n\naddress\n\nzip\n\nThis ensures that a row only matches when BOTH values are the same.\n\nExample:\n\ngrants.merge(licenses, on=[\"address\", \"zip\"])\n\nNotice that the on argument now receives a list instead of a single column name."
       },
       {
-        "title": "First",
-        "body": "grants.merge(licenses, on=[\"address\", \"zip\"])"
+        "title": "3. Key Idea About Multi-Column Merges",
+        "body": "When merging on multiple columns:\n\non=[\"address\", \"zip\"]\n\npandas requires ALL listed columns to match before rows are combined.\n\nThis helps avoid incorrect duplicates or mismatched data."
       },
       {
-        "title": "Then",
-        "body": "merged_table.merge(wards, on=\"ward\")"
+        "title": "4. Chaining Multiple Merges",
+        "body": "You can continue merging more tables one after another.\n\nExample structure:\n\ngrants.merge(licenses, on=[\"address\", \"zip\"]) \\\n\n.merge(wards, on=\"ward\")\n\nThe backslash \\ is used for line continuation so Python treats it as one statement spread across multiple lines.\n\nThis technique keeps long merge operations cleaner and easier to read."
       },
       {
-        "title": "This creates one final DataFrame containing",
-        "body": "business information\n\ngrant information\n\nward information\n\nWhy Merge on Multiple Columns?\n\nA very important concept introduced here is merging using more than one column.\n\nAt first glance, merging on only zip might seem enough, but it creates incorrect matches because many businesses can share the same zip code.\n\nSimilarly, merging only on address could also cause problems because addresses might repeat in different places."
+        "title": "5. Result of Multiple Merges",
+        "body": "After combining the tables, you now have a richer dataset containing:\n\ngrant amounts\n\nbusiness details\n\nward details\n\nOnce all the data is connected, you can perform analysis more easily.\n\nFor example:\n\ncalculate total grant money per ward\n\ncompare wards\n\nvisualize which wards received more funding\n\nThis is one of the biggest reasons merging is important in data analysis: it allows information from different sources to work together."
       },
       {
-        "title": "The safer solution is to merge using BOTH",
-        "body": "address\n\nzip\n\nThis ensures that a row only matches when BOTH values are the same."
+        "title": "6. Important Concepts",
+        "body": "Merging on Multiple Columns\n\nUse a list inside on.\n\non=[\"address\", \"zip\"]\n\nBoth columns must match."
       },
       {
-        "title": "Example",
-        "body": "grants.merge(licenses, on=[\"address\", \"zip\"])\n\nNotice that the on argument now receives a list instead of a single column name.\n\nKey Idea About Multi-Column Merges"
+        "title": "7. Chaining Merges",
+        "body": "You can merge several DataFrames in sequence.\n\ndf1.merge(df2).merge(df3)"
       },
       {
-        "title": "When merging on multiple columns",
-        "body": "on=[\"address\", \"zip\"]\n\npandas requires ALL listed columns to match before rows are combined.\n\nThis helps avoid incorrect duplicates or mismatched data.\n\nChaining Multiple Merges\n\nYou can continue merging more tables one after another."
+        "title": "8. Why This Matters",
+        "body": "Real datasets are often separated across multiple tables.\n\nYou may need to combine:\n\ncustomer data\n\ntransaction data\n\nproduct data\n\nlocation data\n\nbefore meaningful analysis can happen."
       },
       {
-        "title": "Example structure",
-        "body": "grants.merge(licenses, on=[\"address\", \"zip\"]) \\\n\n.merge(wards, on=\"ward\")\n\nThe backslash \\ is used for line continuation so Python treats it as one statement spread across multiple lines.\n\nThis technique keeps long merge operations cleaner and easier to read.\n\nResult of Multiple Merges\n\nAfter combining the tables, you now have a richer dataset containing:\n\ngrant amounts\n\nbusiness details\n\nward details\n\nOnce all the data is connected, you can perform analysis more easily."
-      },
-      {
-        "title": "For example",
-        "body": "calculate total grant money per ward\n\ncompare wards\n\nvisualize which wards received more funding\n\nThis is one of the biggest reasons merging is important in data analysis: it allows information from different sources to work together.\n\nImportant Concepts\n\nMerging on Multiple Columns\n\nUse a list inside on.\n\non=[\"address\", \"zip\"]\n\nBoth columns must match.\n\nChaining Merges\n\nYou can merge several DataFrames in sequence.\n\ndf1.merge(df2).merge(df3)\n\nWhy This Matters\n\nReal datasets are often separated across multiple tables."
-      },
-      {
-        "title": "You may need to combine",
-        "body": "customer data\n\ntransaction data\n\nproduct data\n\nlocation data\n\nbefore meaningful analysis can happen.\n\nMain Takeaway\n\nMerging multiple DataFrames is a core skill in pandas because real-world data is rarely stored in one perfect table. pandas allows you to combine many datasets together step by step, and you can even merge using multiple matching columns to make the joins more accurate and reliable."
+        "title": "9. Main Takeaway",
+        "body": "Merging multiple DataFrames is a core skill in pandas because real-world data is rarely stored in one perfect table. pandas allows you to combine many datasets together step by step, and you can even merge using multiple matching columns to make the joins more accurate and reliable."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Merging Multiple DataFrames",
       "scenario": "Apply the concepts learned in Merging Multiple DataFrames to process sample tabular data.",
@@ -3072,65 +4245,112 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 49,
     "title": "Left Join in pandas",
-    "description": "Left Join in pandas  In the earlier lessons, you learned how to merge tables using the merge() method. By default, pandas performs an inner join, which only kee...",
+    "description": "In the earlier lessons, you learned how to merge tables using the merge() method. By default, pandas performs an inner join, which only keeps rows where matchin...",
     "sections": [
       {
-        "title": "Left Join in pandas",
-        "body": "Left Join in pandas\n\nIn the earlier lessons, you learned how to merge tables using the merge() method. By default, pandas performs an inner join, which only keeps rows where matching values exist in both tables.\n\nThis lesson introduces another type of merge called the left join."
+        "title": "1. Concept Overview",
+        "body": "In the earlier lessons, you learned how to merge tables using the merge() method. By default, pandas performs an inner join, which only keeps rows where matching values exist in both tables.\n\nThis lesson introduces another type of merge called the left join.\n\nA left join keeps:\n\nall rows from the left table\n\nonly the matching rows from the right table\n\nIf no match is found in the right table, pandas fills the missing values with NaN."
       },
       {
-        "title": "A left join keeps",
-        "body": "all rows from the left table\n\nonly the matching rows from the right table\n\nIf no match is found in the right table, pandas fills the missing values with NaN.\n\nQuick Review of Inner Join\n\nAn inner join only returns rows where the key column exists in BOTH tables."
+        "title": "2. Quick Review of Inner Join",
+        "body": "An inner join only returns rows where the key column exists in BOTH tables.\n\nExample idea:"
       },
       {
-        "title": "Example idea",
-        "body": "Left Table\n\nRight Table\n\nResult\n\nMatch exists\n\nMatch exists\n\nRow kept\n\nNo match\n\n—\n\nRow removed\n\nSo unmatched rows disappear completely.\n\nWhat Makes Left Join Different?\n\nA left join preserves every row from the left table even if no match exists in the right table."
+        "title": "3. Left Table",
+        "body": "Right Table\n\nResult"
       },
       {
-        "title": "Example idea",
-        "body": "Left Table\n\nRight Table\n\nResult\n\nMatch exists\n\nMatch exists\n\nCombined row\n\nNo match\n\n—\n\nLeft row kept, right side becomes NaN\n\nThis is useful when the left table contains the main dataset you want to preserve.\n\nExample Using Movies Dataset\n\nThe lesson uses data from The Movie Database."
+        "title": "4. Match exists",
+        "body": "Match exists"
       },
       {
-        "title": "There are two tables",
-        "body": "movies"
+        "title": "5. Row kept",
+        "body": "No match\n\n—"
       },
       {
-        "title": "Contains",
-        "body": "movie ID\n\ntitle\n\npopularity\n\nThis table has around 4,803 rows.\n\ntaglines"
+        "title": "6. Row removed",
+        "body": "So unmatched rows disappear completely.\n\nWhat Makes Left Join Different?\n\nA left join preserves every row from the left table even if no match exists in the right table.\n\nExample idea:"
       },
       {
-        "title": "Contains",
-        "body": "movie ID\n\nmovie tagline\n\nThis table has fewer rows, meaning not every movie has a tagline.\n\nPerforming a Left Join\n\nmovies.merge(taglines, on=\"id\", how=\"left\")\n\nBreaking Down the Code\n\nmovies\n\nThis is the left table.\n\nAll rows from this table will remain in the result.\n\ntaglines\n\nThis is the right table.\n\nOnly matching rows will be added.\n\non=\"id\"\n\nThe id column is the key used to connect the tables.\n\nhow=\"left\"\n\nSpecifies that the merge should be a left join.\n\nWithout this argument, pandas uses an inner join by default.\n\nWhat Happens After the Merge?"
+        "title": "7. Left Table",
+        "body": "Right Table\n\nResult"
       },
       {
-        "title": "If a movie has a matching tagline",
-        "body": "the tagline appears in the merged result"
+        "title": "8. Match exists",
+        "body": "Match exists"
       },
       {
-        "title": "If a movie does NOT have a tagline",
-        "body": "the movie row is still kept\n\nthe tagline column becomes NaN"
+        "title": "9. Combined row",
+        "body": "No match\n\n—"
       },
       {
-        "title": "Example",
-        "body": "id\n\ntitle\n\ntagline\n\n1\n\nMovie A\n\n\"Epic adventure\"\n\n2\n\nMovie B\n\nNaN\n\nMovie B stays because it came from the left table.\n\nImportant Observation About Row Counts"
+        "title": "10. Left row kept, right side becomes NaN",
+        "body": "This is useful when the left table contains the main dataset you want to preserve."
       },
       {
-        "title": "Since",
-        "body": "the left table (movies) has 4,803 rows\n\nthe relationship is one-to-one\n\nthe merged table keeps essentially the same number of rows."
+        "title": "11. Example Using Movies Dataset",
+        "body": "The lesson uses data from The Movie Database.\n\nThere are two tables:\n\nmovies\n\nContains:\n\nmovie ID\n\ntitle\n\npopularity\n\nThis table has around 4,803 rows.\n\ntaglines\n\nContains:\n\nmovie ID\n\nmovie tagline\n\nThis table has fewer rows, meaning not every movie has a tagline."
       },
       {
-        "title": "That’s one important property of left joins",
-        "body": "In a one-to-one relationship, a left join usually returns the same number of rows as the left table.\n\nKey Concepts\n\nInner Join\n\nKeeps only matching rows\n\nUnmatched rows are removed\n\nLeft Join\n\nKeeps ALL rows from the left table\n\nMissing matches from the right become NaN\n\nSyntax\n\ndf1.merge(df2, on=\"column\", how=\"left\")\n\nWhen Left Joins Are Useful"
+        "title": "12. Performing a Left Join",
+        "body": "movies.merge(taglines, on=\"id\", how=\"left\")"
       },
       {
-        "title": "Left joins are extremely useful when",
-        "body": "one table is your “main” dataset\n\nyou do not want to lose rows\n\nextra information from another table is optional"
+        "title": "13. Breaking Down the Code",
+        "body": "movies\n\nThis is the left table.\n\nAll rows from this table will remain in the result.\n\ntaglines\n\nThis is the right table.\n\nOnly matching rows will be added.\n\non=\"id\"\n\nThe id column is the key used to connect the tables.\n\nhow=\"left\"\n\nSpecifies that the merge should be a left join.\n\nWithout this argument, pandas uses an inner join by default.\n\nWhat Happens After the Merge?\n\nIf a movie has a matching tagline:\n\nthe tagline appears in the merged result\n\nIf a movie does NOT have a tagline:\n\nthe movie row is still kept\n\nthe tagline column becomes NaN\n\nExample:\n\nid\n\ntitle\n\ntagline\n\n1"
       },
       {
-        "title": "Examples",
-        "body": "customers + optional purchases\n\nmovies + optional taglines\n\nstudents + optional scholarship info\n\nMain Takeaway\n\nA left join keeps every row from the left table, even when no matching data exists in the right table. Missing matches are filled with NaN, making left joins very useful when you want to preserve the full original dataset while adding extra information from another table."
+        "title": "14. Movie A",
+        "body": "\"Epic adventure\"\n\n2"
+      },
+      {
+        "title": "15. Movie B",
+        "body": "NaN\n\nMovie B stays because it came from the left table."
+      },
+      {
+        "title": "16. Important Observation About Row Counts",
+        "body": "Since:\n\nthe left table (movies) has 4,803 rows\n\nthe relationship is one-to-one\n\nthe merged table keeps essentially the same number of rows.\n\nThat’s one important property of left joins:\n\nIn a one-to-one relationship, a left join usually returns the same number of rows as the left table."
+      },
+      {
+        "title": "17. Key Concepts",
+        "body": "Inner Join"
+      },
+      {
+        "title": "18. Keeps only matching rows",
+        "body": "Unmatched rows are removed"
+      },
+      {
+        "title": "19. Left Join",
+        "body": "Keeps ALL rows from the left table"
+      },
+      {
+        "title": "20. Missing matches from the right become NaN",
+        "body": "Syntax\n\ndf1.merge(df2, on=\"column\", how=\"left\")\n\nWhen Left Joins Are Useful\n\nLeft joins are extremely useful when:\n\none table is your “main” dataset\n\nyou do not want to lose rows\n\nextra information from another table is optional\n\nExamples:\n\ncustomers + optional purchases\n\nmovies + optional taglines\n\nstudents + optional scholarship info"
+      },
+      {
+        "title": "21. Main Takeaway",
+        "body": "A left join keeps every row from the left table, even when no matching data exists in the right table. Missing matches are filled with NaN, making left joins very useful when you want to preserve the full original dataset while adding extra information from another table."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
+      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
+      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -3151,49 +4371,128 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 50,
     "title": "Other Types of Joins in pandas",
-    "description": "Other Types of Joins in pandas...",
+    "description": "Previously, you learned about:  inner joins  left joins  This lesson introduces two more join types supported by pandas:  right join  outer join  These joins co...",
     "sections": [
       {
-        "title": "Other Types of Joins in pandas",
-        "body": "Other Types of Joins in pandas"
+        "title": "1. Concept Overview",
+        "body": "Previously, you learned about:\n\ninner joins\n\nleft joins\n\nThis lesson introduces two more join types supported by pandas:\n\nright join\n\nouter join\n\nThese joins control which rows are kept after merging tables."
       },
       {
-        "title": "Previously, you learned about",
-        "body": "inner joins\n\nleft joins\n\nThis lesson introduces two more join types supported by pandas:\n\nright join\n\nouter join\n\nThese joins control which rows are kept after merging tables.\n\nRight Join\n\nA right join is basically the opposite of a left join."
+        "title": "2. Right Join",
+        "body": "A right join is basically the opposite of a left join.\n\nIt:\n\nkeeps all rows from the right table\n\nonly keeps matching rows from the left table\n\nIf no match exists in the left table, pandas fills the missing columns with NaN."
       },
       {
-        "title": "It",
-        "body": "keeps all rows from the right table\n\nonly keeps matching rows from the left table\n\nIf no match exists in the left table, pandas fills the missing columns with NaN.\n\nVisual Idea of a Right Join\n\nLeft Table\n\nC\n\nA\n\n1\n\nX\n\n2\n\nY\n\nRight Table\n\nC\n\nB\n\n1\n\nP\n\n3\n\nQ\n\nResult of Right Join\n\nC\n\nA\n\nB\n\n1\n\nX\n\nP\n\n3\n\nNaN\n\nQ"
+        "title": "3. Visual Idea of a Right Join",
+        "body": "Left Table\n\nC\n\nA\n\n1\n\nX\n\n2\n\nY"
       },
       {
-        "title": "Notice",
-        "body": "all rows from the right table remain\n\nunmatched left-side values become NaN\n\nExample Using Movie Data\n\nThe lesson introduces another dataset called movie_to_genres.\n\nA movie can belong to multiple genres, so this table stores movie IDs along with genre names."
+        "title": "4. Right Table",
+        "body": "C\n\nB\n\n1\n\nP\n\n3\n\nQ"
       },
       {
-        "title": "The goal is to compare",
-        "body": "the movies table\n\nthe tv_genre subset\n\nto check whether any movie information is missing.\n\nUsing Different Column Names\n\nAn important new concept appears here.\n\nThe matching columns do NOT always have the same name."
+        "title": "5. Result of Right Join",
+        "body": "C\n\nA\n\nB\n\n1\n\nX\n\nP\n\n3\n\nNaN\n\nQ\n\nNotice:\n\nall rows from the right table remain\n\nunmatched left-side values become NaN"
       },
       {
-        "title": "Example",
-        "body": "in movies → column is id\n\nin tv_genre → column is movie_id"
+        "title": "6. Example Using Movie Data",
+        "body": "The lesson introduces another dataset called movie_to_genres.\n\nA movie can belong to multiple genres, so this table stores movie IDs along with genre names.\n\nThe goal is to compare:\n\nthe movies table\n\nthe tv_genre subset\n\nto check whether any movie information is missing."
       },
       {
-        "title": "To handle this, pandas provides",
-        "body": "left_on\n\nright_on\n\nRight Join Syntax\n\nmovies.merge(\n\ntv_genre,\n\nhow=\"right\",\n\nleft_on=\"id\",\n\nright_on=\"movie_id\"\n\n)\n\nBreaking Down the Code\n\nhow=\"right\"\n\nPerforms a right join.\n\nleft_on=\"id\"\n\nUses the id column from the left table.\n\nright_on=\"movie_id\"\n\nUses the movie_id column from the right table.\n\nWhy This Is Useful\n\nSometimes datasets use different column names even though they represent the same thing."
+        "title": "7. Using Different Column Names",
+        "body": "An important new concept appears here.\n\nThe matching columns do NOT always have the same name.\n\nExample:\n\nin movies → column is id\n\nin tv_genre → column is movie_id\n\nTo handle this, pandas provides:\n\nleft_on\n\nright_on"
       },
       {
-        "title": "Example",
-        "body": "customer_id\n\ncust_id\n\nid\n\nleft_on and right_on allow pandas to connect them correctly.\n\nOuter Join\n\nThe last join type introduced is the outer join."
+        "title": "8. Right Join Syntax",
+        "body": "movies.merge(\n\ntv_genre,\n\nhow=\"right\",\n\nleft_on=\"id\",\n\nright_on=\"movie_id\"\n\n)"
       },
       {
-        "title": "An outer join keeps",
-        "body": "ALL rows from the left table\n\nAND ALL rows from the right table\n\nEven if no matches exist.\n\nMissing matches become NaN.\n\nVisual Idea of an Outer Join\n\nLeft Table\n\nC\n\nA\n\n1\n\nX\n\n2\n\nY\n\nRight Table\n\nC\n\nB\n\n1\n\nP\n\n3\n\nQ\n\nOuter Join Result\n\nC\n\nA\n\nB\n\n1\n\nX\n\nP\n\n2\n\nY\n\nNaN\n\n3\n\nNaN\n\nQ\n\nEverything from BOTH tables is preserved.\n\nOuter Join Example\n\nThe lesson filters movie genres into two tiny tables:\n\nFamily movies\n\nComedy movies\n\nThen merges them using an outer join.\n\nfamily.merge(\n\ncomedy,\n\non=\"movie_id\",\n\nhow=\"outer\",\n\nsuffixes=(\"_fam\", \"_com\")\n\n)\n\nNew Concept: suffixes\n\nIf both tables contain columns with the same names, pandas automatically adds suffixes."
+        "title": "9. Breaking Down the Code",
+        "body": "how=\"right\"\n\nPerforms a right join.\n\nleft_on=\"id\"\n\nUses the id column from the left table.\n\nright_on=\"movie_id\"\n\nUses the movie_id column from the right table."
       },
       {
-        "title": "You can customize them using",
-        "body": "suffixes=(\"_fam\", \"_com\")\n\nThis makes it easier to know which column came from which table.\n\nKey Differences Between Join Types\n\nJoin Type\n\nKeeps\n\nInner Join\n\nOnly matching rows\n\nLeft Join\n\nAll left rows + matching right rows\n\nRight Join\n\nAll right rows + matching left rows\n\nOuter Join\n\nAll rows from both tables\n\nImportant Concepts\n\nleft_on and right_on\n\nUsed when key column names are different.\n\nleft_on=\"id\"\n\nright_on=\"movie_id\"\n\nsuffixes\n\nUsed when tables contain overlapping column names.\n\nsuffixes=(\"_left\", \"_right\")\n\nMain Takeaway\n\nRight joins and outer joins give you more control over which rows are preserved during merges. A right join keeps all rows from the right table, while an outer join keeps everything from both tables. pandas also allows merging on columns with different names using left_on and right_on, making joins much more flexible in real-world datasets."
+        "title": "10. Why This Is Useful",
+        "body": "Sometimes datasets use different column names even though they represent the same thing.\n\nExample:\n\ncustomer_id\n\ncust_id\n\nid\n\nleft_on and right_on allow pandas to connect them correctly."
+      },
+      {
+        "title": "11. Outer Join",
+        "body": "The last join type introduced is the outer join.\n\nAn outer join keeps:"
+      },
+      {
+        "title": "12. ALL rows from the left table",
+        "body": "AND ALL rows from the right table\n\nEven if no matches exist.\n\nMissing matches become NaN."
+      },
+      {
+        "title": "13. Visual Idea of an Outer Join",
+        "body": "Left Table\n\nC\n\nA\n\n1\n\nX\n\n2\n\nY"
+      },
+      {
+        "title": "14. Right Table",
+        "body": "C\n\nB\n\n1\n\nP\n\n3\n\nQ"
+      },
+      {
+        "title": "15. Outer Join Result",
+        "body": "C\n\nA\n\nB\n\n1\n\nX\n\nP\n\n2\n\nY\n\nNaN\n\n3\n\nNaN\n\nQ\n\nEverything from BOTH tables is preserved."
+      },
+      {
+        "title": "16. Outer Join Example",
+        "body": "The lesson filters movie genres into two tiny tables:"
+      },
+      {
+        "title": "17. Family movies",
+        "body": "Comedy movies\n\nThen merges them using an outer join.\n\nfamily.merge(\n\ncomedy,\n\non=\"movie_id\",\n\nhow=\"outer\",\n\nsuffixes=(\"_fam\", \"_com\")\n\n)"
+      },
+      {
+        "title": "18. New Concept: suffixes",
+        "body": "If both tables contain columns with the same names, pandas automatically adds suffixes.\n\nYou can customize them using:\n\nsuffixes=(\"_fam\", \"_com\")\n\nThis makes it easier to know which column came from which table."
+      },
+      {
+        "title": "19. Key Differences Between Join Types",
+        "body": "Join Type\n\nKeeps"
+      },
+      {
+        "title": "20. Inner Join",
+        "body": "Only matching rows"
+      },
+      {
+        "title": "21. Left Join",
+        "body": "All left rows + matching right rows"
+      },
+      {
+        "title": "22. Right Join",
+        "body": "All right rows + matching left rows"
+      },
+      {
+        "title": "23. Outer Join",
+        "body": "All rows from both tables"
+      },
+      {
+        "title": "24. Important Concepts",
+        "body": "left_on and right_on\n\nUsed when key column names are different.\n\nleft_on=\"id\"\n\nright_on=\"movie_id\"\n\nsuffixes\n\nUsed when tables contain overlapping column names.\n\nsuffixes=(\"_left\", \"_right\")"
+      },
+      {
+        "title": "25. Main Takeaway",
+        "body": "Right joins and outer joins give you more control over which rows are preserved during merges. A right join keeps all rows from the right table, while an outer join keeps everything from both tables. pandas also allows merging on columns with different names using left_on and right_on, making joins much more flexible in real-world datasets."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
+      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
+      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -3214,70 +4513,101 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 51,
     "title": "Merging a Table to Itself (Self Join)",
-    "description": "Merging a Table to Itself (Self Join)  A self join happens when you merge a table with itself. This sounds strange at first, but it’s very useful when rows insi...",
+    "description": "A self join happens when you merge a table with itself. This sounds strange at first, but it’s very useful when rows inside the same table are related to other ...",
     "sections": [
       {
-        "title": "Merging a Table to Itself (Self Join)",
-        "body": "Merging a Table to Itself (Self Join)\n\nA self join happens when you merge a table with itself. This sounds strange at first, but it’s very useful when rows inside the same table are related to other rows in that same table.\n\nThe example in the lesson uses movie sequels."
+        "title": "1. Concept Overview",
+        "body": "A self join happens when you merge a table with itself. This sounds strange at first, but it’s very useful when rows inside the same table are related to other rows in that same table.\n\nThe example in the lesson uses movie sequels.\n\nImagine a table like this:\n\nid\n\ntitle\n\nsequel\n\n862"
       },
       {
-        "title": "Imagine a table like this",
-        "body": "id\n\ntitle\n\nsequel\n\n862\n\nToy Story\n\n863\n\n863\n\nToy Story 2\n\n10193\n\n10193\n\nToy Story 3\n\nNaN\n\nThe sequel column stores the ID of another movie inside the same table.\n\nToy Story (862) → sequel is movie 863\n\nToy Story 2 (863) → sequel is movie 10193\n\nThe problem is:\u000b the sequel’s title is not directly stored in the row — only its ID is."
+        "title": "2. Toy Story",
+        "body": "863\n\n863"
       },
       {
-        "title": "So we merge the table with itself to connect",
-        "body": "original movie\n\nsequel movie\n\ninto one row.\n\nBasic Self Join\n\nsequels.merge(\n\nsequels,\n\nleft_on=\"sequel\",\n\nright_on=\"id\",\n\nsuffixes=(\"_org\", \"_seq\")\n\n)\n\nWhat Each Part Means\n\nsequels.merge(sequels, ...)\n\nYou are merging the table with another copy of itself."
+        "title": "3. Toy Story 2",
+        "body": "10193\n\n10193"
       },
       {
-        "title": "Think of it like",
-        "body": "`left table  = original movies`\n\n`right table = sequel movies`\n\nEven though they are the same DataFrame.\n\nleft_on=\"sequel\"\n\nUse the sequel column from the left table.",
-        "exampleCode": "left table  = original movies\nright table = sequel movies"
+        "title": "4. Toy Story 3",
+        "body": "NaN\n\nThe sequel column stores the ID of another movie inside the same table.\n\nToy Story (862) → sequel is movie 863\n\nToy Story 2 (863) → sequel is movie 10193\n\nThe problem is:\n\nthe sequel’s title is not directly stored in the row — only its ID is.\n\nSo we merge the table with itself to connect:\n\noriginal movie\n\nsequel movie\n\ninto one row."
       },
       {
-        "title": "Example",
-        "body": "title\n\nsequel\n\nToy Story\n\n863\n\nright_on=\"id\"\n\nMatch it to the id column in the right table."
+        "title": "5. Basic Self Join",
+        "body": "sequels.merge(\n\nsequels,\n\nleft_on=\"sequel\",\n\nright_on=\"id\",\n\nsuffixes=(\"_org\", \"_seq\")\n\n)"
       },
       {
-        "title": "Example",
-        "body": "id\n\ntitle\n\n863\n\nToy Story 2"
+        "title": "6. What Each Part Means",
+        "body": "sequels.merge(sequels, ...)\n\nYou are merging the table with another copy of itself.\n\nThink of it like:\n\n`left table = original movies`\n\n`right table = sequel movies`\n\nEven though they are the same DataFrame.\n\nleft_on=\"sequel\"\n\nUse the sequel column from the left table.\n\nExample:\n\ntitle\n\nsequel",
+        "exampleCode": "left table = original movies\nright table = sequel movies"
       },
       {
-        "title": "Since",
-        "body": "863 == 863\n\nthey get connected.\n\nResult\n\ntitle_org\n\ntitle_seq\n\nToy Story\n\nToy Story 2\n\nToy Story 2\n\nToy Story 3\n\nNow each movie is linked to its sequel.\n\nWhy suffixes is Needed"
+        "title": "7. Toy Story",
+        "body": "863\n\nright_on=\"id\"\n\nMatch it to the id column in the right table.\n\nExample:\n\nid\n\ntitle\n\n863"
       },
       {
-        "title": "Both tables have columns like",
-        "body": "id\n\ntitle\n\nWithout suffixes, pandas wouldn’t know which is which."
+        "title": "8. Toy Story 2",
+        "body": "Since:\n\n863 == 863\n\nthey get connected.\n\nResult\n\ntitle_org\n\ntitle_seq"
       },
       {
-        "title": "So",
-        "body": "suffixes=(\"_org\", \"_seq\")"
+        "title": "9. Toy Story",
+        "body": "Toy Story 2"
       },
       {
-        "title": "renames them internally to",
-        "body": "title_org\n\ntitle_seq"
+        "title": "10. Toy Story 2",
+        "body": "Toy Story 3\n\nNow each movie is linked to its sequel."
       },
       {
-        "title": "meaning",
-        "body": "original movie\n\nsequel movie\n\nInner Join vs Left Join\n\nBy default, merge uses an inner join."
+        "title": "11. Why suffixes is Needed",
+        "body": "Both tables have columns like:\n\nid\n\ntitle\n\nWithout suffixes, pandas wouldn’t know which is which.\n\nSo:\n\nsuffixes=(\"_org\", \"_seq\")\n\nrenames them internally to:\n\ntitle_org\n\ntitle_seq\n\nmeaning:\n\noriginal movie\n\nsequel movie"
       },
       {
-        "title": "That means",
-        "body": "only rows with matches are returned.\n\nSo movies without sequels disappear."
+        "title": "12. Inner Join vs Left Join",
+        "body": "By default, merge uses an inner join.\n\nThat means:\n\nonly rows with matches are returned.\n\nSo movies without sequels disappear.\n\nExample:\n\ntitle\n\nsequel\n\nTitanic\n\nNaN\n\nTitanic gets removed because it has no matching sequel."
       },
       {
-        "title": "Example",
-        "body": "title\n\nsequel\n\nTitanic\n\nNaN\n\nTitanic gets removed because it has no matching sequel.\n\nUsing a Left Join\n\nsequels.merge(\n\nsequels,\n\nleft_on=\"sequel\",\n\nright_on=\"id\",\n\nhow=\"left\",\n\nsuffixes=(\"_org\", \"_seq\")\n\n)\n\nNow ALL original movies stay."
+        "title": "13. Using a Left Join",
+        "body": "sequels.merge(\n\nsequels,\n\nleft_on=\"sequel\",\n\nright_on=\"id\",\n\nhow=\"left\",\n\nsuffixes=(\"_org\", \"_seq\")\n\n)\n\nNow ALL original movies stay.\n\nMovies without sequels will have:\n\nNaN\n\nfor sequel columns."
       },
       {
-        "title": "Movies without sequels will have",
-        "body": "NaN\n\nfor sequel columns.\n\nReal-World Uses of Self Joins\n\nSelf joins are common in hierarchical or connected data.\n\nEmployee ↔ Manager\n\nemployee_id\n\nmanager_id\n\n1\n\n5\n\nYou can merge employees with employees again to get manager names.\n\nSocial Networks\n\nuser\n\nfriend_id\n\nAlice\n\n3\n\nMerge users with users again to get friend information.\n\nLogistics / Routes\n\ncity\n\nnext_city\n\nManila\n\nBatangas\n\nSelf joins can connect travel paths.\n\nBig Picture"
+        "title": "14. Real-World Uses of Self Joins",
+        "body": "Self joins are common in hierarchical or connected data."
       },
       {
-        "title": "A self join is basically",
-        "body": "“Use one row to look up another row in the same table.”\n\nYou are treating one DataFrame as if it were two related tables."
+        "title": "15. Employee ↔ Manager",
+        "body": "employee_id\n\nmanager_id\n\n1\n\n5\n\nYou can merge employees with employees again to get manager names."
+      },
+      {
+        "title": "16. Social Networks",
+        "body": "user\n\nfriend_id\n\nAlice\n\n3\n\nMerge users with users again to get friend information."
+      },
+      {
+        "title": "17. Logistics / Routes",
+        "body": "city\n\nnext_city\n\nManila\n\nBatangas\n\nSelf joins can connect travel paths."
+      },
+      {
+        "title": "18. Big Picture",
+        "body": "A self join is basically:\n\n“Use one row to look up another row in the same table.”\n\nYou are treating one DataFrame as if it were two related tables."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
+      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
+      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -3298,94 +4628,81 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 52,
     "title": "Merging on indexes",
-    "description": "Merging on Indexes...",
+    "description": "So far, merges used columns like:  movies.merge(taglines, on=\"id\")  But pandas can also merge using the index of a DataFrame.  This is useful because indexes of...",
     "sections": [
       {
-        "title": "Merging on indexes",
-        "body": "Merging on Indexes"
-      },
-      {
-        "title": "So far, merges used columns like",
-        "body": "movies.merge(taglines, on=\"id\")\n\nBut pandas can also merge using the index of a DataFrame.\n\nThis is useful because indexes often contain unique IDs.\n\nWhat is an Index Again?"
-      },
-      {
-        "title": "Normally a DataFrame looks like this",
-        "body": "index\n\nid\n\ntitle\n\n0\n\n101\n\nAvatar\n\n1\n\n102\n\nTitanic\n\nThe leftmost numbers (0,1,2) are the default index."
-      },
-      {
-        "title": "But sometimes we make another column the index",
-        "body": "`movies = movies.set_index(\"id\")`",
+        "title": "1. Concept Overview",
+        "body": "So far, merges used columns like:\n\nmovies.merge(taglines, on=\"id\")\n\nBut pandas can also merge using the index of a DataFrame.\n\nThis is useful because indexes often contain unique IDs.\n\nWhat is an Index Again?\n\nNormally a DataFrame looks like this:\n\nindex\n\nid\n\ntitle\n\n0\n\n101\n\nAvatar\n\n1\n\n102\n\nTitanic\n\nThe leftmost numbers (0,1,2) are the default index.\n\nBut sometimes we make another column the index:\n\n`movies = movies.set_index(\"id\")`\n\nNow:\n\nid (index)\n\ntitle\n\n101\n\nAvatar\n\n102\n\nTitanic\n\nThe id column became the index.\n\nWhy Merge on an Index?\n\nIndexes are often:\n\nunique\n\noptimized for lookup\n\nused as identifiers\n\nSo merging on indexes is clean and efficient.",
         "exampleCode": "movies = movies.set_index(\"id\")"
       },
       {
-        "title": "Now",
-        "body": "id (index)\n\ntitle\n\n101\n\nAvatar\n\n102\n\nTitanic\n\nThe id column became the index.\n\nWhy Merge on an Index?"
+        "title": "2. Simple Index Merge",
+        "body": "If both tables use the same index name:\n\nmovies.merge(taglines, on=\"id\", how=\"left\")\n\nEven though id is now an index, pandas automatically understands it."
       },
       {
-        "title": "Indexes are often",
-        "body": "unique\n\noptimized for lookup\n\nused as identifiers\n\nSo merging on indexes is clean and efficient.\n\nSimple Index Merge"
+        "title": "3. Big Picture",
+        "body": "This works because:\n\non=\"id\"\n\ncan refer to:\n\na column\n\nOR\n\nan index name\n\npandas detects it automatically."
       },
       {
-        "title": "If both tables use the same index name",
-        "body": "movies.merge(taglines, on=\"id\", how=\"left\")\n\nEven though id is now an index, pandas automatically understands it.\n\nBig Picture"
+        "title": "4. MultiIndex Merge",
+        "body": "A MultiIndex means multiple index levels.\n\nExample:\n\nmovie_id\n\ncast_id\n\nactor\n\n1\n\n10"
       },
       {
-        "title": "This works because",
-        "body": "on=\"id\""
+        "title": "5. Samuel Jackson",
+        "body": "If both movie_id and cast_id are indexes:\n\nsamuel.merge(cast, on=[\"movie_id\", \"cast_id\"])\n\nThis works exactly like merging on multiple columns.\n\nBoth values must match.\n\nWhen Index Names are Different\n\nSometimes the indexes have different names.\n\nExample:\n\nLeft table index:\n\nid\n\nRight table index:\n\nmovie_id\n\nThen you use:\n\nmovies.merge(\n\nmovie_to_genres,\n\nleft_on=\"id\",\n\nright_on=\"movie_id\",\n\nleft_index=True,\n\nright_index=True\n\n)"
       },
       {
-        "title": "can refer to",
-        "body": "a column\u000b OR\n\nan index name\n\npandas detects it automatically.\n\nMultiIndex Merge\n\nA MultiIndex means multiple index levels."
+        "title": "6. Important Part",
+        "body": "When using:\n\nleft_on\n\nright_on\n\nwith indexes, you MUST specify:\n\nleft_index=True\n\nright_index=True\n\nThis tells pandas:\n\n“The keys are indexes, not regular columns.”"
       },
       {
-        "title": "Example",
-        "body": "movie_id\n\ncast_id\n\nactor\n\n1\n\n10\n\nSamuel Jackson"
+        "title": "7. Quick Rule",
+        "body": "Same index names\n\nUse:\n\non=\"id\""
       },
       {
-        "title": "If both movie_id and cast_id are indexes",
-        "body": "samuel.merge(cast, on=[\"movie_id\", \"cast_id\"])\n\nThis works exactly like merging on multiple columns.\n\nBoth values must match.\n\nWhen Index Names are Different\n\nSometimes the indexes have different names."
+        "title": "8. Different index names",
+        "body": "Use:\n\nleft_on=\n\nright_on=\n\nleft_index=True\n\nright_index=True"
       },
       {
-        "title": "Left table index",
-        "body": "id"
+        "title": "9. Conceptual Understanding",
+        "body": "Think of indexes as:\n\nhidden columns used to identify rows.\n\nNormally merges use visible columns.\n\nIndex merges use those hidden identifiers instead."
       },
       {
-        "title": "Right table index",
-        "body": "movie_id"
+        "title": "10. Comparing Column Merge vs Index Merge",
+        "body": "Column Merge\n\nmovies.merge(taglines, on=\"id\")\n\nUses normal columns."
       },
       {
-        "title": "Then you use",
-        "body": "movies.merge(\n\nmovie_to_genres,\n\nleft_on=\"id\",\n\nright_on=\"movie_id\",\n\nleft_index=True,\n\nright_index=True\n\n)\n\nImportant Part"
+        "title": "11. Index Merge",
+        "body": "movies.set_index(\"id\")\n\ntaglines.set_index(\"id\")\n\nmovies.merge(taglines, on=\"id\")\n\nUses indexes instead."
       },
       {
-        "title": "When using",
-        "body": "left_on\n\nright_on"
-      },
-      {
-        "title": "with indexes, you MUST specify",
-        "body": "left_index=True\n\nright_index=True"
-      },
-      {
-        "title": "This tells pandas",
-        "body": "“The keys are indexes, not regular columns.”\n\nQuick Rule\n\nSame index names"
-      },
-      {
-        "title": "Use",
-        "body": "on=\"id\"\n\nDifferent index names"
-      },
-      {
-        "title": "Use",
-        "body": "left_on=\n\nright_on=\n\nleft_index=True\n\nright_index=True\n\nConceptual Understanding"
-      },
-      {
-        "title": "Think of indexes as",
-        "body": "hidden columns used to identify rows.\n\nNormally merges use visible columns.\n\nIndex merges use those hidden identifiers instead.\n\nComparing Column Merge vs Index Merge\n\nColumn Merge\n\nmovies.merge(taglines, on=\"id\")\n\nUses normal columns.\n\nIndex Merge\n\nmovies.set_index(\"id\")\n\ntaglines.set_index(\"id\")\n\nmovies.merge(taglines, on=\"id\")\n\nUses indexes instead.\n\nImportant Insight"
-      },
-      {
-        "title": "Indexes are mostly about",
-        "body": "faster lookup\n\ncleaner subsetting\n\nstructured data relationships\n\nAnd pandas lets merges work with them almost the same way as columns.\n\nThat’s why merging on indexes feels very similar to normal merging."
+        "title": "12. Important Insight",
+        "body": "Indexes are mostly about:\n\nfaster lookup\n\ncleaner subsetting\n\nstructured data relationships\n\nAnd pandas lets merges work with them almost the same way as columns.\n\nThat’s why merging on indexes feels very similar to normal merging."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Merging on indexes",
       "scenario": "Apply the concepts learned in Merging on indexes to process sample tabular data.",
@@ -3407,101 +4724,136 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 53,
     "title": "Filtering Joins",
-    "description": "Filtering Joins  Up to this point, the joins you learned were mostly mutating joins....",
+    "description": "Up to this point, the joins you learned were mostly mutating joins.  A mutating join:  combines columns from two tables.  Example:  movies.merge(taglines)  This...",
     "sections": [
       {
-        "title": "Filtering Joins",
-        "body": "Filtering Joins\n\nUp to this point, the joins you learned were mostly mutating joins."
+        "title": "1. Concept Overview",
+        "body": "Up to this point, the joins you learned were mostly mutating joins.\n\nA mutating join:\n\ncombines columns from two tables.\n\nExample:\n\nmovies.merge(taglines)\n\nThis adds new columns from another table.\n\nFiltering Joins\n\nFiltering joins are different.\n\nInstead of adding columns, they:\n\nfilter rows based on whether matches exist in another table.\n\nThere are two main filtering joins:"
       },
       {
-        "title": "A mutating join",
-        "body": "combines columns from two tables."
+        "title": "2. Semi Join",
+        "body": "Anti Join\n\npandas doesn’t have built-in methods named:\n\nsemi_join()\n\nanti_join()\n\nSo we recreate them manually using:\n\nmerge()\n\nisin()\n\nfiltering"
       },
       {
-        "title": "Example",
-        "body": "movies.merge(taglines)\n\nThis adds new columns from another table.\n\nFiltering Joins\n\nFiltering joins are different."
+        "title": "3. Semi Join",
+        "body": "A semi join returns:\n\nrows from the LEFT table that HAVE matches in the RIGHT table.\n\nImportant:\n\nonly columns from the left table are returned\n\nduplicates are not added\n\nit behaves like a filter\n\nExample\n\nSuppose:\n\ngenres table\n\ngid\n\ngenre\n\n1\n\nRock\n\n2\n\nJazz\n\n3\n\nPop\n\ntop_tracks table\n\ntrack\n\ngid"
       },
       {
-        "title": "Instead of adding columns, they",
-        "body": "filter rows based on whether matches exist in another table."
+        "title": "4. Song A",
+        "body": "1"
       },
       {
-        "title": "There are two main filtering joins",
-        "body": "Semi Join\n\nAnti Join"
+        "title": "5. Song B",
+        "body": "3\n\nWe want:\n\ngenres that appear in top tracks.\n\nResult:\n\ngid\n\ngenre\n\n1\n\nRock\n\n3\n\nPop\n\nJazz is removed because it doesn’t appear."
       },
       {
-        "title": "pandas doesn’t have built-in methods named",
-        "body": "semi_join()\n\nanti_join()"
-      },
-      {
-        "title": "So we recreate them manually using",
-        "body": "merge()\n\nisin()\n\nfiltering\n\nSemi Join"
-      },
-      {
-        "title": "A semi join returns",
-        "body": "rows from the LEFT table that HAVE matches in the RIGHT table."
-      },
-      {
-        "title": "Important",
-        "body": "only columns from the left table are returned\n\nduplicates are not added\n\nit behaves like a filter\n\nExample"
-      },
-      {
-        "title": "Suppose",
-        "body": "genres table\n\ngid\n\ngenre\n\n1\n\nRock\n\n2\n\nJazz\n\n3\n\nPop\n\ntop_tracks table\n\ntrack\n\ngid\n\nSong A\n\n1\n\nSong B\n\n3"
-      },
-      {
-        "title": "We want",
-        "body": "genres that appear in top tracks."
-      },
-      {
-        "title": "Result",
-        "body": "gid\n\ngenre\n\n1\n\nRock\n\n3\n\nPop\n\nJazz is removed because it doesn’t appear.\n\nSemi Join Process\n\nStep 1 — Inner Merge\n\n`genres_tracks = genres.merge(top_tracks, on=\"gid\")`\n\nThis keeps only matching gids.\n\nStep 2 — Use isin()\n\ngenres[\"gid\"].isin(genres_tracks[\"gid\"])",
+        "title": "6. Semi Join Process",
+        "body": "Step 1 — Inner Merge\n\n`genres_tracks = genres.merge(top_tracks, on=\"gid\")`\n\nThis keeps only matching gids.\n\nStep 2 — Use isin()\n\ngenres[\"gid\"].isin(genres_tracks[\"gid\"])\n\nThis checks:\n\n“Does this gid exist in the merged table?”\n\nResult:\n\nTrue\n\nFalse\n\nTrue",
         "exampleCode": "genres_tracks = genres.merge(top_tracks, on=\"gid\")"
       },
       {
-        "title": "This checks",
-        "body": "“Does this gid exist in the merged table?”"
-      },
-      {
-        "title": "Result",
-        "body": "True\n\nFalse\n\nTrue\n\nStep 3 — Filter\n\n`top_genres = genres[genres[\"gid\"].isin(genres_tracks[\"gid\"])]`\n\nNow only matching genres remain.\n\nBig Picture of Semi Join",
+        "title": "7. Step 3 — Filter",
+        "body": "`top_genres = genres[genres[\"gid\"].isin(genres_tracks[\"gid\"])]`\n\nNow only matching genres remain.",
         "exampleCode": "top_genres = genres[genres[\"gid\"].isin(genres_tracks[\"gid\"])]"
       },
       {
-        "title": "Think of it as",
-        "body": "“Keep rows from the left table IF they exist in the right table.”\n\nYou are not interested in adding columns.\n\nYou only care whether a match exists.\n\nAnti Join\n\nAn anti join is the opposite."
+        "title": "8. Big Picture of Semi Join",
+        "body": "Think of it as:\n\n“Keep rows from the left table IF they exist in the right table.”\n\nYou are not interested in adding columns.\n\nYou only care whether a match exists."
       },
       {
-        "title": "It returns",
-        "body": "rows from the LEFT table that DO NOT have matches in the RIGHT table.\n\nExample"
+        "title": "9. Anti Join",
+        "body": "An anti join is the opposite.\n\nIt returns:\n\nrows from the LEFT table that DO NOT have matches in the RIGHT table.\n\nExample\n\nUsing the same data:\n\ngenres\n\ngid\n\ngenre\n\n1\n\nRock\n\n2\n\nJazz\n\n3\n\nPop\n\ntop_tracks\n\ntrack\n\ngid"
       },
       {
-        "title": "Using the same data",
-        "body": "genres\n\ngid\n\ngenre\n\n1\n\nRock\n\n2\n\nJazz\n\n3\n\nPop\n\ntop_tracks\n\ntrack\n\ngid\n\nSong A\n\n1\n\nSong B\n\n3"
+        "title": "10. Song A",
+        "body": "1"
       },
       {
-        "title": "Result of anti join",
-        "body": "gid\n\ngenre\n\n2\n\nJazz\n\nBecause Jazz never appeared in top tracks.\n\nAnti Join Process\n\nStep 1 — Left Merge with Indicator\n\n`genres_tracks = genres.merge(`\n\ntop_tracks,\n\non=\"gid\",\n\nhow=\"left\",\n\nindicator=True\n\n)",
+        "title": "11. Song B",
+        "body": "3\n\nResult of anti join:\n\ngid\n\ngenre\n\n2\n\nJazz\n\nBecause Jazz never appeared in top tracks."
+      },
+      {
+        "title": "12. Anti Join Process",
+        "body": "Step 1 — Left Merge with Indicator\n\n`genres_tracks = genres.merge(`\n\ntop_tracks,\n\non=\"gid\",\n\nhow=\"left\",\n\nindicator=True\n\n)\n\nThe important part:\n\nindicator=True\n\nadds a special column:\n\n_merge\n\n_merge Values\n\nThe _merge column tells where the row came from.\n\nPossible values:\n\nvalue\n\nmeaning\n\nboth\n\nexists in both tables\n\nleft_only\n\nexists only in left\n\nright_only\n\nexists only in right",
         "exampleCode": "genres_tracks = genres.merge("
       },
       {
-        "title": "The important part",
-        "body": "indicator=True"
-      },
-      {
-        "title": "adds a special column",
-        "body": "_merge\n\n_merge Values\n\nThe _merge column tells where the row came from."
-      },
-      {
-        "title": "Possible values",
-        "body": "value\n\nmeaning\n\nboth\n\nexists in both tables\n\nleft_only\n\nexists only in left\n\nright_only\n\nexists only in right\n\nStep 2 — Get Unmatched Rows\n\n`gid_list = genres_tracks.loc[`\n\ngenres_tracks[\"_merge\"] == \"left_only\",\n\n\"gid\"\n\n]\n\nThis extracts gids that were NOT matched.\n\nStep 3 — Filter Original Table\n\ngenres[genres[\"gid\"].isin(gid_list)]\n\nNow you get only genres absent from top_tracks.\n\nBig Picture\n\nSemi Join\n\nKEEP matching rows\n\nAnti Join\n\nKEEP non-matching rows\n\nMental Model\n\nImagine two circles.\n\nInner Join\n\nReturns the overlap AND combines columns.\n\nSemi Join\n\nReturns only the left-side rows that overlap.\n\nAnti Join\n\nReturns only the left-side rows outside the overlap.\n\nQuick Comparison\n\nJoin Type\n\nPurpose\n\nInner Join\n\ncombine matching rows\n\nLeft Join\n\nkeep all left rows\n\nSemi Join\n\nkeep left rows WITH matches\n\nAnti Join\n\nkeep left rows WITHOUT matches\n\nImportant Insight",
+        "title": "13. Step 2 — Get Unmatched Rows",
+        "body": "`gid_list = genres_tracks.loc[`\n\ngenres_tracks[\"_merge\"] == \"left_only\",\n\n\"gid\"\n\n]\n\nThis extracts gids that were NOT matched.",
         "exampleCode": "gid_list = genres_tracks.loc["
       },
       {
-        "title": "Filtering joins are mostly used for",
-        "body": "existence checks\n\nremoving unmatched data\n\nvalidating datasets\n\nfinding missing relationships\n\nThey are very common in data cleaning and analytics."
+        "title": "14. Step 3 — Filter Original Table",
+        "body": "genres[genres[\"gid\"].isin(gid_list)]\n\nNow you get only genres absent from top_tracks."
+      },
+      {
+        "title": "15. Big Picture",
+        "body": "Semi Join"
+      },
+      {
+        "title": "16. KEEP matching rows",
+        "body": "Anti Join"
+      },
+      {
+        "title": "17. KEEP non-matching rows",
+        "body": "Mental Model\n\nImagine two circles."
+      },
+      {
+        "title": "18. Inner Join",
+        "body": "Returns the overlap AND combines columns."
+      },
+      {
+        "title": "19. Semi Join",
+        "body": "Returns only the left-side rows that overlap."
+      },
+      {
+        "title": "20. Anti Join",
+        "body": "Returns only the left-side rows outside the overlap."
+      },
+      {
+        "title": "21. Quick Comparison",
+        "body": "Join Type\n\nPurpose"
+      },
+      {
+        "title": "22. Inner Join",
+        "body": "combine matching rows"
+      },
+      {
+        "title": "23. Left Join",
+        "body": "keep all left rows"
+      },
+      {
+        "title": "24. Semi Join",
+        "body": "keep left rows WITH matches"
+      },
+      {
+        "title": "25. Anti Join",
+        "body": "keep left rows WITHOUT matches"
+      },
+      {
+        "title": "26. Important Insight",
+        "body": "Filtering joins are mostly used for:\n\nexistence checks\n\nremoving unmatched data\n\nvalidating datasets\n\nfinding missing relationships\n\nThey are very common in data cleaning and analytics."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Using Python 'and'/'or' for Series boolean filtering:\ndf[df[\"price\"] > 100 and df[\"region\"] == \"East\"]",
+      "correctCode": "# Use bitwise & and | with parentheses around each condition:\ndf[(df[\"price\"] > 100) & (df[\"region\"] == \"East\")]",
+      "explanation": "Pandas requires bitwise operators (& and |) with parentheses. Standard Python and/or operators fail because the truth value of a whole Series is ambiguous."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -3522,97 +4874,105 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 54,
     "title": "Concatenating DataFrames Vertically",
-    "description": "Concatenating DataFrames Vertically...",
+    "description": "Up to now, most operations used:  merge()  A merge usually combines tables side-by-side (horizontally).  Example:  id  name  age  id  salary  ↓  id  name  age  ...",
     "sections": [
       {
-        "title": "Concatenating DataFrames Vertically",
-        "body": "Concatenating DataFrames Vertically"
+        "title": "1. Concept Overview",
+        "body": "Up to now, most operations used:\n\nmerge()\n\nA merge usually combines tables side-by-side (horizontally).\n\nExample:\n\nid\n\nname\n\nage\n\nid\n\nsalary\n\n↓\n\nid\n\nname\n\nage\n\nsalary\n\nThat’s horizontal growth."
       },
       {
-        "title": "Up to now, most operations used",
-        "body": "merge()\n\nA merge usually combines tables side-by-side (horizontally)."
+        "title": "2. Concatenation is Different",
+        "body": "concat() usually stacks tables:\n\ntop-to-bottom (vertically)\n\ninstead of side-by-side.\n\nThink:"
       },
       {
-        "title": "Example",
-        "body": "id\n\nname\n\nage\n\nid\n\nsalary\n\n↓\n\nid\n\nname\n\nage\n\nsalary\n\nThat’s horizontal growth.\n\nConcatenation is Different\n\nconcat() usually stacks tables:\n\ntop-to-bottom (vertically)\n\ninstead of side-by-side."
+        "title": "3. January data",
+        "body": "February data"
       },
       {
-        "title": "Think",
-        "body": "January data\n\nFebruary data\n\nMarch data\n\nbecoming one large table.\n\nBasic Vertical Concatenation"
+        "title": "4. March data",
+        "body": "becoming one large table."
       },
       {
-        "title": "Suppose",
-        "body": "inv_jan\n\ninv_feb\n\ninv_mar\n\nall have the same columns."
+        "title": "5. Basic Vertical Concatenation",
+        "body": "Suppose:\n\ninv_jan\n\ninv_feb\n\ninv_mar\n\nall have the same columns.\n\nYou combine them with:\n\n`pd.concat([inv_jan, inv_feb, inv_mar])`",
+        "exampleCode": "pd.concat([inv_jan, inv_feb, inv_mar])"
       },
       {
-        "title": "You combine them with",
-        "body": "pd.concat([inv_jan, inv_feb, inv_mar])\n\nMental Model"
+        "title": "6. Mental Model",
+        "body": "Imagine stacking papers:\n\nJanuary\n\n--------\n\nFebruary\n\n--------\n\nMarch\n\nThat’s vertical concatenation.\n\nExample\n\nJanuary\n\ncustomer\n\namount\n\nAlice\n\n10\n\nFebruary\n\ncustomer\n\namount\n\nBob\n\n20\n\nResult\n\ncustomer\n\namount\n\nAlice\n\n10\n\nBob\n\n20"
       },
       {
-        "title": "Imagine stacking papers",
-        "body": "January\n\n--------\n\nFebruary\n\n--------\n\nMarch\n\nThat’s vertical concatenation.\n\nExample\n\nJanuary\n\ncustomer\n\namount\n\nAlice\n\n10\n\nFebruary\n\ncustomer\n\namount\n\nBob\n\n20\n\nResult\n\ncustomer\n\namount\n\nAlice\n\n10\n\nBob\n\n20\n\nThe Index Problem"
+        "title": "7. The Index Problem",
+        "body": "By default:\n\nconcat()\n\nkeeps original indexes.\n\nSo if each table starts at index 0:\n\n0\n\n1\n\n0\n\n1\n\n0\n\n1\n\nyou get duplicate indexes."
       },
       {
-        "title": "By default",
-        "body": "concat()\n\nkeeps original indexes."
+        "title": "8. Resetting the Index",
+        "body": "Use:\n\n`pd.concat([...], ignore_index=True)`\n\nNow pandas creates a fresh index:\n\n0\n\n1\n\n2\n\n3\n\n4\n\n5",
+        "exampleCode": "pd.concat([...], ignore_index=True)"
       },
       {
-        "title": "So if each table starts at index 0",
-        "body": "0\n\n1\n\n0\n\n1\n\n0\n\n1\n\nyou get duplicate indexes.\n\nResetting the Index"
+        "title": "9. Important Idea",
+        "body": "merge()\n\nconnects related data using keys.\n\nconcat()\n\nsimply stacks data.\n\nNo matching keys required."
       },
       {
-        "title": "Use",
-        "body": "pd.concat([...], ignore_index=True)"
+        "title": "10. Using keys",
+        "body": "You can label where each row came from.\n\n`pd.concat(`\n\n[inv_jan, inv_feb, inv_mar],\n\nkeys=[\"jan\", \"feb\", \"mar\"]\n\n)\n\nThis creates a MultiIndex.",
+        "exampleCode": "pd.concat("
       },
       {
-        "title": "Now pandas creates a fresh index",
-        "body": "0\n\n1\n\n2\n\n3\n\n4\n\n5\n\nImportant Idea\n\nmerge()\n\nconnects related data using keys.\n\nconcat()\n\nsimply stacks data.\n\nNo matching keys required.\n\nUsing keys\n\nYou can label where each row came from.\n\npd.concat(\n\n[inv_jan, inv_feb, inv_mar],\n\nkeys=[\"jan\", \"feb\", \"mar\"]\n\n)\n\nThis creates a MultiIndex.\n\nResult Conceptually\n\nmonth\n\nindex\n\ncustomer\n\njan\n\n0\n\nAlice\n\nfeb\n\n0\n\nBob\n\nNow you know the source table.\n\nImportant Rule"
+        "title": "11. Result Conceptually",
+        "body": "month\n\nindex\n\ncustomer\n\njan\n\n0\n\nAlice\n\nfeb\n\n0\n\nBob\n\nNow you know the source table."
       },
       {
-        "title": "You cannot use",
-        "body": "keys="
+        "title": "12. Important Rule",
+        "body": "You cannot use:\n\nkeys=\n\ntogether with:\n\nignore_index=True\n\nbecause keys depend on the original index structure."
       },
       {
-        "title": "together with",
-        "body": "ignore_index=True\n\nbecause keys depend on the original index structure.\n\nDifferent Column Names"
+        "title": "13. Different Column Names",
+        "body": "Suppose February has an extra column:\n\ncustomer\n\namount\n\ncountry\n\nwhile January does not.\n\nDefault Behavior (outer join)\n\n`pd.concat([inv_jan, inv_feb])`\n\npandas keeps ALL columns.\n\nMissing values become NaN.\n\nResult\n\ncustomer\n\namount\n\ncountry\n\nAlice\n\n10\n\nNaN\n\nBob\n\n20\n\nUSA\n\nWhy?\n\nBecause concat defaults to:\n\njoin=\"outer\"\n\nMeaning:\n\nkeep every column from every table.",
+        "exampleCode": "pd.concat([inv_jan, inv_feb])"
       },
       {
-        "title": "Suppose February has an extra column",
-        "body": "customer\n\namount\n\ncountry\n\nwhile January does not.\n\nDefault Behavior (outer join)\n\npd.concat([inv_jan, inv_feb])\n\npandas keeps ALL columns.\n\nMissing values become NaN.\n\nResult\n\ncustomer\n\namount\n\ncountry\n\nAlice\n\n10\n\nNaN\n\nBob\n\n20\n\nUSA\n\nWhy?"
+        "title": "14. Keeping Only Shared Columns",
+        "body": "Use:\n\n`pd.concat([inv_jan, inv_feb], join=\"inner\")`\n\nNow only common columns remain.\n\nResult\n\ncustomer\n\namount\n\nAlice\n\n10\n\nBob\n\n20\n\nThe country column disappears.\n\nsort=True\n\nWhen tables have different columns:\n\nsort=True\n\nalphabetically sorts columns.\n\nUsually not very important, but useful for organization.",
+        "exampleCode": "pd.concat([inv_jan, inv_feb], join=\"inner\")"
       },
       {
-        "title": "Because concat defaults to",
-        "body": "join=\"outer\""
+        "title": "15. Big Picture",
+        "body": "merge()\n\nUsed when:\n\ntables are related\n\nmatching keys exist\n\ncombining columns\n\nExample:\n\ncustomer_id\n\nmovie_id\n\nward\n\nconcat()\n\nUsed when:\n\ntables have same structure\n\ndifferent time periods\n\nappend more rows\n\nExample:"
       },
       {
-        "title": "Meaning",
-        "body": "keep every column from every table.\n\nKeeping Only Shared Columns"
+        "title": "16. January sales",
+        "body": "February sales"
       },
       {
-        "title": "Use",
-        "body": "pd.concat([inv_jan, inv_feb], join=\"inner\")\n\nNow only common columns remain.\n\nResult\n\ncustomer\n\namount\n\nAlice\n\n10\n\nBob\n\n20\n\nThe country column disappears.\n\nsort=True"
+        "title": "17. March sales",
+        "body": "Quick Comparison\n\nOperation\n\nDirection\n\nPurpose\n\nmerge()\n\nhorizontal\n\ncombine related columns\n\nconcat()\n\nvertical\n\nstack rows"
       },
       {
-        "title": "When tables have different columns",
-        "body": "sort=True\n\nalphabetically sorts columns.\n\nUsually not very important, but useful for organization.\n\nBig Picture\n\nmerge()"
-      },
-      {
-        "title": "Used when",
-        "body": "tables are related\n\nmatching keys exist\n\ncombining columns"
-      },
-      {
-        "title": "Example",
-        "body": "customer_id\n\nmovie_id\n\nward\n\nconcat()"
-      },
-      {
-        "title": "Used when",
-        "body": "tables have same structure\n\ndifferent time periods\n\nappend more rows"
-      },
-      {
-        "title": "Example",
-        "body": "January sales\n\nFebruary sales\n\nMarch sales\n\nQuick Comparison\n\nOperation\n\nDirection\n\nPurpose\n\nmerge()\n\nhorizontal\n\ncombine related columns\n\nconcat()\n\nvertical\n\nstack rows\n\nVery Important Intuition\n\nconcat() is basically:\n\n“Take these separate DataFrames and glue them together.”\n\nwhile merge() is:\n\n“Match rows based on relationships.”"
+        "title": "18. Very Important Intuition",
+        "body": "concat() is basically:\n\n“Take these separate DataFrames and glue them together.”\n\nwhile merge() is:\n\n“Match rows based on relationships.”"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Concatenating DataFrames Vertically",
       "scenario": "Apply the concepts learned in Concatenating DataFrames Vertically to process sample tabular data.",
@@ -3634,37 +4994,49 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 55,
     "title": "Verifying Integrity",
-    "description": "Verifying Integrity  When working with data, it is important to verify that the structure of the data is correct before performing analysis. The merge() and con...",
+    "description": "When working with data, it is important to verify that the structure of the data is correct before performing analysis. The merge() and concat() methods in pand...",
     "sections": [
       {
-        "title": "Verifying Integrity",
-        "body": "Verifying Integrity\n\nWhen working with data, it is important to verify that the structure of the data is correct before performing analysis. The merge() and concat() methods in pandas both have built-in features that help check data integrity. These features help detect problems such as unexpected duplicate rows or incorrect table relationships.\n\nWhen merging tables, we may expect the relationship between two tables to be:\n\none-to-one\n\none-to-many\n\nmany-to-one\n\nmany-to-many\n\nHowever, duplicated values in the merge columns can accidentally change the relationship type. Similarly, when concatenating tables vertically, duplicate records may appear if the same row exists in multiple tables. To help prevent these issues, pandas provides:\n\nvalidate for merge()\n\nverify_integrity for concat()\n\nValidating Merges\n\nThe validate argument in merge() checks whether the relationship between two tables matches what we expect. If the relationship is incorrect, pandas raises a MergeError."
+        "title": "1. Concept Overview",
+        "body": "When working with data, it is important to verify that the structure of the data is correct before performing analysis. The merge() and concat() methods in pandas both have built-in features that help check data integrity. These features help detect problems such as unexpected duplicate rows or incorrect table relationships.\n\nWhen merging tables, we may expect the relationship between two tables to be:\n\none-to-one\n\none-to-many\n\nmany-to-one\n\nmany-to-many\n\nHowever, duplicated values in the merge columns can accidentally change the relationship type. Similarly, when concatenating tables vertically, duplicate records may appear if the same row exists in multiple tables. To help prevent these issues, pandas provides:\n\nvalidate for merge()\n\nverify_integrity for concat()"
       },
       {
-        "title": "Example",
-        "body": "tracks.merge(specs, on=\"tid\", validate=\"one_to_one\")\n\nIn this example, each track should only have one specification record, so the relationship should be one-to-one. However, if the specs table contains duplicate tid values, the merge becomes one-to-many instead. pandas detects this and raises an error.\n\nThe error helps identify problems before continuing the analysis."
+        "title": "2. Validating Merges",
+        "body": "The validate argument in merge() checks whether the relationship between two tables matches what we expect. If the relationship is incorrect, pandas raises a MergeError.\n\nExample:\n\ntracks.merge(specs, on=\"tid\", validate=\"one_to_one\")\n\nIn this example, each track should only have one specification record, so the relationship should be one-to-one. However, if the specs table contains duplicate tid values, the merge becomes one-to-many instead. pandas detects this and raises an error.\n\nThe error helps identify problems before continuing the analysis.\n\nCommon validation options include:\n\n\"one_to_one\"\n\n\"one_to_many\"\n\n\"many_to_one\"\n\n\"many_to_many\"\n\nExample of a valid one-to-many merge:\n\nalbums.merge(tracks, on=\"album_id\", validate=\"one_to_many\")\n\nThis works because one album can contain multiple tracks."
       },
       {
-        "title": "Common validation options include",
-        "body": "\"one_to_one\"\n\n\"one_to_many\"\n\n\"many_to_one\"\n\n\"many_to_many\""
+        "title": "3. Verifying Concatenations",
+        "body": "The concat() method has a parameter called verify_integrity.\n\nBy default:\n\nverify_integrity=False\n\nIf set to True, pandas checks whether duplicate index values exist after concatenation.\n\nExample:\n\n`pd.concat([inv_feb, inv_mar], verify_integrity=True)`\n\nIf both tables contain the same index value, pandas raises a ValueError.\n\nFor example, if invoice ID 9 exists in both February and March tables, concatenation with integrity checking enabled will fail because the indexes overlap.\n\nIf verify_integrity=False, pandas allows the duplicate indexes and concatenates the tables normally.",
+        "exampleCode": "pd.concat([inv_feb, inv_mar], verify_integrity=True)"
       },
       {
-        "title": "Example of a valid one-to-many merge",
-        "body": "albums.merge(tracks, on=\"album_id\", validate=\"one_to_many\")\n\nThis works because one album can contain multiple tracks.\n\nVerifying Concatenations\n\nThe concat() method has a parameter called verify_integrity."
-      },
-      {
-        "title": "By default",
-        "body": "verify_integrity=False\n\nIf set to True, pandas checks whether duplicate index values exist after concatenation."
-      },
-      {
-        "title": "Example",
-        "body": "pd.concat([inv_feb, inv_mar], verify_integrity=True)\n\nIf both tables contain the same index value, pandas raises a ValueError.\n\nFor example, if invoice ID 9 exists in both February and March tables, concatenation with integrity checking enabled will fail because the indexes overlap.\n\nIf verify_integrity=False, pandas allows the duplicate indexes and concatenates the tables normally.\n\nWhy Verifying Integrity Matters\n\nReal-world data is often messy and may not always follow the structure we expect. Duplicate rows or incorrect relationships can lead to:\n\nincorrect calculations\n\nmisleading averages\n\ninaccurate visualizations\n\nduplicated records\n\nUsing validate and verify_integrity helps catch these issues early."
-      },
-      {
-        "title": "If pandas raises a",
-        "body": "MergeError\n\nValueError\n\nthe data should usually be cleaned or corrected before continuing. Duplicate rows may need to be removed or fixed to ensure accurate analysis."
+        "title": "4. Why Verifying Integrity Matters",
+        "body": "Real-world data is often messy and may not always follow the structure we expect. Duplicate rows or incorrect relationships can lead to:\n\nincorrect calculations\n\nmisleading averages\n\ninaccurate visualizations\n\nduplicated records\n\nUsing validate and verify_integrity helps catch these issues early.\n\nIf pandas raises a:\n\nMergeError\n\nValueError\n\nthe data should usually be cleaned or corrected before continuing. Duplicate rows may need to be removed or fixed to ensure accurate analysis."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Verifying Integrity",
       "scenario": "Apply the concepts learned in Verifying Integrity to process sample tabular data.",
@@ -3686,31 +5058,83 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 56,
     "title": "Using merge_ordered()",
-    "description": "Using merge_ordered()  merge_ordered() is a pandas function used for merging ordered or time-series data. It works similarly to a regular merge(), but the resul...",
+    "description": "merge_ordered() is a pandas function used for merging ordered or time-series data. It works similarly to a regular merge(), but the results are automatically so...",
     "sections": [
       {
-        "title": "Using merge_ordered()",
-        "body": "Using merge_ordered()\n\nmerge_ordered() is a pandas function used for merging ordered or time-series data. It works similarly to a regular merge(), but the results are automatically sorted, making it especially useful when working with dates, financial data, or any data that follows a sequence.\n\nUnlike the normal merge() method which defaults to an \"inner\" join, merge_ordered() defaults to an \"outer\" join. This means all rows from both tables are kept, even if there is no match.\n\nBasic Syntax\n\npd.merge_ordered(left_table, right_table, on=\"column_name\")\n\nThe method is called from pandas directly using pd.merge_ordered() instead of using .merge() on a DataFrame.\n\nExample: Merging Stock Data"
+        "title": "1. Concept Overview",
+        "body": "merge_ordered() is a pandas function used for merging ordered or time-series data. It works similarly to a regular merge(), but the results are automatically sorted, making it especially useful when working with dates, financial data, or any data that follows a sequence.\n\nUnlike the normal merge() method which defaults to an \"inner\" join, merge_ordered() defaults to an \"outer\" join. This means all rows from both tables are kept, even if there is no match."
       },
       {
-        "title": "Suppose we have two stock price tables",
-        "body": "Apple stock prices from February to June 2007\n\nMcDonald's stock prices from January to May 2007\n\nWe can merge them using the date column.\n\n`stocks = pd.merge_ordered(`\n\napple,\n\nmcd,\n\non=\"date\",\n\nsuffixes=(\"_apple\", \"_mcd\")\n\n)\n\nThe result will contain all dates from both tables in sorted order.\n\nIf a company has no stock value for a certain date, the value becomes NaN.",
+        "title": "2. Basic Syntax",
+        "body": "`pd.merge_ordered(left_table, right_table, on=\"column_name\")`\n\nThe method is called from pandas directly using pd.merge_ordered() instead of using .merge() on a DataFrame.",
+        "exampleCode": "pd.merge_ordered(left_table, right_table, on=\"column_name\")"
+      },
+      {
+        "title": "3. Example: Merging Stock Data",
+        "body": "Suppose we have two stock price tables:"
+      },
+      {
+        "title": "4. Apple stock prices from February to June 2007",
+        "body": "McDonald's stock prices from January to May 2007\n\nWe can merge them using the date column.\n\n`stocks = pd.merge_ordered(`\n\napple,\n\nmcd,\n\non=\"date\",\n\nsuffixes=(\"_apple\", \"_mcd\")\n\n)\n\nThe result will contain all dates from both tables in sorted order.\n\nIf a company has no stock value for a certain date, the value becomes NaN.\n\nExample:\n\nApple has no value for January\n\nMcDonald's has no value for June\n\nComparison with merge()\n\nmerge_ordered() and merge() share many similarities:\n\nBoth can merge on one or multiple columns",
         "exampleCode": "stocks = pd.merge_ordered("
       },
       {
-        "title": "Example",
-        "body": "Apple has no value for January\n\nMcDonald's has no value for June\n\nComparison with merge()\n\nmerge_ordered() and merge() share many similarities:\n\nBoth can merge on one or multiple columns\n\nBoth support different join types\n\nBoth support suffixes for duplicate column names"
+        "title": "5. Both support different join types",
+        "body": "Both support suffixes for duplicate column names\n\nHowever, there are important differences:\n\nFeature\n\nmerge()\n\nmerge_ordered()"
       },
       {
-        "title": "However, there are important differences",
-        "body": "Feature\n\nmerge()\n\nmerge_ordered()\n\nDefault Join\n\nInner Join\n\nOuter Join\n\nResult Sorting\n\nNot guaranteed\n\nAutomatically sorted\n\nBest For\n\nGeneral merging\n\nOrdered/time-series data\n\nForward Filling (ffill)\n\nWhen merging ordered data, missing values are common. merge_ordered() supports forward filling using the fill_method argument.\n\nForward filling copies the previous available value into missing rows."
+        "title": "6. Default Join",
+        "body": "Inner Join"
       },
       {
-        "title": "Example",
-        "body": "`stocks = pd.merge_ordered(`\n\napple,\n\nmcd,\n\non=\"date\",\n\nfill_method=\"ffill\",\n\nsuffixes=(\"_apple\", \"_mcd\")\n\n)\n\nIf McDonald's has no value for June, pandas fills it using the previous month's value.\n\nHowever, the very first missing value cannot be filled because there is no previous value available.\n\nWhy Use merge_ordered()?\n\nmerge_ordered() is useful when:\n\nWorking with time-series data\n\nHandling ordered datasets\n\nCombining financial or stock market data\n\nYou need automatically sorted results\n\nYou want to forward fill missing values\n\nIt is especially helpful because many machine learning and analysis tasks require complete datasets without missing values.",
+        "title": "7. Outer Join",
+        "body": "Result Sorting"
+      },
+      {
+        "title": "8. Not guaranteed",
+        "body": "Automatically sorted"
+      },
+      {
+        "title": "9. Best For",
+        "body": "General merging"
+      },
+      {
+        "title": "10. Ordered/time-series data",
+        "body": "Forward Filling (ffill)\n\nWhen merging ordered data, missing values are common. merge_ordered() supports forward filling using the fill_method argument.\n\nForward filling copies the previous available value into missing rows.\n\nExample:\n\n`stocks = pd.merge_ordered(`\n\napple,\n\nmcd,\n\non=\"date\",\n\nfill_method=\"ffill\",\n\nsuffixes=(\"_apple\", \"_mcd\")\n\n)\n\nIf McDonald's has no value for June, pandas fills it using the previous month's value.\n\nHowever, the very first missing value cannot be filled because there is no previous value available.\n\nWhy Use merge_ordered()?\n\nmerge_ordered() is useful when:",
         "exampleCode": "stocks = pd.merge_ordered("
+      },
+      {
+        "title": "11. Working with time-series data",
+        "body": "Handling ordered datasets"
+      },
+      {
+        "title": "12. Combining financial or stock market data",
+        "body": "You need automatically sorted results"
+      },
+      {
+        "title": "13. You want to forward fill missing values",
+        "body": "It is especially helpful because many machine learning and analysis tasks require complete datasets without missing values."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
+      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
+      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -3731,30 +5155,73 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 57,
     "title": "Using merge_asof()",
-    "description": "Using merge_asof()  merge_asof() is another pandas method used for working with ordered or time-series data. It behaves similarly to a left join, but instead of...",
+    "description": "merge_asof() is another pandas method used for working with ordered or time-series data. It behaves similarly to a left join, but instead of matching exact valu...",
     "sections": [
       {
-        "title": "Using merge_asof()",
-        "body": "Using merge_asof()\n\nmerge_asof() is another pandas method used for working with ordered or time-series data. It behaves similarly to a left join, but instead of matching exact values, it matches the nearest value.\n\nThis method is especially useful when timestamps or ordered values between two tables do not perfectly align.\n\nOne important requirement is that the columns used for merging must already be sorted.\n\nHow merge_asof() Works\n\nUnlike a normal merge where values must be equal, merge_asof() looks for the closest matching value."
+        "title": "1. Concept Overview",
+        "body": "merge_asof() is another pandas method used for working with ordered or time-series data. It behaves similarly to a left join, but instead of matching exact values, it matches the nearest value.\n\nThis method is especially useful when timestamps or ordered values between two tables do not perfectly align.\n\nOne important requirement is that the columns used for merging must already be sorted.\n\nHow merge_asof() Works\n\nUnlike a normal merge where values must be equal, merge_asof() looks for the closest matching value.\n\nBy default, it selects:\n\nthe last row in the right table whose key value is less than or equal to the left table’s value.\n\nThis default behavior is called \"backward\" matching.\n\nFor example:"
       },
       {
-        "title": "By default, it selects",
-        "body": "the last row in the right table whose key value is less than or equal to the left table’s value.\n\nThis default behavior is called \"backward\" matching."
+        "title": "2. Left Value",
+        "body": "Right Match\n\n5\n\n3\n\nThe value 3 is chosen because it is the closest value that is still less than or equal to 5."
       },
       {
-        "title": "For example",
-        "body": "Left Value\n\nRight Match\n\n5\n\n3\n\nThe value 3 is chosen because it is the closest value that is still less than or equal to 5.\n\nBasic Syntax\n\npd.merge_asof(\n\nleft_table,\n\nright_table,\n\non=\"column_name\"\n\n)\n\nThe method is called directly from pandas using pd.merge_asof().\n\nExample: Stock Price Data"
+        "title": "3. Basic Syntax",
+        "body": "`pd.merge_asof(`\n\nleft_table,\n\nright_table,\n\non=\"column_name\"\n\n)\n\nThe method is called directly from pandas using pd.merge_asof().",
+        "exampleCode": "pd.merge_asof("
       },
       {
-        "title": "Suppose we have",
-        "body": "Visa stock prices recorded every hour\n\nIBM stock prices recorded every 5 minutes\n\nThe timestamps do not perfectly match, so a normal merge would fail to align many rows properly.\n\n`stocks = pd.merge_asof(`\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\nsuffixes=(\"_visa\", \"_ibm\")\n\n)\n\nThe result keeps all rows from the Visa table and finds the closest matching IBM timestamp that is less than or equal to each Visa timestamp.\n\nThe direction Argument\n\nThe direction argument controls how pandas searches for matches.\n\n1. \"backward\" (default)\n\nSelects the closest value from the right table that is:\n\nless than or equal to the left value.\n\npd.merge_asof(\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\ndirection=\"backward\"\n\n)\n\n2. \"forward\"\n\nSelects the first value from the right table that is:\n\ngreater than or equal to the left value.\n\npd.merge_asof(\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\ndirection=\"forward\"\n\n)\n\nThis changes the matching behavior to future values instead of past values.\n\n3. \"nearest\"\n\nSelects the absolutely closest value regardless of whether it is before or after.\n\npd.merge_asof(\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\ndirection=\"nearest\"\n\n)\n\nWhen to Use merge_asof()\n\nmerge_asof() is useful when:\n\nWorking with time-series data\n\nTimestamps do not perfectly align\n\nData is sampled at different intervals\n\nMatching nearest observations is more useful than exact matches\n\nBuilding time-series training datasets\n\nAvoiding future data leakage in machine learning",
+        "title": "4. Example: Stock Price Data",
+        "body": "Suppose we have:"
+      },
+      {
+        "title": "5. Visa stock prices recorded every hour",
+        "body": "IBM stock prices recorded every 5 minutes\n\nThe timestamps do not perfectly match, so a normal merge would fail to align many rows properly.\n\n`stocks = pd.merge_asof(`\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\nsuffixes=(\"_visa\", \"_ibm\")\n\n)\n\nThe result keeps all rows from the Visa table and finds the closest matching IBM timestamp that is less than or equal to each Visa timestamp.",
         "exampleCode": "stocks = pd.merge_asof("
       },
       {
-        "title": "It is commonly used in",
-        "body": "financial datasets\n\nstock market analysis\n\nsensor data\n\nevent tracking systems\n\nreal-time monitoring systems"
+        "title": "6. The direction Argument",
+        "body": "The direction argument controls how pandas searches for matches.\n\n1. \"backward\" (default)\n\nSelects the closest value from the right table that is:\n\nless than or equal to the left value.\n\n`pd.merge_asof(`\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\ndirection=\"backward\"\n\n)",
+        "exampleCode": "pd.merge_asof("
+      },
+      {
+        "title": "7. 2. \"forward\"",
+        "body": "Selects the first value from the right table that is:\n\ngreater than or equal to the left value.\n\n`pd.merge_asof(`\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\ndirection=\"forward\"\n\n)\n\nThis changes the matching behavior to future values instead of past values.",
+        "exampleCode": "pd.merge_asof("
+      },
+      {
+        "title": "8. 3. \"nearest\"",
+        "body": "Selects the absolutely closest value regardless of whether it is before or after.\n\n`pd.merge_asof(`\n\nvisa,\n\nibm,\n\non=\"date_time\",\n\ndirection=\"nearest\"\n\n)\n\nWhen to Use merge_asof()\n\nmerge_asof() is useful when:",
+        "exampleCode": "pd.merge_asof("
+      },
+      {
+        "title": "9. Working with time-series data",
+        "body": "Timestamps do not perfectly align\n\nData is sampled at different intervals\n\nMatching nearest observations is more useful than exact matches"
+      },
+      {
+        "title": "10. Building time-series training datasets",
+        "body": "Avoiding future data leakage in machine learning\n\nIt is commonly used in:\n\nfinancial datasets\n\nstock market analysis\n\nsensor data\n\nevent tracking systems\n\nreal-time monitoring systems"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inner join on key",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+      },
+      {
+        "goal": "Left join",
+        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+      },
+      {
+        "goal": "Vertical stack",
+        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
+      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
+      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+    },
     "challenge": {
       "title": "Enrich Sales with Customer Profiles",
       "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
@@ -3778,38 +5245,61 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Selecting Data with .query()  The .query() method in pandas is used to filter rows from a DataFrame using a string expression. It provides a cleaner and more re...",
     "sections": [
       {
-        "title": "Selecting Data with",
-        "body": "Selecting Data with .query()\n\nThe .query() method in pandas is used to filter rows from a DataFrame using a string expression. It provides a cleaner and more readable way to subset data compared to long Boolean indexing statements.\n\nThe syntax is similar to the WHERE clause in SQL, but prior SQL knowledge is not required.\n\nBasic Syntax\n\ndataframe.query(\"condition\")\n\nThe condition is written as a string.\n\nQuerying with a Single Condition\n\nSuppose we have a DataFrame called stocks containing stock prices for companies like Nike and Disney.\n\nIf we want to select rows where Nike stock prices are greater than or equal to 90:\n\nstocks.query(\"nike >= 90\")\n\nThis returns all rows where the value in the nike column is at least 90.\n\nQuerying with Multiple Conditions"
+        "title": "1. Concept Overview",
+        "body": "Selecting Data with .query()\n\nThe .query() method in pandas is used to filter rows from a DataFrame using a string expression. It provides a cleaner and more readable way to subset data compared to long Boolean indexing statements.\n\nThe syntax is similar to the WHERE clause in SQL, but prior SQL knowledge is not required."
       },
       {
-        "title": "You can combine conditions using",
-        "body": "and\n\nor\n\nUsing and"
+        "title": "2. Basic Syntax",
+        "body": "dataframe.query(\"condition\")\n\nThe condition is written as a string."
       },
       {
-        "title": "To select rows where",
-        "body": "Nike is greater than 90\n\nAND Disney is less than 140\n\nstocks.query(\"nike > 90 and disney < 140\")\n\nBoth conditions must be true.\n\nUsing or"
+        "title": "3. Querying with a Single Condition",
+        "body": "Suppose we have a DataFrame called stocks containing stock prices for companies like Nike and Disney.\n\nIf we want to select rows where Nike stock prices are greater than or equal to 90:\n\nstocks.query(\"nike >= 90\")\n\nThis returns all rows where the value in the nike column is at least 90."
       },
       {
-        "title": "To select rows where",
-        "body": "Nike is greater than 96\n\nOR Disney is less than 98\n\nstocks.query(\"nike > 96 or disney < 98\")\n\nAt least one condition must be true.\n\nQuerying Text Values\n\nThe .query() method can also filter rows based on text/string values."
+        "title": "4. Querying with Multiple Conditions",
+        "body": "You can combine conditions using:\n\nand\n\nor"
       },
       {
-        "title": "Example",
-        "body": "stocks.query('stock == \"nike\"')"
+        "title": "5. Using and",
+        "body": "To select rows where:\n\nNike is greater than 90\n\nAND Disney is less than 140\n\nstocks.query(\"nike > 90 and disney < 140\")\n\nBoth conditions must be true."
       },
       {
-        "title": "Important notes",
-        "body": "Use == when comparing values\n\nText values should be inside quotation marks\n\nIf the outer query string uses single quotes, the inner text usually uses double quotes\n\nCombining Text and Numeric Conditions"
+        "title": "6. Using or",
+        "body": "To select rows where:\n\nNike is greater than 96\n\nOR Disney is less than 98\n\nstocks.query(\"nike > 96 or disney < 98\")\n\nAt least one condition must be true."
       },
       {
-        "title": "Suppose we want",
-        "body": "all Disney rows\n\nOR Nike rows where close price is below 90\n\nstocks.query('stock == \"disney\" or (stock == \"nike\" and close < 90)')\n\nThe parentheses help group conditions properly."
+        "title": "7. Querying Text Values",
+        "body": "The .query() method can also filter rows based on text/string values.\n\nExample:\n\nstocks.query('stock == \"nike\"')\n\nImportant notes:\n\nUse == when comparing values\n\nText values should be inside quotation marks\n\nIf the outer query string uses single quotes, the inner text usually uses double quotes"
       },
       {
-        "title": "This query returns",
-        "body": "every row where stock is Disney\n\nplus Nike rows with close prices below 90\n\nWhy Use .query()?\n\n.query() is useful because it:\n\nmakes filtering code cleaner\n\nimproves readability\n\nworks well with multiple conditions\n\nis convenient for selecting rows using column names directly\n\nIt is especially helpful when filtering large DataFrames with many conditions."
+        "title": "8. Combining Text and Numeric Conditions",
+        "body": "Suppose we want:\n\nall Disney rows\n\nOR Nike rows where close price is below 90\n\nstocks.query('stock == \"disney\" or (stock == \"nike\" and close < 90)')\n\nThe parentheses help group conditions properly.\n\nThis query returns:\n\nevery row where stock is Disney\n\nplus Nike rows with close prices below 90\n\nWhy Use .query()?\n\n.query() is useful because it:\n\nmakes filtering code cleaner\n\nimproves readability\n\nworks well with multiple conditions\n\nis convenient for selecting rows using column names directly\n\nIt is especially helpful when filtering large DataFrames with many conditions."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Selecting Data with",
       "scenario": "Apply the concepts learned in Selecting Data with to process sample tabular data.",
@@ -3834,62 +5324,49 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "description": "Reshaping Data with .melt()  The .melt() method in pandas is used to reshape data from wide format into long format. This process is also called unpivoting.  Lo...",
     "sections": [
       {
-        "title": "Reshaping Data with",
-        "body": "Reshaping Data with .melt()\n\nThe .melt() method in pandas is used to reshape data from wide format into long format. This process is also called unpivoting.\n\nLong format is often easier for computers, data analysis tools, and visualization libraries to work with, while wide format is usually easier for humans to read.\n\nWide vs Long Format\n\nWide Format"
+        "title": "1. Concept Overview",
+        "body": "Reshaping Data with .melt()\n\nThe .melt() method in pandas is used to reshape data from wide format into long format. This process is also called unpivoting.\n\nLong format is often easier for computers, data analysis tools, and visualization libraries to work with, while wide format is usually easier for humans to read."
       },
       {
-        "title": "In wide format",
-        "body": "one row usually represents one subject\n\nmultiple columns store different attributes"
+        "title": "2. Wide vs Long Format",
+        "body": "Wide Format\n\nIn wide format:\n\none row usually represents one subject\n\nmultiple columns store different attributes\n\nExample:\n\ncompany\n\n2018\n\n2019\n\nFacebook\n\n55\n\n70\n\nTwitter\n\n12\n\n14\n\nThe years are spread horizontally across columns."
       },
       {
-        "title": "Example",
-        "body": "company\n\n2018\n\n2019\n\nFacebook\n\n55\n\n70\n\nTwitter\n\n12\n\n14\n\nThe years are spread horizontally across columns.\n\nLong Format"
+        "title": "3. Long Format",
+        "body": "In long format:\n\ninformation is spread vertically across rows\n\neach row represents one observation\n\nExample:\n\ncompany\n\nyear\n\nvalue\n\nFacebook\n\n2018\n\n55\n\nFacebook\n\n2019\n\n70\n\nTwitter\n\n2018\n\n12\n\nThis format is usually more computer-friendly.\n\nBasic .melt() Syntax\n\ndataframe.melt(id_vars=[\"column_name\"])\n\nThe id_vars argument specifies the columns that should remain unchanged.\n\nExample of .melt()\n\nSuppose we have a DataFrame called social_fin:\n\ncompany\n\n2016\n\n2017\n\n2018\n\nFacebook\n\n27\n\n40\n\n55\n\nTwitter\n\n2\n\n3\n\n4\n\nWe can convert the years into rows:\n\nsocial_fin.melt(id_vars=[\"company\"])\n\nResult:\n\ncompany\n\nvariable\n\nvalue\n\nFacebook\n\n2016\n\n27\n\nFacebook\n\n2017\n\n40\n\nFacebook\n\n2018\n\n55\n\nThe year columns are unpivoted into a single column called variable, while the numbers are placed into a column called value."
       },
       {
-        "title": "In long format",
-        "body": "information is spread vertically across rows\n\neach row represents one observation"
+        "title": "4. Using value_vars",
+        "body": "The value_vars argument lets you choose which columns to unpivot.\n\nExample:\n\nsocial_fin.melt(\n\nid_vars=[\"company\"],\n\nvalue_vars=[\"2018\", \"2017\"]\n\n)\n\nOnly the selected columns are melted.\n\nThe order in value_vars is preserved in the output."
       },
       {
-        "title": "Example",
-        "body": "company\n\nyear\n\nvalue\n\nFacebook\n\n2018\n\n55\n\nFacebook\n\n2019\n\n70\n\nTwitter\n\n2018\n\n12\n\nThis format is usually more computer-friendly.\n\nBasic .melt() Syntax\n\ndataframe.melt(id_vars=[\"column_name\"])\n\nThe id_vars argument specifies the columns that should remain unchanged.\n\nExample of .melt()"
-      },
-      {
-        "title": "Suppose we have a DataFrame called social_fin",
-        "body": "company\n\n2016\n\n2017\n\n2018\n\nFacebook\n\n27\n\n40\n\n55\n\nTwitter\n\n2\n\n3\n\n4"
-      },
-      {
-        "title": "We can convert the years into rows",
-        "body": "social_fin.melt(id_vars=[\"company\"])"
-      },
-      {
-        "title": "Result",
-        "body": "company\n\nvariable\n\nvalue\n\nFacebook\n\n2016\n\n27\n\nFacebook\n\n2017\n\n40\n\nFacebook\n\n2018\n\n55\n\nThe year columns are unpivoted into a single column called variable, while the numbers are placed into a column called value.\n\nUsing value_vars\n\nThe value_vars argument lets you choose which columns to unpivot."
-      },
-      {
-        "title": "Example",
-        "body": "social_fin.melt(\n\nid_vars=[\"company\"],\n\nvalue_vars=[\"2018\", \"2017\"]\n\n)\n\nOnly the selected columns are melted.\n\nThe order in value_vars is preserved in the output.\n\nRenaming Output Columns"
-      },
-      {
-        "title": "By default",
-        "body": "the melted column names become variable\n\nthe values become value"
-      },
-      {
-        "title": "You can rename them using",
-        "body": "var_name\n\nvalue_name"
-      },
-      {
-        "title": "Example",
-        "body": "social_fin.melt(\n\nid_vars=[\"company\"],\n\nvalue_vars=[\"2018\", \"2017\"],\n\nvar_name=\"year\",\n\nvalue_name=\"dollars\"\n\n)"
-      },
-      {
-        "title": "Result",
-        "body": "company\n\nyear\n\ndollars\n\nFacebook\n\n2018\n\n55\n\nFacebook\n\n2017\n\n40\n\nThis makes the output cleaner and easier to understand.\n\nImportant Arguments in .melt()\n\nid_vars\n\ncolumns to keep unchanged\n\nvalue_vars\n\ncolumns to unpivot\n\nvar_name\n\nnew name for the variable column\n\nvalue_name\n\nnew name for the values column\n\nWhy Use .melt()?\n\n.melt() is useful when:\n\nconverting wide data into long format\n\npreparing data for visualization\n\npreparing datasets for machine learning\n\nsimplifying grouped analysis\n\ncleaning merged datasets with many columns"
-      },
-      {
-        "title": "It is especially common in",
-        "body": "time-series analysis\n\nfinancial datasets\n\nsurvey data\n\nstatistical analysis\n\nplotting libraries like matplotlib or seaborn"
+        "title": "5. Renaming Output Columns",
+        "body": "By default:\n\nthe melted column names become variable\n\nthe values become value\n\nYou can rename them using:\n\nvar_name\n\nvalue_name\n\nExample:\n\nsocial_fin.melt(\n\nid_vars=[\"company\"],\n\nvalue_vars=[\"2018\", \"2017\"],\n\nvar_name=\"year\",\n\nvalue_name=\"dollars\"\n\n)\n\nResult:\n\ncompany\n\nyear\n\ndollars\n\nFacebook\n\n2018\n\n55\n\nFacebook\n\n2017\n\n40\n\nThis makes the output cleaner and easier to understand.\n\nImportant Arguments in .melt()\n\nid_vars\n\ncolumns to keep unchanged\n\nvalue_vars\n\ncolumns to unpivot\n\nvar_name\n\nnew name for the variable column\n\nvalue_name\n\nnew name for the values column\n\nWhy Use .melt()?\n\n.melt() is useful when:\n\nconverting wide data into long format\n\npreparing data for visualization\n\npreparing datasets for machine learning\n\nsimplifying grouped analysis\n\ncleaning merged datasets with many columns\n\nIt is especially common in:\n\ntime-series analysis\n\nfinancial datasets\n\nsurvey data\n\nstatistical analysis\n\nplotting libraries like matplotlib or seaborn"
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Reshaping Data with",
       "scenario": "Apply the concepts learned in Reshaping Data with to process sample tabular data.",
@@ -3911,45 +5388,60 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 60,
     "title": "Course Wrap-up",
-    "description": "Course Wrap-up  Congratulations! You have completed the course on combining and reshaping data with pandas. Throughout the lessons, you learned many important t...",
+    "description": "Congratulations! You have completed the course on combining and reshaping data with pandas. Throughout the lessons, you learned many important techniques used i...",
     "sections": [
       {
-        "title": "Course Wrap-up",
-        "body": "Course Wrap-up\n\nCongratulations! You have completed the course on combining and reshaping data with pandas. Throughout the lessons, you learned many important techniques used in real-world data analysis and data science workflows.\n\nChapter 1 – Data Merging Basics\n\nThe course started with the fundamentals of combining tables using the merge() method."
+        "title": "1. Concept Overview",
+        "body": "Congratulations! You have completed the course on combining and reshaping data with pandas. Throughout the lessons, you learned many important techniques used in real-world data analysis and data science workflows."
       },
       {
-        "title": "You learned",
-        "body": "how to perform an inner join\n\nhow tables relate to one another\n\none-to-one and one-to-many relationships\n\nhow to merge multiple tables together\n\nThese concepts form the foundation of working with relational data in pandas.\n\nChapter 2 – Different Join Types\n\nIn the second chapter, you explored several types of joins beyond the default inner join."
+        "title": "2. Chapter 1 – Data Merging Basics",
+        "body": "The course started with the fundamentals of combining tables using the merge() method.\n\nYou learned:\n\nhow to perform an inner join\n\nhow tables relate to one another\n\none-to-one and one-to-many relationships\n\nhow to merge multiple tables together\n\nThese concepts form the foundation of working with relational data in pandas."
       },
       {
-        "title": "You learned",
-        "body": "left joins\n\nright joins\n\nouter joins\n\nself joins (merging a table with itself)\n\nmerging using indexes and multi-indexes\n\nThese techniques are useful when working with more complex datasets and relationships.\n\nChapter 3 – Advanced Merging and Concatenation\n\nThe third chapter focused on more advanced data combination techniques."
+        "title": "3. Chapter 2 – Different Join Types",
+        "body": "In the second chapter, you explored several types of joins beyond the default inner join.\n\nYou learned:\n\nleft joins\n\nright joins\n\nouter joins\n\nself joins (merging a table with itself)\n\nmerging using indexes and multi-indexes\n\nThese techniques are useful when working with more complex datasets and relationships."
       },
       {
-        "title": "You learned about",
-        "body": "semi joins\n\nanti joins\n\nvertical concatenation using concat()\n\nverifying data integrity\n\nYou also learned why validating merges and checking duplicate indexes is important to avoid inaccurate analysis."
+        "title": "4. Chapter 3 – Advanced Merging and Concatenation",
+        "body": "The third chapter focused on more advanced data combination techniques.\n\nYou learned about:\n\nsemi joins\n\nanti joins\n\nvertical concatenation using concat()\n\nverifying data integrity\n\nYou also learned why validating merges and checking duplicate indexes is important to avoid inaccurate analysis.\n\nImportant methods and arguments included:\n\nvalidate\n\nverify_integrity\n\nconcat()\n\nfiltering joins using isin()"
       },
       {
-        "title": "Important methods and arguments included",
-        "body": "validate\n\nverify_integrity\n\nconcat()\n\nfiltering joins using isin()\n\nChapter 4 – Ordered and Time-Series Data\n\nIn the final chapter, you worked with ordered and time-series datasets."
+        "title": "5. Chapter 4 – Ordered and Time-Series Data",
+        "body": "In the final chapter, you worked with ordered and time-series datasets.\n\nYou learned how to use:\n\nmerge_ordered()\n\nmerge_asof()\n\nThese methods are especially useful for:\n\nfinancial data\n\nstock prices\n\ntimestamped datasets\n\nordered observations\n\nYou also learned how to reshape data using .melt() to convert wide-format tables into long-format tables, making them easier for analysis and visualization."
       },
       {
-        "title": "You learned how to use",
-        "body": "merge_ordered()\n\nmerge_asof()"
+        "title": "6. Key Skills Learned",
+        "body": "By the end of the course, you can now:\n\nmerge tables in multiple ways\n\ncombine datasets vertically\n\nvalidate relationships between tables\n\nwork with time-series merges\n\nreshape datasets for analysis\n\nfilter data efficiently\n\nprepare cleaner datasets for machine learning and visualization\n\nThese are essential pandas skills used in:\n\ndata science\n\nanalytics\n\nmachine learning\n\nbusiness intelligence\n\nfinancial analysis"
       },
       {
-        "title": "These methods are especially useful for",
-        "body": "financial data\n\nstock prices\n\ntimestamped datasets\n\nordered observations\n\nYou also learned how to reshape data using .melt() to convert wide-format tables into long-format tables, making them easier for analysis and visualization.\n\nKey Skills Learned"
-      },
-      {
-        "title": "By the end of the course, you can now",
-        "body": "merge tables in multiple ways\n\ncombine datasets vertically\n\nvalidate relationships between tables\n\nwork with time-series merges\n\nreshape datasets for analysis\n\nfilter data efficiently\n\nprepare cleaner datasets for machine learning and visualization"
-      },
-      {
-        "title": "These are essential pandas skills used in",
-        "body": "data science\n\nanalytics\n\nmachine learning\n\nbusiness intelligence\n\nfinancial analysis\n\nFinal Note\n\nThis course covered many core pandas techniques for combining and reshaping data. Mastering these topics gives you a strong foundation for handling real-world datasets and more advanced data analysis tasks later on."
+        "title": "7. Final Note",
+        "body": "This course covered many core pandas techniques for combining and reshaping data. Mastering these topics gives you a strong foundation for handling real-world datasets and more advanced data analysis tasks later on."
       }
     ],
+    "quickReference": [
+      {
+        "goal": "Inspect first 5 rows",
+        "syntax": "df.head(5)"
+      },
+      {
+        "goal": "Inspect column metadata",
+        "syntax": "df.info()"
+      },
+      {
+        "goal": "Summary statistics",
+        "syntax": "df.describe()"
+      },
+      {
+        "goal": "Check dimensions",
+        "syntax": "df.shape"
+      }
+    ],
+    "commonMistake": {
+      "wrongCode": "# Forgetting to reassign DataFrame operations:\ndf.drop_duplicates()  # df is still unchanged!",
+      "correctCode": "# Assign result back or pass inplace=True:\ndf = df.drop_duplicates()",
+      "explanation": "Most pandas transformations return a new DataFrame rather than modifying in-place. Always assign the returned object back to the variable."
+    },
     "challenge": {
       "title": "Practice Drill: Course Wrap-up",
       "scenario": "Apply the concepts learned in Course Wrap-up to process sample tabular data.",
@@ -4012,43 +5504,42 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
   {
     "id": "py-ex-3-replace-missing-values",
     "order": 3,
-    "title": "3. Replace Missing Values (Imputation)",
+    "title": "3. Replace Missing Values in Columns",
     "difficulty": "Beginner",
     "category": "Data Cleaning",
-    "context": "Data pipelines often encounter null values from optional form fields. Missing values must be imputed cleanly before loading into downstream analytics marts.",
-    "goal": "Read 'customers.csv'. Count missing values per column with `.isna().sum()`. Fill missing email entries with `'no_email_provided@domain.com'`. Assign the result to `imputed_customers`.",
+    "context": "Missing data causes arithmetic failures and incorrect downstream report generation. Identify and impute missing values.",
+    "goal": "Read 'customers.csv'. Count missing values in the `email` column using `.isna().sum()`. Impute missing emails with the placeholder `'unspecified@customer.internal'`. Save to `filled_customers`.",
     "csvsUsed": [
       "customers.csv"
     ],
-    "starterCode": "import pandas as pd\n\ncustomers = pd.read_csv('customers.csv')\n\n# Step 1: Count missing values per column\nmissing_counts = None\n\n# Step 2: Fill null emails with 'no_email_provided@domain.com'\nimputed_customers = customers.copy()\n# your code here\n\nprint(imputed_customers[['customer_id', 'first_name', 'email']])\n",
-    "expectedCode": "import pandas as pd\n\ncustomers = pd.read_csv('customers.csv')\nmissing_counts = customers.isna().sum()\nimputed_customers = customers.copy()\nimputed_customers['email'] = imputed_customers['email'].fillna('no_email_provided@domain.com')\nprint(imputed_customers[['customer_id', 'first_name', 'email']])\n",
-    "validationScript": "assert 'imputed_customers' in locals(), \"Variable 'imputed_customers' must be created\"\nassert imputed_customers['email'].isna().sum() == 0, \"All null emails must be filled\"\n",
+    "starterCode": "import pandas as pd\n\ncustomers = pd.read_csv('customers.csv')\n\n# Count missing emails\nmissing_count = None\n\n# Impute missing values\nfilled_customers = customers.copy()\n# your code here\n\nprint(\"Missing count:\", missing_count)\nprint(\"Any nulls remaining?\", filled_customers['email'].isna().any())\n",
+    "expectedCode": "import pandas as pd\n\ncustomers = pd.read_csv('customers.csv')\nmissing_count = customers['email'].isna().sum()\nfilled_customers = customers.copy()\nfilled_customers['email'] = filled_customers['email'].fillna('unspecified@customer.internal')\nprint(\"Missing count:\", missing_count)\nprint(\"Any nulls remaining?\", filled_customers['email'].isna().any())\n",
+    "validationScript": "assert 'filled_customers' in locals(), \"Variable 'filled_customers' must be defined\"\nassert filled_customers['email'].isna().sum() == 0, \"No null values should remain in 'email' column\"\n",
     "hints": [
-      "Use customers.isna().sum() to count nulls.",
-      "Use imputed_customers['email'].fillna('no_email_provided@domain.com') to impute missing text values."
+      "Count missing values with customers['email'].isna().sum().",
+      "Fill missing values using filled_customers['email'].fillna('unspecified@customer.internal')."
     ],
-    "walkthrough": "fillna replaces NaN values with a domain-appropriate constant, preventing runtime errors in downstream transformations."
+    "walkthrough": "fillna() safely replaces NaN placeholders without altering existing valid records."
   },
   {
-    "id": "py-ex-4-average-sales-region",
+    "id": "py-ex-4-average-sales-per-region",
     "order": 4,
-    "title": "4. Calculate the Average Sales per Region",
+    "title": "4. Calculate Average Sales per Region",
     "difficulty": "Intermediate",
     "category": "Data Transformation",
-    "context": "The sales performance team needs regional benchmark metrics to set quarterly quotas.",
-    "goal": "Read 'sales.csv'. Group by `region` and compute the average `sale_amount` rounded to 2 decimal places. Sort regions by average sale amount descending. Save the result to `regional_avg`.",
+    "context": "The executive team wants regional performance metrics to guide territory marketing budget allocations.",
+    "goal": "Read 'sales.csv'. Group by the `region` column and calculate both the average (`mean`) and total (`sum`) `sale_amount`. Round results to 2 decimal places. Assign to `regional_metrics`.",
     "csvsUsed": [
       "sales.csv"
     ],
-    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\n\n# Group by region, calculate mean of sale_amount, round to 2 decimals, sort descending\nregional_avg = None\n\nprint(regional_avg)\n",
-    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nregional_avg = sales.groupby('region')['sale_amount'].mean().round(2).sort_values(ascending=False)\nprint(regional_avg)\n",
-    "validationScript": "assert 'regional_avg' in locals(), \"Variable 'regional_avg' must be defined\"\nassert len(regional_avg) == 4, \"Should have 4 regions in the summary\"\nassert regional_avg.iloc[0] >= regional_avg.iloc[-1], \"Result must be sorted in descending order\"\n",
+    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\n\n# Group by region and aggregate sale_amount with mean and sum\nregional_metrics = None\n\nprint(regional_metrics)\n",
+    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nregional_metrics = sales.groupby('region')['sale_amount'].agg(['mean', 'sum']).round(2)\nprint(regional_metrics)\n",
+    "validationScript": "assert 'regional_metrics' in locals(), \"Variable 'regional_metrics' must be defined\"\nassert len(regional_metrics) == 4, \"Expected 4 regions\"\nassert 'mean' in regional_metrics.columns, \"Aggregations must include 'mean'\"\nassert 'sum' in regional_metrics.columns, \"Aggregations must include 'sum'\"\n",
     "hints": [
-      "Use sales.groupby('region')['sale_amount'].mean().",
-      "Round using .round(2).",
-      "Sort using .sort_values(ascending=False)."
+      "Use sales.groupby('region')['sale_amount'].agg(['mean', 'sum']).",
+      "Call .round(2) on the resulting grouped dataframe."
     ],
-    "walkthrough": "groupby isolates records into buckets, calculates the mean on numeric sale amounts, and orders values."
+    "walkthrough": "groupby() splits records into buckets, applies aggregate statistical functions, and recombines the results into a compact summary table."
   },
   {
     "id": "py-ex-5-merge-datasets",
@@ -4056,77 +5547,76 @@ export const PYTHON_EXERCISES: PythonExercise[] = [
     "title": "5. Merge Two Datasets Using a Common Column",
     "difficulty": "Intermediate",
     "category": "Data Merging",
-    "context": "Order transactions only store customer IDs. To produce customer-facing invoice reports, sales data must be merged with customer demographic profiles.",
-    "goal": "Read 'sales.csv' and 'customers.csv'. Merge them on `customer_id` using an `inner` join. Keep `sale_id`, `customer_id`, `first_name`, `last_name`, `sale_amount`, and `sale_date`. Assign to `merged_sales`.",
+    "context": "In data warehousing, transactional purchase orders must be enriched with customer demographic profiles.",
+    "goal": "Read 'sales.csv' and 'customers.csv'. Merge them on `customer_id` using an `inner` join. Store the result in `sales_with_customers`. Verify that the merged result has the customer's `first_name` and `city`.",
     "csvsUsed": [
       "sales.csv",
       "customers.csv"
     ],
-    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Merge sales and customers on 'customer_id'\nmerged_sales = None\n\nprint(merged_sales.head())\n",
-    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nmerged_sales = pd.merge(sales, customers, on='customer_id', how='inner')[\n    ['sale_id', 'customer_id', 'first_name', 'last_name', 'sale_amount', 'sale_date']\n]\nprint(merged_sales.head())\n",
-    "validationScript": "assert 'merged_sales' in locals(), \"Variable 'merged_sales' must be defined\"\nassert 'first_name' in merged_sales.columns, \"Merged DataFrame must contain customer first_name\"\nassert 'sale_amount' in merged_sales.columns, \"Merged DataFrame must contain sale_amount\"\n",
+    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Inner merge sales and customers on customer_id\nsales_with_customers = None\n\nprint(sales_with_customers.head(3))\n",
+    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nsales_with_customers = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(sales_with_customers.head(3))\n",
+    "validationScript": "assert 'sales_with_customers' in locals(), \"Variable 'sales_with_customers' must be created\"\nassert 'first_name' in sales_with_customers.columns, \"Merged dataset must contain 'first_name'\"\nassert len(sales_with_customers) > 0, \"Merged result should contain rows\"\n",
     "hints": [
-      "Use pd.merge(sales, customers, on='customer_id', how='inner').",
-      "Filter the required columns by passing a list of column names."
+      "Use pd.merge(sales, customers, on='customer_id', how='inner')."
     ],
-    "walkthrough": "pd.merge aligns rows from both tables on matching customer_id keys, creating a unified denormalized record."
+    "walkthrough": "pd.merge() matches foreign keys across two DataFrames, producing an enriched relational table."
   },
   {
-    "id": "py-ex-6-consistent-dates",
+    "id": "py-ex-6-convert-dates",
     "order": 6,
     "title": "6. Convert Dates into a Consistent Format",
     "difficulty": "Intermediate",
-    "category": "Data Transformation",
-    "context": "Date strings from disparate sources often contain inconsistent time formats or strings that break time-series partitioning.",
-    "goal": "Read 'sales.csv'. Convert `sale_date` into a proper pandas datetime using `pd.to_datetime()`. Extract the year-month string formatted as `YYYY-MM` into a new column called `sale_year_month`. Print the first 5 records of `sales[['sale_date', 'sale_year_month']]`.",
+    "category": "Data Validation",
+    "context": "Transaction dates exported from legacy systems often arrive as raw strings, preventing time-series math.",
+    "goal": "Read 'sales.csv'. Convert the `sale_date` column to datetime objects using `pd.to_datetime()`. Extract the year and month into a new column named `year_month` formatted as 'YYYY-MM'. Assign to `sales_dated`.",
     "csvsUsed": [
       "sales.csv"
     ],
-    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\n\n# Step 1: Convert sale_date to datetime\n# Step 2: Create 'sale_year_month' formatted as '%Y-%m'\n\nprint(sales[['sale_date', 'sale_year_month']].head())\n",
-    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nsales['sale_date'] = pd.to_datetime(sales['sale_date'])\nsales['sale_year_month'] = sales['sale_date'].dt.strftime('%Y-%m')\nprint(sales[['sale_date', 'sale_year_month']].head())\n",
-    "validationScript": "assert 'sale_year_month' in sales.columns, \"Column 'sale_year_month' must be created\"\nassert pd.api.types.is_datetime64_any_dtype(sales['sale_date']), \"sale_date must be converted to datetime\"\n",
+    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nsales_dated = sales.copy()\n\n# Step 1: Convert sale_date to datetime\n# your code here\n\n# Step 2: Create 'year_month' column using dt.strftime('%Y-%m')\n# your code here\n\nprint(sales_dated[['sale_id', 'sale_date', 'year_month']].head(5))\n",
+    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nsales_dated = sales.copy()\nsales_dated['sale_date'] = pd.to_datetime(sales_dated['sale_date'])\nsales_dated['year_month'] = sales_dated['sale_date'].dt.strftime('%Y-%m')\nprint(sales_dated[['sale_id', 'sale_date', 'year_month']].head(5))\n",
+    "validationScript": "assert 'sales_dated' in locals(), \"sales_dated must be defined\"\nassert pd.api.types.is_datetime64_any_dtype(sales_dated['sale_date']), \"sale_date must be converted to datetime\"\nassert 'year_month' in sales_dated.columns, \"sales_dated must have 'year_month' column\"\n",
     "hints": [
-      "Use sales['sale_date'] = pd.to_datetime(sales['sale_date']).",
-      "Use the .dt accessor: sales['sale_date'].dt.strftime('%Y-%m')."
+      "Use sales_dated['sale_date'] = pd.to_datetime(sales_dated['sale_date']).",
+      "Use sales_dated['sale_date'].dt.strftime('%Y-%m') to format."
     ],
-    "walkthrough": "Converting raw text to pandas datetime unlocks the .dt accessor for effortless date formatting, truncation, and cohort grouping."
+    "walkthrough": "pd.to_datetime() parses string timestamps into POSIX datetimes, unlocking accessor methods like .dt.year, .dt.month, and time-based indexing."
   },
   {
-    "id": "py-ex-7-export-cleaned-csv",
+    "id": "py-ex-7-export-cleaned-data",
     "order": 7,
-    "title": "7. Export Cleaned Data into Another CSV File",
-    "difficulty": "Intermediate",
-    "category": "File Handling & Pipeline",
-    "context": "After completing data cleansing and enrichment in memory, pipelines must persist production-ready files for downstream consumers.",
-    "goal": "Read 'products.csv'. Filter out any products priced under $100. Sort by price descending. Export the resulting DataFrame to `'premium_products.csv'` with `index=False`. Verify by reading the exported file back into `exported_df`.",
+    "title": "7. Export Cleaned Data to CSV",
+    "difficulty": "Beginner",
+    "category": "Automation",
+    "context": "After completing data cleansing pipelines, data engineers export artifacts to S3 or downstream consumers without raw index noise.",
+    "goal": "Filter 'sales.csv' to include only transactions with `sale_amount >= 200`. Save the filtered records to a file named `'high_value_sales.csv'` using `.to_csv(index=False)`. Confirm the exported file exists by reading it back into `exported_df`.",
     "csvsUsed": [
-      "products.csv"
+      "sales.csv"
     ],
-    "starterCode": "import pandas as pd\n\nproducts = pd.read_csv('products.csv')\n\n# Step 1: Filter products with price >= 100\n# Step 2: Sort by price descending\n# Step 3: Export to 'premium_products.csv' without index\n# Step 4: Verify by reading 'premium_products.csv' into exported_df\n\nexported_df = None\nprint(exported_df)\n",
-    "expectedCode": "import pandas as pd\n\nproducts = pd.read_csv('products.csv')\npremium = products[products['price'] >= 100].sort_values(by='price', ascending=False)\npremium.to_csv('premium_products.csv', index=False)\nexported_df = pd.read_csv('premium_products.csv')\nprint(exported_df)\n",
-    "validationScript": "assert 'exported_df' in locals(), \"Variable 'exported_df' must be loaded from 'premium_products.csv'\"\nassert (exported_df['price'] >= 100).all(), \"All products in exported_df must have price >= 100\"\nassert os.path.exists('premium_products.csv') or len(exported_df) > 0, \"File 'premium_products.csv' must exist\"\n",
+    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\n\n# Step 1: Filter sale_amount >= 200\nhigh_value = None\n\n# Step 2: Export to 'high_value_sales.csv' without index\n# your code here\n\n# Step 3: Read back into exported_df to verify\nexported_df = None\n\nprint(\"Exported rows:\", len(exported_df) if exported_df is not None else 0)\n",
+    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nhigh_value = sales[sales['sale_amount'] >= 200]\nhigh_value.to_csv('high_value_sales.csv', index=False)\nexported_df = pd.read_csv('high_value_sales.csv')\nprint(\"Exported rows:\", len(exported_df))\n",
+    "validationScript": "assert 'exported_df' in locals(), \"Variable 'exported_df' must be defined\"\nassert (exported_df['sale_amount'] >= 200).all(), \"All exported rows must have sale_amount >= 200\"\n",
     "hints": [
-      "Filter with products[products['price'] >= 100].",
-      "Export with premium.to_csv('premium_products.csv', index=False).",
-      "Read back with pd.read_csv('premium_products.csv')."
+      "Filter with sales[sales['sale_amount'] >= 200].",
+      "Export with high_value.to_csv('high_value_sales.csv', index=False).",
+      "Verify by reading with pd.read_csv('high_value_sales.csv')."
     ],
-    "walkthrough": "to_csv(index=False) generates clean flat files without arbitrary sequential integer index columns."
+    "walkthrough": "Always pass index=False to to_csv() unless your DataFrame explicitly relies on an index that needs persistence; this avoids generating redundant 'Unnamed: 0' columns."
   },
   {
     "id": "py-ex-8-generate-summary-report",
     "order": 8,
-    "title": "8. Generate an Automated Summary Report",
+    "title": "8. Generate an Automated KPI Summary Report",
     "difficulty": "Advanced",
-    "category": "Automation & Reporting",
-    "context": "Data engineering jobs often conclude by computing executive KPIs and emitting summary stats for leadership dashboards.",
-    "goal": "Read 'sales.csv' and 'employees.csv'. Compute overall metrics:\n1. `total_sales_revenue` (sum of sale_amount)\n2. `total_orders_count` (total number of sales)\n3. `avg_order_value` (mean of sale_amount, rounded to 2 decimals)\n4. `total_payroll` (sum of employee salaries)\nStore these metrics in a dictionary called `executive_report` and print it.",
+    "category": "Automation",
+    "context": "Automated executive dashboards require batch jobs that aggregate multiple data sources into a single structured KPI summary payload.",
+    "goal": "Ingest 'sales.csv' and 'employees.csv'. Calculate:\n1. `total_revenue`: sum of `sale_amount` in sales (rounded to 2 decimal places).\n2. `total_orders_count`: total number of sales records.\n3. `avg_order_value`: average sale amount (rounded to 2 decimal places).\n4. `total_payroll`: sum of `salary` in employees.\nStore these 4 metrics in a Python dictionary named `executive_report`. Print `executive_report`.",
     "csvsUsed": [
       "sales.csv",
       "employees.csv"
     ],
-    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nemployees = pd.read_csv('employees.csv')\n\n# Build the executive_report dictionary with total_sales_revenue, total_orders_count, avg_order_value, and total_payroll\nexecutive_report = {}\n\nprint(\"Executive Summary Report:\")\nprint(executive_report)\n",
-    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nemployees = pd.read_csv('employees.csv')\n\nexecutive_report = {\n    'total_sales_revenue': round(float(sales['sale_amount'].sum()), 2),\n    'total_orders_count': int(len(sales)),\n    'avg_order_value': round(float(sales['sale_amount'].mean()), 2),\n    'total_payroll': round(float(employees['salary'].sum()), 2)\n}\nprint(executive_report)\n",
-    "validationScript": "assert 'executive_report' in locals(), \"executive_report dictionary must be defined\"\nassert 'total_sales_revenue' in executive_report, \"Report must include 'total_sales_revenue'\"\nassert 'total_payroll' in executive_report, \"Report must include 'total_payroll'\"\nassert executive_report['total_orders_count'] == 14, \"Expected total_orders_count to be 14\"\n",
+    "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nemployees = pd.read_csv('employees.csv')\n\n# Compute KPIs\nexecutive_report = {\n    'total_revenue': None,\n    'total_orders_count': None,\n    'avg_order_value': None,\n    'total_payroll': None\n}\n\nprint(\"Executive KPI Summary:\")\nprint(executive_report)\n",
+    "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\nemployees = pd.read_csv('employees.csv')\n\nexecutive_report = {\n    'total_revenue': round(float(sales['sale_amount'].sum()), 2),\n    'total_orders_count': int(len(sales)),\n    'avg_order_value': round(float(sales['sale_amount'].mean()), 2),\n    'total_payroll': round(float(employees['salary'].sum()), 2)\n}\n\nprint(\"Executive KPI Summary:\")\nprint(executive_report)\n",
+    "validationScript": "assert 'executive_report' in locals(), \"Variable 'executive_report' must be defined\"\nassert 'total_revenue' in executive_report, \"Report must include 'total_revenue'\"\nassert 'total_payroll' in executive_report, \"Report must include 'total_payroll'\"\nassert executive_report['total_orders_count'] == 14, \"Expected total_orders_count to be 14\"\n",
     "hints": [
       "Use sales['sale_amount'].sum() for revenue.",
       "Use len(sales) for order count.",

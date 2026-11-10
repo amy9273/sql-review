@@ -18,6 +18,9 @@ import {
   CheckCircle2,
   XCircle,
   Terminal,
+  AlertCircle,
+  Copy,
+  Calculator,
 } from 'lucide-react';
 
 interface PythonLessonViewerProps {
@@ -156,6 +159,68 @@ export const PythonLessonViewer: React.FC<PythonLessonViewerProps> = ({
     if (currentIndex > 0) {
       setSelectedLessonId(PYTHON_LESSONS[currentIndex - 1].id);
     }
+  };
+
+  const renderInlineMarkdown = (text: string) => {
+    const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+
+    return parts.map((part, idx) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={idx} className="font-bold text-slate-900">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith('`') && part.endsWith('`')) {
+        return (
+          <code
+            key={idx}
+            className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 font-mono text-[13px] border border-emerald-100 font-semibold"
+          >
+            {part.slice(1, -1)}
+          </code>
+        );
+      }
+      return part;
+    });
+  };
+
+  const renderFormattedText = (text: string) => {
+    const paragraphs = text.split('\n\n').filter(Boolean);
+
+    return (
+      <div className="space-y-3.5">
+        {paragraphs.map((p, pIdx) => {
+          const lines = p.split('\n').filter(Boolean);
+          const isBulletList = lines.every(
+            (l) => l.trim().startsWith('•') || l.trim().startsWith('-') || l.trim().startsWith('*')
+          );
+
+          if (isBulletList) {
+            return (
+              <ul key={pIdx} className="space-y-2 my-2.5 pl-1">
+                {lines.map((line, lIdx) => {
+                  const cleanLine = line.replace(/^[•\-\*]\s*/, '');
+                  return (
+                    <li key={lIdx} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                      <span>{renderInlineMarkdown(cleanLine)}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            );
+          }
+
+          return (
+            <p key={pIdx} className="text-sm text-slate-700 leading-[1.85]">
+              {renderInlineMarkdown(p)}
+            </p>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -337,29 +402,148 @@ export const PythonLessonViewer: React.FC<PythonLessonViewerProps> = ({
           {/* Guide Content */}
           <div className="space-y-6">
             {currentLesson.sections.map((sec, idx) => (
-              <div key={idx} className="space-y-3">
-                <h2 className="text-lg font-bold text-slate-900">{sec.title}</h2>
-                <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
-                  {sec.body}
+              <div
+                key={idx}
+                className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-4"
+              >
+                <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100">
+                  <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                    {idx + 1}
+                  </span>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                    {sec.title}
+                  </h2>
                 </div>
 
-                {sec.exampleCode && (
-                  <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-sm font-mono text-emerald-300 overflow-x-auto shadow-inner">
-                    <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs text-slate-400">
-                      <span>Python Code Example</span>
-                      <button
-                        onClick={() => onOpenPlaygroundWithCode(sec.exampleCode!)}
-                        className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-sans font-medium"
-                      >
-                        <Play className="w-3 h-3" />
-                        <span>Try in Playground</span>
-                      </button>
+                {renderFormattedText(sec.body)}
+
+                {/* Mathematical Formula Callout */}
+                {sec.formula && (
+                  <div className="my-4 p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950 text-white border border-emerald-800/60 shadow-md">
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-emerald-800/40 text-xs">
+                      <span className="flex items-center gap-2 font-mono font-bold uppercase tracking-wider text-emerald-400 text-[11px]">
+                        <Calculator className="w-4 h-4 text-emerald-400" />
+                        {sec.formula.title}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-300 text-[10px] font-semibold">
+                        Formula Definition
+                      </span>
                     </div>
-                    <pre className="whitespace-pre leading-[1.85]">{sec.exampleCode}</pre>
+
+                    <div className="py-2 text-center">
+                      <div className="inline-block px-5 py-2.5 rounded-xl bg-slate-950/80 border border-emerald-500/30 font-mono text-base sm:text-lg font-bold text-emerald-300 tracking-wide shadow-inner">
+                        {sec.formula.expression}
+                      </div>
+                    </div>
+
+                    {sec.formula.variables && sec.formula.variables.length > 0 && (
+                      <div className="mt-4 pt-3 border-t border-emerald-800/40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                        {sec.formula.variables.map((v, i) => (
+                          <div
+                            key={i}
+                            className="flex items-center gap-2 bg-slate-800/60 px-3 py-2 rounded-xl border border-slate-700/60"
+                          >
+                            <code className="text-emerald-400 font-bold font-mono text-xs">{v.name}</code>
+                            <span className="text-slate-300 text-[11px] leading-snug">{v.meaning}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Example Python Code Block */}
+                {sec.exampleCode && (
+                  <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950 overflow-hidden shadow-sm">
+                    <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 text-xs text-slate-400">
+                      <span className="font-mono text-emerald-400 font-semibold flex items-center gap-1.5">
+                        <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+                        Python 3 Example
+                      </span>
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(sec.exampleCode!);
+                          }}
+                          className="hover:text-slate-200 transition-colors flex items-center gap-1 text-[11px] text-slate-400"
+                          title="Copy code"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy</span>
+                        </button>
+                        <button
+                          onClick={() => onOpenPlaygroundWithCode(sec.exampleCode!)}
+                          className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-semibold text-[11px] transition-colors"
+                        >
+                          <Play className="w-3 h-3" />
+                          <span>Try in Playground</span>
+                        </button>
+                      </div>
+                    </div>
+                    <pre className="p-4 text-xs font-mono text-emerald-300 overflow-x-auto whitespace-pre leading-[1.85]">
+                      {sec.exampleCode}
+                    </pre>
                   </div>
                 )}
               </div>
             ))}
+
+            {/* Common Mistake to Avoid */}
+            {currentLesson.commonMistake && (
+              <div className="p-5 rounded-2xl bg-amber-50/90 border border-amber-200 space-y-3 shadow-xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-amber-900 uppercase tracking-wider">
+                  <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                  <span>Common Mistake to Avoid</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                  <div className="p-3.5 rounded-xl bg-rose-50/90 border border-rose-200 text-rose-900 leading-relaxed">
+                    <span className="font-bold block text-rose-950 mb-1.5 flex items-center gap-1.5">
+                      <XCircle className="w-3.5 h-3.5 text-rose-600" />
+                      Don't do this:
+                    </span>
+                    <pre className="whitespace-pre-wrap font-mono text-[12px]">{currentLesson.commonMistake.wrongCode}</pre>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-emerald-50/90 border border-emerald-200 text-emerald-900 leading-relaxed">
+                    <span className="font-bold block text-emerald-950 mb-1.5 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      Do this instead:
+                    </span>
+                    <pre className="whitespace-pre-wrap font-mono text-[12px]">{currentLesson.commonMistake.correctCode}</pre>
+                  </div>
+                </div>
+                <p className="text-xs text-amber-900 leading-relaxed pt-1 font-medium">
+                  {currentLesson.commonMistake.explanation}
+                </p>
+              </div>
+            )}
+
+            {/* Quick Reference Table */}
+            {currentLesson.quickReference && currentLesson.quickReference.length > 0 && (
+              <div className="space-y-2 pt-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Quick Syntax Reference</span>
+                </h3>
+                <div className="overflow-x-auto rounded-xl border border-border-light bg-slate-50 shadow-2xs">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-border-light text-slate-600 bg-slate-100/60">
+                        <th className="p-3 font-semibold">What you want to do</th>
+                        <th className="p-3 font-semibold font-mono">Python Syntax</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border-light bg-white font-mono">
+                      {currentLesson.quickReference.map((ref, i) => (
+                        <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                          <td className="p-3 text-slate-800 font-sans font-medium">{ref.goal}</td>
+                          <td className="p-3 text-emerald-700 font-bold">{ref.syntax}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Bottom Launchpad Card */}

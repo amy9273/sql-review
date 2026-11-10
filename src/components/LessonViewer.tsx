@@ -3,6 +3,7 @@ import { LESSONS, MODULES } from '../data/curriculum';
 import { executeQuery, validateAnswer, type QueryResult } from '../lib/sqliteEngine';
 import { SqlEditor } from './SqlEditor';
 import { FormattedGoal } from './FormattedGoal';
+import { FormattedLessonBody } from './FormattedLessonBody';
 import confetti from 'canvas-confetti';
 import {
   BookOpen,
@@ -341,9 +342,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             {currentLesson.sections.map((sec, idx) => (
               <div key={idx} className="space-y-3">
                 <h2 className="text-lg font-bold text-slate-900">{sec.title}</h2>
-                <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
-                  {sec.body}
-                </div>
+                <FormattedLessonBody text={sec.body} theme="indigo" />
 
                 {sec.exampleSql && (
                   <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-sm font-mono text-slate-100 overflow-x-auto shadow-inner">

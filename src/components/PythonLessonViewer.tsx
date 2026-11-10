@@ -3,6 +3,7 @@ import { PYTHON_LESSONS, PYTHON_MODULES } from '../data/pythonCurriculum';
 import { executePythonCode, validatePythonSubmission, type PythonExecutionResult } from '../lib/pythonEngine';
 import { PythonEditor } from './PythonEditor';
 import { FormattedGoal } from './FormattedGoal';
+import { FormattedLessonBody } from './FormattedLessonBody';
 import confetti from 'canvas-confetti';
 import {
   BookOpen,
@@ -170,68 +171,6 @@ export const PythonLessonViewer: React.FC<PythonLessonViewerProps> = ({
     if (currentIndex > 0) {
       setSelectedLessonId(PYTHON_LESSONS[currentIndex - 1].id);
     }
-  };
-
-  const renderInlineMarkdown = (text: string) => {
-    const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
-
-    return parts.map((part, idx) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return (
-          <strong key={idx} className="font-bold text-slate-900">
-            {part.slice(2, -2)}
-          </strong>
-        );
-      }
-      if (part.startsWith('`') && part.endsWith('`')) {
-        return (
-          <code
-            key={idx}
-            className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 font-mono text-[13px] border border-emerald-100 font-semibold"
-          >
-            {part.slice(1, -1)}
-          </code>
-        );
-      }
-      return part;
-    });
-  };
-
-  const renderFormattedText = (text: string) => {
-    const paragraphs = text.split('\n\n').filter(Boolean);
-
-    return (
-      <div className="space-y-3.5">
-        {paragraphs.map((p, pIdx) => {
-          const lines = p.split('\n').filter(Boolean);
-          const isBulletList = lines.every(
-            (l) => l.trim().startsWith('•') || l.trim().startsWith('-') || l.trim().startsWith('*')
-          );
-
-          if (isBulletList) {
-            return (
-              <ul key={pIdx} className="space-y-2 my-2.5 pl-1">
-                {lines.map((line, lIdx) => {
-                  const cleanLine = line.replace(/^[•\-\*]\s*/, '');
-                  return (
-                    <li key={lIdx} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
-                      <span>{renderInlineMarkdown(cleanLine)}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            );
-          }
-
-          return (
-            <p key={pIdx} className="text-sm text-slate-700 leading-[1.85]">
-              {renderInlineMarkdown(p)}
-            </p>
-          );
-        })}
-      </div>
-    );
   };
 
   return (
@@ -426,7 +365,7 @@ export const PythonLessonViewer: React.FC<PythonLessonViewerProps> = ({
                   </h2>
                 </div>
 
-                {renderFormattedText(sec.body)}
+                <FormattedLessonBody text={sec.body} theme="emerald" />
 
                 {/* Mathematical Formula Callout */}
                 {sec.formula && (

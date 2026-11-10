@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LESSONS, MODULES } from '../data/curriculum';
 import { executeQuery, validateAnswer, type QueryResult } from '../lib/sqliteEngine';
+import { SqlEditor } from './SqlEditor';
 import confetti from 'canvas-confetti';
 import {
   BookOpen,
@@ -369,18 +370,16 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             </div>
           </div>
 
-          {/* Interactive Code Editor for Challenge */}
+          {/* Interactive Code Editor for Challenge with Tab, quotes, and autocomplete */}
           <div className="space-y-3">
-            <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner">
-              <textarea
-                value={currentSql}
-                onChange={(e) => handleSqlChange(e.target.value)}
-                rows={7}
-                className="code-editor w-full p-4 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
-                placeholder="-- Write your SQL query here to complete the lesson..."
-                spellCheck={false}
-              />
-            </div>
+            <SqlEditor
+              value={currentSql}
+              onChange={handleSqlChange}
+              onRun={handleRunQuery}
+              onReset={handleResetChallenge}
+              rows={7}
+              placeholder="-- Write your SQL query here to complete the lesson..."
+            />
 
             {/* Actions: Run & Check Answer */}
             <div className="flex flex-wrap items-center justify-between gap-3">

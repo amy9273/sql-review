@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { executeQuery, resetDatabase, type QueryResult } from '../lib/sqliteEngine';
+import { SqlEditor } from './SqlEditor';
 import { Terminal, Play, RotateCcw, Download, Sparkles } from 'lucide-react';
 
 interface PlaygroundProps {
@@ -92,13 +93,6 @@ ORDER BY total_revenue DESC;`
     setIsRunning(false);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      handleRunQuery();
-    }
-  };
-
   const handleResetDb = async () => {
     if (confirm('Are you sure you want to re-seed the in-memory database to default?')) {
       setIsResetting(true);
@@ -177,22 +171,17 @@ ORDER BY total_revenue DESC;`
           ))}
         </div>
 
-        {/* SQL Editor Area */}
+        {/* SQL Editor Area with Tab, quote auto-wrap, and autocomplete */}
         <div className="space-y-3">
-          <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner">
-            <textarea
-              value={sql}
-              onChange={(e) => setSql(e.target.value)}
-              onKeyDown={handleKeyDown}
-              rows={11}
-              className="code-editor w-full p-5 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
-              placeholder="-- Write your SQL query here..."
-              spellCheck={false}
-            />
-          </div>
+          <SqlEditor
+            value={sql}
+            onChange={setSql}
+            onRun={handleRunQuery}
+            rows={12}
+            placeholder="-- Write your SQL query here..."
+          />
 
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-xs text-slate-400 font-mono">Tip: Press Ctrl + Enter to run</span>
+          <div className="flex items-center justify-end pt-1">
 
             <div className="flex items-center gap-3">
               {result && result.values.length > 0 && (

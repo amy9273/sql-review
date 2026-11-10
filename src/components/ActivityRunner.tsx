@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ACTIVITIES } from '../data/curriculum';
 import { executeQuery, validateAnswer, type QueryResult } from '../lib/sqliteEngine';
+import { SqlEditor } from './SqlEditor';
 import confetti from 'canvas-confetti';
 import {
   Flame,
@@ -8,7 +9,6 @@ import {
   XCircle,
   HelpCircle,
   Play,
-  RotateCcw,
   Sparkles,
   Eye,
   EyeOff,
@@ -81,14 +81,6 @@ export const ActivityRunner: React.FC<ActivityRunnerProps> = ({
       ...prev,
       [currentActivity.id]: newSql,
     }));
-  };
-
-  // Handle Ctrl+Enter shortcut to run query
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      handleRunQuery();
-    }
   };
 
   const handleRunQuery = async () => {
@@ -489,37 +481,15 @@ export const ActivityRunner: React.FC<ActivityRunnerProps> = ({
 
           {/* RIGHT PANE: Query Builder & Results - Independently Scrollable */}
           <div className="lg:col-span-7 h-full overflow-y-auto space-y-3 pl-1 pr-1">
-            {/* Editor Header */}
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <span>SQL Query Editor</span>
-                <span className="text-[11px] text-slate-400 font-mono font-normal hidden sm:inline">
-                  (Ctrl + Enter to run)
-                </span>
-              </label>
-
-              <button
-                onClick={handleResetStarter}
-                className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-900 transition-colors"
-                title="Reset to starter code"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset Code</span>
-              </button>
-            </div>
-
-            {/* Code Textarea Editor with spacious line height */}
-            <div className="relative rounded-xl border border-slate-800 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100 transition-all overflow-hidden bg-slate-950 shadow-inner">
-              <textarea
-                value={currentSql}
-                onChange={(e) => handleSqlChange(e.target.value)}
-                onKeyDown={handleKeyDown}
-                rows={11}
-                className="code-editor w-full p-4 bg-transparent text-emerald-400 text-sm outline-none resize-y leading-[1.85] font-mono"
-                placeholder="-- Write your SQL query here..."
-                spellCheck={false}
-              />
-            </div>
+            {/* Intelligent Code Editor with Tab indent, quote wrapping, and autocomplete */}
+            <SqlEditor
+              value={currentSql}
+              onChange={handleSqlChange}
+              onRun={handleRunQuery}
+              onReset={handleResetStarter}
+              rows={11}
+              placeholder="-- Write your SQL query here..."
+            />
 
             {/* Action Bar */}
             <div className="flex items-center gap-2 pt-1">

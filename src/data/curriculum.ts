@@ -2,11 +2,15 @@ export interface LessonSection {
   title: string;
   body: string;
   exampleSql?: string;
-  tablePreview?: {
-    caption: string;
-    headers: string[];
-    rows: (string | number | null)[][];
-  };
+}
+
+export interface LessonChallenge {
+  title: string;
+  instructions: string;
+  starterCode: string;
+  expectedQuery: string;
+  hints: string[];
+  solutionExplanation: string;
 }
 
 export interface Lesson {
@@ -23,7 +27,14 @@ export interface Lesson {
     correctSql: string;
     explanation: string;
   };
-  tryItSql: string;
+  challenge: LessonChallenge;
+}
+
+export interface TableSample {
+  tableName: string;
+  description?: string;
+  headers: string[];
+  rows: (string | number | null)[][];
 }
 
 export interface Activity {
@@ -35,11 +46,7 @@ export interface Activity {
   context: string;
   goal: string;
   tablesUsed: string[];
-  sampleInput: {
-    tableName: string;
-    headers: string[];
-    rows: (string | number | null)[][];
-  };
+  sampleInputs: TableSample[];
   expectedOutputPreview: {
     headers: string[];
     sampleRows: (string | number | null)[][];
@@ -54,442 +61,1062 @@ export interface Activity {
 export const MODULES = [
   {
     id: 1,
-    title: 'Module 1: Foundations & Filtering',
-    description: 'Learn how to retrieve data, filter records, handle missing NULL values, and sort results.'
+    title: 'Part 1: Basic SQL (From Zero to Querying)',
+    description: 'Start from absolute scratch: learn what databases and tables are, and master SELECT, WHERE, AND/OR, BETWEEN, IN, LIKE, and ORDER BY.'
   },
   {
     id: 2,
-    title: 'Module 2: Summarizing & Grouping Data',
-    description: 'Calculate metrics using COUNT, SUM, AVG, and bucket data with GROUP BY and HAVING.'
+    title: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    description: 'Summarize metrics with COUNT/SUM/AVG, master GROUP BY and HAVING, clean pesky NULLs, format dates, and write CASE WHEN logic.'
   },
   {
     id: 3,
-    title: 'Module 3: Combining Tables with Joins',
-    description: 'Connect related tables using INNER JOIN, LEFT JOIN, and master the Anti-Join pattern.'
+    title: 'Part 3: Relational SQL (Joins & Set Logic)',
+    description: 'Connect datasets across tables using Primary & Foreign Keys, master INNER JOIN and LEFT JOIN, and solve the classic Anti-Join puzzle.'
   },
   {
     id: 4,
-    title: 'Module 4: Advanced Data Engineering Transformations',
-    description: 'Write professional pipelines using CASE WHEN, CTEs (WITH), and Window Functions.'
+    title: 'Part 4: Advanced SQL (Data Engineering Core)',
+    description: 'Master senior interview concepts: Subqueries, Common Table Expressions (WITH), and Window Functions (ROW_NUMBER, RANK, DENSE_RANK).'
   }
 ];
 
 export const LESSONS: Lesson[] = [
+  // ==========================================
+  // PART 1: BASIC SQL (LESSONS 1 - 9)
+  // ==========================================
   {
-    id: 'select-from-order',
-    moduleTitle: 'Module 1: Foundations & Filtering',
+    id: 'intro-to-sql-databases',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
     moduleOrder: 1,
     lessonOrder: 1,
-    title: 'Retrieving Data & Query Execution Order',
-    description: 'Learn the basic syntax of SELECT and understand how SQL executes queries behind the scenes.',
+    title: '1. Intro to SQL & Databases',
+    description: 'Understand what relational databases and tables actually are before writing your first query.',
     sections: [
       {
-        title: 'What is a SQL Query?',
-        body: 'A database stores information in tables made of rows (individual records) and columns (attributes). When you write a SQL query, you are asking the database to find specific information and show it to you.\n\nThe most fundamental command in SQL is made of two parts:\n- SELECT: tells the database which columns you want to see.\n- FROM: tells the database which table has those columns.'
+        title: 'What is a Database?',
+        body: 'A database is an organized collection of data stored electronically. While spreadsheets like Excel work well for small personal lists, databases are designed to store millions of rows securely, quickly, and without crashing.'
       },
       {
-        title: 'The Written Order vs. The Execution Order',
-        body: 'Here is a surprising fact that every beginner needs to know: SQL does NOT execute clauses in the order you write them.\n\nWhen you write a query, you start with SELECT. But the database must first locate the table before it can pick columns!',
-        exampleSql: `-- Written Order:
-SELECT customer_id, first_name, city
-FROM customers
-LIMIT 5;`
+        title: 'Tables, Columns, and Rows',
+        body: 'Inside a database, information lives inside Tables (like a spreadsheet):\n- Columns (vertical) define what kind of data is stored, like product_name, price, or city.\n- Rows (horizontal) represent one specific record, like a single product or a customer.'
       },
       {
-        title: 'How SQL Executes Step-by-Step',
-        body: '1. FROM: First, the database finds the table (e.g., customers).\n2. SELECT: Second, it extracts only the requested columns (customer_id, first_name, city).\n3. LIMIT: Finally, it stops reading after the specified number of rows (5 rows).'
+        title: 'Your First Query: SELECT *',
+        body: 'SQL (Structured Query Language) is the language we use to ask the database questions. The asterisk (*) means "all columns":',
+        exampleSql: `-- View all columns and rows from the products table
+SELECT * FROM products;`
       }
     ],
     quickReference: [
-      { goal: 'Select all columns', syntax: 'SELECT * FROM table_name;' },
-      { goal: 'Select specific columns', syntax: 'SELECT col1, col2 FROM table_name;' },
-      { goal: 'Limit number of results', syntax: 'SELECT col FROM table_name LIMIT 10;' }
+      { goal: 'View every column in a table', syntax: 'SELECT * FROM table_name;' }
     ],
-    tryItSql: `-- Try selecting customer names and their city
-SELECT 
-    customer_id, 
-    first_name, 
-    last_name, 
-    city 
-FROM customers 
-LIMIT 5;`
+    challenge: {
+      title: 'Practice: Inspect the Products Table',
+      instructions: 'Write a query to view all columns from the products table. Limit the result to the first 5 rows.',
+      starterCode: `-- Challenge 1: View all columns from products
+-- 1. SELECT *
+-- 2. FROM products
+-- 3. LIMIT 5;
+
+`,
+      expectedQuery: 'SELECT * FROM products LIMIT 5;',
+      hints: [
+        'Use SELECT * to pick all columns.',
+        'Specify FROM products.',
+        'Add LIMIT 5 at the end.'
+      ],
+      solutionExplanation: 'SELECT * retrieves every column available in the products table, and LIMIT 5 returns the first 5 records.'
+    }
   },
   {
-    id: 'where-filtering',
-    moduleTitle: 'Module 1: Foundations & Filtering',
+    id: 'sql-select-columns',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
     moduleOrder: 1,
     lessonOrder: 2,
-    title: 'Filtering Data with the WHERE Clause',
-    description: 'Learn how to narrow down records using comparison operators for numbers and text.',
+    title: '2. SQL SELECT & FROM',
+    description: 'Learn how to retrieve only the specific columns you need for faster, cleaner queries.',
     sections: [
       {
-        title: 'Why Filter Data?',
-        body: 'Real database tables often hold millions of rows. Usually, you only care about a specific subset—such as customers in a certain city, or orders placed above $100.\n\nTo filter data, we use the WHERE clause. It checks every row against a condition and only keeps the rows where the condition is TRUE.'
+        title: 'Why Pick Specific Columns?',
+        body: 'In real data systems, tables often contain 50+ columns. Pulling all columns with SELECT * wastes network bandwidth and slows down applications.\n\nInstead, name the exact columns you want, separated by commas.'
       },
       {
-        title: 'Filtering Numbers with Comparison Operators',
-        body: 'You can compare numeric values using standard mathematical symbols:\n- > (Greater than)\n- < (Less than)\n- >= (Greater than or equal to)\n- <= (Less than or equal to)\n- = (Equal to)\n- <> or != (Not equal to)',
-        exampleSql: `-- Find products priced higher than $150
-SELECT product_name, category, price
-FROM products
-WHERE price > 150;`
-      },
-      {
-        title: 'Filtering Text (Strings)',
-        body: 'When filtering text, you must enclose the text inside single quotation marks. Without quotes, SQL thinks the word is a column name!',
-        exampleSql: `-- Filtering for customers located in Chicago
-SELECT first_name, last_name, city
-FROM customers
-WHERE city = 'Chicago';`
+        title: 'Syntax and Example',
+        body: 'List the column names after SELECT in any order you want:',
+        exampleSql: `-- Retrieve only product name and price
+SELECT product_name, price
+FROM products;`
       }
     ],
     quickReference: [
-      { goal: 'Exact match', syntax: "WHERE city = 'Boston'" },
-      { goal: 'Excluding a value', syntax: "WHERE city <> 'Boston'" },
-      { goal: 'Greater than', syntax: 'WHERE price > 100' },
-      { goal: 'Between two numbers', syntax: 'WHERE price BETWEEN 50 AND 200' }
+      { goal: 'Pick specific columns', syntax: 'SELECT col1, col2 FROM table;' }
     ],
     commonMistake: {
-      wrongSql: "SELECT * FROM customers WHERE city = Chicago;",
-      correctSql: "SELECT * FROM customers WHERE city = 'Chicago';",
-      explanation: "Always wrap text strings in single quotes so SQL knows you mean a text value, not a table column."
+      wrongSql: 'SELECT product_name price FROM products;',
+      correctSql: 'SELECT product_name, price FROM products;',
+      explanation: 'Always separate multiple column names with a comma.'
     },
-    tryItSql: `-- Try finding all products in the 'Electronics' category
-SELECT product_id, product_name, category, price
-FROM products
-WHERE category = 'Electronics';`
+    challenge: {
+      title: 'Practice: Select Product Names and Prices',
+      instructions: 'Write a query to select product_name, category, and price from the products table. Limit to 5 rows.',
+      starterCode: `-- Challenge 2: Select specific columns
+-- Select product_name, category, price
+-- From products
+-- Limit 5;
+
+`,
+      expectedQuery: 'SELECT product_name, category, price FROM products LIMIT 5;',
+      hints: [
+        'Separate the columns with commas: product_name, category, price.',
+        'Query the products table.',
+        'Add LIMIT 5.'
+      ],
+      solutionExplanation: 'We selected only the 3 columns we care about, keeping the query lightweight and readable.'
+    }
   },
   {
-    id: 'null-values',
-    moduleTitle: 'Module 1: Foundations & Filtering',
+    id: 'sql-limit-and-as',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
     moduleOrder: 1,
     lessonOrder: 3,
-    title: 'Handling NULL Values in SQL',
-    description: 'Understand missing data, three-valued logic, and the difference between COUNT(*) and COUNT(column).',
+    title: '3. SQL LIMIT & Aliasing (AS)',
+    description: 'Control the number of returned rows and rename output columns with friendly labels.',
     sections: [
       {
-        title: 'What is NULL?',
-        body: 'In real-world datasets, information is often missing. A customer may not have provided their email address, or an end-date has not happened yet.\n\nIn SQL, missing information is marked with a special marker called NULL.\n\nNULL does NOT mean:\n- It is not the number 0.\n- It is not an empty text string "".\n- It is not FALSE.\n\nNULL simply means: "We do not know the value."'
+        title: 'Preventing Overload with LIMIT',
+        body: 'Adding LIMIT at the end of your query tells the database engine to stop searching as soon as it collects the requested number of records.'
       },
       {
-        title: 'Finding Missing Values with IS NULL',
-        body: 'Because NULL represents unknown data, you CANNOT compare it using the regular equals sign (=). Comparing anything to NULL with = produces UNKNOWN, which always fails.\n\nInstead, SQL gives you two dedicated keywords:\n- IS NULL: finds records where the value is missing.\n- IS NOT NULL: finds records where a real value exists.',
-        exampleSql: `-- Find customers without an email address
-SELECT customer_id, first_name, last_name
+        title: 'Renaming Columns with AS',
+        body: 'You can give any column a temporary label in the output using AS. This is called aliasing:',
+        exampleSql: `-- Rename first_name to customer_name
+SELECT first_name AS customer_name, city
 FROM customers
-WHERE email IS NULL;`
-      },
-      {
-        title: 'COUNT(*) vs. COUNT(column_name)',
-        body: 'This is one of the most tested questions in Data Engineering interviews:\n\n1. COUNT(*): Counts every row in the table, even if some columns have NULL.\n2. COUNT(column_name): Only counts rows where that specific column is NOT NULL!\n\nIf you have 10 rows and 2 of them have NULL emails, COUNT(*) returns 10, but COUNT(email) returns 8.'
+LIMIT 3;`
       }
     ],
-    commonMistake: {
-      wrongSql: "SELECT * FROM customers WHERE email = NULL;",
-      correctSql: "SELECT * FROM customers WHERE email IS NULL;",
-      explanation: "In SQL, nothing equals NULL (not even NULL equals NULL!). Always use 'IS NULL' or 'IS NOT NULL'."
-    },
     quickReference: [
-      { goal: 'Find missing records', syntax: 'WHERE column_name IS NULL' },
-      { goal: 'Find non-missing records', syntax: 'WHERE column_name IS NOT NULL' },
-      { goal: 'Count only non-null values', syntax: 'SELECT COUNT(column_name) FROM table;' }
+      { goal: 'Limit rows', syntax: 'LIMIT 10;' },
+      { goal: 'Rename column in output', syntax: 'SELECT col AS new_label FROM table;' }
     ],
-    tryItSql: `-- Compare how COUNT(*) counts all rows while COUNT(email) skips NULLs
-SELECT 
-    COUNT(*) AS total_customers,
-    COUNT(email) AS customers_with_email,
-    COUNT(*) - COUNT(email) AS missing_email_count
-FROM customers;`
+    challenge: {
+      title: 'Practice: Rename Customer Names',
+      instructions: 'Write a query to select first_name aliased as customer_name and city from the customers table. Limit the result to 3 rows.',
+      starterCode: `-- Challenge 3: Aliasing with AS and limiting rows
+-- Select first_name AS customer_name, city
+-- From customers
+-- Limit 3;
+
+`,
+      expectedQuery: 'SELECT first_name AS customer_name, city FROM customers LIMIT 3;',
+      hints: [
+        'Use first_name AS customer_name.',
+        'Include city as the second column.',
+        'Limit to 3 rows.'
+      ],
+      solutionExplanation: 'AS customer_name renames the header in the output table, making the report intuitive.'
+    }
   },
   {
-    id: 'sorting-distinct',
-    moduleTitle: 'Module 1: Foundations & Filtering',
+    id: 'sql-where-filtering',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
     moduleOrder: 1,
     lessonOrder: 4,
-    title: 'Sorting Results & Deduplication',
-    description: 'Order your records with ORDER BY (ASC/DESC) and eliminate duplicate values using DISTINCT.',
+    title: '4. SQL WHERE (Comparison Operators)',
+    description: 'Filter rows based on numeric and text conditions using standard comparison symbols.',
     sections: [
       {
-        title: 'Sorting Data with ORDER BY',
-        body: 'By default, relational databases do not guarantee any specific order when returning rows. To organize your results, use the ORDER BY clause:\n- ASC: Ascending order (lowest to highest, A to Z). This is the default.\n- DESC: Descending order (highest to lowest, Z to A).'
+        title: 'Filtering Rows with WHERE',
+        body: 'The WHERE clause evaluates each row: if the condition is TRUE, the row is kept; if FALSE, it is excluded.'
       },
       {
-        title: 'Removing Duplicates with DISTINCT',
-        body: 'If a column contains repeated entries and you only want to see the unique values once, place DISTINCT right after SELECT.',
-        exampleSql: `-- Get the unique list of regions where sales have occurred
-SELECT DISTINCT region
-FROM sales
-ORDER BY region ASC;`
+        title: 'Comparison Operators',
+        body: '- = (Equal to)\n- != or <> (Not equal to)\n- > (Greater than)\n- < (Less than)\n- >= (Greater than or equal to)\n- <= (Less than or equal to)',
+        exampleSql: `-- Products priced strictly under $100
+SELECT product_name, price
+FROM products
+WHERE price < 100;`
       }
     ],
     quickReference: [
-      { goal: 'Sort lowest to highest', syntax: 'ORDER BY price ASC' },
-      { goal: 'Sort highest to lowest', syntax: 'ORDER BY price DESC' },
-      { goal: 'Sort by multiple columns', syntax: 'ORDER BY category ASC, price DESC' },
-      { goal: 'Keep unique values only', syntax: 'SELECT DISTINCT category FROM products;' }
+      { goal: 'Filter numbers', syntax: 'WHERE price < 100' },
+      { goal: 'Filter text (wrap in quotes)', syntax: "WHERE status = 'active'" }
     ],
-    tryItSql: `-- Find products sorted from most expensive to least expensive
-SELECT product_name, category, price
-FROM products
-ORDER BY price DESC
-LIMIT 5;`
+    challenge: {
+      title: 'Practice: Filter Affordable Products',
+      instructions: 'Write a query to retrieve product_name and price from the products table for all items where price < 100.',
+      starterCode: `-- Challenge 4: Filter products priced under 100
+-- Select product_name, price
+-- From products
+-- Where price < 100;
+
+`,
+      expectedQuery: 'SELECT product_name, price FROM products WHERE price < 100;',
+      hints: [
+        'Select product_name, price from products.',
+        'Add WHERE price < 100.'
+      ],
+      solutionExplanation: 'The WHERE clause checks every row and keeps only items with price strictly under 100.'
+    }
   },
   {
-    id: 'aggregations-metrics',
-    moduleTitle: 'Module 2: Summarizing & Grouping Data',
-    moduleOrder: 2,
-    lessonOrder: 1,
-    title: 'Summarizing Data with Aggregate Functions',
-    description: 'Calculate totals, averages, counts, and extremes using COUNT, SUM, AVG, MIN, and MAX.',
+    id: 'and-or-not-logic',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
+    moduleOrder: 1,
+    lessonOrder: 5,
+    title: '5. AND, OR, NOT (Multiple Conditions)',
+    description: 'Chain multiple logical conditions together to satisfy complex business requirements.',
     sections: [
       {
-        title: 'What are Aggregate Functions?',
-        body: 'Instead of viewing individual rows, aggregate functions look at a whole column of numbers and summarize them into a single value:\n- COUNT(): counts how many records exist.\n- SUM(): adds all the numbers together.\n- AVG(): calculates the mathematical average.\n- MIN(): finds the lowest value.\n- MAX(): finds the highest value.'
+        title: 'Combining Conditions',
+        body: '- AND: ALL conditions must be true simultaneously.\n- OR: AT LEAST ONE condition must be true.\n- NOT: Inverts a condition (e.g. NOT region = \'West\').',
+        exampleSql: `-- East region orders above $140
+SELECT sale_id, region, sale_amount
+FROM sales
+WHERE region = 'East' AND sale_amount > 140;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Both true', syntax: 'WHERE cond1 AND cond2' },
+      { goal: 'Either true', syntax: 'WHERE cond1 OR cond2' },
+      { goal: 'Invert', syntax: 'WHERE NOT cond' }
+    ],
+    challenge: {
+      title: 'Practice: High-Value East Coast Sales',
+      instructions: "Write a query to select sale_id, region, and sale_amount from the sales table where region = 'East' AND sale_amount > 140.",
+      starterCode: `-- Challenge 5: Multiple conditions with AND
+-- Select sale_id, region, sale_amount
+-- From sales
+-- Where region = 'East' AND sale_amount > 140;
+
+`,
+      expectedQuery: "SELECT sale_id, region, sale_amount FROM sales WHERE region = 'East' AND sale_amount > 140;",
+      hints: [
+        'Select sale_id, region, sale_amount from sales.',
+        "Use WHERE region = 'East' AND sale_amount > 140."
+      ],
+      solutionExplanation: 'AND ensures only records that satisfy BOTH region is East and sale amount is greater than 140 appear in the result.'
+    }
+  },
+  {
+    id: 'sql-between-range',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
+    moduleOrder: 1,
+    lessonOrder: 6,
+    title: '6. SQL BETWEEN (Filtering Ranges)',
+    description: 'Filter numbers and dates within an inclusive range using the clean BETWEEN keyword.',
+    sections: [
+      {
+        title: 'What is BETWEEN?',
+        body: 'Instead of writing WHERE price >= 50 AND price <= 200, SQL gives you a cleaner shorthand:\nWHERE price BETWEEN 50 AND 200.\n\nNote: BETWEEN is INCLUSIVE, meaning both 50 and 200 are included in the results.',
+        exampleSql: `-- Mid-tier products between $50 and $200
+SELECT product_name, price
+FROM products
+WHERE price BETWEEN 50 AND 200;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Filter inclusive range', syntax: 'WHERE price BETWEEN 50 AND 200' }
+    ],
+    challenge: {
+      title: 'Practice: Products in Price Range',
+      instructions: 'Write a query to select product_name and price from products for all items where price is BETWEEN 50 AND 200.',
+      starterCode: `-- Challenge 6: Range filtering with BETWEEN
+-- Select product_name, price
+-- From products
+-- Where price BETWEEN 50 AND 200;
+
+`,
+      expectedQuery: 'SELECT product_name, price FROM products WHERE price BETWEEN 50 AND 200;',
+      hints: [
+        'Select product_name, price from products.',
+        'Use WHERE price BETWEEN 50 AND 200.'
+      ],
+      solutionExplanation: 'BETWEEN 50 AND 200 cleanly checks both the lower and upper bounds inclusively.'
+    }
+  },
+  {
+    id: 'sql-in-lists',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
+    moduleOrder: 1,
+    lessonOrder: 7,
+    title: '7. SQL IN (List Matching)',
+    description: 'Avoid messy chained OR statements by matching against a clean list of allowed values.',
+    sections: [
+      {
+        title: 'Why Use IN?',
+        body: "Writing WHERE category = 'Electronics' OR category = 'Furniture' OR category = 'Audio' gets unreadable quickly.\n\nUsing IN allows you to pass a tidy comma-separated list inside parentheses:",
+        exampleSql: `-- Clean list matching
+SELECT product_name, category
+FROM products
+WHERE category IN ('Electronics', 'Furniture');`
+      }
+    ],
+    quickReference: [
+      { goal: 'Match values in list', syntax: "WHERE col IN ('A', 'B', 'C')" },
+      { goal: 'Exclude list', syntax: "WHERE col NOT IN ('A', 'B')" }
+    ],
+    challenge: {
+      title: 'Practice: Match Specific Categories',
+      instructions: "Write a query to select product_name and category from products where category is in ('Electronics', 'Furniture').",
+      starterCode: `-- Challenge 7: Filter with IN
+-- Select product_name, category
+-- From products
+-- Where category IN ('Electronics', 'Furniture');
+
+`,
+      expectedQuery: "SELECT product_name, category FROM products WHERE category IN ('Electronics', 'Furniture');",
+      hints: [
+        'Select product_name, category from products.',
+        "Use WHERE category IN ('Electronics', 'Furniture')."
+      ],
+      solutionExplanation: 'IN checks if the category matches any element in the specified list.'
+    }
+  },
+  {
+    id: 'sql-like-patterns',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
+    moduleOrder: 1,
+    lessonOrder: 8,
+    title: '8. SQL LIKE (Pattern Matching Strings)',
+    description: 'Search for text patterns using the percent sign (%) and underscore (_) wildcards.',
+    sections: [
+      {
+        title: 'The LIKE Operator',
+        body: 'When you do not know the exact string, LIKE allows wildcard pattern matching:\n- % (Percent): Matches zero or more characters.\n  - \'%@gmail.com\': ends with @gmail.com\n  - \'Desk%\': starts with Desk\n  - \'%Desk%\': contains Desk anywhere\n- _ (Underscore): Matches exactly ONE single character.',
+        exampleSql: `-- Find all Gmail accounts
+SELECT customer_id, first_name, email
+FROM customers
+WHERE email LIKE '%@gmail.com';`
+      }
+    ],
+    quickReference: [
+      { goal: 'Starts with', syntax: "WHERE col LIKE 'Start%'" },
+      { goal: 'Ends with', syntax: "WHERE col LIKE '%End'" },
+      { goal: 'Contains', syntax: "WHERE col LIKE '%Word%'" }
+    ],
+    challenge: {
+      title: 'Practice: Find Gmail Users',
+      instructions: "Write a query to select customer_id, first_name, and email from customers where email LIKE '%@gmail.com'.",
+      starterCode: `-- Challenge 8: Text pattern matching with LIKE
+-- Select customer_id, first_name, email
+-- From customers
+-- Where email LIKE '%@gmail.com';
+
+`,
+      expectedQuery: "SELECT customer_id, first_name, email FROM customers WHERE email LIKE '%@gmail.com';",
+      hints: [
+        'Select customer_id, first_name, email from customers.',
+        "Add WHERE email LIKE '%@gmail.com'."
+      ],
+      solutionExplanation: 'The wildcard % matches any username preceding @gmail.com.'
+    }
+  },
+  {
+    id: 'sql-order-by-sorting',
+    moduleTitle: 'Part 1: Basic SQL (From Zero to Querying)',
+    moduleOrder: 1,
+    lessonOrder: 9,
+    title: '9. SQL ORDER BY (Sorting Results)',
+    description: 'Order results ascending or descending, sort by multiple columns, and find top/bottom records.',
+    sections: [
+      {
+        title: 'Sorting with ORDER BY',
+        body: 'Use ORDER BY followed by column names:\n- ASC: Ascending order (lowest to highest, A to Z). Default.\n- DESC: Descending order (highest to lowest, Z to A).',
+        exampleSql: `-- Top 3 most expensive products
+SELECT product_name, price
+FROM products
+ORDER BY price DESC
+LIMIT 3;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Sort lowest to highest', syntax: 'ORDER BY col ASC' },
+      { goal: 'Sort highest to lowest', syntax: 'ORDER BY col DESC' },
+      { goal: 'Multi-column sort', syntax: 'ORDER BY col1 ASC, col2 DESC' }
+    ],
+    challenge: {
+      title: 'Practice: Top 3 Most Expensive Products',
+      instructions: 'Write a query to select product_name and price from products, sorted by price in descending order (DESC), limited to the top 3 items.',
+      starterCode: `-- Challenge 9: Sort by price descending
+-- Select product_name, price
+-- From products
+-- Order by price DESC
+-- Limit 3;
+
+`,
+      expectedQuery: 'SELECT product_name, price FROM products ORDER BY price DESC LIMIT 3;',
+      hints: [
+        'Select product_name, price from products.',
+        'Use ORDER BY price DESC.',
+        'Add LIMIT 3.'
+      ],
+      solutionExplanation: 'ORDER BY price DESC puts the most expensive items first, and LIMIT 3 isolates the top 3.'
+    }
+  },
+
+  // ==========================================
+  // PART 2: INTERMEDIATE SQL (LESSONS 10 - 16)
+  // ==========================================
+  {
+    id: 'sql-distinct-duplicates',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    moduleOrder: 2,
+    lessonOrder: 1,
+    title: '10. SQL DISTINCT (Removing Duplicates)',
+    description: 'Strip out duplicate rows and extract unique lists of categories or user actions.',
+    sections: [
+      {
+        title: 'Removing Duplicates with DISTINCT',
+        body: 'If a table repeats values many times, place DISTINCT directly after SELECT to collapse duplicate entries into unique rows:',
+        exampleSql: `-- Unique list of categories in alphabetical order
+SELECT DISTINCT category
+FROM products
+ORDER BY category ASC;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Unique values only', syntax: 'SELECT DISTINCT col FROM table;' }
+    ],
+    challenge: {
+      title: 'Practice: Unique Product Categories',
+      instructions: 'Write a query to retrieve the unique list of categories from the products table using DISTINCT. Sort the categories alphabetically (ASC).',
+      starterCode: `-- Challenge 10: Unique categories with DISTINCT
+-- Select DISTINCT category
+-- From products
+-- Order by category ASC;
+
+`,
+      expectedQuery: 'SELECT DISTINCT category FROM products ORDER BY category ASC;',
+      hints: [
+        'Write SELECT DISTINCT category FROM products.',
+        'Add ORDER BY category ASC.'
+      ],
+      solutionExplanation: 'DISTINCT removes duplicate categories, giving a clean list of all unique categories in the catalog.'
+    }
+  },
+  {
+    id: 'sql-aggregate-functions',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    moduleOrder: 2,
+    lessonOrder: 2,
+    title: '11. Aggregate Functions (COUNT, SUM, AVG, MIN, MAX)',
+    description: 'Calculate metrics across whole tables and round decimals cleanly with ROUND().',
+    sections: [
+      {
+        title: 'The 5 Core Aggregates',
+        body: '- COUNT(): counts rows\n- SUM(): totals numbers\n- AVG(): computes mean\n- MIN(): finds lowest value\n- MAX(): finds highest value'
       },
       {
-        title: 'Rounding Decimals with ROUND()',
-        body: 'Averages often produce long decimals like 149.9933333. You can wrap any numeric calculation with ROUND(value, decimal_places) to make it clean.',
-        exampleSql: `-- Calculate overall sales metrics
+        title: 'Rounding Clean Decimals',
+        body: 'Wrap calculations in ROUND(number, 2) to format numbers cleanly for reports:',
+        exampleSql: `-- Overall sales metrics
 SELECT 
-    COUNT(*) AS total_orders,
+    COUNT(*) AS total_sales_count,
     ROUND(SUM(sale_amount), 2) AS total_revenue,
-    ROUND(AVG(sale_amount), 2) AS average_sale,
-    MIN(sale_amount) AS lowest_sale,
-    MAX(sale_amount) AS highest_sale
+    ROUND(AVG(sale_amount), 2) AS avg_sale
 FROM sales;`
       }
     ],
     quickReference: [
-      { goal: 'Total sum', syntax: 'SELECT SUM(sale_amount) FROM sales;' },
-      { goal: 'Average rounded to 2 decimals', syntax: 'SELECT ROUND(AVG(sale_amount), 2) FROM sales;' },
-      { goal: 'Find highest value', syntax: 'SELECT MAX(salary) FROM employees;' }
+      { goal: 'Count rows', syntax: 'SELECT COUNT(*) FROM table;' },
+      { goal: 'Sum and round', syntax: 'SELECT ROUND(SUM(col), 2) FROM table;' }
     ],
-    tryItSql: `-- Try calculating overall employee compensation statistics
-SELECT 
-    COUNT(*) AS employee_count,
-    ROUND(AVG(salary), 2) AS average_salary,
-    MIN(salary) AS minimum_salary,
-    MAX(salary) AS maximum_salary
-FROM employees;`
+    challenge: {
+      title: 'Practice: Overall Sales Metrics',
+      instructions: 'Write a query to calculate COUNT(*) AS total_sales_count, ROUND(SUM(sale_amount), 2) AS total_revenue, and ROUND(AVG(sale_amount), 2) AS avg_sale from sales.',
+      starterCode: `-- Challenge 11: Sales summary metrics
+-- Select COUNT(*) AS total_sales_count,
+--        ROUND(SUM(sale_amount), 2) AS total_revenue,
+--        ROUND(AVG(sale_amount), 2) AS avg_sale
+-- From sales;
+
+`,
+      expectedQuery: 'SELECT COUNT(*) AS total_sales_count, ROUND(SUM(sale_amount), 2) AS total_revenue, ROUND(AVG(sale_amount), 2) AS avg_sale FROM sales;',
+      hints: [
+        'Use COUNT(*) AS total_sales_count.',
+        'Use ROUND(SUM(sale_amount), 2) AS total_revenue.',
+        'Use ROUND(AVG(sale_amount), 2) AS avg_sale.'
+      ],
+      solutionExplanation: 'These aggregates summarize all individual transactions into a single executive KPI row.'
+    }
   },
   {
-    id: 'group-by-having',
-    moduleTitle: 'Module 2: Summarizing & Grouping Data',
+    id: 'sql-group-by-categories',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
     moduleOrder: 2,
-    lessonOrder: 2,
-    title: 'Grouping Data with GROUP BY & HAVING',
-    description: 'Organize data into categories and learn why HAVING is required to filter aggregated numbers.',
+    lessonOrder: 3,
+    title: '12. SQL GROUP BY (Aggregating by Category)',
+    description: 'Squash records into category buckets to calculate totals per department, region, or user.',
     sections: [
       {
-        title: 'Squashing Rows into Categories with GROUP BY',
-        body: 'What if you want to know the average salary NOT for the entire company, but for each separate department?\n\nThis is where GROUP BY comes in. It groups rows that share the same value into buckets, and then calculates the aggregate for each bucket.'
+        title: 'Why Group Data?',
+        body: 'Instead of finding company-wide sales, GROUP BY allows you to break down totals by region, customer, or department.'
       },
       {
         title: 'The Golden Rule of GROUP BY',
-        body: 'Any column that appears in your SELECT list that is NOT inside an aggregate function (like SUM or AVG) MUST be listed in the GROUP BY clause.'
-      },
-      {
-        title: 'Filtering Groups: WHERE vs. HAVING',
-        body: 'Here is the rule you must remember:\n- WHERE filters individual rows BEFORE they are grouped.\n- HAVING filters the grouped results AFTER the aggregation is calculated.\n\nYou cannot write "WHERE SUM(sale_amount) > 500" because WHERE runs before SUM even exists! You must write "HAVING SUM(sale_amount) > 500".',
-        exampleSql: `-- Find regions with more than $500 in total sales
+        body: 'Any column in SELECT that is NOT inside an aggregate function MUST be included in the GROUP BY clause:',
+        exampleSql: `-- Sales per region
 SELECT 
     region,
     ROUND(SUM(sale_amount), 2) AS total_sales
 FROM sales
 GROUP BY region
-HAVING SUM(sale_amount) > 500;`
+ORDER BY total_sales DESC;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Group by column', syntax: 'SELECT col, SUM(val) FROM table GROUP BY col;' }
+    ],
+    challenge: {
+      title: 'Practice: Total Sales per Region',
+      instructions: 'Write a query to calculate region and ROUND(SUM(sale_amount), 2) AS total_sales from sales. Group by region and order by total_sales DESC.',
+      starterCode: `-- Challenge 12: Sales grouped by region
+-- Select region, ROUND(SUM(sale_amount), 2) AS total_sales
+-- From sales
+-- Group by region
+-- Order by total_sales DESC;
+
+`,
+      expectedQuery: 'SELECT region, ROUND(SUM(sale_amount), 2) AS total_sales FROM sales GROUP BY region ORDER BY total_sales DESC;',
+      hints: [
+        'Select region and ROUND(SUM(sale_amount), 2) AS total_sales.',
+        'Add GROUP BY region.',
+        'Add ORDER BY total_sales DESC.'
+      ],
+      solutionExplanation: 'GROUP BY region bundles sales into regional buckets and calculates total revenue for each.'
+    }
+  },
+  {
+    id: 'sql-having-clause',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    moduleOrder: 2,
+    lessonOrder: 4,
+    title: '13. SQL HAVING (Filtering Aggregates vs WHERE)',
+    description: 'Understand the critical difference between WHERE and HAVING in SQL execution order.',
+    sections: [
+      {
+        title: 'WHERE vs HAVING',
+        body: '- WHERE filters raw individual rows BEFORE grouping.\n- HAVING filters calculated aggregate numbers AFTER grouping.\n\nYou cannot write WHERE SUM(...) because WHERE runs before SUM exists! You must use HAVING.'
+      },
+      {
+        title: 'Example',
+        body: 'Finding VIP customers who spent more than $500 total:',
+        exampleSql: `-- Customers spending over $500
+SELECT 
+    customer_id,
+    ROUND(SUM(sale_amount), 2) AS total_spent
+FROM sales
+GROUP BY customer_id
+HAVING SUM(sale_amount) > 500
+ORDER BY total_spent DESC;`
       }
     ],
     commonMistake: {
       wrongSql: "SELECT region, SUM(sale_amount) FROM sales WHERE SUM(sale_amount) > 500 GROUP BY region;",
       correctSql: "SELECT region, SUM(sale_amount) FROM sales GROUP BY region HAVING SUM(sale_amount) > 500;",
-      explanation: "Aggregates like SUM() cannot appear in a WHERE clause. Always use HAVING to filter on aggregated values."
+      explanation: "Aggregates cannot be filtered in WHERE. Always use HAVING."
     },
     quickReference: [
-      { goal: 'Group by a column', syntax: 'SELECT category, COUNT(*) FROM products GROUP BY category;' },
-      { goal: 'Filter calculated totals', syntax: 'GROUP BY region HAVING SUM(sale_amount) > 1000' }
+      { goal: 'Filter on aggregate', syntax: 'GROUP BY col HAVING SUM(val) > 500' }
     ],
-    tryItSql: `-- Find average salary per department for departments with at least 2 employees
-SELECT 
-    department_id,
-    COUNT(*) AS employee_count,
-    ROUND(AVG(salary), 2) AS avg_salary
-FROM employees
-GROUP BY department_id
-HAVING COUNT(*) >= 2;`
+    challenge: {
+      title: 'Practice: Find Customers Spending Over 500',
+      instructions: 'Write a query to select customer_id and ROUND(SUM(sale_amount), 2) AS total_spent from sales. Group by customer_id and use HAVING SUM(sale_amount) > 500. Order by total_spent DESC.',
+      starterCode: `-- Challenge 13: Filter grouped data with HAVING
+-- Select customer_id, ROUND(SUM(sale_amount), 2) AS total_spent
+-- From sales
+-- Group by customer_id
+-- Having SUM(sale_amount) > 500
+-- Order by total_spent DESC;
+
+`,
+      expectedQuery: 'SELECT customer_id, ROUND(SUM(sale_amount), 2) AS total_spent FROM sales GROUP BY customer_id HAVING SUM(sale_amount) > 500 ORDER BY total_spent DESC;',
+      hints: [
+        'Group by customer_id.',
+        'Filter with HAVING SUM(sale_amount) > 500.',
+        'Order by total_spent DESC.'
+      ],
+      solutionExplanation: 'HAVING inspects the total spending for each customer and only retains those exceeding 500.'
+    }
   },
   {
-    id: 'table-joins',
-    moduleTitle: 'Module 3: Combining Tables with Joins',
+    id: 'sql-null-cleaning',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    moduleOrder: 2,
+    lessonOrder: 5,
+    title: '14. SQL NULL & Missing Data Cleaning',
+    description: 'Learn why = NULL fails, master IS NULL, and clean empty text strings with TRIM().',
+    sections: [
+      {
+        title: 'What is NULL?',
+        body: 'NULL represents unknown or missing data. NULL is not 0 and not an empty string ("").\n\nBecause NULL is unknown, comparing it with = produces UNKNOWN. You must always use IS NULL or IS NOT NULL.'
+      },
+      {
+        title: 'Catching Dirty Data',
+        body: 'In real datasets, missing emails may be stored as NULL or as empty spaces. Check for both using TRIM():',
+        exampleSql: `-- Find customers with missing or blank emails
+SELECT customer_id, first_name, email
+FROM customers
+WHERE email IS NULL OR TRIM(email) = '';`
+      }
+    ],
+    quickReference: [
+      { goal: 'Missing check', syntax: 'WHERE col IS NULL' },
+      { goal: 'Present check', syntax: 'WHERE col IS NOT NULL' },
+      { goal: 'Thorough cleaning', syntax: "WHERE col IS NULL OR TRIM(col) = ''" }
+    ],
+    challenge: {
+      title: 'Practice: Identify Incomplete Profiles',
+      instructions: "Write a query to select customer_id, first_name, and email from customers where email IS NULL OR TRIM(email) = ''.",
+      starterCode: `-- Challenge 14: Data cleaning for missing emails
+-- Select customer_id, first_name, email
+-- From customers
+-- Where email IS NULL OR TRIM(email) = '';
+
+`,
+      expectedQuery: "SELECT customer_id, first_name, email FROM customers WHERE email IS NULL OR TRIM(email) = '';",
+      hints: [
+        'Select customer_id, first_name, email from customers.',
+        "Use WHERE email IS NULL OR TRIM(email) = ''."
+      ],
+      solutionExplanation: 'Checking both IS NULL and TRIM catches both true database NULLs and dirty whitespace strings.'
+    }
+  },
+  {
+    id: 'sql-case-when-logic',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    moduleOrder: 2,
+    lessonOrder: 6,
+    title: '15. SQL CASE Statements (Conditional Logic)',
+    description: 'Implement if-else branching directly inside SQL queries to classify and tag records.',
+    sections: [
+      {
+        title: 'Conditional Branching with CASE',
+        body: 'CASE WHEN works like an IF-ELSE block in programming. It evaluates conditions in order and returns a corresponding value when a condition is met.',
+        exampleSql: `-- Pricing tiers
+SELECT 
+    product_name,
+    price,
+    CASE 
+        WHEN price >= 150 THEN 'Premium'
+        ELSE 'Standard'
+    END AS price_tier
+FROM products
+ORDER BY price DESC;`
+      }
+    ],
+    quickReference: [
+      { goal: 'CASE WHEN syntax', syntax: "CASE WHEN col > 10 THEN 'High' ELSE 'Low' END AS label" }
+    ],
+    challenge: {
+      title: 'Practice: Classify Product Pricing Tiers',
+      instructions: "Write a query to select product_name, price, and price_tier using CASE WHEN: if price >= 150 then 'Premium', otherwise 'Standard'. Order by price DESC.",
+      starterCode: `-- Challenge 15: Product tier classification
+-- Select product_name, price,
+-- CASE WHEN price >= 150 THEN 'Premium' ELSE 'Standard' END AS price_tier
+-- From products
+-- Order by price DESC;
+
+`,
+      expectedQuery: "SELECT product_name, price, CASE WHEN price >= 150 THEN 'Premium' ELSE 'Standard' END AS price_tier FROM products ORDER BY price DESC;",
+      hints: [
+        "Use CASE WHEN price >= 150 THEN 'Premium' ELSE 'Standard' END AS price_tier.",
+        'Query products and order by price DESC.'
+      ],
+      solutionExplanation: 'CASE WHEN assigns categories on the fly based on price thresholds without altering the source table.'
+    }
+  },
+  {
+    id: 'sql-date-functions',
+    moduleTitle: 'Part 2: Intermediate SQL (Aggregations & Data Cleaning)',
+    moduleOrder: 2,
+    lessonOrder: 7,
+    title: '16. Date & Timestamp Functions (strftime)',
+    description: 'Extract months, years, and format dates for monthly analytics and time-series reports.',
+    sections: [
+      {
+        title: 'Extracting Dates with strftime',
+        body: 'SQLite stores dates as text (YYYY-MM-DD). Use strftime() to extract parts of the date:\n- strftime(\'%Y\', col): 4-digit year (e.g. 2024)\n- strftime(\'%m\', col): 2-digit month (e.g. 01)\n- strftime(\'%Y-%m\', col): Year and month together',
+        exampleSql: `-- Monthly sales
+SELECT 
+    sale_id,
+    strftime('%Y-%m', sale_date) AS sale_month,
+    sale_amount
+FROM sales
+WHERE strftime('%Y', sale_date) = '2024'
+LIMIT 5;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Extract year and month', syntax: "strftime('%Y-%m', date_col)" }
+    ],
+    challenge: {
+      title: 'Practice: Extract Monthly Sales',
+      instructions: "Write a query to select sale_id, strftime('%Y-%m', sale_date) AS sale_month, and sale_amount from sales where strftime('%Y', sale_date) = '2024'. Limit to 5 rows.",
+      starterCode: `-- Challenge 16: Date extraction with strftime
+-- Select sale_id, strftime('%Y-%m', sale_date) AS sale_month, sale_amount
+-- From sales
+-- Where strftime('%Y', sale_date) = '2024'
+-- Limit 5;
+
+`,
+      expectedQuery: "SELECT sale_id, strftime('%Y-%m', sale_date) AS sale_month, sale_amount FROM sales WHERE strftime('%Y', sale_date) = '2024' LIMIT 5;",
+      hints: [
+        "Use strftime('%Y-%m', sale_date) AS sale_month.",
+        "Filter with WHERE strftime('%Y', sale_date) = '2024'.",
+        'Add LIMIT 5.'
+      ],
+      solutionExplanation: 'strftime extracts the year-month format, which is the foundational building block for cohort and trend analysis.'
+    }
+  },
+
+  // ==========================================
+  // PART 3: RELATIONAL SQL (LESSONS 17 - 19)
+  // ==========================================
+  {
+    id: 'relational-keys-joins',
+    moduleTitle: 'Part 3: Relational SQL (Joins & Set Logic)',
     moduleOrder: 3,
     lessonOrder: 1,
-    title: 'Connecting Tables: INNER JOIN & LEFT JOIN',
-    description: 'Learn how foreign keys link data across tables and master matching vs preserving records.',
+    title: '17. Relational Modeling: Primary & Foreign Keys',
+    description: 'Understand why databases split data into multiple tables and how keys connect them.',
     sections: [
       {
-        title: 'Why Multiple Tables?',
-        body: 'In professional data systems, data is split into multiple tables to avoid repetition (this is called normalization). For example, rather than repeating customer names inside every sale row, we store a customer_id in the sales table that points back to the customers table.'
+        title: 'Why Split Data Across Tables?',
+        body: 'Splitting data into normalized tables prevents redundant data entry. We link tables together using keys:\n- Primary Key (PK): Unique ID for each row in a parent table (e.g. customers.customer_id).\n- Foreign Key (FK): Reference in a child table pointing back to the parent PK (e.g. sales.customer_id).'
       },
       {
-        title: 'INNER JOIN: Keeping Matches Only',
-        body: 'An INNER JOIN combines records from two tables only when there is a matching key in BOTH tables. If an employee belongs to no department, or a department has no employees, they are dropped from the output.',
-        exampleSql: `-- Combine employees with their department name
+        title: 'INNER JOIN Syntax',
+        body: 'INNER JOIN connects two tables and keeps records ONLY when there is a match in both tables:',
+        exampleSql: `-- Combine sales with customer names
 SELECT 
-    e.employee_id,
-    e.name AS employee_name,
-    d.department_name,
-    e.salary
-FROM employees e
-INNER JOIN departments d ON e.department_id = d.department_id;`
-      },
-      {
-        title: 'LEFT JOIN: Keeping All Left Records',
-        body: 'A LEFT JOIN keeps every single row from the LEFT table, even if there is no match on the right. If there is no match, the columns from the right table are filled with NULL.'
+    s.sale_id,
+    c.first_name,
+    c.last_name,
+    s.sale_amount
+FROM sales s
+INNER JOIN customers c ON s.customer_id = c.customer_id
+LIMIT 5;`
       }
     ],
     quickReference: [
-      { goal: 'INNER JOIN (matches only)', syntax: 'FROM tableA a INNER JOIN tableB b ON a.id = b.a_id' },
-      { goal: 'LEFT JOIN (keeps all tableA)', syntax: 'FROM tableA a LEFT JOIN tableB b ON a.id = b.a_id' }
+      { goal: 'INNER JOIN', syntax: 'FROM tableA a INNER JOIN tableB b ON a.id = b.a_id' }
     ],
-    tryItSql: `-- Join products to sales to see which products have sales records
-SELECT 
-    p.product_name,
-    p.price,
-    s.sale_id,
-    s.sale_amount
-FROM products p
-LEFT JOIN sales s ON p.product_id = s.product_id;`
+    challenge: {
+      title: 'Practice: Join Sales with Customers',
+      instructions: 'Write a query using an INNER JOIN between sales (s) and customers (c) on customer_id. Return s.sale_id, c.first_name, c.last_name, and s.sale_amount. Limit to 5 rows.',
+      starterCode: `-- Challenge 17: INNER JOIN on customer_id
+-- Select s.sale_id, c.first_name, c.last_name, s.sale_amount
+-- From sales s
+-- Inner join customers c on s.customer_id = c.customer_id
+-- Limit 5;
+
+`,
+      expectedQuery: 'SELECT s.sale_id, c.first_name, c.last_name, s.sale_amount FROM sales s INNER JOIN customers c ON s.customer_id = c.customer_id LIMIT 5;',
+      hints: [
+        'Alias sales as s and customers as c.',
+        'Join condition is ON s.customer_id = c.customer_id.',
+        'Limit to 5 rows.'
+      ],
+      solutionExplanation: 'INNER JOIN pairs each sale with its corresponding customer name using the customer_id foreign key.'
+    }
   },
   {
-    id: 'anti-join-pattern',
-    moduleTitle: 'Module 3: Combining Tables with Joins',
+    id: 'inner-vs-left-join-logic',
+    moduleTitle: 'Part 3: Relational SQL (Joins & Set Logic)',
     moduleOrder: 3,
     lessonOrder: 2,
-    title: 'The Anti-Join: Finding What Never Happened',
-    description: 'Learn how to identify products never sold, pages with zero likes, or customers who never ordered.',
+    title: '18. INNER JOIN vs. LEFT JOIN',
+    description: 'Learn when to use LEFT JOIN to preserve all primary records even when no match exists.',
     sections: [
       {
-        title: 'The "Never Happened" Challenge',
-        body: 'One of the most frequent interview questions in data roles is: "Find products that have never been purchased" or "Find users who never placed an order."\n\nHow do you find data that is NOT there?'
-      },
-      {
-        title: 'The Anti-Join Recipe',
-        body: '1. Start with the full list in the LEFT table (e.g., all products).\n2. Do a LEFT JOIN to the activity table (e.g., sales).\n3. If a product was never purchased, all the sales columns for that product will be NULL.\n4. Add a WHERE clause checking: WHERE sales.sale_id IS NULL!\n\nThis immediately eliminates all purchased products and leaves only the unsold items.',
-        exampleSql: `-- Products that were NEVER sold
+        title: 'The Danger of INNER JOIN',
+        body: 'If a product has never been ordered, an INNER JOIN drops that product entirely!\n\nA LEFT JOIN guarantees that every single row from the LEFT table is preserved. If no match exists on the right, right table columns are filled with NULL.',
+        exampleSql: `-- Keep all products, even unsold ones
 SELECT 
-    p.product_id,
-    p.product_name
+    p.product_name,
+    s.sale_amount
 FROM products p
 LEFT JOIN sales s ON p.product_id = s.product_id
-WHERE s.sale_id IS NULL;`
+ORDER BY p.product_id ASC
+LIMIT 6;`
       }
     ],
     quickReference: [
-      { goal: 'Anti-Join syntax', syntax: 'FROM parent p LEFT JOIN child c ON p.id = c.p_id WHERE c.id IS NULL' }
+      { goal: 'Preserve all left rows', syntax: 'FROM tableA a LEFT JOIN tableB b ON a.id = b.a_id' }
     ],
-    tryItSql: `-- Find Facebook pages that have zero likes using the Anti-Join pattern
-SELECT p.page_id, p.page_name
+    challenge: {
+      title: 'Practice: LEFT JOIN Products with Sales',
+      instructions: 'Write a query to perform a LEFT JOIN from products (p) to sales (s) on product_id. Return p.product_name and s.sale_amount. Order by p.product_id ASC and limit to 6 rows.',
+      starterCode: `-- Challenge 18: LEFT JOIN to keep all products
+-- Select p.product_name, s.sale_amount
+-- From products p
+-- Left join sales s on p.product_id = s.product_id
+-- Order by p.product_id ASC
+-- Limit 6;
+
+`,
+      expectedQuery: 'SELECT p.product_name, s.sale_amount FROM products p LEFT JOIN sales s ON p.product_id = s.product_id ORDER BY p.product_id ASC LIMIT 6;',
+      hints: [
+        'Use LEFT JOIN sales s ON p.product_id = s.product_id.',
+        'Order by p.product_id ASC.',
+        'Add LIMIT 6.'
+      ],
+      solutionExplanation: 'The LEFT JOIN keeps all products; items that were never purchased display NULL for sale_amount.'
+    }
+  },
+  {
+    id: 'anti-join-missing-events',
+    moduleTitle: 'Part 3: Relational SQL (Joins & Set Logic)',
+    moduleOrder: 3,
+    lessonOrder: 3,
+    title: '19. The Anti-Join Pattern (Zero Engagements / Unsold Items)',
+    description: 'Master the high-priority pattern for finding unliked pages, unsold items, or inactive users.',
+    sections: [
+      {
+        title: 'The "Never Happened" Problem',
+        body: 'A staple of FAANG data interviews is finding rows that have ZERO activity (e.g. DataLemur Facebook Page with No Likes).\n\nThe Anti-Join recipe:\n1. LEFT JOIN parent table to activity table.\n2. Add WHERE right_table.id IS NULL!'
+      },
+      {
+        title: 'Example',
+        body: 'Finding Facebook pages with zero likes:',
+        exampleSql: `-- Pages that have 0 likes
+SELECT 
+    p.page_id,
+    p.page_name
 FROM pages p
 LEFT JOIN page_likes l ON p.page_id = l.page_id
 WHERE l.page_id IS NULL;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Anti-Join pattern', syntax: 'FROM parent p LEFT JOIN child c ON p.id = c.p_id WHERE c.id IS NULL' }
+    ],
+    challenge: {
+      title: 'Practice: Find Unliked Facebook Pages',
+      instructions: 'Write a query using a LEFT JOIN between pages (p) and page_likes (l) to find pages with zero likes. Return p.page_id and p.page_name. Order by p.page_id ASC.',
+      starterCode: `-- Challenge 19: Find pages with 0 likes
+-- Select p.page_id, p.page_name
+-- From pages p
+-- Left join page_likes l on p.page_id = l.page_id
+-- Where l.page_id IS NULL
+-- Order by p.page_id ASC;
+
+`,
+      expectedQuery: 'SELECT p.page_id, p.page_name FROM pages p LEFT JOIN page_likes l ON p.page_id = l.page_id WHERE l.page_id IS NULL ORDER BY p.page_id ASC;',
+      hints: [
+        'LEFT JOIN pages p with page_likes l on p.page_id = l.page_id.',
+        'Add WHERE l.page_id IS NULL.',
+        'Order by p.page_id ASC.'
+      ],
+      solutionExplanation: 'LEFT JOIN retains all pages, and filtering WHERE l.page_id IS NULL strips away pages that had likes, leaving only zero-like pages.'
+    }
   },
+
+  // ==========================================
+  // PART 4: ADVANCED SQL (LESSONS 20 - 23)
+  // ==========================================
   {
-    id: 'ctes-with-statements',
-    moduleTitle: 'Module 4: Advanced Data Engineering Transformations',
+    id: 'subqueries-nested-select',
+    moduleTitle: 'Part 4: Advanced SQL (Data Engineering Core)',
     moduleOrder: 4,
     lessonOrder: 1,
-    title: 'Common Table Expressions (WITH Statements)',
-    description: 'Break complex queries into clean, readable, modular steps instead of messy nested subqueries.',
+    title: '20. Subqueries (Nested SELECT Statements)',
+    description: 'Embed queries inside other queries to filter dynamically against calculated benchmarks.',
     sections: [
       {
-        title: 'The Problem with Nested Subqueries',
-        body: 'When you need to perform multi-stage calculations (like calculating department averages first, and then comparing each employee to that average), nesting queries inside parentheses makes code difficult to read and maintain.'
+        title: 'What is a Subquery?',
+        body: 'A subquery is a query nested inside parentheses. The database executes the inner query first and passes its output to the outer query.'
       },
       {
-        title: 'What is a CTE?',
-        body: 'A Common Table Expression (CTE) begins with the word WITH. It allows you to create a temporary, named result block that acts like a clean virtual table for the rest of your query.',
-        exampleSql: `-- Find employees earning more than their department's average
+        title: 'Dynamic Filtering in WHERE',
+        body: 'Find employees earning above the company average without hardcoding numbers:',
+        exampleSql: `-- Compare against dynamic average
+SELECT name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees)
+ORDER BY salary DESC;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Subquery in WHERE', syntax: 'WHERE col > (SELECT AVG(col) FROM table)' }
+    ],
+    challenge: {
+      title: 'Practice: Employees Above Company Average',
+      instructions: 'Write a query to select name and salary from employees where salary is strictly greater than the overall average salary (SELECT AVG(salary) FROM employees). Order by salary DESC.',
+      starterCode: `-- Challenge 20: Subquery in WHERE
+-- Select name, salary
+-- From employees
+-- Where salary > (SELECT AVG(salary) FROM employees)
+-- Order by salary DESC;
+
+`,
+      expectedQuery: 'SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees) ORDER BY salary DESC;',
+      hints: [
+        'Write WHERE salary > (SELECT AVG(salary) FROM employees).',
+        'Order by salary DESC.'
+      ],
+      solutionExplanation: 'The inner subquery calculates company-wide average salary, and the outer query filters employees earning more than that benchmark.'
+    }
+  },
+  {
+    id: 'ctes-common-table-expressions',
+    moduleTitle: 'Part 4: Advanced SQL (Data Engineering Core)',
+    moduleOrder: 4,
+    lessonOrder: 2,
+    title: '21. CTEs (Common Table Expressions with WITH)',
+    description: 'Break complex multi-step pipelines into clean, readable, modular temporary tables.',
+    sections: [
+      {
+        title: 'Why CTEs (WITH Statements)?',
+        body: 'Deeply nested subqueries are hard to read and debug. A Common Table Expression (CTE) begins with WITH and defines a named virtual table that you can query directly below.'
+      },
+      {
+        title: 'Multi-Stage Data Pipeline Example',
+        body: 'Calculate department averages first, then join employees to find standout earners:',
+        exampleSql: `-- Clean CTE workflow
 WITH dept_averages AS (
     SELECT 
         department_id,
-        AVG(salary) AS avg_dept_salary
+        AVG(salary) AS avg_sal
     FROM employees
     GROUP BY department_id
 )
 SELECT 
-    e.employee_id,
     e.name,
     e.salary,
-    ROUND(d.avg_dept_salary, 2) AS dept_average
+    ROUND(d.avg_sal, 2) AS dept_avg
 FROM employees e
 JOIN dept_averages d ON e.department_id = d.department_id
-WHERE e.salary > d.avg_dept_salary;`
+WHERE e.salary > d.avg_sal
+ORDER BY e.salary DESC;`
       }
     ],
     quickReference: [
-      { goal: 'Basic CTE', syntax: 'WITH my_cte AS (SELECT col FROM table) SELECT * FROM my_cte;' },
-      { goal: 'Chained CTEs', syntax: 'WITH step1 AS (...), step2 AS (...) SELECT * FROM step2;' }
+      { goal: 'Define CTE', syntax: 'WITH cte AS (SELECT col FROM table) SELECT * FROM cte;' }
     ],
-    tryItSql: `-- Try a CTE that aggregates sales per customer first
-WITH customer_totals AS (
-    SELECT 
-        customer_id, 
-        ROUND(SUM(sale_amount), 2) AS total_spent
-    FROM sales
-    GROUP BY customer_id
+    challenge: {
+      title: 'Practice: Department Benchmark CTE',
+      instructions: 'Write a query using a CTE named dept_averages to calculate department_id and AVG(salary) AS avg_sal from employees grouped by department_id. Then join employees (e) to dept_averages (d) on department_id to select e.name, e.salary, and ROUND(d.avg_sal, 2) AS dept_avg where e.salary > d.avg_sal. Order by e.salary DESC.',
+      starterCode: `-- Challenge 21: Multi-stage CTE calculation
+WITH dept_averages AS (
+    -- calculate department_id and AVG(salary) AS avg_sal
+    -- group by department_id
 )
-SELECT * 
-FROM customer_totals 
-WHERE total_spent > 300;`
+-- Select e.name, e.salary, ROUND(d.avg_sal, 2) AS dept_avg
+-- Join employees e to dept_averages d on department_id
+-- Filter e.salary > d.avg_sal
+-- Order by e.salary DESC;
+
+`,
+      expectedQuery: 'WITH dept_averages AS (SELECT department_id, AVG(salary) AS avg_sal FROM employees GROUP BY department_id) SELECT e.name, e.salary, ROUND(d.avg_sal, 2) AS dept_avg FROM employees e JOIN dept_averages d ON e.department_id = d.department_id WHERE e.salary > d.avg_sal ORDER BY e.salary DESC;',
+      hints: [
+        'Calculate department_id and AVG(salary) AS avg_sal inside the CTE.',
+        'Join on department_id in the main query.',
+        'Filter e.salary > d.avg_sal.'
+      ],
+      solutionExplanation: 'The CTE pre-calculates the department benchmark, allowing the outer query to cleanly join and filter in a readable manner.'
+    }
   },
   {
-    id: 'window-functions',
-    moduleTitle: 'Module 4: Advanced Data Engineering Transformations',
+    id: 'window-functions-row-number',
+    moduleTitle: 'Part 4: Advanced SQL (Data Engineering Core)',
     moduleOrder: 4,
-    lessonOrder: 2,
-    title: 'Window Functions: ROW_NUMBER & PARTITION BY',
-    description: 'Number rows, rank top records per category, and find the latest events without collapsing rows.',
+    lessonOrder: 3,
+    title: '22. Window Functions: ROW_NUMBER & PARTITION BY',
+    description: 'Number records per group and extract the latest event without collapsing rows.',
     sections: [
       {
-        title: 'GROUP BY vs. Window Functions',
-        body: 'When you use GROUP BY, 10 individual rows get squashed into 1 summary row.\n\nWindow functions are different: they perform a calculation across a group of rows, but KEEP all individual rows intact in your final output!'
+        title: 'Why Window Functions?',
+        body: 'GROUP BY collapses 10 rows into 1 row. Window functions calculate values across a partition of rows while KEEPING every individual row intact in your output!'
       },
       {
-        title: 'The Syntax Anatomy',
-        body: 'A window function always has an OVER() clause:\n- PARTITION BY: divides rows into subgroups (like grouping by customer_id).\n- ORDER BY: sorts the rows inside each subgroup (like sorting by date DESC).'
-      },
-      {
-        title: 'Finding the Latest Record per Customer',
-        body: 'In data engineering, finding the latest event for every user is a classic requirement. We assign ROW_NUMBER() = 1 to the newest event, and then filter for rn = 1.',
-        exampleSql: `-- Find the single latest transaction for every customer
-WITH ranked_tx AS (
-    SELECT 
-        transaction_id,
-        customer_id,
-        amount,
-        transaction_date,
-        ROW_NUMBER() OVER (
-            PARTITION BY customer_id 
-            ORDER BY transaction_date DESC
-        ) AS rn
-    FROM transactions
-)
-SELECT customer_id, transaction_id, amount, transaction_date
-FROM ranked_tx
-WHERE rn = 1;`
+        title: 'ROW_NUMBER() Syntax',
+        body: 'OVER (PARTITION BY group_col ORDER BY sort_col DESC) numbers rows sequentially per group, starting over at 1 for each new group:',
+        exampleSql: `-- Number transactions for each customer newest to oldest
+SELECT 
+    transaction_id,
+    customer_id,
+    amount,
+    transaction_date,
+    ROW_NUMBER() OVER (
+        PARTITION BY customer_id 
+        ORDER BY transaction_date DESC
+    ) AS rn
+FROM transactions;`
       }
     ],
     quickReference: [
-      { goal: 'Row number per category', syntax: 'ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC)' },
-      { goal: 'Dense ranking with no gaps', syntax: 'DENSE_RANK() OVER (ORDER BY revenue DESC)' }
+      { goal: 'Number rows per partition', syntax: 'ROW_NUMBER() OVER (PARTITION BY col ORDER BY sort_col DESC)' }
     ],
-    tryItSql: `-- Try ranking products by price within each category
+    challenge: {
+      title: 'Practice: Number Transactions per Customer',
+      instructions: 'Write a query to select transaction_id, customer_id, amount, transaction_date, and ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn from transactions.',
+      starterCode: `-- Challenge 22: Window function row numbering
+-- Select transaction_id, customer_id, amount, transaction_date,
+--        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn
+-- From transactions;
+
+`,
+      expectedQuery: 'SELECT transaction_id, customer_id, amount, transaction_date, ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn FROM transactions;',
+      hints: [
+        'Use ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn.',
+        'Query the transactions table.'
+      ],
+      solutionExplanation: 'PARTITION BY customer_id groups by customer, and ORDER BY transaction_date DESC assigns rn = 1 to the newest event.'
+    }
+  },
+  {
+    id: 'window-functions-rank-dense',
+    moduleTitle: 'Part 4: Advanced SQL (Data Engineering Core)',
+    moduleOrder: 4,
+    lessonOrder: 4,
+    title: '23. Window Functions: RANK vs DENSE_RANK',
+    description: 'Rank leaders, products, and metrics with proper handling of numerical ties.',
+    sections: [
+      {
+        title: 'RANK() vs DENSE_RANK()',
+        body: '- RANK(): Leaves gaps on ties (1, 1, 3).\n- DENSE_RANK(): Consecutive rankings with no gaps (1, 1, 2).\n\nIn Data Engineering, DENSE_RANK() is used when you need clean consecutive ranks.'
+      },
+      {
+        title: 'Example',
+        body: 'Ranking product performance by total revenue:',
+        exampleSql: `-- Rank products by sales without gaps
 SELECT 
-    product_name,
-    category,
-    price,
-    ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS price_rank
-FROM products;`
+    product_id,
+    ROUND(SUM(sale_amount), 2) AS total_revenue,
+    DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank
+FROM sales
+GROUP BY product_id
+ORDER BY revenue_rank ASC, product_id ASC;`
+      }
+    ],
+    quickReference: [
+      { goal: 'Dense rank without gaps', syntax: 'DENSE_RANK() OVER (ORDER BY col DESC)' },
+      { goal: 'Standard rank with gaps', syntax: 'RANK() OVER (ORDER BY col DESC)' }
+    ],
+    challenge: {
+      title: 'Practice: Rank Products with DENSE_RANK',
+      instructions: 'Write a query to calculate product_id, ROUND(SUM(sale_amount), 2) AS total_revenue, and DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank from sales. Group by product_id and order by revenue_rank ASC, product_id ASC.',
+      starterCode: `-- Challenge 23: DENSE_RANK for product revenue
+-- Select product_id,
+--        ROUND(SUM(sale_amount), 2) AS total_revenue,
+--        DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank
+-- From sales
+-- Group by product_id
+-- Order by revenue_rank ASC, product_id ASC;
+
+`,
+      expectedQuery: 'SELECT product_id, ROUND(SUM(sale_amount), 2) AS total_revenue, DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank FROM sales GROUP BY product_id ORDER BY revenue_rank ASC, product_id ASC;',
+      hints: [
+        'Use DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank.',
+        'Group by product_id.',
+        'Order by revenue_rank ASC, product_id ASC.'
+      ],
+      solutionExplanation: 'DENSE_RANK assigns consecutive rank positions to all products based on their total sales revenue.'
+    }
   }
 ];
 
@@ -501,24 +1128,31 @@ export const ACTIVITIES: Activity[] = [
     title: '1. Find the Top 5 Customers by Total Sales',
     difficulty: 'Beginner',
     context: 'The sales team wants to reward top VIP customers based on their historical spend.',
-    goal: 'Write a query to calculate each customer\'s total spending. Return customer_id and total_sales (rounded to 2 decimal places). Sort the output by total_sales descending and limit to the top 5 records.',
+    goal: "Write a query to calculate each customer's total spending. Return customer_id and total_sales (rounded to 2 decimal places). Sort the output by total_sales descending and limit to the top 5 records.",
     tablesUsed: ['sales'],
-    sampleInput: {
-      tableName: 'sales',
-      headers: ['sale_id', 'customer_id', 'sale_amount', 'region', 'sale_date'],
-      rows: [
-        [1001, 1, 149.99, 'East', '2024-01-10'],
-        [1002, 1, 499.99, 'East', '2024-01-22'],
-        [1003, 2, 299.50, 'Midwest', '2024-01-25'],
-        [1005, 4, 499.99, 'South', '2024-02-14']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'sales',
+        description: 'Records of all individual customer purchases',
+        headers: ['sale_id', 'customer_id', 'product_id', 'region', 'sale_amount', 'sale_date'],
+        rows: [
+          [1001, 1, 101, 'East', 149.99, '2024-01-10'],
+          [1002, 1, 102, 'East', 499.99, '2024-01-22'],
+          [1003, 2, 103, 'Midwest', 299.50, '2024-01-25'],
+          [1004, 3, 105, 'West', 179.99, '2024-02-03'],
+          [1005, 4, 102, 'South', 499.99, '2024-02-14'],
+          [1006, 1, 108, 'East', 129.00, '2024-02-18']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['customer_id', 'total_sales'],
       sampleRows: [
         [1, 977.98],
+        [10, 698.99],
         [4, 679.98],
-        [10, 698.99]
+        [2, 428.50],
+        [6, 329.98]
       ],
       totalExpectedRows: 5
     },
@@ -554,15 +1188,19 @@ LIMIT 5;`,
     context: 'Data hygiene is a core duty for Data Engineers. Customers often get entered twice by mistake.',
     goal: 'Write a query to find customer accounts that appear more than once with the exact same first_name, last_name, and email. Return first_name, last_name, email, and record_count. Only show records with record_count > 1.',
     tablesUsed: ['customers'],
-    sampleInput: {
-      tableName: 'customers',
-      headers: ['customer_id', 'first_name', 'last_name', 'email'],
-      rows: [
-        [1, 'Alice', 'Morgan', 'alice.m@gmail.com'],
-        [2, 'Bob', 'Stone', 'bob.stone@yahoo.com'],
-        [7, 'Bob', 'Stone', 'bob.stone@yahoo.com']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'customers',
+        description: 'Customer contact directory',
+        headers: ['customer_id', 'first_name', 'last_name', 'email', 'city', 'signup_date'],
+        rows: [
+          [1, 'Alice', 'Morgan', 'alice.m@gmail.com', 'New York', '2023-01-15'],
+          [2, 'Bob', 'Stone', 'bob.stone@yahoo.com', 'Chicago', '2023-02-20'],
+          [3, 'Charlie', 'Kim', null, 'San Francisco', '2023-03-10'],
+          [7, 'Bob', 'Stone', 'bob.stone@yahoo.com', 'Chicago', '2023-05-18']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['first_name', 'last_name', 'email', 'record_count'],
       sampleRows: [
@@ -603,14 +1241,29 @@ HAVING COUNT(*) > 1;`,
     context: 'Inventory audit: We need to find products in our catalog that have zero recorded sales.',
     goal: 'Write a query to return product_id and product_name for all products in the products table that do NOT exist in the sales table. Sort by product_id ascending.',
     tablesUsed: ['products', 'sales'],
-    sampleInput: {
-      tableName: 'products',
-      headers: ['product_id', 'product_name', 'price'],
-      rows: [
-        [101, 'Mechanical Keyboard Pro', 149.99],
-        [106, 'Titanium Coffee Mug', 45.00]
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'products',
+        description: 'Complete product catalog',
+        headers: ['product_id', 'product_name', 'category', 'price'],
+        rows: [
+          [101, 'Mechanical Keyboard Pro', 'Electronics', 149.99],
+          [102, '4K Ultra-wide Monitor', 'Electronics', 499.99],
+          [106, 'Titanium Coffee Mug', 'Kitchen', 45.00],
+          [107, 'Vintage Desk Lamp', 'Furniture', 55.00]
+        ]
+      },
+      {
+        tableName: 'sales',
+        description: 'Recorded sales transactions',
+        headers: ['sale_id', 'customer_id', 'product_id', 'region', 'sale_amount'],
+        rows: [
+          [1001, 1, 101, 'East', 149.99],
+          [1002, 1, 102, 'East', 499.99],
+          [1003, 2, 103, 'Midwest', 299.50]
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['product_id', 'product_name'],
       sampleRows: [
@@ -650,20 +1303,26 @@ ORDER BY p.product_id ASC;`,
     context: 'Financial reporting: The executive team needs regional sales broken down by calendar month.',
     goal: "Write a query to calculate total sales per region per month. In SQLite, extract the month as YYYY-MM using strftime('%Y-%m', sale_date) as sales_month. Output region, sales_month, and total_sales (rounded to 2 decimals). Sort by region ASC, then sales_month ASC.",
     tablesUsed: ['sales'],
-    sampleInput: {
-      tableName: 'sales',
-      headers: ['sale_id', 'region', 'sale_amount', 'sale_date'],
-      rows: [
-        [1001, 'East', 149.99, '2024-01-10'],
-        [1002, 'East', 499.99, '2024-01-22'],
-        [1006, 'East', 129.00, '2024-02-18']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'sales',
+        description: 'Sales records with timestamps',
+        headers: ['sale_id', 'customer_id', 'product_id', 'region', 'sale_amount', 'sale_date'],
+        rows: [
+          [1001, 1, 101, 'East', 149.99, '2024-01-10'],
+          [1002, 1, 102, 'East', 499.99, '2024-01-22'],
+          [1003, 2, 103, 'Midwest', 299.50, '2024-01-25'],
+          [1005, 4, 102, 'South', 499.99, '2024-02-14'],
+          [1006, 1, 108, 'East', 129.00, '2024-02-18']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['region', 'sales_month', 'total_sales'],
       sampleRows: [
         ['East', '2024-01', 649.98],
-        ['East', '2024-02', 129.00]
+        ['East', '2024-02', 129.00],
+        ['East', '2024-03', 149.99]
       ],
       totalExpectedRows: 9
     },
@@ -697,42 +1356,54 @@ ORDER BY region ASC, sales_month ASC;`,
     difficulty: 'Intermediate',
     context: 'HR compensation review: Identify standout earners in each individual department.',
     goal: "Write a query to find employees whose salary is strictly greater than the average salary of their own department. Output employee_id, name, department_id, and salary. Order by department_id ASC, then salary DESC.",
-    tablesUsed: ['employees'],
-    sampleInput: {
-      tableName: 'employees',
-      headers: ['employee_id', 'name', 'department_id', 'salary'],
-      rows: [
-        [201, 'Amaya Balion', 10, 135000],
-        [202, 'Marcus Vance', 10, 110000],
-        [203, 'Elena Rostova', 10, 95000]
-      ]
-    },
+    tablesUsed: ['employees', 'departments'],
+    sampleInputs: [
+      {
+        tableName: 'employees',
+        description: 'Employee compensation and department mapping',
+        headers: ['employee_id', 'name', 'department_id', 'salary', 'hire_date'],
+        rows: [
+          [201, 'Amaya Balion', 10, 135000, '2021-03-15'],
+          [202, 'Marcus Vance', 10, 110000, '2022-06-01'],
+          [203, 'Elena Rostova', 10, 95000, '2023-01-10'],
+          [204, 'David Chen', 20, 140000, '2020-08-20'],
+          [206, 'Priya Patel', 20, 160000, '2019-04-01']
+        ]
+      },
+      {
+        tableName: 'departments',
+        description: 'Department master table',
+        headers: ['department_id', 'department_name'],
+        rows: [
+          [10, 'Data Engineering'],
+          [20, 'Platform Infra'],
+          [30, 'Product Analytics']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['employee_id', 'name', 'department_id', 'salary'],
       sampleRows: [
         [201, 'Amaya Balion', 10, 135000],
-        [206, 'Priya Patel', 20, 160000]
+        [206, 'Priya Patel', 20, 160000],
+        [208, 'Zoe Washington', 30, 105000]
       ],
       totalExpectedRows: 3
     },
     starterCode: `-- Exercise 5: Employees above their department average
--- Step 1: Create a CTE to calculate average salary per department
+-- Step 1: Create a CTE (dept_averages) to calculate average salary per department
 WITH dept_averages AS (
-    SELECT 
-        department_id,
-        AVG(salary) AS avg_sal
-    FROM employees
-    GROUP BY department_id
+    -- Write your query to calculate department_id and AVG(salary) AS avg_sal
 )
--- Step 2: Join employees back to dept_averages and filter
+-- Step 2: Join employees with dept_averages and filter for salary > avg_sal
 SELECT 
     e.employee_id,
     e.name,
     e.department_id,
     e.salary
 FROM employees e
-JOIN dept_averages d ON e.department_id = d.department_id
-WHERE e.salary > d.avg_sal
+-- Join to dept_averages on department_id
+-- Filter for employees earning above department average
 ORDER BY e.department_id ASC, e.salary DESC;`,
     expectedQuery: `WITH dept_averages AS (
     SELECT 
@@ -755,7 +1426,7 @@ ORDER BY e.department_id ASC, e.salary DESC;`,
       'In your main query, join employees e with dept_averages d on department_id.',
       'Filter with WHERE e.salary > d.avg_sal.'
     ],
-    walkthrough: 'We first calculate the department average in a Common Table Expression (CTE). Then we join each employee back to their department\'s benchmark row and filter for records where e.salary > d.avg_sal.'
+    walkthrough: "We first calculate the department average in a Common Table Expression (CTE). Then we join each employee back to their department's benchmark row and filter for records where e.salary > d.avg_sal."
   },
   {
     id: 'act-6-missing-emails',
@@ -766,15 +1437,20 @@ ORDER BY e.department_id ASC, e.salary DESC;`,
     context: 'Data Cleaning: Find incomplete profiles where email is either database NULL or blank string.',
     goal: "Write a query to select customer_id, first_name, and last_name of all customers whose email is either NULL or an empty blank string ('' or blank spaces). Order by customer_id ASC.",
     tablesUsed: ['customers'],
-    sampleInput: {
-      tableName: 'customers',
-      headers: ['customer_id', 'first_name', 'last_name', 'email'],
-      rows: [
-        [3, 'Charlie', 'Kim', null],
-        [4, 'Diana', 'Prince', 'diana.p@gmail.com'],
-        [5, 'Evan', 'Wright', '']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'customers',
+        description: 'Customer contact directory with dirty entries',
+        headers: ['customer_id', 'first_name', 'last_name', 'email', 'city'],
+        rows: [
+          [1, 'Alice', 'Morgan', 'alice.m@gmail.com', 'New York'],
+          [3, 'Charlie', 'Kim', null, 'San Francisco'],
+          [4, 'Diana', 'Prince', 'diana.p@gmail.com', 'Austin'],
+          [5, 'Evan', 'Wright', '', 'Seattle'],
+          [8, 'George', 'Miller', null, 'Denver']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['customer_id', 'first_name', 'last_name'],
       sampleRows: [
@@ -784,15 +1460,15 @@ ORDER BY e.department_id ASC, e.salary DESC;`,
       ],
       totalExpectedRows: 3
     },
-    starterCode: `-- Exercise 6: Find missing email addresses
+    starterCode: `-- Exercise 6: Identify customers with missing email addresses
 SELECT 
     customer_id,
     first_name,
     last_name
 FROM customers
--- Check for both NULL and blank string ''
-WHERE email IS NULL OR TRIM(email) = ''
-ORDER BY customer_id ASC;`,
+-- Filter for records where email IS NULL or is an empty string
+-- Order by customer_id ASC
+;`,
     expectedQuery: `SELECT 
     customer_id, 
     first_name, 
@@ -802,10 +1478,10 @@ WHERE email IS NULL OR TRIM(email) = ''
 ORDER BY customer_id ASC;`,
     hints: [
       'In SQL, use IS NULL to check for missing database markers.',
-      'Use TRIM(email) = \'\' to also catch empty blank text strings.',
+      "Use TRIM(email) = '' to also catch empty blank text strings.",
       'Combine both checks with an OR condition.'
     ],
-    walkthrough: 'In real databases, missing data comes in two forms: genuine NULLs and empty strings (\'\'). By writing WHERE email IS NULL OR TRIM(email) = \'\', we catch both categories.'
+    walkthrough: "In real databases, missing data comes in two forms: genuine NULLs and empty strings (''). By writing WHERE email IS NULL OR TRIM(email) = '', we catch both categories."
   },
   {
     id: 'act-7-rank-products-revenue',
@@ -815,32 +1491,52 @@ ORDER BY customer_id ASC;`,
     difficulty: 'Intermediate',
     context: 'Catalog performance: Rank items from highest revenue to lowest without rank gaps.',
     goal: 'Write a query to calculate total revenue per product (sum of sale_amount rounded to 2 decimals) and assign a ranking using DENSE_RANK() as revenue_rank. Sort by revenue_rank ASC, then product_id ASC.',
-    tablesUsed: ['sales'],
-    sampleInput: {
-      tableName: 'sales',
-      headers: ['sale_id', 'product_id', 'sale_amount'],
-      rows: [
-        [1001, 101, 149.99],
-        [1002, 102, 499.99],
-        [1005, 102, 499.99]
-      ]
-    },
+    tablesUsed: ['sales', 'products'],
+    sampleInputs: [
+      {
+        tableName: 'sales',
+        description: 'Sales records with order amounts',
+        headers: ['sale_id', 'product_id', 'sale_amount'],
+        rows: [
+          [1001, 101, 149.99],
+          [1002, 102, 499.99],
+          [1003, 103, 299.50],
+          [1005, 102, 499.99],
+          [1007, 101, 149.99],
+          [1013, 102, 499.99]
+        ]
+      },
+      {
+        tableName: 'products',
+        description: 'Product master directory',
+        headers: ['product_id', 'product_name', 'category', 'price'],
+        rows: [
+          [101, 'Mechanical Keyboard Pro', 'Electronics', 149.99],
+          [102, '4K Ultra-wide Monitor', 'Electronics', 499.99],
+          [103, 'Ergonomic Desk Chair', 'Furniture', 299.50]
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['product_id', 'total_revenue', 'revenue_rank'],
       sampleRows: [
         [102, 1499.97, 1],
-        [103, 599.00, 2]
+        [103, 599.00, 2],
+        [104, 398.00, 3],
+        [105, 359.98, 4],
+        [101, 299.98, 5]
       ],
-      totalExpectedRows: 5
+      totalExpectedRows: 6
     },
-    starterCode: `-- Exercise 7: Rank products by revenue using DENSE_RANK()
+    starterCode: `-- Exercise 7: Rank products by total revenue
 SELECT 
     product_id,
-    ROUND(SUM(sale_amount), 2) AS total_revenue,
-    DENSE_RANK() OVER (ORDER BY SUM(sale_amount) DESC) AS revenue_rank
+    ROUND(SUM(sale_amount), 2) AS total_revenue
+    -- Step 1: Add DENSE_RANK() window function ordered by SUM(sale_amount) DESC
 FROM sales
-GROUP BY product_id
-ORDER BY revenue_rank ASC, product_id ASC;`,
+-- Step 2: Group by product_id
+-- Step 3: Sort by revenue_rank ASC, then product_id ASC
+;`,
     expectedQuery: `SELECT 
     product_id, 
     ROUND(SUM(sale_amount), 2) AS total_revenue, 
@@ -864,20 +1560,30 @@ ORDER BY revenue_rank ASC, product_id ASC;`,
     context: 'Event streaming: In event logs, we regularly need the most recent state for each account.',
     goal: 'Write a query to find the single most recent transaction for every customer in the transactions table. Return customer_id, transaction_id, amount, and transaction_date. Sort by customer_id ASC.',
     tablesUsed: ['transactions'],
-    sampleInput: {
-      tableName: 'transactions',
-      headers: ['transaction_id', 'customer_id', 'amount', 'transaction_date'],
-      rows: [
-        [5001, 1, 45.50, '2024-01-05 10:20:00'],
-        [5002, 1, 120.00, '2024-02-14 14:15:00'],
-        [5003, 1, 85.25, '2024-03-22 09:30:00']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'transactions',
+        description: 'Payment log with precise timestamps',
+        headers: ['transaction_id', 'customer_id', 'amount', 'transaction_date'],
+        rows: [
+          [5001, 1, 45.50, '2024-01-05 10:20:00'],
+          [5002, 1, 120.00, '2024-02-14 14:15:00'],
+          [5003, 1, 85.25, '2024-03-22 09:30:00'],
+          [5004, 2, 210.00, '2024-01-18 16:45:00'],
+          [5005, 2, 95.00, '2024-04-10 11:00:00'],
+          [5006, 3, 340.00, '2024-02-28 13:20:00'],
+          [5007, 4, 15.00, '2024-01-12 08:15:00'],
+          [5008, 4, 180.50, '2024-05-01 17:05:00']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['customer_id', 'transaction_id', 'amount', 'transaction_date'],
       sampleRows: [
         [1, 5003, 85.25, '2024-03-22 09:30:00'],
-        [2, 5005, 95.00, '2024-04-10 11:00:00']
+        [2, 5005, 95.00, '2024-04-10 11:00:00'],
+        [3, 5006, 340.00, '2024-02-28 13:20:00'],
+        [4, 5008, 180.50, '2024-05-01 17:05:00']
       ],
       totalExpectedRows: 4
     },
@@ -887,11 +1593,8 @@ WITH ranked_transactions AS (
         transaction_id,
         customer_id,
         amount,
-        transaction_date,
-        ROW_NUMBER() OVER (
-            PARTITION BY customer_id 
-            ORDER BY transaction_date DESC
-        ) AS rn
+        transaction_date
+        -- Add ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY transaction_date DESC) AS rn
     FROM transactions
 )
 SELECT 
@@ -900,8 +1603,9 @@ SELECT
     amount,
     transaction_date
 FROM ranked_transactions
-WHERE rn = 1
-ORDER BY customer_id ASC;`,
+-- Step 1: Filter where rn = 1
+-- Step 2: Sort by customer_id ASC
+;`,
     expectedQuery: `WITH ranked_transactions AS (
     SELECT 
         transaction_id, 
@@ -928,7 +1632,7 @@ ORDER BY customer_id ASC;`,
       'ORDER BY transaction_date DESC ensures the newest transaction receives row number 1.',
       'In the outer query, simply filter with WHERE rn = 1.'
     ],
-    walkthrough: 'By partitioning on customer_id and sorting transaction_date descending, every customer\'s newest transaction is labeled rn = 1. Filtering WHERE rn = 1 extracts exactly one latest event per customer.'
+    walkthrough: "By partitioning on customer_id and sorting transaction_date descending, every customer's newest transaction is labeled rn = 1. Filtering WHERE rn = 1 extracts exactly one latest event per customer."
   },
   {
     id: 'act-9-facebook-pages',
@@ -939,15 +1643,28 @@ ORDER BY customer_id ASC;`,
     context: 'DataLemur Meta Question: Find pages with zero user engagements.',
     goal: 'Write a query to return the page_id of all Facebook pages from the pages table that have zero likes in the page_likes table. Sort by page_id ascending.',
     tablesUsed: ['pages', 'page_likes'],
-    sampleInput: {
-      tableName: 'pages',
-      headers: ['page_id', 'page_name'],
-      rows: [
-        [20001, 'SQL Solutions'],
-        [20045, 'Brain Exercises'],
-        [20701, 'Tips for Data Analysts']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'pages',
+        description: 'Directory of Facebook pages',
+        headers: ['page_id', 'page_name'],
+        rows: [
+          [20001, 'SQL Solutions'],
+          [20045, 'Brain Exercises'],
+          [20701, 'Tips for Data Analysts']
+        ]
+      },
+      {
+        tableName: 'page_likes',
+        description: 'Log of user likes on pages',
+        headers: ['user_id', 'page_id', 'liked_date'],
+        rows: [
+          [111, 20001, '2022-04-08 00:00:00'],
+          [121, 20045, '2022-03-12 00:00:00'],
+          [156, 20001, '2022-07-25 00:00:00']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['page_id'],
       sampleRows: [[20701]],
@@ -956,9 +1673,10 @@ ORDER BY customer_id ASC;`,
     starterCode: `-- Exercise 9: Facebook Page With No Likes
 SELECT p.page_id
 FROM pages p
-LEFT JOIN page_likes l ON p.page_id = l.page_id
-WHERE l.page_id IS NULL
-ORDER BY p.page_id ASC;`,
+-- Step 1: Perform a LEFT JOIN with page_likes on page_id
+-- Step 2: Filter for pages that have no likes (NULL in page_likes)
+-- Step 3: Sort by page_id ascending
+;`,
     expectedQuery: `SELECT p.page_id 
 FROM pages p 
 LEFT JOIN page_likes l ON p.page_id = l.page_id 
@@ -980,17 +1698,25 @@ ORDER BY p.page_id ASC;`,
     context: 'DataLemur LinkedIn Question: Match job applicants with strict multi-skill criteria.',
     goal: "Write a query to find candidates who possess ALL THREE of these skills: 'Python', 'Tableau', and 'PostgreSQL'. Return candidate_id sorted in ascending order.",
     tablesUsed: ['candidates'],
-    sampleInput: {
-      tableName: 'candidates',
-      headers: ['candidate_id', 'skill'],
-      rows: [
-        [123, 'Python'],
-        [123, 'Tableau'],
-        [123, 'PostgreSQL'],
-        [234, 'R'],
-        [345, 'Python']
-      ]
-    },
+    sampleInputs: [
+      {
+        tableName: 'candidates',
+        description: 'Candidate skill tags',
+        headers: ['candidate_id', 'skill'],
+        rows: [
+          [123, 'Python'],
+          [123, 'Tableau'],
+          [123, 'PostgreSQL'],
+          [234, 'R'],
+          [234, 'PowerBI'],
+          [345, 'Python'],
+          [147, 'Java'],
+          [147, 'PostgreSQL'],
+          [147, 'Python'],
+          [147, 'Tableau']
+        ]
+      }
+    ],
     expectedOutputPreview: {
       headers: ['candidate_id'],
       sampleRows: [[123], [147]],
@@ -999,10 +1725,11 @@ ORDER BY p.page_id ASC;`,
     starterCode: `-- Exercise 10: Candidates with all 3 skills
 SELECT candidate_id
 FROM candidates
-WHERE skill IN ('Python', 'Tableau', 'PostgreSQL')
-GROUP BY candidate_id
-HAVING COUNT(DISTINCT skill) = 3
-ORDER BY candidate_id ASC;`,
+-- Step 1: Filter for rows matching any of the 3 required skills
+-- Step 2: Group by candidate_id
+-- Step 3: Assert they have all 3 distinct skills
+-- Step 4: Sort by candidate_id ascending
+;`,
     expectedQuery: `SELECT candidate_id 
 FROM candidates 
 WHERE skill IN ('Python', 'Tableau', 'PostgreSQL') 

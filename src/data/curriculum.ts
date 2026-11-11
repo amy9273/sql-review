@@ -4402,5 +4402,45 @@ export const SAMPLE_SCHEMAS: TableSchemaInfo[] = [
       { name: 'candidate_id', type: 'INTEGER' },
       { name: 'skill', type: 'TEXT' }
     ]
+  },
+  {
+    tableName: 'schneider_transactions',
+    description: 'Schneider Electric enterprise raw transactions (includes null customer IDs, negative amounts, and casing/whitespace issues)',
+    columns: [
+      { name: 'transaction_id', type: 'INTEGER', notes: 'Transaction identifier' },
+      { name: 'customer_id', type: 'INTEGER', notes: 'Foreign Key (contains NULLs for cleaning)' },
+      { name: 'product', type: 'TEXT', notes: 'Product name with leading spaces and mixed casing' },
+      { name: 'amount', type: 'REAL', notes: 'Monetary amount (contains negative test values)' },
+      { name: 'status', type: 'TEXT', notes: 'Status: COMPLETED, PENDING' }
+    ]
+  },
+  {
+    tableName: 'schneider_customers',
+    description: 'Schneider Electric enterprise customer dimension',
+    columns: [
+      { name: 'customer_id', type: 'INTEGER', notes: 'Primary Key' },
+      { name: 'customer_name', type: 'TEXT', notes: 'Customer business name' },
+      { name: 'country', type: 'TEXT', notes: 'Country code or country name' }
+    ]
+  },
+  {
+    tableName: 'schneider_orders',
+    description: 'Schneider Electric orders table (contains orphaned order referencing non-existent customer 5)',
+    columns: [
+      { name: 'order_id', type: 'INTEGER', notes: 'Primary Key' },
+      { name: 'customer_id', type: 'INTEGER', notes: 'Foreign Key (demonstrates referential integrity anomaly)' },
+      { name: 'amount', type: 'REAL', notes: 'Order amount' },
+      { name: 'status', type: 'TEXT', notes: 'Order status' }
+    ]
+  },
+  {
+    tableName: 'schneider_suppliers',
+    description: 'Schneider Electric vendor master data (contains missing contact emails and status conflicts)',
+    columns: [
+      { name: 'supplier_id', type: 'INTEGER', notes: 'Primary Key' },
+      { name: 'supplier_name', type: 'TEXT', notes: 'Supplier trade name' },
+      { name: 'contact_email', type: 'TEXT', notes: 'Contact email (contains NULLs)' },
+      { name: 'status', type: 'TEXT', notes: 'Vendor status: Active, Inactive' }
+    ]
   }
 ];

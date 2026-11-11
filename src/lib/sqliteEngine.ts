@@ -167,6 +167,66 @@ INSERT INTO candidates VALUES
   (147, 'PostgreSQL'),
   (147, 'Python'),
   (147, 'Tableau'); -- 123 and 147 qualify!
+
+-- 8. Schneider Electric Enterprise Data Quality & Transformation Dataset
+DROP TABLE IF EXISTS schneider_transactions;
+CREATE TABLE schneider_transactions (
+  transaction_id INTEGER,
+  customer_id INTEGER,
+  product TEXT,
+  amount REAL,
+  status TEXT
+);
+
+INSERT INTO schneider_transactions VALUES
+  (1, 101, '  Laptop  ', 50000, 'COMPLETED'),
+  (2, 102, 'mouse', 500, 'COMPLETED'),
+  (3, 101, 'Laptop', 50000, 'COMPLETED'),
+  (4, 103, 'KEYBOARD', -200, 'COMPLETED'),
+  (5, 104, 'Monitor', 12000, 'PENDING'),
+  (6, NULL, 'mouse', 500, 'COMPLETED'),
+  (7, 105, 'Keyboard', 1000, 'COMPLETED');
+
+DROP TABLE IF EXISTS schneider_customers;
+CREATE TABLE schneider_customers (
+  customer_id INTEGER PRIMARY KEY,
+  customer_name TEXT NOT NULL,
+  country TEXT NOT NULL
+);
+
+INSERT INTO schneider_customers VALUES
+  (1, 'John', 'Philippines'),
+  (2, 'Maria', 'Singapore'),
+  (3, 'James', 'Philippines'),
+  (4, 'Anna', 'Japan');
+
+DROP TABLE IF EXISTS schneider_orders;
+CREATE TABLE schneider_orders (
+  order_id INTEGER PRIMARY KEY,
+  customer_id INTEGER,
+  amount REAL NOT NULL,
+  status TEXT NOT NULL
+);
+
+INSERT INTO schneider_orders VALUES
+  (101, 1, 5000, 'COMPLETED'),
+  (102, 1, 3000, 'COMPLETED'),
+  (103, 2, 2000, 'PENDING'),
+  (104, 3, 7000, 'COMPLETED'),
+  (105, 5, 1000, 'COMPLETED'); -- Customer 5 is an orphaned referential integrity anomaly!
+
+DROP TABLE IF EXISTS schneider_suppliers;
+CREATE TABLE schneider_suppliers (
+  supplier_id INTEGER PRIMARY KEY,
+  supplier_name TEXT NOT NULL,
+  contact_email TEXT,
+  status TEXT NOT NULL
+);
+
+INSERT INTO schneider_suppliers VALUES
+  (1, 'ABC Supplies', 'abc@email.com', 'Active'),
+  (2, 'XYZ Trading', NULL, 'Inactive'),
+  (3, 'Global Parts', 'global@email.com', 'Active');
 `;
 
 export interface QueryResult {

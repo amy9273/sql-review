@@ -13,6 +13,7 @@ type ParsedBlock =
   | { type: 'code_block'; snippets: string[] }
   | { type: 'bullet_list'; items: string[] }
   | { type: 'tip'; label: string; content: string }
+  | { type: 'table'; headers: string[]; rows: string[][] }
   | { type: 'paragraph'; text: string };
 
 function isConclusion(text: string): boolean {
@@ -31,12 +32,44 @@ function parseBlocks(rawText: string): ParsedBlock[] {
     | { type: 'bullet_list'; items: string[] }
     | { type: 'code_snippet'; code: string }
     | { type: 'tip'; label: string; content: string }
+    | { type: 'table'; headers: string[]; rows: string[][] }
     | { type: 'paragraph'; text: string }
   )[] = [];
 
   for (let i = 0; i < rawParagraphs.length; i++) {
     const chunk = rawParagraphs[i].trim();
     const lines = chunk.split('\n').filter(Boolean);
+
+    // 0. Markdown Table (e.g. | col1 | col2 |)
+    const isMarkdownTable =
+      lines.length >= 2 &&
+      lines.every((l) => l.trim().startsWith('|') && l.trim().endsWith('|')) &&
+      lines.some((l) => /^\|(\s*:?-+:?\s*\|)+$/.test(l.trim()));
+
+    if (isMarkdownTable) {
+      const headerLine = lines[0];
+      const headers = headerLine
+        .split('|')
+        .slice(1, -1)
+        .map((h) => h.trim());
+
+      const dataRows = lines
+        .slice(1)
+        .filter((l) => !/^\|(\s*:?-+:?\s*\|)+$/.test(l.trim()))
+        .map((l) =>
+          l
+            .split('|')
+            .slice(1, -1)
+            .map((c) => c.trim())
+        );
+
+      tempBlocks.push({
+        type: 'table',
+        headers,
+        rows: dataRows
+      });
+      continue;
+    }
 
     // 1. Bullet list (e.g. • or - or *)
     const isBulletList =
@@ -100,9 +133,17 @@ function parseBlocks(rawText: string): ParsedBlock[] {
       // Lookahead: group subsequent items introduced by this subtitle
       const listItems: string[] = [];
       let j = i + 1;
-      while (j < rawParagraphs.length) {
+      while (j < rawParagraphs.length && listItems.length < 8) {
         const next = rawParagraphs[j].trim();
-        if (next.endsWith(':') || /^`[^`]+`$/.test(next) || isConclusion(next)) break;
+        if (
+          next.endsWith(':') ||
+          next.startsWith('|') ||
+          /^Table \d+/i.test(next) ||
+          /^`[^`]+`$/.test(next) ||
+          isConclusion(next)
+        ) {
+          break;
+        }
         if (next.length < 180 && !next.includes('\n\n')) {
           listItems.push(next);
           j++;
@@ -124,9 +165,17 @@ function parseBlocks(rawText: string): ParsedBlock[] {
       // Lookahead: group subsequent items introduced by this colon
       const listItems: string[] = [];
       let j = i + 1;
-      while (j < rawParagraphs.length) {
+      while (j < rawParagraphs.length && listItems.length < 8) {
         const next = rawParagraphs[j].trim();
-        if (next.endsWith(':') || /^`[^`]+`$/.test(next) || isConclusion(next)) break;
+        if (
+          next.endsWith(':') ||
+          next.startsWith('|') ||
+          /^Table \d+/i.test(next) ||
+          /^`[^`]+`$/.test(next) ||
+          isConclusion(next)
+        ) {
+          break;
+        }
         if (next.length < 180 && !next.includes('\n\n')) {
           listItems.push(next);
           j++;
@@ -163,6 +212,7 @@ function parseBlocks(rawText: string): ParsedBlock[] {
     | { type: 'bullet_list'; items: string[] }
     | { type: 'code_snippet'; code: string }
     | { type: 'tip'; label: string; content: string }
+    | { type: 'table'; headers: string[]; rows: string[][] }
     | { type: 'paragraph'; text: string }
   )[] = [];
   let currentList: string[] = [];
@@ -345,6 +395,36 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
               <div>
                 <strong className="font-bold">{block.label}:</strong> {renderInline(block.content)}
               </div>
+            </div>
+          );
+        }
+
+        // Formatted Markdown Table
+        if (block.type === 'table') {
+          return (
+            <div key={bIdx} className="overflow-x-auto my-3 rounded-xl border border-slate-200/90 shadow-2xs">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="bg-slate-100/90 text-slate-800 font-bold border-b border-slate-200">
+                  <tr>
+                    {block.headers.map((h, hIdx) => (
+                      <th key={hIdx} className="px-3.5 py-2.5 font-semibold text-slate-900 tracking-tight">
+                        {renderInline(h)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {block.rows.map((row, rIdx) => (
+                    <tr key={rIdx} className={rIdx % 2 === 1 ? 'bg-slate-50/50' : 'bg-white'}>
+                      {row.map((cell, cIdx) => (
+                        <td key={cIdx} className="px-3.5 py-2 text-slate-700 font-mono text-[12px]">
+                          {renderInline(cell)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           );
         }

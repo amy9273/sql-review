@@ -3983,12 +3983,13 @@ export const PYTHON_LESSONS: PythonLesson[] = [
       },
       {
         "title": "2. Big Picture of Merging",
-        "body": "Imagine you have two tables:\n\nTable 1 — Ward Government Data\n\nward\n\nalderman\n\naddress\n\n1\n\nPerson A\n\nAddress A\n\n2\n\nPerson B\n\nAddress B\n\nTable 2 — Census Data\n\nward\n\npopulation\n\n1\n\n50000\n\n2\n\n54000\n\nBoth tables contain a common column:\n\nward\n\nThis shared column allows pandas to connect related rows together.\n\nWhat is an Inner Join?\n\nAn inner join returns only the rows where matching values exist in BOTH tables.\n\nThink of it like:\n\n“Keep only the rows that successfully match.”\n\nIf ward 2 exists in both tables:\n\nthey get combined\n\nIf a ward exists in only one table:\n\nit gets excluded\n\nUsing merge()\n\nThe main pandas function used for joining tables is:\n\nmerge()\n\nBasic syntax:\n\n`merged_df = left_table.merge(right_table, on=\"common_column\")`\n\nExample:\n\n`wards_census = wards.merge(census, on=\"ward\")`",
-        "exampleCode": "merged_df = left_table.merge(right_table, on=\"common_column\")\nwards_census = wards.merge(census, on=\"ward\")"
+        "body": "Imagine you have two separate tables that share a common column:\n\n**Table 1 — Ward Government Data**\n| ward | alderman | address |\n| :--- | :--- | :--- |\n| 1 | Person A | Address A |\n| 2 | Person B | Address B |\n\n**Table 2 — Census Data**\n| ward | population |\n| :--- | :--- |\n| 1 | 50,000 |\n| 2 | 54,000 |\n\nBoth tables contain a common column: `ward`. This shared key column allows pandas to connect related rows together.\n\n### What is an Inner Join?\nAn inner join returns **only the rows where matching values exist in BOTH tables**.\n\nThink of it as: *“Keep only the rows that successfully match on both sides.”*\n* If `ward 2` exists in both tables, they are combined into one row.\n* If a ward exists in only one table, it gets excluded.\n\n### Using merge()\nThe primary pandas method for joining tables is `.merge()`:\n\n```python\nmerged_df = left_table.merge(right_table, on=\"common_column\")\nwards_census = wards.merge(census, on=\"ward\")\n```",
+        "exampleCode": "wards_census = wards.merge(census, on=\"ward\")\nprint(wards_census.head())"
       },
       {
-        "title": "3. What this means",
-        "body": "Start with wards\n\nMerge with census\n\nMatch rows using the ward column\n\nHow merge() Works\n\nSuppose:\n\nwards table\n\nward\n\nalderman\n\n1\n\nSmith\n\n2\n\nHopkins\n\ncensus table\n\nward\n\npopulation\n\n2\n\n54361\n\n3\n\n60000\n\nAfter inner join:\n\nward\n\nalderman\n\npopulation\n\n2\n\nHopkins\n\n54361\n\nOnly ward 2 remains because:\n\nit exists in both tables\n\nWard 1 is removed because:\n\nno matching census data\n\nWard 3 is removed because:\n\nno matching ward data\n\nImportant merge() Arguments\n\non=\n\nSpecifies the column used to match rows.\n\nExample:\n\non=\"ward\""
+        "title": "3. How Inner Join Filters Rows",
+        "body": "Suppose we merge these two DataFrames on `ward`:\n\n**wards table (Left):**\n| ward | alderman |\n| :--- | :--- |\n| 1 | Smith |\n| 2 | Hopkins |\n\n**census table (Right):**\n| ward | population |\n| :--- | :--- |\n| 2 | 54,361 |\n| 3 | 60,000 |\n\n**Result after Inner Join (`wards.merge(census, on=\"ward\")`):**\n| ward | alderman | population |\n| :--- | :--- | :--- |\n| 2 | Hopkins | 54,361 |\n\nKey observations:\n* **Ward 2** is kept because it exists in both tables.\n* **Ward 1** is dropped because it has no census match.\n* **Ward 3** is dropped because it has no ward match in the left table.",
+        "exampleCode": "wards.merge(census, on=\"ward\")"
       },
       {
         "title": "4. Column Order in Result",
@@ -4245,123 +4246,53 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 49,
     "title": "Left Join in pandas",
-    "description": "In the earlier lessons, you learned how to merge tables using the merge() method. By default, pandas performs an inner join, which only keeps rows where matchin...",
+    "description": "Learn how left joins preserve every row from the primary table while gracefully pulling in optional matching data from a secondary table with NaN imputation.",
     "sections": [
       {
-        "title": "1. Concept Overview",
-        "body": "In the earlier lessons, you learned how to merge tables using the merge() method. By default, pandas performs an inner join, which only keeps rows where matching values exist in both tables.\n\nThis lesson introduces another type of merge called the left join.\n\nA left join keeps:\n\nall rows from the left table\n\nonly the matching rows from the right table\n\nIf no match is found in the right table, pandas fills the missing values with NaN."
+        "title": "1. What is a Left Join?",
+        "body": "In earlier lessons, you learned how to merge tables using `df.merge()`. By default, pandas performs an **inner join**, which only keeps records where matching keys exist in *both* tables. Any row without a match is permanently discarded.\n\nA **left join** is different: it preserves **every single row from the left table**, regardless of whether a matching record exists in the right table.\n\nKey behaviors of a Left Join:\n* All rows from the left table are kept.\n* Matching rows from the right table are joined.\n* If no match exists in the right table, pandas fills the missing columns with `NaN` (null).\n\n### Join Behavior Comparison:\n| Left Table Key | Right Table Key | Inner Join Result | Left Join Result |\n| :--- | :--- | :--- | :--- |\n| Match exists | Match exists | Combined row kept | Combined row kept |\n| No match | — | Row removed | **Left row kept**; right side becomes `NaN` |"
       },
       {
-        "title": "2. Quick Review of Inner Join",
-        "body": "An inner join only returns rows where the key column exists in BOTH tables.\n\nExample idea:"
+        "title": "2. Real-World Example: Movies & Taglines",
+        "body": "Consider a database with two tables:\n1. `movies` (4,803 rows: `id`, `title`, `popularity`)\n2. `taglines` (fewer rows: `id`, `tagline` — not every movie has a marketing tagline)\n\nIf we ran an inner join, all movies without a tagline would disappear! To prevent losing our movies, we use a left join:\n\n```python\n# Left join syntax:\nmovies_taglines = movies.merge(taglines, on=\"id\", how=\"left\")\n```\n\n### Breaking Down the Code:\n* `movies`: The left table. All 4,803 rows remain in the final result.\n* `taglines`: The right table. Only matching taglines are added.\n* `on=\"id\"`: The relational key connecting the two tables.\n* `how=\"left\"`: Explicitly specifies a left join (defaults to `'inner'` if omitted).\n\n### What the Result Looks Like:\n| id | title | tagline | Status |\n| :--- | :--- | :--- | :--- |\n| 1 | Movie A | \"Epic adventure\" | Match found: Tagline attached |\n| 2 | Movie B | `NaN` | **Preserved!** Tagline filled with `NaN` |",
+        "exampleCode": "movies_taglines = movies.merge(taglines, on=\"id\", how=\"left\")\nprint(movies_taglines[['title', 'tagline']].head())"
       },
       {
-        "title": "3. Left Table",
-        "body": "Right Table\n\nResult"
-      },
-      {
-        "title": "4. Match exists",
-        "body": "Match exists"
-      },
-      {
-        "title": "5. Row kept",
-        "body": "No match\n\n—"
-      },
-      {
-        "title": "6. Row removed",
-        "body": "So unmatched rows disappear completely.\n\nWhat Makes Left Join Different?\n\nA left join preserves every row from the left table even if no match exists in the right table.\n\nExample idea:"
-      },
-      {
-        "title": "7. Left Table",
-        "body": "Right Table\n\nResult"
-      },
-      {
-        "title": "8. Match exists",
-        "body": "Match exists"
-      },
-      {
-        "title": "9. Combined row",
-        "body": "No match\n\n—"
-      },
-      {
-        "title": "10. Left row kept, right side becomes NaN",
-        "body": "This is useful when the left table contains the main dataset you want to preserve."
-      },
-      {
-        "title": "11. Example Using Movies Dataset",
-        "body": "The lesson uses data from The Movie Database.\n\nThere are two tables:\n\nmovies\n\nContains:\n\nmovie ID\n\ntitle\n\npopularity\n\nThis table has around 4,803 rows.\n\ntaglines\n\nContains:\n\nmovie ID\n\nmovie tagline\n\nThis table has fewer rows, meaning not every movie has a tagline."
-      },
-      {
-        "title": "12. Performing a Left Join",
-        "body": "movies.merge(taglines, on=\"id\", how=\"left\")"
-      },
-      {
-        "title": "13. Breaking Down the Code",
-        "body": "movies\n\nThis is the left table.\n\nAll rows from this table will remain in the result.\n\ntaglines\n\nThis is the right table.\n\nOnly matching rows will be added.\n\non=\"id\"\n\nThe id column is the key used to connect the tables.\n\nhow=\"left\"\n\nSpecifies that the merge should be a left join.\n\nWithout this argument, pandas uses an inner join by default.\n\nWhat Happens After the Merge?\n\nIf a movie has a matching tagline:\n\nthe tagline appears in the merged result\n\nIf a movie does NOT have a tagline:\n\nthe movie row is still kept\n\nthe tagline column becomes NaN\n\nExample:\n\nid\n\ntitle\n\ntagline\n\n1"
-      },
-      {
-        "title": "14. Movie A",
-        "body": "\"Epic adventure\"\n\n2"
-      },
-      {
-        "title": "15. Movie B",
-        "body": "NaN\n\nMovie B stays because it came from the left table."
-      },
-      {
-        "title": "16. Important Observation About Row Counts",
-        "body": "Since:\n\nthe left table (movies) has 4,803 rows\n\nthe relationship is one-to-one\n\nthe merged table keeps essentially the same number of rows.\n\nThat’s one important property of left joins:\n\nIn a one-to-one relationship, a left join usually returns the same number of rows as the left table."
-      },
-      {
-        "title": "17. Key Concepts",
-        "body": "Inner Join"
-      },
-      {
-        "title": "18. Keeps only matching rows",
-        "body": "Unmatched rows are removed"
-      },
-      {
-        "title": "19. Left Join",
-        "body": "Keeps ALL rows from the left table"
-      },
-      {
-        "title": "20. Missing matches from the right become NaN",
-        "body": "Syntax\n\ndf1.merge(df2, on=\"column\", how=\"left\")\n\nWhen Left Joins Are Useful\n\nLeft joins are extremely useful when:\n\none table is your “main” dataset\n\nyou do not want to lose rows\n\nextra information from another table is optional\n\nExamples:\n\ncustomers + optional purchases\n\nmovies + optional taglines\n\nstudents + optional scholarship info"
-      },
-      {
-        "title": "21. Main Takeaway",
-        "body": "A left join keeps every row from the left table, even when no matching data exists in the right table. Missing matches are filled with NaN, making left joins very useful when you want to preserve the full original dataset while adding extra information from another table."
+        "title": "3. Row Count Properties & When to Use",
+        "body": "An essential mathematical property of left joins:\n> In a one-to-one or many-to-one relationship, a left join **always returns the exact same number of rows as the left table**.\n\nBecause the `movies` table has 4,803 rows, `movies.merge(taglines, on=\"id\", how=\"left\")` will always return exactly 4,803 rows.\n\n### When are Left Joins Essential?\n* **Preserving the Primary Dataset**: When analyzing transactions, orders, or students, and you cannot afford to drop rows just because secondary details (like discount coupons or scholarship info) are missing.\n* **Auditing Missing Data**: You can filter for rows where the right table's columns are `isna()` to discover unlinked or orphaned records (e.g., finding customers who haven't placed an order yet)."
       }
     ],
     "quickReference": [
       {
-        "goal": "Inner join on key",
-        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+        "goal": "Left join preserving all left rows",
+        "syntax": "df1.merge(df2, on=\"id\", how=\"left\")"
       },
       {
-        "goal": "Left join",
-        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+        "goal": "Inner join (drops non-matches)",
+        "syntax": "df1.merge(df2, on=\"id\", how=\"inner\")"
       },
       {
-        "goal": "Vertical stack",
-        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+        "goal": "Check for unlinked records after left join",
+        "syntax": "merged[merged[\"col_from_right\"].isna()]"
       }
     ],
     "commonMistake": {
-      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
-      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
-      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+      "wrongCode": "# Forgetting how='left' (defaults to inner join, dropping records):\nfull_report = sales.merge(promotions, on='promo_id')",
+      "correctCode": "# Explicitly pass how='left' to preserve all sales without promotions:\nfull_report = sales.merge(promotions, on='promo_id', how='left')",
+      "explanation": "Pandas merge defaults to how='inner'. If promotions only exist for some sales, an inner join accidentally wipes out all standard sales!"
     },
     "challenge": {
-      "title": "Enrich Sales with Customer Profiles",
-      "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
-      "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
-      "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
-      "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
+      "title": "Left Join Sales with Customer Directory",
+      "scenario": "The audit team needs customer details attached to sales orders. Even if a customer profile is unlinked or pending verification, every transaction record in sales.csv must be strictly preserved.",
+      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform a left join on `customer_id` using `sales.merge(customers, on=\"customer_id\", how=\"left\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `print(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())`.",
+      "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform left join on customer_id\nenriched_sales = None\n\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
+      "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = sales.merge(customers, on='customer_id', how='left')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
+      "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\nassert len(enriched_sales) == len(sales), \"Left join must preserve all rows from sales\"\n",
       "hints": [
-        "Use pd.merge(sales, customers, on='customer_id', how='inner')."
+        "Use sales.merge(customers, on='customer_id', how='left').",
+        "A left join guarantees len(enriched_sales) equals len(sales)."
       ],
-      "solutionExplanation": "pd.merge combines datasets on shared relational keys, creating enriched dimensional data warehouse models."
+      "solutionExplanation": "how='left' ensures all sales records remain intact even if customer records are missing, filling empty slots with NaN."
     }
   },
   {
@@ -4371,139 +4302,57 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 50,
     "title": "Other Types of Joins in pandas",
-    "description": "Previously, you learned about:  inner joins  left joins  This lesson introduces two more join types supported by pandas:  right join  outer join  These joins co...",
+    "description": "Master right joins, full outer joins, cross-table key name mapping with left_on and right_on, and conflict resolution using custom suffixes.",
     "sections": [
       {
-        "title": "1. Concept Overview",
-        "body": "Previously, you learned about:\n\ninner joins\n\nleft joins\n\nThis lesson introduces two more join types supported by pandas:\n\nright join\n\nouter join\n\nThese joins control which rows are kept after merging tables."
+        "title": "1. Right Joins & Full Outer Joins",
+        "body": "In addition to inner and left joins, pandas supports two other fundamental join types:\n\n### 1. Right Join (`how=\"right\"`)\nA right join is the mirror opposite of a left join:\n* Keeps **ALL rows from the right table**.\n* Only matching rows from the left table are added.\n* If no match exists in the left table, left columns are populated with `NaN`.\n\n### 2. Full Outer Join (`how=\"outer\"`)\nAn outer join preserves **everything from BOTH tables**:\n* All rows from the left table AND all rows from the right table are kept.\n* Any non-matching column on either side is filled with `NaN`.\n\n### Summary Comparison of All 4 Joins:\n| Join Type | Kept Left Rows | Kept Right Rows | Handling of Unmatched Rows |\n| :--- | :--- | :--- | :--- |\n| **Inner** | Matching only | Matching only | Dropped completely |\n| **Left** | **All rows** | Matching only | Right columns filled with `NaN` |\n| **Right** | Matching only | **All rows** | Left columns filled with `NaN` |\n| **Outer** | **All rows** | **All rows** | Non-matches on either side filled with `NaN` |"
       },
       {
-        "title": "2. Right Join",
-        "body": "A right join is basically the opposite of a left join.\n\nIt:\n\nkeeps all rows from the right table\n\nonly keeps matching rows from the left table\n\nIf no match exists in the left table, pandas fills the missing columns with NaN."
+        "title": "2. Joining on Different Column Names",
+        "body": "In real-world data pipelines, foreign keys don't always share the exact same column name. For example:\n* `orders` table has column `cust_id`.\n* `customers` table has column `id`.\n\nIf you use `on=\"id\"`, pandas throws a `KeyError`! To solve this, pandas provides `left_on` and `right_on`:\n\n```python\n# Merging tables with differing column names:\nmerged_df = orders.merge(\n    customers,\n    left_on=\"cust_id\",\n    right_on=\"id\",\n    how=\"left\"\n)\n```\nBoth columns are preserved in the result, allowing seamless relational mapping.",
+        "exampleCode": "merged_df = orders.merge(customers, left_on=\"cust_id\", right_on=\"id\", how=\"left\")"
       },
       {
-        "title": "3. Visual Idea of a Right Join",
-        "body": "Left Table\n\nC\n\nA\n\n1\n\nX\n\n2\n\nY"
-      },
-      {
-        "title": "4. Right Table",
-        "body": "C\n\nB\n\n1\n\nP\n\n3\n\nQ"
-      },
-      {
-        "title": "5. Result of Right Join",
-        "body": "C\n\nA\n\nB\n\n1\n\nX\n\nP\n\n3\n\nNaN\n\nQ\n\nNotice:\n\nall rows from the right table remain\n\nunmatched left-side values become NaN"
-      },
-      {
-        "title": "6. Example Using Movie Data",
-        "body": "The lesson introduces another dataset called movie_to_genres.\n\nA movie can belong to multiple genres, so this table stores movie IDs along with genre names.\n\nThe goal is to compare:\n\nthe movies table\n\nthe tv_genre subset\n\nto check whether any movie information is missing."
-      },
-      {
-        "title": "7. Using Different Column Names",
-        "body": "An important new concept appears here.\n\nThe matching columns do NOT always have the same name.\n\nExample:\n\nin movies → column is id\n\nin tv_genre → column is movie_id\n\nTo handle this, pandas provides:\n\nleft_on\n\nright_on"
-      },
-      {
-        "title": "8. Right Join Syntax",
-        "body": "movies.merge(\n\ntv_genre,\n\nhow=\"right\",\n\nleft_on=\"id\",\n\nright_on=\"movie_id\"\n\n)"
-      },
-      {
-        "title": "9. Breaking Down the Code",
-        "body": "how=\"right\"\n\nPerforms a right join.\n\nleft_on=\"id\"\n\nUses the id column from the left table.\n\nright_on=\"movie_id\"\n\nUses the movie_id column from the right table."
-      },
-      {
-        "title": "10. Why This Is Useful",
-        "body": "Sometimes datasets use different column names even though they represent the same thing.\n\nExample:\n\ncustomer_id\n\ncust_id\n\nid\n\nleft_on and right_on allow pandas to connect them correctly."
-      },
-      {
-        "title": "11. Outer Join",
-        "body": "The last join type introduced is the outer join.\n\nAn outer join keeps:"
-      },
-      {
-        "title": "12. ALL rows from the left table",
-        "body": "AND ALL rows from the right table\n\nEven if no matches exist.\n\nMissing matches become NaN."
-      },
-      {
-        "title": "13. Visual Idea of an Outer Join",
-        "body": "Left Table\n\nC\n\nA\n\n1\n\nX\n\n2\n\nY"
-      },
-      {
-        "title": "14. Right Table",
-        "body": "C\n\nB\n\n1\n\nP\n\n3\n\nQ"
-      },
-      {
-        "title": "15. Outer Join Result",
-        "body": "C\n\nA\n\nB\n\n1\n\nX\n\nP\n\n2\n\nY\n\nNaN\n\n3\n\nNaN\n\nQ\n\nEverything from BOTH tables is preserved."
-      },
-      {
-        "title": "16. Outer Join Example",
-        "body": "The lesson filters movie genres into two tiny tables:"
-      },
-      {
-        "title": "17. Family movies",
-        "body": "Comedy movies\n\nThen merges them using an outer join.\n\nfamily.merge(\n\ncomedy,\n\non=\"movie_id\",\n\nhow=\"outer\",\n\nsuffixes=(\"_fam\", \"_com\")\n\n)"
-      },
-      {
-        "title": "18. New Concept: suffixes",
-        "body": "If both tables contain columns with the same names, pandas automatically adds suffixes.\n\nYou can customize them using:\n\nsuffixes=(\"_fam\", \"_com\")\n\nThis makes it easier to know which column came from which table."
-      },
-      {
-        "title": "19. Key Differences Between Join Types",
-        "body": "Join Type\n\nKeeps"
-      },
-      {
-        "title": "20. Inner Join",
-        "body": "Only matching rows"
-      },
-      {
-        "title": "21. Left Join",
-        "body": "All left rows + matching right rows"
-      },
-      {
-        "title": "22. Right Join",
-        "body": "All right rows + matching left rows"
-      },
-      {
-        "title": "23. Outer Join",
-        "body": "All rows from both tables"
-      },
-      {
-        "title": "24. Important Concepts",
-        "body": "left_on and right_on\n\nUsed when key column names are different.\n\nleft_on=\"id\"\n\nright_on=\"movie_id\"\n\nsuffixes\n\nUsed when tables contain overlapping column names.\n\nsuffixes=(\"_left\", \"_right\")"
-      },
-      {
-        "title": "25. Main Takeaway",
-        "body": "Right joins and outer joins give you more control over which rows are preserved during merges. A right join keeps all rows from the right table, while an outer join keeps everything from both tables. pandas also allows merging on columns with different names using left_on and right_on, making joins much more flexible in real-world datasets."
+        "title": "3. Handling Overlapping Column Names with Suffixes",
+        "body": "When both tables have columns with identical names (like `name`, `date`, or `status`), pandas automatically renames them to `_x` and `_y` to prevent collisions.\n\nYou can provide meaningful names using the `suffixes` parameter:\n\n```python\n# Customizing conflicting column suffixes:\nwards.merge(\n    census,\n    on=\"ward\",\n    suffixes=(\"_ward\", \"_census\")\n)\n# Output columns: address_ward, address_census\n```\nThis clarifies the data provenance for anyone auditing your analysis down the line."
       }
     ],
     "quickReference": [
       {
-        "goal": "Inner join on key",
-        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"inner\")"
+        "goal": "Right join",
+        "syntax": "df1.merge(df2, on=\"id\", how=\"right\")"
       },
       {
-        "goal": "Left join",
-        "syntax": "pd.merge(df1, df2, on=\"id\", how=\"left\")"
+        "goal": "Full outer join",
+        "syntax": "df1.merge(df2, on=\"id\", how=\"outer\")"
       },
       {
-        "goal": "Vertical stack",
-        "syntax": "pd.concat([df1, df2], ignore_index=True)"
+        "goal": "Join on different column names",
+        "syntax": "df1.merge(df2, left_on=\"l_id\", right_on=\"r_id\")"
+      },
+      {
+        "goal": "Custom column collision suffixes",
+        "syntax": "df1.merge(df2, on=\"id\", suffixes=(\"_left\", \"_right\"))"
       }
     ],
     "commonMistake": {
-      "wrongCode": "# Merging with mismatched key data types (string vs int):\npd.merge(df1, df2, on=\"customer_id\")  # Empty result or TypeError!",
-      "correctCode": "# Cast keys to matching data types before merging:\ndf1[\"customer_id\"] = df1[\"customer_id\"].astype(int)\ndf2[\"customer_id\"] = df2[\"customer_id\"].astype(int)\npd.merge(df1, df2, on=\"customer_id\")",
-      "explanation": "Pandas strictly requires merge key columns to share the exact same data type. If one column is string and another is integer, the join matches zero records."
+      "wrongCode": "# Passing single on= when column names differ:\npd.merge(orders, users, on=\"user_id\")  # KeyError if users has 'id'!",
+      "correctCode": "# Explicitly use left_on and right_on:\npd.merge(orders, users, left_on=\"user_id\", right_on=\"id\")",
+      "explanation": "When join key names differ across DataFrames, use left_on and right_on rather than on."
     },
     "challenge": {
-      "title": "Enrich Sales with Customer Profiles",
-      "scenario": "The analytics team needs customer demographic information attached to every order transaction.",
-      "instructions": "1. Read `sales.csv` and `customers.csv`.\n2. Perform an inner merge on `customer_id` using `pd.merge(sales, customers, on=\"customer_id\", how=\"inner\")`.\n3. Assign the merged DataFrame to `enriched_sales`.\n4. Print the top `5` records with `enriched_sales.head(5)`.",
-      "starterCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\n\n# Perform inner merge on customer_id\nenriched_sales = None\n\nprint(enriched_sales.head())\n",
-      "expectedCode": "import pandas as pd\n\nsales = pd.read_csv('sales.csv')\ncustomers = pd.read_csv('customers.csv')\nenriched_sales = pd.merge(sales, customers, on='customer_id', how='inner')\nprint(enriched_sales[['sale_id', 'customer_id', 'first_name', 'sale_amount']].head())\n",
-      "validationScript": "assert 'enriched_sales' in locals(), \"Variable 'enriched_sales' must be defined\"\nassert 'first_name' in enriched_sales.columns, \"Merged DataFrame must contain customer first_name\"\n",
+      "title": "Outer Join Products and Order Catalog",
+      "scenario": "Inventory analysis requires combining products with sales transactions to find both top-selling products and catalog items that have zero sales.",
+      "instructions": "1. Read `products.csv` and `sales.csv`.\n2. Perform a full outer join on `product_id` using `pd.merge(products, sales, on=\"product_id\", how=\"outer\", suffixes=(\"_catalog\", \"_sold\"))`.\n3. Assign the result to `full_catalog`.\n4. Print `full_catalog[['product_id', 'product_name', 'sale_amount']].head(5)`.",
+      "starterCode": "import pandas as pd\n\nproducts = pd.read_csv('products.csv')\nsales = pd.read_csv('sales.csv')\n\n# Perform outer merge on product_id with suffixes\nfull_catalog = None\n\nprint(full_catalog[['product_id', 'product_name', 'sale_amount']].head())\n",
+      "expectedCode": "import pandas as pd\n\nproducts = pd.read_csv('products.csv')\nsales = pd.read_csv('sales.csv')\nfull_catalog = pd.merge(products, sales, on='product_id', how='outer', suffixes=('_catalog', '_sold'))\nprint(full_catalog[['product_id', 'product_name', 'sale_amount']].head())\n",
+      "validationScript": "assert 'full_catalog' in locals(), \"Variable 'full_catalog' must be defined\"\nassert 'product_name' in full_catalog.columns, \"Merged DataFrame must contain product_name\"\nassert len(full_catalog) >= len(sales), \"Outer join must contain all products and all sales\"\n",
       "hints": [
-        "Use pd.merge(sales, customers, on='customer_id', how='inner')."
+        "Use pd.merge(products, sales, on='product_id', how='outer', suffixes=('_catalog', '_sold')).",
+        "Outer joins retain records from both sides, populating unmatched cells with NaN."
       ],
-      "solutionExplanation": "pd.merge combines datasets on shared relational keys, creating enriched dimensional data warehouse models."
+      "solutionExplanation": "how='outer' guarantees that products with zero transactions and sales with unknown products are all preserved for data reconciliation."
     }
   },
   {

@@ -88,31 +88,24 @@ export const SchneiderLessonViewer: React.FC<SchneiderLessonViewerProps> = ({
   return (
     <div className="flex flex-col lg:flex-row gap-6 items-start">
       {/* Sidebar Navigation */}
-      <aside
-        className={`transition-all duration-300 w-full lg:w-80 shrink-0 ${
-          isSidebarOpen ? 'block' : 'hidden lg:block lg:w-16'
-        }`}
-      >
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden sticky top-6">
-          <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="font-bold text-slate-800 text-sm tracking-tight">
-                Schneider Curriculum
-              </span>
-            </div>
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-200/50 transition-colors"
-              title={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-            >
-              {isSidebarOpen ? (
+      {isSidebarOpen && (
+        <aside className="w-full lg:w-80 shrink-0">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden sticky top-6">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="font-bold text-slate-800 text-sm tracking-tight">
+                  Schneider Curriculum
+                </span>
+              </div>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/50 transition-colors"
+                title="Collapse sidebar"
+              >
                 <PanelLeftClose className="w-4 h-4" />
-              ) : (
-                <PanelLeftOpen className="w-4 h-4" />
-              )}
-            </button>
-          </div>
+              </button>
+            </div>
 
           {/* Module & Lessons List */}
           <div className="max-h-[calc(100vh-220px)] overflow-y-auto p-3 space-y-4">
@@ -199,6 +192,7 @@ export const SchneiderLessonViewer: React.FC<SchneiderLessonViewerProps> = ({
           </div>
         </div>
       </aside>
+      )}
 
       {/* Main Content Area */}
       <div className="flex-1 min-w-0 w-full space-y-6">
@@ -208,6 +202,16 @@ export const SchneiderLessonViewer: React.FC<SchneiderLessonViewerProps> = ({
 
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div className="flex items-center gap-2">
+              {!isSidebarOpen && (
+                <button
+                  onClick={() => setIsSidebarOpen(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex-shrink-0 shadow-2xs"
+                  title="Expand Curriculum Outline"
+                >
+                  <PanelLeftOpen className="w-4 h-4 text-emerald-600" />
+                  <span>Curriculum</span>
+                </button>
+              )}
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100/80 text-emerald-800 border border-emerald-200">
                 <Sparkles className="w-3.5 h-3.5" />
                 Schneider Data Office Guide • Part {currentLesson.number}

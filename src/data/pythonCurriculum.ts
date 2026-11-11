@@ -4060,63 +4060,27 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 47,
     "title": "One-to-Many Relationships",
-    "description": "One-to-Many Relationships in pandas  In the previous lesson, you learned how to merge two DataFrames using the merge() method. In this lesson, the focus is on u...",
+    "description": "Master one-to-one and one-to-many table relationships in pandas, understand why row counts multiply, and handle repeated keys accurately.",
     "sections": [
       {
         "title": "1. Concept Overview",
-        "body": "One-to-Many Relationships in pandas\n\nIn the previous lesson, you learned how to merge two DataFrames using the merge() method. In this lesson, the focus is on understanding relationships between tables, especially the one-to-many relationship.\n\nBefore learning one-to-many, it helps to quickly review one-to-one relationships.\n\nA one-to-one relationship means that each row in one table matches exactly one row in another table. For example, the wards table and the census table both contain one row per ward. Ward 3 in the first table matches only ward 3 in the second table. Since there is only one population record for each ward, the relationship is naturally one-to-one.\n\nExample idea:\n\nOne ward → one census record\n\nOne row in the left table → one row in the right table\n\nA one-to-many relationship is different. In this case, one row in the left table can match multiple rows in the right table.\n\nThe example used is the relationship between:\n\nthe wards table\n\nthe licenses table\n\nThe wards table contains information about each ward, while the licenses table contains many business licenses. Since many businesses can exist inside one ward, a single ward can appear multiple times in the licenses table.\n\nSo the relationship becomes:\n\nOne ward → many businesses\n\nBoth tables are connected using the ward column.\n\nWhen using:\n\nwards.merge(licenses, on=\"ward\")\n\npandas automatically handles the one-to-many relationship.\n\nIf ward 1 has many businesses, the row for ward 1 from the wards table will be repeated for every matching business in the licenses table.\n\nThis is important because it explains why merged tables can suddenly become much larger.\n\nFor example:"
+        "body": "In real-world data analysis, information is often split across multiple tables or DataFrames. Instead of storing everything in one huge table, datasets are usually organized separately based on topic. Because of this, an important skill in pandas is learning how to combine tables together.\n\nIn pandas, combining tables is commonly called **merging** (or joining). In this course, both terms refer to the same operation."
       },
       {
-        "title": "2. Original wards table: 50 rows",
-        "body": "After merging with licenses: 10,000 rows\n\nThe number of rows increases because each ward may match many business records."
+        "title": "2. One-to-One vs One-to-Many",
+        "body": "Before learning one-to-many, review one-to-one relationships:\n\n* **One-to-One Relationship:** Each row in the left table matches exactly one row in the right table (e.g. `wards` ↔ `census`). Since each ward has only one population record, the row count stays unchanged.\n* **One-to-Many Relationship:** One row in the left table can match **multiple** rows in the right table (e.g. `wards` ↔ `licenses`). Since a single ward can contain dozens of businesses, merging causes matching rows from the left table to duplicate for every match!"
       },
       {
-        "title": "3. Key Idea",
-        "body": "In a one-to-many relationship:\n\nThe left table usually contains unique values.\n\nThe right table can contain repeated values for the matching column.\n\nMerging repeats rows from the left table whenever multiple matches exist."
+        "title": "3. Example Structure: Wards and Licenses",
+        "body": "Consider these two DataFrames connected by `ward`:\n\n**wards table (Left):**\n| ward | alderman |\n| :--- | :--- |\n| 1 | Joe |\n| 2 | Brian |\n\n**licenses table (Right):**\n| business | ward |\n| :--- | :--- |\n| Store A | 1 |\n| Cafe B | 1 |\n| Shop C | 2 |\n\n**Merged Result (`wards.merge(licenses, on=\"ward\")`):**\n| ward | alderman | business |\n| :--- | :--- | :--- |\n| 1 | Joe | Store A |\n| 1 | Joe | Cafe B |\n| 2 | Brian | Shop C |\n\nNotice how `ward 1` and `Joe` appear twice in the result because there are two businesses located in ward 1!"
       },
       {
-        "title": "4. Important Notes",
-        "body": "One-to-One Relationship\n\nOne row matches exactly one row."
+        "title": "4. Why Merged Tables Expand",
+        "body": "When performing a one-to-many merge, expect the resulting DataFrame to have more rows than the initial table:\n\n* **Original `wards` table:** 50 rows\n* **After merging with `licenses`:** 10,000 rows\n\nThe number of rows expands because every business license receives a duplicate of its corresponding ward details."
       },
       {
-        "title": "5. Example: wards ↔ census",
-        "body": "One-to-Many Relationship\n\nOne row matches several rows."
-      },
-      {
-        "title": "6. Example: wards ↔ licenses",
-        "body": "pandas Behavior\n\nThe same merge() syntax is used.\n\npandas automatically duplicates matching rows when needed.\n\nRow counts often increase after merging."
-      },
-      {
-        "title": "7. Example Structure",
-        "body": "wards table\n\nward\n\nalderman\n\n1\n\nJoe\n\n2\n\nBrian\n\nlicenses table\n\nbusiness\n\nward"
-      },
-      {
-        "title": "8. Store A",
-        "body": "1"
-      },
-      {
-        "title": "9. Cafe B",
-        "body": "1"
-      },
-      {
-        "title": "10. Shop C",
-        "body": "2\n\nmerged result\n\nward\n\nalderman\n\nbusiness\n\n1\n\nJoe"
-      },
-      {
-        "title": "11. Store A",
-        "body": "1\n\nJoe"
-      },
-      {
-        "title": "12. Cafe B",
-        "body": "2\n\nBrian"
-      },
-      {
-        "title": "13. Shop C",
-        "body": "Notice how ward 1 and Joe appear twice because there are two businesses in ward 1."
-      },
-      {
-        "title": "14. Main Takeaway",
-        "body": "A one-to-many merge is extremely common in real-world datasets. One category, customer, location, or ID often connects to many records in another table. pandas handles this automatically during merges, but you should always expect the resulting DataFrame to potentially have many more rows than the original table."
+        "title": "5. Key Takeaways",
+        "body": "* In a one-to-many relationship, the left table usually contains unique keys, while the right table contains repeated keys.\n* pandas uses the exact same `left_df.merge(right_df, on=\"key\")` syntax.\n* Duplication occurs automatically whenever multiple matches exist in the right table."
       }
     ],
     "quickReference": [
@@ -4362,80 +4326,23 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 51,
     "title": "Merging a Table to Itself (Self Join)",
-    "description": "A self join happens when you merge a table with itself. This sounds strange at first, but it’s very useful when rows inside the same table are related to other ...",
+    "description": "Learn how self joins merge a table to itself to resolve hierarchical or recursive relationships like employee managers and movie sequels.",
     "sections": [
       {
         "title": "1. Concept Overview",
-        "body": "A self join happens when you merge a table with itself. This sounds strange at first, but it’s very useful when rows inside the same table are related to other rows in that same table.\n\nThe example in the lesson uses movie sequels.\n\nImagine a table like this:\n\nid\n\ntitle\n\nsequel\n\n862"
+        "body": "A self join happens when you merge a table with itself. This sounds unusual at first, but it is essential whenever rows inside the same table refer to other rows in that same table (e.g. employee-to-manager relationships, or movie sequels).\n\nConsider a table of movie sequels where each movie row stores the ID of its sequel:"
       },
       {
-        "title": "2. Toy Story",
-        "body": "863\n\n863"
+        "title": "2. Sequels Example Data",
+        "body": "**sequels table:**\n| id | title | sequel |\n| :--- | :--- | :--- |\n| 862 | Toy Story | 863 |\n| 863 | Toy Story 2 | 10193 |\n| 10193 | Toy Story 3 | NaN |\n\nThe problem is that the sequel's title is not stored in the row—only its ID is. By merging the table with itself, we can pair the original movie with its sequel title in a single row!"
       },
       {
-        "title": "3. Toy Story 2",
-        "body": "10193\n\n10193"
+        "title": "3. Executing a Self Join in pandas",
+        "body": "To join a DataFrame with itself, pass the same DataFrame to `.merge()` and use `left_on` and `right_on` with custom suffixes:\n\n```python\nmovies_and_sequels = sequels.merge(\n    sequels,\n    left_on=\"sequel\",\n    right_on=\"id\",\n    suffixes=(\"_org\", \"_seq\")\n)\n```\n\n**Result:**\n| id_org | title_org | sequel | id_seq | title_seq |\n| :--- | :--- | :--- | :--- | :--- |\n| 862 | Toy Story | 863 | 863 | Toy Story 2 |\n| 863 | Toy Story 2 | 10193 | 10193 | Toy Story 3 |"
       },
       {
-        "title": "4. Toy Story 3",
-        "body": "NaN\n\nThe sequel column stores the ID of another movie inside the same table.\n\nToy Story (862) → sequel is movie 863\n\nToy Story 2 (863) → sequel is movie 10193\n\nThe problem is:\n\nthe sequel’s title is not directly stored in the row — only its ID is.\n\nSo we merge the table with itself to connect:\n\noriginal movie\n\nsequel movie\n\ninto one row."
-      },
-      {
-        "title": "5. Basic Self Join",
-        "body": "sequels.merge(\n\nsequels,\n\nleft_on=\"sequel\",\n\nright_on=\"id\",\n\nsuffixes=(\"_org\", \"_seq\")\n\n)"
-      },
-      {
-        "title": "6. What Each Part Means",
-        "body": "sequels.merge(sequels, ...)\n\nYou are merging the table with another copy of itself.\n\nThink of it like:\n\n`left table = original movies`\n\n`right table = sequel movies`\n\nEven though they are the same DataFrame.\n\nleft_on=\"sequel\"\n\nUse the sequel column from the left table.\n\nExample:\n\ntitle\n\nsequel",
-        "exampleCode": "left table = original movies\nright table = sequel movies"
-      },
-      {
-        "title": "7. Toy Story",
-        "body": "863\n\nright_on=\"id\"\n\nMatch it to the id column in the right table.\n\nExample:\n\nid\n\ntitle\n\n863"
-      },
-      {
-        "title": "8. Toy Story 2",
-        "body": "Since:\n\n863 == 863\n\nthey get connected.\n\nResult\n\ntitle_org\n\ntitle_seq"
-      },
-      {
-        "title": "9. Toy Story",
-        "body": "Toy Story 2"
-      },
-      {
-        "title": "10. Toy Story 2",
-        "body": "Toy Story 3\n\nNow each movie is linked to its sequel."
-      },
-      {
-        "title": "11. Why suffixes is Needed",
-        "body": "Both tables have columns like:\n\nid\n\ntitle\n\nWithout suffixes, pandas wouldn’t know which is which.\n\nSo:\n\nsuffixes=(\"_org\", \"_seq\")\n\nrenames them internally to:\n\ntitle_org\n\ntitle_seq\n\nmeaning:\n\noriginal movie\n\nsequel movie"
-      },
-      {
-        "title": "12. Inner Join vs Left Join",
-        "body": "By default, merge uses an inner join.\n\nThat means:\n\nonly rows with matches are returned.\n\nSo movies without sequels disappear.\n\nExample:\n\ntitle\n\nsequel\n\nTitanic\n\nNaN\n\nTitanic gets removed because it has no matching sequel."
-      },
-      {
-        "title": "13. Using a Left Join",
-        "body": "sequels.merge(\n\nsequels,\n\nleft_on=\"sequel\",\n\nright_on=\"id\",\n\nhow=\"left\",\n\nsuffixes=(\"_org\", \"_seq\")\n\n)\n\nNow ALL original movies stay.\n\nMovies without sequels will have:\n\nNaN\n\nfor sequel columns."
-      },
-      {
-        "title": "14. Real-World Uses of Self Joins",
-        "body": "Self joins are common in hierarchical or connected data."
-      },
-      {
-        "title": "15. Employee ↔ Manager",
-        "body": "employee_id\n\nmanager_id\n\n1\n\n5\n\nYou can merge employees with employees again to get manager names."
-      },
-      {
-        "title": "16. Social Networks",
-        "body": "user\n\nfriend_id\n\nAlice\n\n3\n\nMerge users with users again to get friend information."
-      },
-      {
-        "title": "17. Logistics / Routes",
-        "body": "city\n\nnext_city\n\nManila\n\nBatangas\n\nSelf joins can connect travel paths."
-      },
-      {
-        "title": "18. Big Picture",
-        "body": "A self join is basically:\n\n“Use one row to look up another row in the same table.”\n\nYou are treating one DataFrame as if it were two related tables."
+        "title": "4. Inner Join vs Left Join in Self Joins",
+        "body": "By default, `merge()` performs an inner join, which drops rows without a match (e.g. Toy Story 3, which has no sequel, is dropped).\n\nIf you want to keep all original movies even if they do not have a sequel, pass `how=\"left\"`:\n\n```python\nall_movies = sequels.merge(\n    sequels,\n    left_on=\"sequel\",\n    right_on=\"id\",\n    how=\"left\",\n    suffixes=(\"_org\", \"_seq\")\n)\n```"
       }
     ],
     "quickReference": [
@@ -4573,115 +4480,23 @@ export const PYTHON_LESSONS: PythonLesson[] = [
     "moduleOrder": 4,
     "lessonOrder": 53,
     "title": "Filtering Joins",
-    "description": "Up to this point, the joins you learned were mostly mutating joins.  A mutating join:  combines columns from two tables.  Example:  movies.merge(taglines)  This...",
+    "description": "Master semi joins and anti joins in pandas using .isin() and indicator=True to filter rows without mutating columns or duplicating records.",
     "sections": [
       {
-        "title": "1. Concept Overview",
-        "body": "Up to this point, the joins you learned were mostly mutating joins.\n\nA mutating join:\n\ncombines columns from two tables.\n\nExample:\n\nmovies.merge(taglines)\n\nThis adds new columns from another table.\n\nFiltering Joins\n\nFiltering joins are different.\n\nInstead of adding columns, they:\n\nfilter rows based on whether matches exist in another table.\n\nThere are two main filtering joins:"
+        "title": "1. Mutating Joins vs Filtering Joins",
+        "body": "Up to this point, all joins you learned were **mutating joins**—they combine columns from two tables (like `movies.merge(taglines)`).\n\n**Filtering joins** are different: instead of adding new columns, they filter rows from the left table based on whether matching records exist in the right table!\n\n* **Semi Join:** Keeps rows from the left table that HAVE a match in the right table.\n* **Anti Join:** Keeps rows from the left table that DO NOT have a match in the right table."
       },
       {
-        "title": "2. Semi Join",
-        "body": "Anti Join\n\npandas doesn’t have built-in methods named:\n\nsemi_join()\n\nanti_join()\n\nSo we recreate them manually using:\n\nmerge()\n\nisin()\n\nfiltering"
+        "title": "2. Sample Tables: Genres and Top Tracks",
+        "body": "Consider these two tables:\n\n**genres table (Left):**\n| gid | genre |\n| :--- | :--- |\n| 1 | Rock |\n| 2 | Jazz |\n| 3 | Pop |\n\n**top_tracks table (Right):**\n| track | gid |\n| :--- | :--- |\n| Song A | 1 |\n| Song B | 3 |"
       },
       {
-        "title": "3. Semi Join",
-        "body": "A semi join returns:\n\nrows from the LEFT table that HAVE matches in the RIGHT table.\n\nImportant:\n\nonly columns from the left table are returned\n\nduplicates are not added\n\nit behaves like a filter\n\nExample\n\nSuppose:\n\ngenres table\n\ngid\n\ngenre\n\n1\n\nRock\n\n2\n\nJazz\n\n3\n\nPop\n\ntop_tracks table\n\ntrack\n\ngid"
+        "title": "3. How to Implement a Semi Join in pandas",
+        "body": "pandas does not have a native `semi_join()` method, so we use `.isin()`:\n\n```python\n# Step 1: Find matching IDs via an inner merge\ngenres_tracks = genres.merge(top_tracks, on=\"gid\")\n\n# Step 2: Filter original table using .isin()\ntop_genres = genres[genres[\"gid\"].isin(genres_tracks[\"gid\"])]\n```\n\n**Result:**\n| gid | genre |\n| :--- | :--- |\n| 1 | Rock |\n| 3 | Pop |\n\nNotice that Jazz (gid 2) is excluded because it does not appear in top tracks."
       },
       {
-        "title": "4. Song A",
-        "body": "1"
-      },
-      {
-        "title": "5. Song B",
-        "body": "3\n\nWe want:\n\ngenres that appear in top tracks.\n\nResult:\n\ngid\n\ngenre\n\n1\n\nRock\n\n3\n\nPop\n\nJazz is removed because it doesn’t appear."
-      },
-      {
-        "title": "6. Semi Join Process",
-        "body": "Step 1 — Inner Merge\n\n`genres_tracks = genres.merge(top_tracks, on=\"gid\")`\n\nThis keeps only matching gids.\n\nStep 2 — Use isin()\n\ngenres[\"gid\"].isin(genres_tracks[\"gid\"])\n\nThis checks:\n\n“Does this gid exist in the merged table?”\n\nResult:\n\nTrue\n\nFalse\n\nTrue",
-        "exampleCode": "genres_tracks = genres.merge(top_tracks, on=\"gid\")"
-      },
-      {
-        "title": "7. Step 3 — Filter",
-        "body": "`top_genres = genres[genres[\"gid\"].isin(genres_tracks[\"gid\"])]`\n\nNow only matching genres remain.",
-        "exampleCode": "top_genres = genres[genres[\"gid\"].isin(genres_tracks[\"gid\"])]"
-      },
-      {
-        "title": "8. Big Picture of Semi Join",
-        "body": "Think of it as:\n\n“Keep rows from the left table IF they exist in the right table.”\n\nYou are not interested in adding columns.\n\nYou only care whether a match exists."
-      },
-      {
-        "title": "9. Anti Join",
-        "body": "An anti join is the opposite.\n\nIt returns:\n\nrows from the LEFT table that DO NOT have matches in the RIGHT table.\n\nExample\n\nUsing the same data:\n\ngenres\n\ngid\n\ngenre\n\n1\n\nRock\n\n2\n\nJazz\n\n3\n\nPop\n\ntop_tracks\n\ntrack\n\ngid"
-      },
-      {
-        "title": "10. Song A",
-        "body": "1"
-      },
-      {
-        "title": "11. Song B",
-        "body": "3\n\nResult of anti join:\n\ngid\n\ngenre\n\n2\n\nJazz\n\nBecause Jazz never appeared in top tracks."
-      },
-      {
-        "title": "12. Anti Join Process",
-        "body": "Step 1 — Left Merge with Indicator\n\n`genres_tracks = genres.merge(`\n\ntop_tracks,\n\non=\"gid\",\n\nhow=\"left\",\n\nindicator=True\n\n)\n\nThe important part:\n\nindicator=True\n\nadds a special column:\n\n_merge\n\n_merge Values\n\nThe _merge column tells where the row came from.\n\nPossible values:\n\nvalue\n\nmeaning\n\nboth\n\nexists in both tables\n\nleft_only\n\nexists only in left\n\nright_only\n\nexists only in right",
-        "exampleCode": "genres_tracks = genres.merge("
-      },
-      {
-        "title": "13. Step 2 — Get Unmatched Rows",
-        "body": "`gid_list = genres_tracks.loc[`\n\ngenres_tracks[\"_merge\"] == \"left_only\",\n\n\"gid\"\n\n]\n\nThis extracts gids that were NOT matched.",
-        "exampleCode": "gid_list = genres_tracks.loc["
-      },
-      {
-        "title": "14. Step 3 — Filter Original Table",
-        "body": "genres[genres[\"gid\"].isin(gid_list)]\n\nNow you get only genres absent from top_tracks."
-      },
-      {
-        "title": "15. Big Picture",
-        "body": "Semi Join"
-      },
-      {
-        "title": "16. KEEP matching rows",
-        "body": "Anti Join"
-      },
-      {
-        "title": "17. KEEP non-matching rows",
-        "body": "Mental Model\n\nImagine two circles."
-      },
-      {
-        "title": "18. Inner Join",
-        "body": "Returns the overlap AND combines columns."
-      },
-      {
-        "title": "19. Semi Join",
-        "body": "Returns only the left-side rows that overlap."
-      },
-      {
-        "title": "20. Anti Join",
-        "body": "Returns only the left-side rows outside the overlap."
-      },
-      {
-        "title": "21. Quick Comparison",
-        "body": "Join Type\n\nPurpose"
-      },
-      {
-        "title": "22. Inner Join",
-        "body": "combine matching rows"
-      },
-      {
-        "title": "23. Left Join",
-        "body": "keep all left rows"
-      },
-      {
-        "title": "24. Semi Join",
-        "body": "keep left rows WITH matches"
-      },
-      {
-        "title": "25. Anti Join",
-        "body": "keep left rows WITHOUT matches"
-      },
-      {
-        "title": "26. Important Insight",
-        "body": "Filtering joins are mostly used for:\n\nexistence checks\n\nremoving unmatched data\n\nvalidating datasets\n\nfinding missing relationships\n\nThey are very common in data cleaning and analytics."
+        "title": "4. How to Implement an Anti Join in pandas",
+        "body": "To find rows in `genres` that never appeared in `top_tracks`, use `how=\"left\"` with `indicator=True`:\n\n```python\n# Step 1: Left merge with indicator\ngenres_tracks = genres.merge(top_tracks, on=\"gid\", how=\"left\", indicator=True)\n\n# Step 2: Extract IDs that only exist in left table\nunmatched_gids = genres_tracks.loc[genres_tracks[\"_merge\"] == \"left_only\", \"gid\"]\n\n# Step 3: Filter original table\nunmatched_genres = genres[genres[\"gid\"].isin(unmatched_gids)]\n```\n\n**Result:**\n| gid | genre |\n| :--- | :--- |\n| 2 | Jazz |"
       }
     ],
     "quickReference": [

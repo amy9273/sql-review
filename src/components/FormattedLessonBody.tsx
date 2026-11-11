@@ -1,5 +1,5 @@
-import React from 'react';
-import { AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertCircle, Copy, Check } from 'lucide-react';
 
 export interface FormattedLessonBodyProps {
   text: string;
@@ -11,210 +11,205 @@ type ParsedBlock =
   | { type: 'subtitle'; title: string }
   | { type: 'indented_list'; items: string[] }
   | { type: 'code_block'; snippets: string[] }
+  | { type: 'fenced_code'; lang: string; code: string }
   | { type: 'bullet_list'; items: string[] }
+  | { type: 'ordered_list'; items: string[] }
+  | { type: 'divider' }
   | { type: 'tip'; label: string; content: string }
   | { type: 'table'; headers: string[]; rows: string[][] }
   | { type: 'paragraph'; text: string };
 
-function isConclusion(text: string): boolean {
-  return /^(this (allows|difference|demonstrates|shows|means|approach|is)|in conclusion|by combining|as you can see|for clarity|mastering this)\b/i.test(
-    text.trim()
-  );
-}
-
 function parseBlocks(rawText: string): ParsedBlock[] {
   if (!rawText) return [];
 
-  const rawParagraphs = rawText.split('\n\n').filter(Boolean);
-  const tempBlocks: (
-    | { type: 'subtitle'; title: string }
-    | { type: 'indented_list'; items: string[] }
-    | { type: 'bullet_list'; items: string[] }
-    | { type: 'code_snippet'; code: string }
-    | { type: 'tip'; label: string; content: string }
-    | { type: 'table'; headers: string[]; rows: string[][] }
-    | { type: 'paragraph'; text: string }
-  )[] = [];
+  // Step 1: Split preserving fenced code blocks
+  const codeFencePattern = /(```[a-zA-Z0-9_-]*[\s\S]*?```)/g;
+  const rawParts = rawText.split(codeFencePattern);
+  const tempBlocks: ParsedBlock[] = [];
 
-  for (let i = 0; i < rawParagraphs.length; i++) {
-    const chunk = rawParagraphs[i].trim();
-    const lines = chunk.split('\n').filter(Boolean);
+  for (const part of rawParts) {
+    const chunk = part.trim();
+    if (!chunk) continue;
 
-    // 0. Markdown Table (e.g. | col1 | col2 |)
-    const isMarkdownTable =
-      lines.length >= 2 &&
-      lines.every((l) => l.trim().startsWith('|') && l.trim().endsWith('|')) &&
-      lines.some((l) => /^\|(\s*:?-+:?\s*\|)+$/.test(l.trim()));
+    // Is it a fenced code block?
+    if (chunk.startsWith('```') && chunk.endsWith('```')) {
+      const inner = chunk.slice(3, -3).trim();
+      const lines = inner.split('\n');
+      const firstLine = lines[0].trim();
 
-    if (isMarkdownTable) {
-      const headerLine = lines[0];
-      const headers = headerLine
-        .split('|')
-        .slice(1, -1)
-        .map((h) => h.trim());
+      let lang = '';
+      let code = inner;
 
-      const dataRows = lines
-        .slice(1)
-        .filter((l) => !/^\|(\s*:?-+:?\s*\|)+$/.test(l.trim()))
-        .map((l) =>
-          l
-            .split('|')
-            .slice(1, -1)
-            .map((c) => c.trim())
+      if (lines.length > 1 && /^[a-zA-Z0-9_-]+$/.test(firstLine)) {
+        lang = firstLine;
+        code = lines.slice(1).join('\n');
+      } else {
+        const langMatch = inner.match(/^([a-zA-Z0-9_-]+)\s+([\s\S]+)$/);
+        if (langMatch && ['sql', 'python', 'bash', 'js', 'json', 'sh'].includes(langMatch[1].toLowerCase())) {
+          lang = langMatch[1];
+          code = langMatch[2];
+        }
+      }
+
+      tempBlocks.push({ type: 'fenced_code', lang, code });
+      continue;
+    }
+
+    // Split non-code markdown into paragraphs
+    const rawParagraphs = chunk.split('\n\n').filter(Boolean);
+
+    for (const rawP of rawParagraphs) {
+      const p = rawP.trim();
+      if (!p) continue;
+      const lines = p.split('\n').map((l) => l.trim()).filter(Boolean);
+
+      // 0. Horizontal divider rule (---, ***, ___)
+      if (/^(-{3,}|\*{3,}|_{3,})$/.test(p)) {
+        tempBlocks.push({ type: 'divider' });
+        continue;
+      }
+
+      // 1. Markdown Table
+      const isMarkdownTable =
+        lines.length >= 2 &&
+        lines.every((l) => l.startsWith('|') && l.endsWith('|')) &&
+        lines.some((l) => /^\|(\s*:?-+:?\s*\|)+$/.test(l));
+
+      if (isMarkdownTable) {
+        const headerLine = lines[0];
+        const headers = headerLine
+          .split('|')
+          .slice(1, -1)
+          .map((h) => h.trim());
+
+        const dataRows = lines
+          .slice(1)
+          .filter((l) => !/^\|(\s*:?-+:?\s*\|)+$/.test(l))
+          .map((l) =>
+            l
+              .split('|')
+              .slice(1, -1)
+              .map((c) => c.trim())
+          );
+
+        tempBlocks.push({
+          type: 'table',
+          headers,
+          rows: dataRows
+        });
+        continue;
+      }
+
+      // 2. Markdown Headings (e.g. ### Example database)
+      if (/^#{1,6}\s+/.test(p)) {
+        const cleanTitle = p.replace(/^#{1,6}\s*/, '').trim();
+        tempBlocks.push({ type: 'subtitle', title: cleanTitle });
+        continue;
+      }
+
+      // 3. Section letters / subheadings (e.g. **A. SELECT** or G. HAVING)
+      if (/^(?:\*\*)?[A-Z]\.\s+([A-Za-z0-9_ -]+)(?:\*\*)?$/.test(p)) {
+        const cleanTitle = p.replace(/\*\*/g, '').trim();
+        tempBlocks.push({ type: 'subtitle', title: cleanTitle });
+        continue;
+      }
+
+      // 4. Bullet lists (lines starting with •, -, *, +)
+      const isBulletList =
+        lines.length > 0 &&
+        lines.every((l) => /^[•\-\*\+]\s+/.test(l));
+
+      if (isBulletList) {
+        tempBlocks.push({
+          type: 'bullet_list',
+          items: lines.map((l) => l.replace(/^[•\-\*\+]\s*/, '').trim())
+        });
+        continue;
+      }
+
+      // 5. Ordered lists (1. Foo\n2. Bar OR inline smushed: "1. Foo. 2. Bar.")
+      const isOrderedList =
+        /^\d+[\.)]\s+/.test(p) &&
+        (
+          (lines.length > 1 && lines.every((l) => /^\d+[\.)]\s+/.test(l))) ||
+          /\s+\d+[\.)]\s+/.test(p)
         );
 
-      tempBlocks.push({
-        type: 'table',
-        headers,
-        rows: dataRows
-      });
-      continue;
-    }
-
-    // 1. Bullet list (e.g. • or - or *)
-    const isBulletList =
-      lines.length > 0 &&
-      lines.every((l) => {
-        const t = l.trim();
-        return t.startsWith('•') || t.startsWith('- ') || t.startsWith('* ');
-      });
-
-    if (isBulletList) {
-      tempBlocks.push({
-        type: 'bullet_list',
-        items: lines.map((l) => l.trim().replace(/^[•\-\*]\s*/, ''))
-      });
-      continue;
-    }
-
-    // 2. Multi-line chunk where all lines are Key: Value pairs
-    const isAllKv =
-      lines.length > 1 &&
-      lines.every((l) => /^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s+(.+)/.test(l.trim()));
-
-    if (isAllKv) {
-      tempBlocks.push({
-        type: 'indented_list',
-        items: lines.map((l) => l.trim())
-      });
-      continue;
-    }
-
-    // 3. Standalone code snippet: e.g. `import numpy`
-    if (/^`[^`\n]+`$/.test(chunk)) {
-      tempBlocks.push({ type: 'code_snippet', code: chunk.slice(1, -1) });
-      continue;
-    }
-
-    // 4. Note / Tip / Warning / Important callout
-    const tipMatch = chunk.match(/^(Note|Tip|Warning|Important):\s*(.+)/is);
-    if (tipMatch) {
-      tempBlocks.push({ type: 'tip', label: tipMatch[1], content: tipMatch[2] });
-      continue;
-    }
-
-    // 5. Subtitle / Heading
-    // Standalone single line <= 65 chars that:
-    // - Ends in a colon (e.g. "Import the whole package:")
-    // - OR does not end in standard sentence punctuation (. ? ! , ;) and is a heading-like phrase
-    const isSubtitle =
-      lines.length === 1 &&
-      chunk.length <= 65 &&
-      !chunk.startsWith('`') &&
-      !chunk.startsWith('http') &&
-      (
-        chunk.endsWith(':') ||
-        (!/[.,;?!]$/.test(chunk) && !/^(if|when|then|where|and|or|for|to|with|in|as|so)\b/i.test(chunk))
-      );
-
-    if (isSubtitle) {
-      tempBlocks.push({ type: 'subtitle', title: chunk });
-
-      // Lookahead: group subsequent items introduced by this subtitle
-      const listItems: string[] = [];
-      let j = i + 1;
-      while (j < rawParagraphs.length && listItems.length < 8) {
-        const next = rawParagraphs[j].trim();
-        if (
-          next.endsWith(':') ||
-          next.startsWith('|') ||
-          /^Table \d+/i.test(next) ||
-          /^`[^`]+`$/.test(next) ||
-          isConclusion(next)
-        ) {
-          break;
-        }
-        if (next.length < 180 && !next.includes('\n\n')) {
-          listItems.push(next);
-          j++;
+      if (isOrderedList) {
+        let items: string[] = [];
+        if (lines.length > 1 && lines.every((l) => /^\d+[\.)]\s+/.test(l))) {
+          items = lines.map((l) => l.replace(/^\d+[\.)]\s*/, '').trim());
         } else {
-          break;
+          items = p
+            .split(/(?:^|\s+)\d+[\.)]\s+/)
+            .map((it) => it.trim())
+            .filter(Boolean);
         }
+        tempBlocks.push({ type: 'ordered_list', items });
+        continue;
       }
-      if (listItems.length >= 2) {
-        tempBlocks.push({ type: 'indented_list', items: listItems });
-        i = j - 1;
+
+      // 6. Multi-line chunk where all lines are Key: Value pairs
+      const isAllKv =
+        lines.length > 1 &&
+        lines.every((l) => /^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s+(.+)/.test(l));
+
+      if (isAllKv) {
+        tempBlocks.push({
+          type: 'indented_list',
+          items: lines
+        });
+        continue;
       }
-      continue;
+
+      // 7. Standalone inline code snippet: e.g. `import numpy`
+      if (/^`[^`\n]+`$/.test(p)) {
+        tempBlocks.push({ type: 'code_block', snippets: [p.slice(1, -1)] });
+        continue;
+      }
+
+      // 8. Note / Tip / Warning / Important callout
+      const tipMatch = p.match(/^(Note|Tip|Warning|Important):\s*(.+)/is);
+      if (tipMatch) {
+        tempBlocks.push({ type: 'tip', label: tipMatch[1], content: tipMatch[2] });
+        continue;
+      }
+
+      // 9. Subtitle / Heading
+      // Single line <= 65 chars that ends in a colon or is a title phrase
+      const isSubtitle =
+        lines.length === 1 &&
+        p.length <= 65 &&
+        !p.startsWith('`') &&
+        !p.startsWith('http') &&
+        (
+          p.endsWith(':') ||
+          (!/[.,;?!]$/.test(p) && !/^(if|when|then|where|and|or|for|to|with|in|as|so)\b/i.test(p))
+        );
+
+      if (isSubtitle) {
+        tempBlocks.push({ type: 'subtitle', title: p });
+        continue;
+      }
+
+      // 10. Standalone Key: Value / Key – Value item
+      const kvMatch = p.match(/^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s+(.+)/s);
+      if (
+        kvMatch &&
+        !kvMatch[1].toLowerCase().startsWith('for example') &&
+        !kvMatch[1].toLowerCase().startsWith('for instance')
+      ) {
+        tempBlocks.push({ type: 'indented_list', items: [p] });
+        continue;
+      }
+
+      // 11. Regular paragraph
+      tempBlocks.push({ type: 'paragraph', text: p });
     }
-
-    // 6. Paragraph ending in a colon that introduces items/steps (e.g. "...boolean subsetting:")
-    if (chunk.endsWith(':')) {
-      tempBlocks.push({ type: 'paragraph', text: chunk });
-
-      // Lookahead: group subsequent items introduced by this colon
-      const listItems: string[] = [];
-      let j = i + 1;
-      while (j < rawParagraphs.length && listItems.length < 8) {
-        const next = rawParagraphs[j].trim();
-        if (
-          next.endsWith(':') ||
-          next.startsWith('|') ||
-          /^Table \d+/i.test(next) ||
-          /^`[^`]+`$/.test(next) ||
-          isConclusion(next)
-        ) {
-          break;
-        }
-        if (next.length < 180 && !next.includes('\n\n')) {
-          listItems.push(next);
-          j++;
-        } else {
-          break;
-        }
-      }
-      if (listItems.length >= 2) {
-        tempBlocks.push({ type: 'indented_list', items: listItems });
-        i = j - 1;
-      }
-      continue;
-    }
-
-    // 7. Standalone Key: Value / Key – Value item
-    const kvMatch = chunk.match(/^([A-Za-z0-9_`* /&()-]{2,35})[:–—]\s+(.+)/s);
-    if (
-      kvMatch &&
-      !kvMatch[1].toLowerCase().startsWith('for example') &&
-      !kvMatch[1].toLowerCase().startsWith('for instance')
-    ) {
-      tempBlocks.push({ type: 'indented_list', items: [chunk] });
-      continue;
-    }
-
-    // 8. Regular paragraph
-    tempBlocks.push({ type: 'paragraph', text: chunk });
   }
 
   // Merge consecutive indented_list blocks
-  const mergedBlocks: (
-    | { type: 'subtitle'; title: string }
-    | { type: 'indented_list'; items: string[] }
-    | { type: 'bullet_list'; items: string[] }
-    | { type: 'code_snippet'; code: string }
-    | { type: 'tip'; label: string; content: string }
-    | { type: 'table'; headers: string[]; rows: string[][] }
-    | { type: 'paragraph'; text: string }
-  )[] = [];
+  const mergedBlocks: ParsedBlock[] = [];
   let currentList: string[] = [];
 
   for (const block of tempBlocks) {
@@ -232,27 +227,59 @@ function parseBlocks(rawText: string): ParsedBlock[] {
     mergedBlocks.push({ type: 'indented_list', items: currentList });
   }
 
-  // Group consecutive code_snippet blocks into a single code_block
-  const finalBlocks: ParsedBlock[] = [];
-  let currentCode: string[] = [];
-
-  for (const block of mergedBlocks) {
-    if (block.type === 'code_snippet') {
-      currentCode.push(block.code);
-    } else {
-      if (currentCode.length > 0) {
-        finalBlocks.push({ type: 'code_block', snippets: currentCode });
-        currentCode = [];
-      }
-      finalBlocks.push(block);
-    }
-  }
-  if (currentCode.length > 0) {
-    finalBlocks.push({ type: 'code_block', snippets: currentCode });
-  }
-
-  return finalBlocks;
+  return mergedBlocks;
 }
+
+const FencedCodeBlock: React.FC<{
+  code: string;
+  lang?: string;
+  theme?: 'emerald' | 'indigo';
+}> = ({ code, lang, theme = 'emerald' }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const isEmerald = theme === 'emerald';
+  const langBadgeColor = isEmerald
+    ? 'text-emerald-400 bg-emerald-950/60 border-emerald-800/60'
+    : 'text-indigo-400 bg-indigo-950/60 border-indigo-800/60';
+
+  return (
+    <div className="my-3.5 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-900 shadow-md">
+      <div className="flex items-center justify-between px-3.5 py-1.5 bg-slate-800/90 border-b border-slate-700/60 text-xs text-slate-300 font-mono">
+        <span className={`uppercase font-semibold tracking-wider text-[11px] px-2 py-0.5 rounded border ${langBadgeColor}`}>
+          {lang || 'code'}
+        </span>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] text-slate-300 hover:text-white hover:bg-slate-700/70 transition-colors font-sans"
+          title="Copy code to clipboard"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-emerald-400 font-medium">Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3.5 h-3.5" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+      <div className="p-4 overflow-x-auto text-[13px] font-mono leading-relaxed text-slate-100">
+        <pre className="font-mono whitespace-pre">
+          <code>{code}</code>
+        </pre>
+      </div>
+    </div>
+  );
+};
 
 export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
   text,
@@ -282,12 +309,15 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
         );
       }
       if (part.startsWith('`') && part.endsWith('`')) {
+        let codeContent = part.slice(1, -1);
+        codeContent = codeContent.replace(/^(sql|python|bash|javascript|js|sh)\s+/i, '');
+
         return (
           <code
             key={idx}
             className={`px-1.5 py-0.5 rounded font-mono text-[12.5px] border font-semibold ${inlineCodeBg}`}
           >
-            {part.slice(1, -1)}
+            {codeContent}
           </code>
         );
       }
@@ -298,6 +328,11 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
   return (
     <div className={`space-y-3.5 ${className}`}>
       {blocks.map((block, bIdx) => {
+        // Horizontal divider (---, ***)
+        if (block.type === 'divider') {
+          return <hr key={bIdx} className="my-5 border-t border-slate-200/80" />;
+        }
+
         // Subtitle / Heading (bold with clean vertical accent bar)
         if (block.type === 'subtitle') {
           return (
@@ -307,6 +342,31 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
                 <span>{renderInline(block.title)}</span>
               </h4>
             </div>
+          );
+        }
+
+        // Fenced Code Block (Syntax-highlighted dark container with copy button)
+        if (block.type === 'fenced_code') {
+          return (
+            <FencedCodeBlock
+              key={bIdx}
+              code={block.code}
+              lang={block.lang}
+              theme={theme}
+            />
+          );
+        }
+
+        // Ordered List (1. 2. 3. numbered steps)
+        if (block.type === 'ordered_list') {
+          return (
+            <ol key={bIdx} className="my-3 space-y-2.5 ml-5 list-decimal text-sm text-slate-800 leading-relaxed pl-1">
+              {block.items.map((item, idx) => (
+                <li key={idx} className="pl-1">
+                  {renderInline(item)}
+                </li>
+              ))}
+            </ol>
           );
         }
 
@@ -369,7 +429,7 @@ export const FormattedLessonBody: React.FC<FormattedLessonBodyProps> = ({
           );
         }
 
-        // Clean light code block (NOT black! Fits seamlessly into light theme)
+        // Clean light code block for short inline snippets
         if (block.type === 'code_block') {
           return (
             <div key={bIdx} className="my-2.5 ml-4">

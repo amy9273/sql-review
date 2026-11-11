@@ -12,6 +12,7 @@ import { SchneiderLessonViewer } from './components/SchneiderLessonViewer';
 import { SchneiderInterviewDrills } from './components/SchneiderInterviewDrills';
 import { SchneiderScenariosViewer } from './components/SchneiderScenariosViewer';
 import { SchneiderPracticum } from './components/SchneiderPracticum';
+import { ExcelViewer } from './components/ExcelViewer';
 import { LESSONS, ACTIVITIES } from './data/curriculum';
 import { PYTHON_LESSONS, PYTHON_EXERCISES } from './data/pythonCurriculum';
 import {
@@ -19,6 +20,7 @@ import {
   SCHNEIDER_SITUATIONAL_DRILLS,
   SCHNEIDER_PRACTICUM_ACTIVITIES
 } from './data/schneiderCurriculum';
+import { EXCEL_PRACTICUM_TASKS } from './data/excelCurriculum';
 import { initDatabase } from './lib/sqliteEngine';
 import { initPyodide } from './lib/pythonEngine';
 
@@ -26,7 +28,7 @@ export default function App() {
   const [track, setTrack] = useState<TrackType>(() => {
     const params = new URLSearchParams(window.location.search);
     const trackParam = params.get('track');
-    if (trackParam === 'python' || trackParam === 'sql' || trackParam === 'schneider') {
+    if (trackParam === 'python' || trackParam === 'sql' || trackParam === 'schneider' || trackParam === 'excel') {
       return trackParam;
     }
     return (localStorage.getItem('de_academy_active_track') as TrackType) || 'sql';
@@ -111,6 +113,16 @@ export default function App() {
     }
   });
 
+  // Excel Track LocalStorage state
+  const [completedExcelTasks, setCompletedExcelTasks] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('excel_completed_tasks');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Pre-initialize SQLite and Pyodide on mount
   useEffect(() => {
     initDatabase().catch((err) => console.error('Failed to init SQLite:', err));
@@ -163,6 +175,17 @@ export default function App() {
     localStorage.setItem('schneider_completed_practicum', JSON.stringify(completedSchneiderPracticum));
   }, [completedSchneiderPracticum]);
 
+  // Save Excel progress
+  useEffect(() => {
+    localStorage.setItem('excel_completed_tasks', JSON.stringify(completedExcelTasks));
+  }, [completedExcelTasks]);
+
+  const handleToggleExcelTask = (taskId: string) => {
+    setCompletedExcelTasks((prev) =>
+      prev.includes(taskId) ? prev.filter((id) => id !== taskId) : [...prev, taskId]
+    );
+  };
+
   const handleCompleteActivity = (activityId: string) => {
     if (!completedActivities.includes(activityId)) {
       setCompletedActivities((prev) => [...prev, activityId]);
@@ -209,6 +232,7 @@ export default function App() {
     let trackName = 'SQL';
     if (track === 'python') trackName = 'Python';
     if (track === 'schneider') trackName = 'Schneider Electric Prep';
+    if (track === 'excel') trackName = 'Excel';
 
     if (confirm(`Are you sure you want to reset all your ${trackName} progress?`)) {
       if (track === 'sql') {
@@ -228,6 +252,9 @@ export default function App() {
         localStorage.removeItem('schneider_reviewed_lessons');
         localStorage.removeItem('schneider_completed_drills');
         localStorage.removeItem('schneider_completed_practicum');
+      } else if (track === 'excel') {
+        setCompletedExcelTasks([]);
+        localStorage.removeItem('excel_completed_tasks');
       }
     }
   };
@@ -271,12 +298,24 @@ export default function App() {
         totalSchneiderLessons={SCHNEIDER_LESSONS.length}
         completedSchneiderDrills={completedSchneiderDrills}
         totalSchneiderDrills={SCHNEIDER_SITUATIONAL_DRILLS.length + SCHNEIDER_PRACTICUM_ACTIVITIES.length}
+        completedExcelTasks={completedExcelTasks}
+        totalExcelTasks={EXCEL_PRACTICUM_TASKS.length}
         onResetProgress={handleResetProgress}
       />
 
       {/* Main Learning Space */}
       <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        {track === 'sql' ? (
+        {track === 'excel' ? (
+          /* ========================================================= */
+          /* EXCEL TRACK (Lookups, Pivots, Cleansing, 1,000 Sales)    */
+          /* ========================================================= */
+          <ExcelViewer
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            completedTasks={completedExcelTasks}
+            onToggleTask={handleToggleExcelTask}
+          />
+        ) : track === 'sql' ? (
           /* ========================================================= */
           /* SQL TRACK                                                 */
           /* ========================================================= */
@@ -368,12 +407,16 @@ export default function App() {
       <footer className="mt-auto border-t border-slate-200 bg-white py-3.5">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <div>
-            <span>Data Engineering Academy — SQL, Python & Schneider Electric Review Platform</span>
+            <span>Data Engineering Academy — SQL, Python, Excel & Schneider Electric Review Platform</span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             <span className="font-mono">SQL: 23 Lessons • 10 Drills</span>
             <span>•</span>
             <span className="font-mono">Python: 60 Lessons • 8 Practical Drills</span>
+            <span>•</span>
+            <span className="font-mono text-emerald-700 font-semibold">
+              Excel: 7 Core Functions • Live Pivot Simulator • 1,000 Sales Practicum
+            </span>
             <span>•</span>
             <span className="font-mono text-emerald-700 font-semibold">
               Schneider: 14 Parts • 8 Situations • 8 SQL Practicums

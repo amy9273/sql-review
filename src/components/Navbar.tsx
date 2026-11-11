@@ -10,10 +10,13 @@ import {
   FileSpreadsheet,
   ShieldCheck,
   Target,
-  Zap
+  Zap,
+  Table,
+  Filter,
+  Sparkles
 } from 'lucide-react';
 
-export type TrackType = 'sql' | 'python' | 'schneider';
+export type TrackType = 'sql' | 'python' | 'schneider' | 'excel';
 
 interface NavbarProps {
   track: TrackType;
@@ -32,6 +35,8 @@ interface NavbarProps {
   totalSchneiderLessons?: number;
   completedSchneiderDrills?: string[];
   totalSchneiderDrills?: number;
+  completedExcelTasks?: string[];
+  totalExcelTasks?: number;
   onResetProgress: () => void;
 }
 
@@ -52,10 +57,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   totalSchneiderLessons = 14,
   completedSchneiderDrills = [],
   totalSchneiderDrills = 18,
+  completedExcelTasks = [],
+  totalExcelTasks = 6,
   onResetProgress
 }) => {
   const isSql = track === 'sql';
   const isSchneider = track === 'schneider';
+  const isExcel = track === 'excel';
 
   let solvedCount = completedActivities.length;
   let totalCount = totalActivities;
@@ -65,6 +73,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   } else if (isSchneider) {
     solvedCount = completedSchneiderDrills.length;
     totalCount = totalSchneiderDrills;
+  } else if (isExcel) {
+    solvedCount = completedExcelTasks.length;
+    totalCount = totalExcelTasks;
   }
 
   const percentComplete = totalCount > 0 ? Math.round((solvedCount / totalCount) * 100) : 0;
@@ -78,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center gap-2.5">
               <div
                 className={`w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-xs transition-colors ${
-                  isSchneider
+                  isSchneider || isExcel
                     ? 'bg-emerald-600'
                     : isSql
                     ? 'bg-indigo-600'
@@ -87,6 +98,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 {isSchneider ? (
                   <ShieldCheck className="w-5 h-5" />
+                ) : isExcel ? (
+                  <FileSpreadsheet className="w-5 h-5" />
                 ) : isSql ? (
                   <Database className="w-5 h-5" />
                 ) : (
@@ -100,6 +113,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="text-[10px] text-slate-400 block font-mono font-medium">
                   {isSchneider
                     ? 'Schneider Electric DE'
+                    : isExcel
+                    ? 'Excel Review'
                     : isSql
                     ? 'SQL Review'
                     : 'Python Review'}
@@ -132,6 +147,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>Python</span>
               </button>
               <button
+                onClick={() => setTrack('excel')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                  isExcel
+                    ? 'bg-white text-emerald-800 shadow-xs font-bold'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Excel</span>
+              </button>
+              <button
                 onClick={() => setTrack('schneider')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
                   isSchneider
@@ -152,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setActiveTab('lessons')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'lessons'
-                  ? isSchneider
+                  ? isSchneider || isExcel
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : isSql
                     ? 'bg-indigo-600 text-white shadow-xs'
@@ -161,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
-              <span>{isSchneider ? 'Guide' : 'Lessons'}</span>
+              <span>{isSchneider ? 'Guide' : isExcel ? 'Formulas' : 'Lessons'}</span>
               <span
                 className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono ${
                   activeTab === 'lessons'
@@ -171,18 +197,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 {isSchneider
                   ? `${reviewedSchneiderLessons.length}/${totalSchneiderLessons}`
+                  : isExcel
+                  ? '7 Core'
                   : isSql
                   ? `${reviewedLessons.length}/${totalLessons}`
                   : `${reviewedPythonLessons.length}/${totalPythonLessons}`}
               </span>
             </button>
 
-            {/* Tab 2: Activities / Drills */}
+            {/* Tab 2: Activities / Drills / Pivots */}
             <button
               onClick={() => setActiveTab('activities')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'activities'
-                  ? isSchneider
+                  ? isSchneider || isExcel
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : isSql
                     ? 'bg-indigo-600 text-white shadow-xs'
@@ -192,31 +220,35 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               {isSchneider ? (
                 <Target className="w-3.5 h-3.5 text-emerald-300" />
+              ) : isExcel ? (
+                <Table className="w-3.5 h-3.5 text-emerald-300" />
               ) : (
                 <Flame className={`w-3.5 h-3.5 ${isSql ? 'text-amber-400' : 'text-amber-300'}`} />
               )}
-              <span>{isSchneider ? 'Drills' : 'Exercises'}</span>
-              <span
-                className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono ${
-                  activeTab === 'activities'
-                    ? 'bg-black/20 text-white'
-                    : 'bg-slate-100 text-slate-600'
-                }`}
-              >
-                {isSchneider
-                  ? `${completedSchneiderDrills.length}/${totalSchneiderDrills}`
-                  : isSql
-                  ? `${completedActivities.length}/${totalActivities}`
-                  : `${completedPythonExercises.length}/${totalPythonExercises}`}
-              </span>
+              <span>{isSchneider ? 'Drills' : isExcel ? 'Pivot Simulator' : 'Exercises'}</span>
+              {!isExcel && (
+                <span
+                  className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono ${
+                    activeTab === 'activities'
+                      ? 'bg-black/20 text-white'
+                      : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  {isSchneider
+                    ? `${completedSchneiderDrills.length}/${totalSchneiderDrills}`
+                    : isSql
+                    ? `${completedActivities.length}/${totalActivities}`
+                    : `${completedPythonExercises.length}/${totalPythonExercises}`}
+                </span>
+              )}
             </button>
 
-            {/* Tab 3: Schemas / Scenarios */}
+            {/* Tab 3: Schemas / Scenarios / Cleansing */}
             <button
               onClick={() => setActiveTab('schemas')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'schemas'
-                  ? isSchneider
+                  ? isSchneider || isExcel
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : isSql
                     ? 'bg-indigo-600 text-white shadow-xs'
@@ -226,6 +258,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               {isSchneider ? (
                 <ShieldCheck className="w-3.5 h-3.5" />
+              ) : isExcel ? (
+                <Filter className="w-3.5 h-3.5" />
               ) : isSql ? (
                 <Layers className="w-3.5 h-3.5" />
               ) : (
@@ -234,6 +268,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>
                 {isSchneider
                   ? 'Scenarios'
+                  : isExcel
+                  ? 'Data Cleansing'
                   : isSql
                   ? 'Tables'
                   : 'Datasets'}
@@ -245,7 +281,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setActiveTab('playground')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'playground'
-                  ? isSchneider
+                  ? isSchneider || isExcel
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : isSql
                     ? 'bg-indigo-600 text-white shadow-xs'
@@ -253,8 +289,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Terminal className="w-3.5 h-3.5" />
-              <span>{isSchneider ? 'SQL Practicum' : 'Playground'}</span>
+              {isExcel ? (
+                <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+              ) : (
+                <Terminal className="w-3.5 h-3.5" />
+              )}
+              <span>
+                {isSchneider
+                  ? 'SQL Practicum'
+                  : isExcel
+                  ? '1,000 Sales Practicum'
+                  : 'Playground'}
+              </span>
+              {isExcel && (
+                <span
+                  className={`text-[11px] px-1.5 py-0.2 rounded-full font-mono ${
+                    activeTab === 'playground'
+                      ? 'bg-black/20 text-white'
+                      : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  {completedExcelTasks.length}/{totalExcelTasks}
+                </span>
+              )}
             </button>
           </nav>
 
@@ -262,7 +319,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-3 flex-shrink-0">
             <div className="hidden md:flex items-center gap-2 text-xs">
               <span className="text-slate-500 font-medium">
-                {isSchneider ? 'Mastery:' : 'Drills Solved:'}
+                {isSchneider ? 'Mastery:' : isExcel ? 'Tasks Completed:' : 'Drills Solved:'}
               </span>
               <span className="font-mono font-bold text-slate-900">
                 {solvedCount} of {totalCount} ({percentComplete}%)
@@ -270,7 +327,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="w-16 h-2 rounded-full bg-slate-200 overflow-hidden">
                 <div
                   className={`h-full transition-all duration-300 ${
-                    isSchneider
+                    isSchneider || isExcel
                       ? 'bg-emerald-600'
                       : isSql
                       ? 'bg-indigo-600'
